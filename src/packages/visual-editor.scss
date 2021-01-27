@@ -1,0 +1,78 @@
+.visual-editor {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        .header {
+            height: 46px;
+            flex-shrink: 0;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        .content {
+            height: calc(100% - 46px);
+            display: flex;
+            .sidebar {
+                height: 100%;
+                width: 350px;
+                border-right: 1px solid #f1f1f1;
+                flex-shrink: 0;
+                overflow-y: scroll;
+            }
+            .editor-area-scroll {
+                overflow-y: auto;
+                flex-shrink: 0;
+                flex: 1;
+                .editor-area {
+                    height: 1000px;
+                }
+            }
+        }
+    }
+    .sidebar {
+        width: 350px;
+        flex-shrink: 0;
+        border-left: 1px solid #f1f1f1;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+        padding-left: 20px;
+        font-style: italic;
+        color: #00afff;
+    }
+    .actions {
+        .ant-btn {
+            padding-left: 0!important;
+        }
+    }
+}
+
+.content {
+    .sidebar {
+        .ant-btn {
+            text-align: left;
+            cursor: move!important;
+            &:hover {
+                border: 1px dashed #40a9ff;
+            }
+        }
+        .title-btn {
+            cursor: text!important;
+        }
+    }
+}
+
+.component-properties,
+.form-properties {
+    height: calc(100vh - 46px - 16px);
+    overflow-y: scroll;
+}
