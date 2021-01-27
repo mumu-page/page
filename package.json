@@ -2,6 +2,7 @@
   "name": "react-visual-editor",
   "version": "0.1.0",
   "private": true,
+  "homepage":"https://gitee.com/resonances/react-visual-editor.git",
   "dependencies": {
     "@ant-design/icons": "^4.4.0",
     "@testing-library/jest-dom": "^5.11.4",
@@ -12,6 +13,7 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "antd": "^4.11.2",
+    "gh-pages": "^3.1.0",
     "node-sass": "4.14.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -23,6 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
