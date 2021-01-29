@@ -20,125 +20,144 @@ import {
     RowProperties,
     ButtonProperties,
 } from "./properties";
+import {
+    Input,
+    InputNumber,
+    Select,
+    Cascader,
+    Radio,
+    Checkbox,
+    Switch,
+    Slider,
+    TimePicker,
+    DatePicker,
+    Rate,
+    Upload,
+    Row,
+    Button,
+} from "antd";
 
 interface ItemType {
-    title: string;
+    label: string;
     key: string;
-    component?: JSX.Element;
+    value: string;
     icon: string;
     children?: ItemType[]
 }
 export const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2351518_3b6485fr71i.js',
 });
-export const componentList: ItemType[] = [
+
+export const options: ItemType[] = [
     {
-        title: '输入型组件',
+        label: '输入型组件',
         key: 'input-group',
+        value: 'input-group',
         icon: 'icon-input',
         children: [
             {
-                title: '单行文本',
+                label: '单行文本',
                 key: 'input',
-                component: <InputProperties />,
+                value: 'input',
                 icon: 'icon-input',
             },
             {
-                title: '多行文本',
+                label: '多行文本',
                 key: 'textarea',
-                component: <TextAreaProperties />,
+                value: 'textarea',
                 icon: 'icon-textarea',
             },
             {
-                title: '密码',
+                label: '密码',
                 key: 'password',
-                component: <PasswordProperties />,
+                value: 'password',
                 icon: 'icon-password',
             },
             {
-                title: '计数器',
+                label: '计数器',
                 key: 'number',
-                component: <NumberProperties />,
+                value: 'number',
                 icon: 'icon-shuzi',
             },
             {
-                title: '编辑器',
+                label: '编辑器',
                 key: 'editor',
-                component: <EditorProperties />,
+                value: 'editor',
                 icon: 'icon-icon-editor',
             },
         ]
     },
     {
-        title: '选择型组件',
+        label: '选择型组件',
         key: 'select-group',
+        value: 'select-group',
         icon: 'icon-xuanze',
         children: [
             {
-                title: '下拉选择',
+                label: '下拉选择',
                 key: 'select',
+                value: 'select',
                 icon: 'icon-xiala',
-                component: <SelectProperties />
             },
             {
-                title: '级联选择',
+                label: '级联选择',
                 key: 'cascader',
+                value: 'cascader',
                 icon: 'icon-jilianxuanze',
-                component: <CascaderProperties />
             },
             {
-                title: '单选框组',
+                label: '单选框组',
                 key: 'radio',
+                value: 'radio',
                 icon: 'icon-danxuan',
-                component: <RadioProperties />
             },
             {
-                title: '多选框组',
+                label: '多选框组',
                 key: 'checkbox',
+                value: 'checkbox',
                 icon: 'icon-duoxuan',
-                component: <CheckboxProperties />
             },
             {
-                title: '开关',
+                label: '开关',
                 key: 'switch',
+                value: 'switch',
                 icon: 'icon-kaiguan',
-                component: <SwitchProperties />
             },
             {
-                title: '滑块',
+                label: '滑块',
                 key: 'slider',
+                value: 'slider',
                 icon: 'icon-huakuai',
-                component: <SliderProperties />
             },
             {
-                title: '时间选择',
+                label: '时间选择',
                 key: 'time-picker',
+                value: 'time-picker',
                 icon: 'icon-date-1',
-                component: <TimePickerProperties />
             },
             {
-                title: '时间范围',
+                label: '时间范围',
                 key: 'time-range-picker',
+                value: 'time-range-picker',
                 icon: 'icon-shijianfanwei',
-                component: <TimeRangePickerProperties />
             },
             {
-                title: '日期选择',
+                label: '日期选择',
                 key: 'date-picker',
+                value: 'date-picker',
                 icon: 'icon-riqi',
-                component: <DatePickerProperties />
             },
             {
-                title: '日期范围',
+                label: '日期范围',
                 key: 'date-range-picker',
+                value: 'date-range-picker',
                 icon: 'icon-riqifanwei',
-                component: <DateRangePickerProperties />
             },
             {
-                title: '评分',
+                label: '评分',
                 key: 'rate',
+                value: 'rate',
                 icon: 'icon-pingfen',
-                component: <RateProperties />
             },
             // {
             //     title: '颜色选择',
@@ -146,30 +165,114 @@ export const componentList: ItemType[] = [
             //     icon: 'icon-yanse',
             // },
             {
-                title: '上传',
+                label: '上传',
                 key: 'upload',
+                value: 'upload',
                 icon: 'icon-shangchuan',
-                component: <UploadProperties />
             },
         ]
     },
     {
-        title: '布局型组件',
+        label: '布局型组件',
         key: 'layout-group',
+        value: 'layout-group',
         icon: 'icon-input',
         children: [
             {
-                title: '行容器',
+                label: '行容器',
                 key: 'row',
+                value: 'row',
                 icon: 'icon-hangrongqi',
-                component: <RowProperties />
             },
             {
-                title: '按钮',
+                label: '按钮',
                 key: 'button',
+                value: 'button',
                 icon: 'icon-Onebuttonalarm',
-                component: <ButtonProperties />
             },
         ]
     },
 ]
+
+export const key2Component = {
+    input: {
+        properties: <InputProperties />,
+        component: <Input />
+    },
+    textarea: {
+        properties: <TextAreaProperties />,
+        component: <Input.TextArea />
+    },
+    password: {
+        properties: <PasswordProperties />,
+        component: <Input.Password />
+    },
+    number: {
+        properties: <NumberProperties />,
+        component: <InputNumber />
+    },
+    editor: {
+        properties: <EditorProperties />,
+        component: <>editor</>
+    },
+    select: {
+        properties: <SelectProperties />,
+        component: <Select />
+    },
+    cascader: {
+        properties: <CascaderProperties />,
+        component: <Cascader />
+    },
+    radio: {
+        properties: <RadioProperties />,
+        component: <Radio />
+    },
+    checkbox: {
+        properties: <CheckboxProperties />,
+        component: <Checkbox />
+    },
+    switch: {
+        properties: <SwitchProperties />,
+        component: <Switch />
+    },
+    slider: {
+        properties: <SliderProperties />,
+        component: <Slider />
+    },
+    'time-picker': {
+        properties: <TimePickerProperties />,
+        component: <TimePicker />
+    },
+    'time-range-picker': {
+        properties: <TimeRangePickerProperties />,
+        component: <TimePicker.RangePicker />
+    },
+    'date-picker': {
+        properties: <DatePickerProperties />,
+        component: <DatePicker />
+    },
+    'date-range-picker': {
+        properties: <DateRangePickerProperties />,
+        component: <DatePicker.RangePicker />
+    },
+    rate: {
+        properties: <RateProperties />,
+        component: <Rate />
+    },
+    upload: {
+        properties: <UploadProperties />,
+        component: <Upload />
+    },
+    row: {
+        properties: <RowProperties />,
+        component: <Row />
+    },
+    button: {
+        properties: <ButtonProperties />,
+        component: <Button />
+    },
+    '': {
+        properties: <></>,
+        component: <></>
+    }
+}

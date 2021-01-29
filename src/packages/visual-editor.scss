@@ -20,13 +20,38 @@
                 border-right: 1px solid #f1f1f1;
                 flex-shrink: 0;
                 overflow-y: scroll;
+                overflow-x: hidden;
             }
             .editor-area-scroll {
                 overflow-y: auto;
                 flex-shrink: 0;
                 flex: 1;
+                // padding-top: 10px;
                 .editor-area {
-                    height: 1000px;
+                    padding: 15px;
+                    height: 100%;
+                }
+                .not-found-info {
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 22px;
+                    font-weight: lighter;
+                    color: #40a9ff;
+                    user-select: none;
+                    position: relative;
+                    letter-spacing: 4px;
+                    .flag {
+                        height: 80px;
+                        width: 100%;
+                        top: 0;
+                        position: absolute;
+                        border-top: 4px solid #40a9ff;
+                        background-color: rgba(#40a9ff, .2);
+                        z-index: 8;
+                    }
                 }
             }
         }
@@ -61,11 +86,12 @@
         .ant-btn {
             text-align: left;
             cursor: move!important;
-            &:hover {
+            &:hover, &:active, &:focus {
                 border: 1px dashed #40a9ff;
             }
         }
         .title-btn {
+            border: none!important;
             cursor: text!important;
         }
     }
@@ -75,4 +101,28 @@
 .form-properties {
     height: calc(100vh - 46px - 16px);
     overflow-y: scroll;
+}
+
+
+.editor-area-flag {
+    height: 80px;
+    width: calc(100% + 30px);
+    top: 60px;
+    left: 0;
+    right: 0;
+    margin: 0 -15px;
+    position: absolute;
+    border-top: 4px solid hsl(207, 100%, 63%);
+    background-color: rgba(#40a9ff, .2);
+    z-index: 8;
+}
+
+.component-warp {
+    padding: 11px;
+    border-radius: 10px;
+    transition: all .3s;
+    cursor: move!important;
+    &:hover {
+        background-color: #f8f8f8;
+    }
 }

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Tabs } from "antd";
 import { FormProperties, ComponentProperties } from '../properties/'
+import { Context } from '../stores/context';
 
 const { TabPane } = Tabs;
 export default function () {
+    
     return (
         <Tabs defaultActiveKey="1" centered>
             <TabPane tab="组件属性" key="1">

@@ -10317,6 +10317,11 @@ resolve@^1.10.0, resolve@^1.12.0, resolve@^1.13.1, resolve@^1.14.2, resolve@^1.1
     is-core-module "^2.1.0"
     path-parse "^1.0.6"
 
+resonance-utils@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/resonance-utils/-/resonance-utils-0.0.4.tgz#bc74c60960c69f63a240d380702b23c6bc5fbc77"
+  integrity sha512-iCtmzQdNCg6XFBVFn7j43/Z124AU5tNlzJOR0Z+Tee8urlHN6MzLdOHkOWk2vS7Eu1tsoYDk7c/DZCzWel9eAQ==
+
 ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"

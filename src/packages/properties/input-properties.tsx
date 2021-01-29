@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Input, InputNumber, Radio, Switch } from "antd";
 import { CommonProperties } from "./index";
+import { Context } from '../stores/context';
+import { SET_CURRENT_DRAG_COMPONENT } from '../stores/action-type';
 
 type SizeType = Parameters<typeof Form>[0]['size'];
 const layout = {
@@ -8,17 +10,22 @@ const layout = {
     wrapperCol: { span: 15 },
 };
 export default function () {
-    const onValuesChange = (values: any) => {
-        console.log('onValuesChange', values)
+    const [form] = Form.useForm()
+    const { commonDispatch } = useContext(Context)
+
+    const onValuesChange = (changedValues: any, allValues: any) => {
+        console.log('onValuesChange', allValues)
+        commonDispatch({type: SET_CURRENT_DRAG_COMPONENT, payload: allValues})
     };
     return (
         <>
             <CommonProperties />
             <Form
+                form={form}
                 {...layout}
                 onValuesChange={onValuesChange}
             >
-                 <Form.Item
+                <Form.Item
                     label="输入框内容"
                     name="value">
                     <Input />
