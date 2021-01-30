@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, forwardRef } from "react";
 import { Button, Col, Row, Form, Input } from "antd";
 import { IconFont, options } from "../constants";
 import { Context } from "../stores/context";
@@ -9,6 +9,15 @@ import {
   SET_SHOW_NOT_FOUNT,
 } from "../stores/action-type";
 import { guid } from "../utils";
+import { ReactSortable } from "react-sortablejs";
+
+const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
+  return (
+    <Row ref={ref} gutter={[6, 6]} style={{ padding: "0 12px 12px 12px" }}>
+      {props.children}
+    </Row>
+  );
+});
 
 export default () => {
   const { flag, commonDispatch } = useContext(Context);
@@ -34,30 +43,43 @@ export default () => {
           >
             {item.label}
           </Button>
-          <Row gutter={[6, 6]} style={{ padding: "0 12px 12px 12px" }}>
+          <ReactSortable
+            group={{
+              name: "editor-area",
+              pull: "clone",
+              put: false,
+            }}
+            sort={false}
+            tag={CustomRow}
+            list={item.children}
+            setList={(newState) => {}}
+            animation={200}
+            delayOnTouchOnly
+          >
             {item.children &&
               item.children.map((childItem: any) => {
                 return (
-                  <Col span={12} key={childItem.key}>
+                  <Col span={12} key={childItem.value}>
                     <Button
                       block
+                      key={childItem.key}
                       type="default"
                       onDragEnd={(e) => {
-                        const currentDrag = {
-                          id: guid(),
-                          componentKey: childItem.value,
-                          formItemProp: {},
-                          componentProp: {},
-                        };
-                        commonDispatch({
-                          type: SET_CURRENT_DRAG_COMPONENT,
-                          payload: currentDrag,
-                        });
-                        commonDispatch({
-                          type: PUT_COMPONENT_LIST,
-                          payload: currentDrag,
-                        });
                         if (flag) {
+                          const currentDrag = {
+                            id: guid(),
+                            componentKey: childItem.value,
+                            formItemProp: {},
+                            componentProp: {},
+                          };
+                          commonDispatch({
+                            type: SET_CURRENT_DRAG_COMPONENT,
+                            payload: currentDrag,
+                          });
+                          commonDispatch({
+                            type: PUT_COMPONENT_LIST,
+                            payload: currentDrag,
+                          });
                           commonDispatch({ type: SET_FLAG, payload: false });
                           commonDispatch({
                             type: SET_SHOW_NOT_FOUNT,
@@ -73,7 +95,7 @@ export default () => {
                   </Col>
                 );
               })}
-          </Row>
+          </ReactSortable>
         </div>
       );
     });

@@ -1,32 +1,48 @@
-import React, { Component } from "react";
-import { ReactSortable } from "react-sortablejs";
+import React, { useState } from "react";
+import { Button } from "antd";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import {v4} from "uuid";
 
-interface BasicClassState {
-  list: { id: string; name: string }[];
-}
+import "./index.css";
 
-export class BasicClass extends Component<{}, BasicClassState> {
-  state: BasicClassState = {
-    list: [
-      { id: "1", name: "shrek1" },
-      { id: "2", name: "shrek2" },
-      { id: "3", name: "shrek3" },
-      { id: "4", name: "shrek4" },
-      { id: "5", name: "shrek5" },
-    ],
-  };
-  render() {
-    return (
-      <ReactSortable
-        list={this.state.list}
-        animation={200}
-        delayOnTouchOnly
-        setList={(newState) => this.setState({ list: newState })}
+export default function TodoList() {
+  const [items, setItems] = useState([
+    { id: v4(), text: "Buy eggs" },
+    { id: v4(), text: "Pay bills" },
+    { id: v4(), text: "Invite friends over" },
+    { id: v4(), text: "Fix the TV" },
+  ]);
+  return (
+    <div style={{ marginTop: "2rem" }}>
+      <div style={{ marginBottom: "1rem" }}>
+        <TransitionGroup className="todo-list">
+          {items.map(({ id, text }) => (
+            <CSSTransition key={id} timeout={500} classNames="alert">
+              <li>
+                <Button
+                  className="remove-btn"
+                  onClick={() =>
+                    setItems((items) => items.filter((item) => item.id !== id))
+                  }
+                >
+                  &times;
+                </Button>
+                {text}
+              </li>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </div>
+      <Button
+        onClick={() => {
+          const text = prompt("Enter some text");
+          if (text) {
+            setItems((items) => [...items, { id: v4(), text }]);
+          }
+        }}
       >
-        {this.state.list.map((item) => (
-          <div key={item.id}>{item.name}</div>
-        ))}
-      </ReactSortable>
-    );
-  }
+        Add Item
+      </Button>
+    </div>
+  );
 }

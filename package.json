@@ -12,6 +12,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "@types/uuid": "^8.3.0",
     "antd": "^4.11.2",
     "gh-pages": "^3.1.0",
     "lodash": "^4.17.20",
@@ -23,6 +24,7 @@
     "resonance-utils": "^0.0.4",
     "sortablejs": "^1.13.0",
     "typescript": "^4.0.3",
+    "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

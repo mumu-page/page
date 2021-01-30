@@ -1,23 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Form } from "antd";
 import { Context } from "../stores/context";
 import { key2Component } from "../constants";
 import { FormComProp } from "../stores/typings";
-import { SET_COMPONENT_LIST, SET_FLAG } from "../stores/action-type";
+import {
+  INSERT_COMPONENT_LIST,
+  SET_COMPONENT_LIST,
+  SET_FLAG,
+} from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
+import { guid } from "../utils";
 
-let update = false;
+let update = false; // FIX: 控件焦点和拖拽的冲突
 export default function () {
-  const { flag, componentList, commonDispatch } = useContext(Context);
-
-  const setFlag = (val: boolean) => {
-    if (val && !flag) {
-      commonDispatch({ type: SET_FLAG, payload: val });
-    }
-    if (!val && flag) {
-      commonDispatch({ type: SET_FLAG, payload: val });
-    }
-  };
+  const { componentList, commonDispatch } = useContext(Context);
 
   const Component = (prop: FormComProp) => {
     const { componentKey, formItemProp = {}, componentProp = {} } = prop;
@@ -41,24 +37,38 @@ export default function () {
         height: "100%",
         position: "relative",
       }}
-      onDragOver={(e) => {
-        e.preventDefault();
-        setFlag(true);
-      }}
-      onDrop={(e) => {
-        setFlag(false);
-      }}
     >
       <ReactSortable
+        sort
+        style={{
+          height: '100%'
+        }}
+        group={{
+          name: "editor-area",
+          put: true,
+        }}
         list={componentList}
+        chosenClass="sortable-chosen"
         animation={200}
         delayOnTouchOnly
         setList={(newState) => {
-          !update &&
+          if (!update) {
+            const params = newState?.map((item: any) => {
+              if (item?.value) {
+                return {
+                  id: guid(),
+                  componentKey: item.value,
+                  formItemProp: {},
+                  componentProp: {},
+                };
+              }
+              return item
+            });
             commonDispatch({
               type: SET_COMPONENT_LIST,
-              payload: newState,
+              payload: params,
             });
+          }
         }}
         onChoose={() => {
           update = true;
@@ -81,18 +91,6 @@ export default function () {
           );
         })}
       </ReactSortable>
-      {/* {flag && (
-        <div
-          onDragOver={(e) => {
-            e.preventDefault();
-          }}
-          onDrop={(e) => {
-            setFlag(false);
-          }}
-          className="editor-area-flag"
-          style={position}
-        ></div>
-      )} */}
     </div>
   );
 }
