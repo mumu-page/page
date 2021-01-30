@@ -33,6 +33,14 @@ export interface FormComProp {
     componentKey: componentKeys;            // 当前拖拽的控件key
     componentProp: object                   // 当前拖拽的控件属性设置
     formItemProp: object;                   // 当前FormItem属性设置
+    /** The unique id associated with your item. It's recommended this is the same as the key prop for your list item. */
+    id: string | number;
+    /** When true, the item is selected using MultiDrag */
+    selected?: boolean;
+    /** When true, the item is deemed "chosen", which basically just a mousedown event. */
+    chosen?: boolean;
+    /** When true, it will not be possible to pick this item up in the list. */
+    filtered?: boolean;
 }
 
 export interface FlagState extends commonDispatch<boolean> {
@@ -44,6 +52,6 @@ export interface NotFoundState extends commonDispatch<boolean> {
 }
 
 export interface CommonState extends commonDispatch<object> {
-    currentDragComponent: FormComProp; // 当前拖拽的表单控件
-    componentList: FormComProp[],                 // 当前编辑区的组件列表
+    currentDragComponent: FormComProp;         // 当前拖拽的表单控件
+    componentList: FormComProp[],                   // 当前编辑区的组件列表
 }

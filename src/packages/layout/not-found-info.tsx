@@ -10,7 +10,6 @@ export default function () {
             <div
                 className='not-found-info'
                 onDragOver={(e) => {
-                    console.log('onDragOver23', e)
                     e.preventDefault()
                     if (!flag && showNotFound) {
                         commonDispatch({ type: SET_FLAG, payload: true })
