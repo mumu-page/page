@@ -32,11 +32,7 @@ export default () => {
             <div className="editor-area-scroll">
               {!state.showNotFound ? (
                 <div className="editor-area">
-                  <Context.Consumer>
-                    {(state) => {
-                      return <EditorArea {...{...state, commonDispatch}} />;
-                    }}
-                  </Context.Consumer>
+                  <EditorArea />
                 </div>
               ) : (
                 <NotFoundInfo />

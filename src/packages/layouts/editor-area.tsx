@@ -5,22 +5,28 @@ import { key2Component } from "../constants";
 import { FormComProp } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
-  UPDATE_COMPONENT_LIST_CHOSEN,
   SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST,
 } from "../stores/action-type";
+import { CommonState } from "../stores/typings";
 import { ReactSortable } from "react-sortablejs";
 
+let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
 function areEqual(prevProps: any, nextProps: any) {
+  if (!shouldUpdate) {
+    return true;
+  }
+  if (
+    prevProps?.currentDragComponent?.id !== nextProps?.currentDragComponent?.id
+  ) {
+    return false;
+  }
   if (prevProps.componentList === nextProps.componentList) {
     return true;
   }
   return false;
 }
-let update = true; // FIX: 控件焦点和拖拽的冲突
-export default memo(function (props: any) {
-  const { currentDragComponent = {}, componentList, commonDispatch } = props;
-  console.log('currentDragComponent', currentDragComponent)
+const EditorArea = memo((props: CommonState) => {
+  const { currentDragComponent, componentList, commonDispatch } = props;
 
   const Component = (prop: FormComProp) => {
     const { componentKey, formItemProp = {}, componentProp = {} } = prop;
@@ -55,12 +61,12 @@ export default memo(function (props: any) {
         animation={200}
         delayOnTouchOnly
         setList={(newState) => {
-          if (update) {
+          if (shouldUpdate) {
             let params = newState.map((item) => {
               let ret = {
                 ...item,
               };
-              console.log(currentDragComponent.id, item.id);
+              // console.log(currentDragComponent.id, item.id);
               if (currentDragComponent.id === item.id) {
                 ret.chosen = true;
               } else {
@@ -75,17 +81,16 @@ export default memo(function (props: any) {
           }
         }}
         onChoose={(e) => {
-          update = false;
+          shouldUpdate = false;
         }}
         onStart={(e) => {
-          update = true;
+          shouldUpdate = true;
         }}
         onAdd={(e) => {
-          update = true;
-          console.log("onAdd", e);
-          console.log("onAdd", e.item.dataset.id);
+          shouldUpdate = true;
         }}
         onUnchoose={(e) => {
+          shouldUpdate = false
           const allDIV = e.target.childNodes;
           allDIV.forEach((item: any) => {
             item.className = "";
@@ -120,3 +125,16 @@ export default memo(function (props: any) {
     </div>
   );
 }, areEqual);
+
+export default () => {
+  const { currentDragComponent, componentList, commonDispatch } = useContext(
+    Context
+  );
+  return (
+    <EditorArea
+      currentDragComponent={currentDragComponent}
+      componentList={componentList}
+      commonDispatch={commonDispatch}
+    />
+  );
+};

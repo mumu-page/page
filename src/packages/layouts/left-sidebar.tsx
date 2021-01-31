@@ -79,7 +79,7 @@ export default () => {
             animation={200}
             delayOnTouchOnly
             onEnd={() => {
-              setOptions(getNewOptions(_options))
+              // setOptions(getNewOptions(_options))
             }}
           >
             {item.children &&
@@ -102,6 +102,7 @@ export default () => {
                         console.log('onDragEnd', childItem)
                         let params = {
                           ...childItem,
+                          chosen: true
                         };
                         if (flag) {
                           commonDispatch({
