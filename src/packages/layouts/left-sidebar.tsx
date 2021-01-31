@@ -1,5 +1,5 @@
-import React, { useContext, forwardRef } from "react";
-import { Button, Col, Row, Form, Input } from "antd";
+import React, { useContext, forwardRef, useState } from "react";
+import { Button, Col, Row } from "antd";
 import { IconFont, options } from "../constants";
 import { Context } from "../stores/context";
 import {
@@ -8,8 +8,28 @@ import {
   SET_FLAG,
   SET_SHOW_NOT_FOUNT,
 } from "../stores/action-type";
-import { guid } from "../utils";
 import { ReactSortable } from "react-sortablejs";
+import * as uuid from "uuid";
+
+const getNewOptions = (data: any[]) => {
+  return data.map((item) => {
+    return {
+      ...item,
+      children: item?.children?.map((cItem: any) => {
+        const { value, label, icon } = cItem || {};
+        return {
+          value,
+          label,
+          icon,
+          id: uuid.v4(),
+          componentKey: value,
+          formItemProp: {},
+          componentProp: {},
+        };
+      }),
+    };
+  });
+}
 
 const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
   return (
@@ -19,8 +39,10 @@ const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
   );
 });
 
+const initOptions = getNewOptions(options)
 export default () => {
   const { flag, commonDispatch } = useContext(Context);
+  const [_options, setOptions] = useState(initOptions)
 
   const generator = (data: any[]) => {
     return data.map((item) => {
@@ -48,6 +70,7 @@ export default () => {
               name: "editor-area",
               pull: "clone",
               put: false,
+              revertClone: true
             }}
             sort={false}
             tag={CustomRow}
@@ -55,6 +78,9 @@ export default () => {
             setList={(newState) => {}}
             animation={200}
             delayOnTouchOnly
+            onEnd={() => {
+              setOptions(getNewOptions(_options))
+            }}
           >
             {item.children &&
               item.children.map((childItem: any) => {
@@ -62,23 +88,25 @@ export default () => {
                   <Col span={12} key={childItem.value}>
                     <Button
                       block
-                      key={childItem.key}
                       type="default"
+                      onDragStart={() => {
+                        let params = {
+                          ...childItem,
+                        };
+                        commonDispatch({
+                          type: SET_CURRENT_DRAG_COMPONENT,
+                          payload: params,
+                        });
+                      }}
                       onDragEnd={(e) => {
+                        console.log('onDragEnd', childItem)
+                        let params = {
+                          ...childItem,
+                        };
                         if (flag) {
-                          const currentDrag = {
-                            id: guid(),
-                            componentKey: childItem.value,
-                            formItemProp: {},
-                            componentProp: {},
-                          };
-                          commonDispatch({
-                            type: SET_CURRENT_DRAG_COMPONENT,
-                            payload: currentDrag,
-                          });
                           commonDispatch({
                             type: PUT_COMPONENT_LIST,
-                            payload: currentDrag,
+                            payload: params,
                           });
                           commonDispatch({ type: SET_FLAG, payload: false });
                           commonDispatch({
@@ -101,5 +129,5 @@ export default () => {
     });
   };
 
-  return <>{generator(options)}</>;
+  return <>{generator(_options)}</>;
 };

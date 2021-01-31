@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Form, Select } from "antd";
 import { options, key2Component } from '../constants';
 import FormItemProperties from "./form-item-properties";
@@ -30,7 +30,7 @@ export default function () {
         form.setFieldsValue({
             component: currentDragComponent.componentKey
         })
-    }, [currentDragComponent])
+    }, [currentDragComponent, form])
 
     return (
         <>

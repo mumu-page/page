@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Context } from '../stores/context'
-import { PUT_COMPONENT_LIST, SET_FLAG, SET_SHOW_NOT_FOUNT } from "../stores/action-type";
+import { SET_FLAG, SET_SHOW_NOT_FOUNT } from "../stores/action-type";
 
 export default function () {
-    const { flag, showNotFound, currentDragComponent, commonDispatch } = useContext(Context)
+    const { flag, showNotFound, commonDispatch } = useContext(Context)
 
     return (
         <>

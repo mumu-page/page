@@ -6,6 +6,8 @@ import {
   DEL_COMPONENT_LIST,
   PUT_COMPONENT_LIST,
   INSERT_COMPONENT_LIST,
+  UPDATE_COMPONENT_LIST,
+  UPDATE_COMPONENT_LIST_CHOSEN,
 } from "./action-type";
 import { CommonState, FlagState, NotFoundState } from "./typings";
 // import { deepClone } from "resonance-utils/utils/deepClone";
@@ -35,10 +37,10 @@ export const commonReducer = (
     case SET_COMPONENT_LIST:
       return { ...state, componentList: action.payload };
     case DEL_COMPONENT_LIST:
-      const list = state.componentList;
-      const { flag } = action.payload || {};
+      const list = JSON.parse(JSON.stringify(state.componentList));
+      const { componentKey } = action.payload || {};
       for (let i = 0; i < list.length; i++) {
-        if (list[i].componentKey === flag) {
+        if (list[i].componentKey === componentKey) {
           list.splice(i, 1);
           break;
         }
@@ -53,6 +55,38 @@ export const commonReducer = (
       const { index, data } = action.payload;
       _componentList.splice(index, 0, data);
       return { ...state, componentList: _componentList };
+    case UPDATE_COMPONENT_LIST:
+      const list2 = JSON.parse(JSON.stringify(state.componentList));
+      const { id, data: data2 = {} } =
+        action.payload || {};
+      for (let i = 0; i < list2.length; i++) {
+        if (list2[i].id === id) {
+          list2[i] = {
+            ...(list2[i] || {}),
+            ...data2
+          };
+          break;
+        }
+      }
+      return { ...state, componentList: list2 };
+    case UPDATE_COMPONENT_LIST_CHOSEN:
+      const list3= JSON.parse(JSON.stringify(state.componentList));
+      const { id: id2 } =
+        action.payload || {};
+      for (let i = 0; i < list3.length; i++) {
+        if (list3[i].id === id2) {
+          list3[i] = {
+            ...(list3[i] || {}),
+            chosen: true,
+          };
+        } else {
+          list3[i] = {
+            ...(list3[i] || {}),
+            chosen: false,
+          };
+        }
+      }
+      return { ...state, componentList: list3 };
     default:
       return { ...state };
   }
