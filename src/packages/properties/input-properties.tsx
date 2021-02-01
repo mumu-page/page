@@ -4,7 +4,6 @@ import { CommonProperties } from "./index";
 import { Context } from "../stores/context";
 import { UPDATE_COMPONENT_LIST } from "../stores/action-type";
 
-type SizeType = Parameters<typeof Form>[0]["size"];
 const layout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 15 },
@@ -31,7 +30,7 @@ export default function () {
   useEffect(() => {
     form.resetFields()
     form.setFieldsValue(componentProps)
-  }, [currentDragComponent])
+  }, [componentProps, currentDragComponent, form])
 
   return (
     <>

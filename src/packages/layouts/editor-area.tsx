@@ -1,18 +1,18 @@
 import React, { memo, useContext } from "react";
 import { Form, Button } from "antd";
 import { Context } from "../stores/context";
+import { globalState } from "../global/state";
 import { key2Component } from "../constants";
-import { FormComProp } from "../stores/typings";
+import { FormComProp, commonDispatch } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
 } from "../stores/action-type";
-import { CommonState } from "../stores/typings";
 import { ReactSortable } from "react-sortablejs";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
-let canChosen = true // 能否选择，解决点击右上角按钮和列表选中的冲突
+let canChosen = true; // 能否选择，解决点击右上角按钮和列表选中的冲突
 function areEqual(prevProps: any, nextProps: any) {
   if (!shouldUpdate) {
     return true;
@@ -27,63 +27,64 @@ function areEqual(prevProps: any, nextProps: any) {
   }
   return false;
 }
-const EditorArea = memo((props: CommonState) => {
-  const { currentDragComponent, componentList, commonDispatch } = props;
+interface EditorAreaProps extends commonDispatch<object> {
+  componentList: FormComProp[];
+}
+const EditorArea = memo((props: EditorAreaProps) => {
+  const { componentList, commonDispatch } = props;
   const [form] = Form.useForm();
 
   const ComponentItem = (prop: FormComProp) => {
     const { componentKey, formItemProps = {}, componentProps = {} } = prop;
     return (
       <Form.Item {...formItemProps} className="component-warp">
-        {React.cloneElement(
-          <>
-            <div className='action-btn'>
-              <Button
-                type="primary"
-                shape="circle"
-                size='small'
-                icon={<CopyOutlined />}
-                onMouseLeave={() => {
-                  console.log('onMouseLeave')
-                  canChosen = true
-                }}
-                onMouseEnter={() => {
-                  console.log('onMouseEnter')
-                  canChosen = false
-                }}
-                onClick={() => {
-                }}
-              />
-              <Button
-                type="default"
-                shape="circle"
-                size='small'
-                style={{ marginLeft: '5px' }}
-                danger
-                icon={<DeleteOutlined />}
-                onMouseLeave={() => {
-                  console.log('onMouseLeave')
-                  canChosen = true
-                }}
-                onMouseEnter={() => {
-                  console.log('onMouseEnter')
-                  canChosen = false
-                }}
-                onClick={() => {
-                }}
-              />
-            </div>
-            {key2Component[componentKey]?.component || <></>}
-          </>,
-          componentProps
-        )}
+        <>
+          <div className="action-btn">
+            <Button
+              type="primary"
+              shape="circle"
+              size="small"
+              icon={<CopyOutlined />}
+              onMouseLeave={() => {
+                console.log("onMouseLeave");
+                canChosen = true;
+              }}
+              onMouseEnter={() => {
+                console.log("onMouseEnter");
+                canChosen = false;
+              }}
+              onClick={() => {}}
+            />
+            <Button
+              type="default"
+              shape="circle"
+              size="small"
+              style={{ marginLeft: "5px" }}
+              danger
+              icon={<DeleteOutlined />}
+              onMouseLeave={() => {
+                console.log("onMouseLeave");
+                canChosen = true;
+              }}
+              onMouseEnter={() => {
+                console.log("onMouseEnter");
+                canChosen = false;
+              }}
+              onClick={() => {}}
+            />
+          </div>
+          {React.cloneElement(
+            key2Component[componentKey]?.component || <></>,
+            componentProps
+          )}
+        </>
       </Form.Item>
     );
   };
 
   const onValuesChange = (changedValues: any, allValues: any) => {
-    console.log('allValues', allValues)
-  }
+    console.log("allValues", allValues);
+  };
 
   return (
     <Form
@@ -92,7 +93,7 @@ const EditorArea = memo((props: CommonState) => {
         position: "relative",
       }}
       onMouseLeave={() => {
-        shouldUpdate = true
+        shouldUpdate = true;
       }}
       form={form}
       onValuesChange={onValuesChange}
@@ -116,7 +117,7 @@ const EditorArea = memo((props: CommonState) => {
               let ret = {
                 ...item,
               };
-              if (currentDragComponent.id === item.id) {
+              if (globalState?.currentDragComponent?.id === item.id) {
                 ret.chosen = true;
               } else {
                 ret.chosen = false;
@@ -137,23 +138,21 @@ const EditorArea = memo((props: CommonState) => {
         }}
         onAdd={(e) => {
           shouldUpdate = true;
+          commonDispatch({
+            type: SET_CURRENT_DRAG_COMPONENT,
+            payload: globalState?.currentDragComponent,
+          });
         }}
         onUnchoose={(e) => {
-          if(!canChosen) return
+          if (!canChosen) return;
           const allDIV = e.target.childNodes;
           allDIV.forEach((item: any) => {
             item.className = "";
           });
           e.item.className = "sortable-drag";
-          let currentDrag = {};
-          componentList.forEach((item: any) => {
-            if (e.item.dataset.id === item.id) {
-              currentDrag = item;
-            }
-          });
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT,
-            payload: currentDrag,
+            payload: globalState?.currentDragComponent,
           });
         }}
       >
@@ -176,14 +175,16 @@ const EditorArea = memo((props: CommonState) => {
 }, areEqual);
 
 export default () => {
-  const { currentDragComponent, componentList, commonDispatch } = useContext(
-    Context
-  );
+  const { componentList, commonDispatch } = useContext(Context);
   return (
-    <EditorArea
-      currentDragComponent={currentDragComponent}
-      componentList={componentList}
-      commonDispatch={commonDispatch}
-    />
+    <>
+      <EditorArea
+        componentList={componentList}
+        commonDispatch={commonDispatch}
+      />
+      {componentList.length === 0 && (
+        <div className="not-found-info">从左侧拖入或点选组件进行表单设计</div>
+      )}
+    </>
   );
 };

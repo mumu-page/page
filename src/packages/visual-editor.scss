@@ -1,188 +1,179 @@
 .visual-editor {
-    width: 100vw;
-    height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  .main {
+    flex: 1;
     display: flex;
-    .main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        .header {
-            height: 46px;
-            flex-shrink: 0;
-            border-bottom: 1px solid #f1f1f1;
-        }
-        .content {
-            height: calc(100% - 46px);
-            display: flex;
-            .sidebar {
-                height: 100%;
-                width: 350px;
-                border-right: 1px solid #f1f1f1;
-                flex-shrink: 0;
-                overflow-y: scroll;
-                overflow-x: hidden;
-            }
-            .editor-area-scroll {
-                overflow-y: auto;
-                flex-shrink: 0;
-                flex: 1;
-                // padding-top: 10px;
-                .editor-area {
-                    padding: 15px 10px 10px 10px;
-                    height: 100%;
-                }
-                .not-found-info {
-                    height: 100%;
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 22px;
-                    font-weight: lighter;
-                    color: #40a9ff;
-                    user-select: none;
-                    position: relative;
-                    letter-spacing: 4px;
-                    .flag {
-                        height: 80px;
-                        width: calc(100% - 20px);
-                        top: 10px;
-                        left: 10px;
-                        right: 10px;
-                        position: absolute;
-                        border-top: 4px solid #40a9ff;
-                        background-color: rgba(#40a9ff, .2);
-                        z-index: 8;
-                    }
-                }
-            }
-        }
+    flex-direction: column;
+    .header {
+      height: 46px;
+      flex-shrink: 0;
+      border-bottom: 1px solid #f1f1f1;
     }
-    .sidebar {
+    .content {
+      height: calc(100% - 46px);
+      display: flex;
+      .sidebar {
+        height: 100%;
         width: 350px;
+        border-right: 1px solid #f1f1f1;
         flex-shrink: 0;
-        border-left: 1px solid #f1f1f1;
-    }
-}
-
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .title {
-        font-size: 20px;
-        font-weight: bold;
-        padding-left: 20px;
-        font-style: italic;
-        color: #00afff;
-    }
-    .actions {
-        .ant-btn {
-            padding-left: 0!important;
-        }
-    }
-}
-
-.content {
-    .sidebar {
-        .ant-btn {
-            text-align: left;
-            cursor: move!important;
-            &:hover, &:active, &:focus {
-                border: 1px dashed #40a9ff;
-            }
-        }
-        .title-btn {
-            border: none!important;
-            cursor: text!important;
-        }
-    }
-}
-
-.component-properties,
-.form-properties {
-    height: calc(100vh - 46px - 16px);
-    overflow-y: scroll;
-}
-
-
-.editor-area-flag {
-    height: 80px;
-    width: calc(100% + 20px);
-    top: 60px;
-    left: 0;
-    right: 0;
-    margin: 0 -15px;
-    position: absolute;
-    border-top: 4px solid hsl(207, 100%, 63%);
-    background-color: rgba(#40a9ff, .2);
-    z-index: 8;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.editor-area {
-    .component-warp {
-        margin: 12px 0!important;
-        padding: 11px;
-        border-radius: 10px;
-        transition: all .3s;
-        cursor: move!important;
-        position: relative;
-        &:hover {
-            background-color: #f8f8f8;
-            .action-btn {
-                display: block;
-            }
-        }
-        .action-btn {
-            display: none;
-            position: absolute;
-            right: -15px;
-            top: -25px;
-            z-index: 99;
-        }
-    }
-    // 正在拖拽中的类样式
-    .sortable-chosen {
-        
-        background-color: #f8f8f8;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        position: relative;
-        transition: all .1s;
-        &::before {
-            content: '';
-            display: block;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+      .editor-area-scroll {
+        overflow-y: auto;
+        flex-shrink: 0;
+        flex: 1;
+        // padding-top: 10px;
+        .editor-area {
+          padding: 15px 10px 10px 10px;
+          height: 100%;
+          position: relative;
+          .not-found-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: lighter;
+            color: #40a9ff;
+            user-select: none;
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background-color: hsl(207, 100%, 63%);
-            z-index: 10;
+            bottom: 0;
+            letter-spacing: 4px;
+          }
         }
-        .component-warp {
-            padding-top: 2px;
-        }
+      }
     }
-     // 所选项目的类样式
-    .sortable-drag {
-        background-color: #f8f8f8;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-    .ant-col-12 {
-        padding: 10px!important;
-        flex: 0 0 100%!important;
-        max-width: 100%!important;
-    }
+  }
+  .sidebar {
+    width: 350px;
+    flex-shrink: 0;
+    border-left: 1px solid #f1f1f1;
+  }
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 20px;
+    font-style: italic;
+    color: #00afff;
+  }
+  .actions {
+    .ant-btn {
+      padding-left: 0 !important;
+    }
+  }
+}
+
+.content {
+  .sidebar {
+    .ant-btn {
+      text-align: left;
+      cursor: move !important;
+      &:hover,
+      &:active,
+      &:focus {
+        border: 1px dashed #40a9ff;
+      }
+    }
+    .title-btn {
+      border: none !important;
+      cursor: text !important;
+    }
+  }
+}
+
+.component-properties,
+.form-properties {
+  height: calc(100vh - 46px - 16px);
+  overflow-y: scroll;
+}
+
+.editor-area-flag {
+  height: 80px;
+  width: calc(100% + 20px);
+  top: 60px;
+  left: 0;
+  right: 0;
+  margin: 0 -15px;
+  position: absolute;
+  border-top: 4px solid hsl(207, 100%, 63%);
+  background-color: rgba(#40a9ff, 0.2);
+  z-index: 8;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.editor-area {
+  .component-warp {
+    margin: 12px 0 !important;
+    padding: 11px;
+    border-radius: 10px;
+    transition: all 0.3s;
+    cursor: move !important;
+    position: relative;
+    &:hover {
+      background-color: #f8f8f8;
+      .action-btn {
+        display: block;
+      }
+    }
+    .action-btn {
+      display: none;
+      position: absolute;
+      right: -15px;
+      top: -25px;
+      z-index: 99;
+    }
+  }
+  // 正在拖拽中的类样式
+  .sortable-chosen {
+    background-color: #f8f8f8;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: relative;
+    transition: all 0.1s;
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background-color: hsl(207, 100%, 63%);
+      z-index: 10;
+    }
+    .component-warp {
+      padding-top: 2px;
+    }
+  }
+  // 所选项目的类样式
+  .sortable-drag {
+    background-color: #f8f8f8;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  .ant-col-12 {
+    padding: 10px !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+}
 
 // 代码编辑器
 .code-editor {
-	width: 800px;
-	height: 600px;
-	border: 1px solid #ccc;
+  width: 800px;
+  height: 600px;
+  border: 1px solid #ccc;
 }

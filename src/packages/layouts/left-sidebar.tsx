@@ -4,10 +4,8 @@ import { IconFont, options } from "../constants";
 import { Context } from "../stores/context";
 import {
   PUT_COMPONENT_LIST,
-  SET_CURRENT_DRAG_COMPONENT,
-  SET_FLAG,
-  SET_SHOW_NOT_FOUNT,
 } from "../stores/action-type";
+import {globalState} from '../global/state'
 import { ReactSortable } from "react-sortablejs";
 import * as uuid from "uuid";
 
@@ -17,22 +15,32 @@ const getNewOptions = (data: any[]) => {
       ...item,
       children: item?.children?.map((cItem: any) => {
         const { value, label, icon } = cItem || {};
-        const id = uuid.v4()
+        const id = uuid.v4();
         return {
           value,
           label,
           icon,
           id,
+          chosen: true,
           componentKey: value,
-          formItemProp: {
-            name: id
+          formItemProps: {
+            name: id,
+            label,
+            labelCol: {
+              span: 3,
+            },
+            wrapperCol: {
+              span: 24,
+            },
           },
-          componentProp: {},
+          componentProps: {
+            placeholder: "请输入" + label,
+          },
         };
       }),
     };
   });
-}
+};
 
 const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
   return (
@@ -42,21 +50,16 @@ const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
   );
 });
 
-const initOptions = getNewOptions(options)
+const initOptions = getNewOptions(options);
 export default () => {
-  const { currentDragComponent, flag, commonDispatch } = useContext(Context);
-  const [_options, setOptions] = useState(initOptions)
+  const { componentList, commonDispatch } = useContext(Context);
+  const [_options, setOptions] = useState(initOptions);
 
   const generator = (data: any[]) => {
     return data.map((item) => {
       return (
         <div
           key={item.key}
-          onDragEnter={(e) => {
-            if (flag) {
-              commonDispatch({ type: SET_FLAG, payload: false });
-            }
-          }}
         >
           <Button
             className="title-btn"
@@ -73,31 +76,26 @@ export default () => {
               name: "editor-area",
               pull: "clone",
               put: false,
-              revertClone: true
+              revertClone: true,
             }}
             sort={false}
             tag={CustomRow}
             list={item.children}
-            setList={(newState) => { }}
+            setList={(newState) => {}}
             animation={200}
             delayOnTouchOnly
             onEnd={() => {
               // 仅仅在初始化时生效
-              if (flag) {
+              if (componentList.length === 0) {
                 commonDispatch({
                   type: PUT_COMPONENT_LIST,
                   payload: {
-                    ...currentDragComponent,
-                    chosen: true
+                    ...(globalState.currentDragComponent || {}),
+                    chosen: true,
                   },
                 });
-                commonDispatch({ type: SET_FLAG, payload: false });
-                commonDispatch({
-                  type: SET_SHOW_NOT_FOUNT,
-                  payload: false,
-                });
               }
-              setOptions(getNewOptions(_options))
+              setOptions(getNewOptions(_options));
             }}
           >
             {item.children &&
@@ -107,17 +105,10 @@ export default () => {
                     <Button
                       block
                       type="default"
-                      onDragStart={() => {
-                        let params = {
-                          ...childItem,
-                        };
-                        commonDispatch({
-                          type: SET_CURRENT_DRAG_COMPONENT,
-                          payload: params,
-                        });
-                      }}
-                      draggable
                       icon={<IconFont type={childItem.icon} />}
+                      onFocus={() => {
+                        globalState.currentDragComponent = childItem
+                      }}
                     >
                       {childItem.label}
                     </Button>

@@ -1,6 +1,4 @@
 import {
-  SET_FLAG,
-  SET_SHOW_NOT_FOUNT,
   SET_CURRENT_DRAG_COMPONENT,
   SET_COMPONENT_LIST,
   DEL_COMPONENT_LIST,
@@ -23,10 +21,6 @@ export const commonReducer = (
 ) => {
   let componentList = []
   switch (action.type) {
-    case SET_FLAG: // 控制插入位置标识显隐
-      return { ...state, flag: action.payload };
-    case SET_SHOW_NOT_FOUNT: // 设置默认notFound界面的显隐
-      return { ...state, showNotFound: action.payload };
     case SET_CURRENT_DRAG_COMPONENT: // 设置当前拖拽的组件
       return {
         ...state,

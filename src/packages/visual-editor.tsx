@@ -4,7 +4,6 @@ import {
   LeftSidebar,
   RightSidebar,
   EditorArea,
-  NotFoundInfo,
 } from "./layouts";
 import { Context, initialState } from "./stores/context";
 import { commonReducer } from "./stores/reducer";
@@ -30,13 +29,9 @@ export default () => {
               <LeftSidebar />
             </div>
             <div className="editor-area-scroll">
-              {!state.showNotFound ? (
-                <div className="editor-area">
-                  <EditorArea />
-                </div>
-              ) : (
-                <NotFoundInfo />
-              )}
+              <div className="editor-area">
+                <EditorArea />
+              </div>
             </div>
           </div>
         </div>

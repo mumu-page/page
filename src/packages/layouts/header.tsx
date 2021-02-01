@@ -12,8 +12,6 @@ import {
 import { Context } from "../stores/context";
 import {
   SET_COMPONENT_LIST,
-  SET_FLAG,
-  SET_SHOW_NOT_FOUNT,
 } from "../stores/action-type";
 
 export default function () {
@@ -27,8 +25,6 @@ export default function () {
       okText: "确定",
       cancelText: "取消",
       onOk() {
-        commonDispatch({ type: SET_SHOW_NOT_FOUNT, payload: true });
-        commonDispatch({ type: SET_FLAG, payload: false });
         commonDispatch({ type: SET_COMPONENT_LIST, payload: [] });
       },
     });
