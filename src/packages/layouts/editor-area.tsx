@@ -41,10 +41,13 @@ const EditorArea = memo((props: CommonState) => {
   };
 
   return (
-    <div
+    <Form
       style={{
         height: "100%",
         position: "relative",
+      }}
+      onMouseLeave={()=> {
+        shouldUpdate = true
       }}
     >
       <ReactSortable
@@ -90,7 +93,6 @@ const EditorArea = memo((props: CommonState) => {
           shouldUpdate = true;
         }}
         onUnchoose={(e) => {
-          shouldUpdate = false
           const allDIV = e.target.childNodes;
           allDIV.forEach((item: any) => {
             item.className = "";
@@ -122,7 +124,7 @@ const EditorArea = memo((props: CommonState) => {
           );
         })}
       </ReactSortable>
-    </div>
+    </Form>
   );
 }, areEqual);
 

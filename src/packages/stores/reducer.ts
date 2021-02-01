@@ -21,6 +21,7 @@ export const commonReducer = (
   state: CommonState & FlagState & NotFoundState,
   action: { type: string; payload: any }
 ) => {
+  let componentList = []
   switch (action.type) {
     case SET_FLAG: // 控制插入位置标识显隐
       return { ...state, flag: action.payload };
@@ -37,56 +38,56 @@ export const commonReducer = (
     case SET_COMPONENT_LIST:
       return { ...state, componentList: action.payload };
     case DEL_COMPONENT_LIST:
-      const list = JSON.parse(JSON.stringify(state.componentList));
+      componentList = JSON.parse(JSON.stringify(state.componentList));
       const { componentKey } = action.payload || {};
-      for (let i = 0; i < list.length; i++) {
-        if (list[i].componentKey === componentKey) {
-          list.splice(i, 1);
+      for (let i = 0; i < componentList.length; i++) {
+        if (componentList[i].componentKey === componentKey) {
+          componentList.splice(i, 1);
           break;
         }
       }
-      return { ...state, componentList: list };
+      return { ...state, componentList: componentList };
     case PUT_COMPONENT_LIST:
-      const _list = JSON.parse(JSON.stringify(state.componentList)); // TODO deelpClone
-      _list.push(action.payload);
-      return { ...state, componentList: _list };
+      componentList = JSON.parse(JSON.stringify(state.componentList)); // TODO deelpClone
+      componentList.push(action.payload);
+      return { ...state, componentList: componentList };
     case INSERT_COMPONENT_LIST:
-      const _componentList = JSON.parse(JSON.stringify(state.componentList));
+      componentList = JSON.parse(JSON.stringify(state.componentList));
       const { index, data } = action.payload;
-      _componentList.splice(index, 0, data);
-      return { ...state, componentList: _componentList };
+      componentList.splice(index, 0, data);
+      return { ...state, componentList: componentList };
     case UPDATE_COMPONENT_LIST:
-      const list2 = JSON.parse(JSON.stringify(state.componentList));
+      componentList = JSON.parse(JSON.stringify(state.componentList));
       const { id, data: data2 = {} } =
         action.payload || {};
-      for (let i = 0; i < list2.length; i++) {
-        if (list2[i].id === id) {
-          list2[i] = {
-            ...(list2[i] || {}),
+      for (let i = 0; i < componentList.length; i++) {
+        if (componentList[i].id === id) {
+          componentList[i] = {
+            ...(componentList[i] || {}),
             ...data2
           };
           break;
         }
       }
-      return { ...state, componentList: list2 };
+      return { ...state, componentList: componentList };
     case UPDATE_COMPONENT_LIST_CHOSEN:
-      const list3= JSON.parse(JSON.stringify(state.componentList));
+      componentList = JSON.parse(JSON.stringify(state.componentList));
       const { id: id2 } =
         action.payload || {};
-      for (let i = 0; i < list3.length; i++) {
-        if (list3[i].id === id2) {
-          list3[i] = {
-            ...(list3[i] || {}),
+      for (let i = 0; i < componentList.length; i++) {
+        if (componentList[i].id === id2) {
+          componentList[i] = {
+            ...(componentList[i] || {}),
             chosen: true,
           };
         } else {
-          list3[i] = {
-            ...(list3[i] || {}),
+          componentList[i] = {
+            ...(componentList[i] || {}),
             chosen: false,
           };
         }
       }
-      return { ...state, componentList: list3 };
+      return { ...state, componentList: componentList };
     default:
       return { ...state };
   }

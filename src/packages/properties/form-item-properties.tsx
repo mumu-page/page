@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, } from "react";
 import { Form, Input, Slider, Radio } from "antd";
 import { Context } from "../stores/context";
 import { UPDATE_COMPONENT_LIST } from "../stores/action-type";
@@ -13,7 +13,8 @@ const layout = {
  */
 export default function () {
   const { currentDragComponent, commonDispatch } = useContext(Context);
-  const { id } = currentDragComponent || {};
+  const [form] = Form.useForm()
+  const { id, formItemProp = {} } = currentDragComponent || {};
 
   const onValuesChange = (changedValues: any, allValues: any) => {
     const { wrapperCol, labelCol } = allValues;
@@ -21,18 +22,32 @@ export default function () {
       type: UPDATE_COMPONENT_LIST,
       payload: {
         id,
-        formItemProp: {
-          ...allValues,
-          wrapperCol: { span: wrapperCol },
-          labelCol: { span: labelCol },
-        },
+        data: {
+          formItemProp: {
+            ...allValues,
+            wrapperCol: { span: wrapperCol },
+            labelCol: { span: labelCol },
+          },
+        }
       },
     });
   };
+
+  useEffect(() => {
+    const { wrapperCol = {}, labelCol = {} } = formItemProp as any
+    form.resetFields()
+    form.setFieldsValue({
+      ...formItemProp,
+      wrapperCol: wrapperCol?.span,
+      labelCol: labelCol?.span,
+    })
+  }, [currentDragComponent])
+
   return (
     <>
       <Form
         {...layout}
+        form={form}
         initialValues={{
           wrapperCol: 24,
           labelCol: 4,
@@ -60,11 +75,11 @@ export default function () {
           <Slider marks={{ 0: "0", 12: "12", 24: "24" }} max={24} />
         </Form.Item>
         <Form.Item label="标签对齐" name="labelAlign">
-        <Radio.Group>
-          <Radio.Button value="left">左对齐</Radio.Button>
-          <Radio.Button value="right">右对齐</Radio.Button>
-        </Radio.Group>
-      </Form.Item>
+          <Radio.Group>
+            <Radio.Button value="left">左对齐</Radio.Button>
+            <Radio.Button value="right">右对齐</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
       </Form>
     </>
   );
