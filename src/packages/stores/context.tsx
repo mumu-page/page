@@ -7,9 +7,9 @@ export const initialState: CommonState & FlagState & NotFoundState = {
   showNotFound: true,
   currentDragComponent: {
     id: guid(),
-    componentKey: "",
-    formItemProp: {},
-    componentProp: {},
+    componentKey: '',
+    formItemProps: {},
+    componentProps: {},
   },
   componentList: [],
   commonDispatch: ({ type, payload }: { type: string; payload: unknown }) => {},

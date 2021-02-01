@@ -8,13 +8,10 @@ const layout = {
   wrapperCol: { span: 15 },
 };
 
-/**
- * 部分组件的公用属性设置
- */
 export default function () {
   const { currentDragComponent, commonDispatch } = useContext(Context);
   const [form] = Form.useForm()
-  const { id, formItemProp = {} } = currentDragComponent || {};
+  const { id, formItemProps = {} } = currentDragComponent || {};
 
   const onValuesChange = (changedValues: any, allValues: any) => {
     const { wrapperCol, labelCol } = allValues;
@@ -23,7 +20,7 @@ export default function () {
       payload: {
         id,
         data: {
-          formItemProp: {
+          formItemProps: {
             ...allValues,
             wrapperCol: { span: wrapperCol },
             labelCol: { span: labelCol },
@@ -34,10 +31,11 @@ export default function () {
   };
 
   useEffect(() => {
-    const { wrapperCol = {}, labelCol = {} } = formItemProp as any
+    const { wrapperCol = {}, labelCol = {} } = formItemProps as any
+    console.log('formItemProps', formItemProps)
     form.resetFields()
     form.setFieldsValue({
-      ...formItemProp,
+      ...formItemProps,
       wrapperCol: wrapperCol?.span,
       labelCol: labelCol?.span,
     })

@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Form, Input, InputNumber, Radio, Switch } from "antd";
 import { CommonProperties } from "./index";
 import { Context } from "../stores/context";
-import { SET_CURRENT_DRAG_COMPONENT } from "../stores/action-type";
+import { UPDATE_COMPONENT_LIST } from "../stores/action-type";
 
 type SizeType = Parameters<typeof Form>[0]["size"];
 const layout = {
@@ -11,12 +11,28 @@ const layout = {
 };
 export default function () {
   const [form] = Form.useForm();
-  const { commonDispatch } = useContext(Context);
+  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { id, componentProps = {} } = currentDragComponent || {};
 
   const onValuesChange = (changedValues: any, allValues: any) => {
-    console.log("onValuesChange", allValues);
-    commonDispatch({ type: SET_CURRENT_DRAG_COMPONENT, payload: allValues });
-  };
+    commonDispatch({
+      type: UPDATE_COMPONENT_LIST,
+      payload: {
+        id,
+        data: {
+          componentProps: {
+            ...allValues,
+          },
+        }
+      },
+    });
+  }
+
+  useEffect(() => {
+    form.resetFields()
+    form.setFieldsValue(componentProps)
+  }, [currentDragComponent])
+
   return (
     <>
       <CommonProperties />

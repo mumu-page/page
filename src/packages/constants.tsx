@@ -272,10 +272,6 @@ export const key2Component = {
         properties: <ButtonProperties />,
         component: <Button />
     },
-    'flag': {
-        properties: <></>,
-        component: <div className='flag'></div>
-    },
     '': {
         properties: <></>,
         component: <></>

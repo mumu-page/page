@@ -6,6 +6,7 @@ import { FormComProp } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
+  SET_FLAG,
 } from "../stores/action-type";
 import { CommonState } from "../stores/typings";
 import { ReactSortable } from "react-sortablejs";
@@ -27,18 +28,23 @@ function areEqual(prevProps: any, nextProps: any) {
 }
 const EditorArea = memo((props: CommonState) => {
   const { currentDragComponent, componentList, commonDispatch } = props;
+  const [form] = Form.useForm();
 
   const Component = (prop: FormComProp) => {
-    const { componentKey, formItemProp = {}, componentProp = {} } = prop;
+    const { componentKey, formItemProps = {}, componentProps = {} } = prop;
     return (
-      <Form.Item {...formItemProp} className="component-warp">
+      <Form.Item {...formItemProps} className="component-warp">
         {React.cloneElement(
           key2Component[componentKey]?.component || <></>,
-          componentProp
+          componentProps
         )}
       </Form.Item>
     );
   };
+
+  const onValuesChange = (changedValues: any, allValues: any) => {
+    console.log('allValues', allValues)
+  }
 
   return (
     <Form
@@ -46,9 +52,11 @@ const EditorArea = memo((props: CommonState) => {
         height: "100%",
         position: "relative",
       }}
-      onMouseLeave={()=> {
+      onMouseLeave={() => {
         shouldUpdate = true
       }}
+      form={form}
+      onValuesChange={onValuesChange}
     >
       <ReactSortable
         sort
@@ -69,7 +77,6 @@ const EditorArea = memo((props: CommonState) => {
               let ret = {
                 ...item,
               };
-              // console.log(currentDragComponent.id, item.id);
               if (currentDragComponent.id === item.id) {
                 ret.chosen = true;
               } else {
@@ -116,8 +123,8 @@ const EditorArea = memo((props: CommonState) => {
               <Component
                 id={item.id}
                 key={item.id}
-                formItemProp={item.formItemProp}
-                componentProp={item.componentProp}
+                formItemProps={item.formItemProps}
+                componentProps={item.componentProps}
                 componentKey={item.componentKey}
               />
             </div>

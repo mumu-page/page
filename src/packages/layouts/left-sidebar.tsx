@@ -17,13 +17,16 @@ const getNewOptions = (data: any[]) => {
       ...item,
       children: item?.children?.map((cItem: any) => {
         const { value, label, icon } = cItem || {};
+        const id = uuid.v4()
         return {
           value,
           label,
           icon,
-          id: uuid.v4(),
+          id,
           componentKey: value,
-          formItemProp: {},
+          formItemProp: {
+            name: id
+          },
           componentProp: {},
         };
       }),
@@ -41,7 +44,7 @@ const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
 
 const initOptions = getNewOptions(options)
 export default () => {
-  const { flag, commonDispatch } = useContext(Context);
+  const { currentDragComponent, flag, commonDispatch } = useContext(Context);
   const [_options, setOptions] = useState(initOptions)
 
   const generator = (data: any[]) => {
@@ -75,11 +78,26 @@ export default () => {
             sort={false}
             tag={CustomRow}
             list={item.children}
-            setList={(newState) => {}}
+            setList={(newState) => { }}
             animation={200}
             delayOnTouchOnly
             onEnd={() => {
-              // setOptions(getNewOptions(_options))
+              // 仅仅在初始化时生效
+              if (flag) {
+                commonDispatch({
+                  type: PUT_COMPONENT_LIST,
+                  payload: {
+                    ...currentDragComponent,
+                    chosen: true
+                  },
+                });
+                commonDispatch({ type: SET_FLAG, payload: false });
+                commonDispatch({
+                  type: SET_SHOW_NOT_FOUNT,
+                  payload: false,
+                });
+              }
+              setOptions(getNewOptions(_options))
             }}
           >
             {item.children &&
@@ -97,24 +115,6 @@ export default () => {
                           type: SET_CURRENT_DRAG_COMPONENT,
                           payload: params,
                         });
-                      }}
-                      onDragEnd={(e) => {
-                        console.log('onDragEnd', childItem)
-                        let params = {
-                          ...childItem,
-                          chosen: true
-                        };
-                        if (flag) {
-                          commonDispatch({
-                            type: PUT_COMPONENT_LIST,
-                            payload: params,
-                          });
-                          commonDispatch({ type: SET_FLAG, payload: false });
-                          commonDispatch({
-                            type: SET_SHOW_NOT_FOUNT,
-                            payload: false,
-                          });
-                        }
                       }}
                       draggable
                       icon={<IconFont type={childItem.icon} />}
