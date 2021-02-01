@@ -1,17 +1,18 @@
 import React, { memo, useContext } from "react";
-import { Form } from "antd";
+import { Form, Button } from "antd";
 import { Context } from "../stores/context";
 import { key2Component } from "../constants";
 import { FormComProp } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
-  SET_FLAG,
 } from "../stores/action-type";
 import { CommonState } from "../stores/typings";
 import { ReactSortable } from "react-sortablejs";
+import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
+let canChosen = true // 能否选择，解决点击右上角按钮和列表选中的冲突
 function areEqual(prevProps: any, nextProps: any) {
   if (!shouldUpdate) {
     return true;
@@ -30,12 +31,50 @@ const EditorArea = memo((props: CommonState) => {
   const { currentDragComponent, componentList, commonDispatch } = props;
   const [form] = Form.useForm();
 
-  const Component = (prop: FormComProp) => {
+  const ComponentItem = (prop: FormComProp) => {
     const { componentKey, formItemProps = {}, componentProps = {} } = prop;
     return (
       <Form.Item {...formItemProps} className="component-warp">
         {React.cloneElement(
-          key2Component[componentKey]?.component || <></>,
+          <>
+            <div className='action-btn'>
+              <Button
+                type="primary"
+                shape="circle"
+                size='small'
+                icon={<CopyOutlined />}
+                onMouseLeave={() => {
+                  console.log('onMouseLeave')
+                  canChosen = true
+                }}
+                onMouseEnter={() => {
+                  console.log('onMouseEnter')
+                  canChosen = false
+                }}
+                onClick={() => {
+                }}
+              />
+              <Button
+                type="default"
+                shape="circle"
+                size='small'
+                style={{ marginLeft: '5px' }}
+                danger
+                icon={<DeleteOutlined />}
+                onMouseLeave={() => {
+                  console.log('onMouseLeave')
+                  canChosen = true
+                }}
+                onMouseEnter={() => {
+                  console.log('onMouseEnter')
+                  canChosen = false
+                }}
+                onClick={() => {
+                }}
+              />
+            </div>
+            {key2Component[componentKey]?.component || <></>}
+          </>,
           componentProps
         )}
       </Form.Item>
@@ -68,7 +107,7 @@ const EditorArea = memo((props: CommonState) => {
           put: true,
         }}
         list={componentList}
-        chosenClass="sortable-chosen"
+        chosenClass="sortable-drag"
         animation={200}
         delayOnTouchOnly
         setList={(newState) => {
@@ -100,11 +139,12 @@ const EditorArea = memo((props: CommonState) => {
           shouldUpdate = true;
         }}
         onUnchoose={(e) => {
+          if(!canChosen) return
           const allDIV = e.target.childNodes;
           allDIV.forEach((item: any) => {
             item.className = "";
           });
-          e.item.className = "sortable-chosen";
+          e.item.className = "sortable-drag";
           let currentDrag = {};
           componentList.forEach((item: any) => {
             if (e.item.dataset.id === item.id) {
@@ -120,7 +160,7 @@ const EditorArea = memo((props: CommonState) => {
         {componentList.map((item: any) => {
           return (
             <div key={item.id}>
-              <Component
+              <ComponentItem
                 id={item.id}
                 key={item.id}
                 formItemProps={item.formItemProps}

@@ -28,7 +28,7 @@
                 flex: 1;
                 // padding-top: 10px;
                 .editor-area {
-                    padding: 10px;
+                    padding: 15px 10px 10px 10px;
                     height: 100%;
                 }
                 .not-found-info {
@@ -121,23 +121,56 @@
     border-bottom-right-radius: 10px;
 }
 
-.component-warp {
-    padding: 11px;
-    border-radius: 10px;
-    transition: all .3s;
-    cursor: move!important;
-    &:hover {
-        background-color: #f8f8f8;
-    }
-}
-
 .editor-area {
-    // 所选项目的类样式
+    .component-warp {
+        margin: 12px 0!important;
+        padding: 11px;
+        border-radius: 10px;
+        transition: all .3s;
+        cursor: move!important;
+        position: relative;
+        &:hover {
+            background-color: #f8f8f8;
+            .action-btn {
+                display: block;
+            }
+        }
+        .action-btn {
+            display: none;
+            position: absolute;
+            right: -15px;
+            top: -25px;
+            z-index: 99;
+        }
+    }
+    // 正在拖拽中的类样式
     .sortable-chosen {
+        
         background-color: #f8f8f8;
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
-        border-top: 4px solid hsl(207, 100%, 63%);
+        position: relative;
+        transition: all .1s;
+        &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: hsl(207, 100%, 63%);
+            z-index: 10;
+        }
+        .component-warp {
+            padding-top: 2px;
+        }
+    }
+     // 所选项目的类样式
+    .sortable-drag {
+        background-color: #f8f8f8;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
     .ant-col-12 {
         padding: 10px!important;

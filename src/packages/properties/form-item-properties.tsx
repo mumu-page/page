@@ -32,7 +32,6 @@ export default function () {
 
   useEffect(() => {
     const { wrapperCol = {}, labelCol = {} } = formItemProps as any
-    console.log('formItemProps', formItemProps)
     form.resetFields()
     form.setFieldsValue({
       ...formItemProps,
