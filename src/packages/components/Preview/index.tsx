@@ -1,22 +1,28 @@
 import React, { useRef, useEffect, forwardRef, useImperativeHandle, useState } from "react";
-import { Button, Modal, Drawer } from "antd";
+import { Button, Tabs, Drawer } from "antd";
 import { PreviewProp } from './typings'
 import {
     SyncOutlined,
     VerticalAlignBottomOutlined,
     CopyOutlined,
-    CloseCircleOutlined
+    CloseCircleOutlined,
+    FileTextOutlined,
+    EditOutlined
 } from "@ant-design/icons";
 import CodeEditor from "../CodeEditor";
 import { CodeEditorProp } from "../CodeEditor/typings";
 import './index.scss'
 
+const { TabPane } = Tabs;
+
 export default forwardRef(function (props, ref: ((instance: PreviewProp) => void) | React.MutableRefObject<unknown> | null) {
     const [visible, setVisible] = useState(false)
-    const editor = useRef<CodeEditorProp>(null)
+    const [activeKey, setActiveKey] = useState('tsx')
+    const tsEditor = useRef<CodeEditorProp>(null)
+    const scssEditor = useRef<CodeEditorProp>(null)
 
     const refresh = () => {
-        editor.current?.setCode(['function x() {', '\tconsole.log("Hello world! 111");', '}'].join('\n'))
+
     }
 
     const copy = () => {
@@ -31,6 +37,10 @@ export default forwardRef(function (props, ref: ((instance: PreviewProp) => void
         setVisible(false)
     }
 
+    const onTabChange = (activeKey: string) => {
+        setActiveKey(activeKey)
+    }
+
     useImperativeHandle(ref, () => ({
         open() {
             setVisible(true)
@@ -43,7 +53,34 @@ export default forwardRef(function (props, ref: ((instance: PreviewProp) => void
     return (
         <Drawer width='100%' visible={visible} closable={false}>
             <div className='preview'>
-                <CodeEditor ref={editor} />
+                <Tabs
+                    tabBarGutter={5}
+                    activeKey={activeKey}
+                    className='code-container'
+                    onChange={onTabChange}
+                    tabBarStyle={{
+                        height: '35px'
+                        // backgroundColor: '#363636'
+                    }}
+                    type="card">
+                    <TabPane
+                        tab={<div>
+                            {activeKey === 'tsx' ? <EditOutlined style={{ color: '#f1fa8c', marginRight: '5px' }} /> : <FileTextOutlined style={{ color: '#a95812', marginRight: '5px' }} />}
+                            <span>tsx</span>
+                        </div>}
+                        key="tsx"
+                    >
+                        <CodeEditor ref={tsEditor} />
+                    </TabPane>
+                    <TabPane
+                        tab={<div>
+                            {activeKey === 'scss' ? <EditOutlined style={{ color: '#f1fa8c', marginRight: '5px' }} /> : <FileTextOutlined style={{ color: '#a95812', marginRight: '5px' }} />}
+                            <span>scss</span>
+                        </div>}
+                        key="scss">
+                        <CodeEditor ref={scssEditor} />
+                    </TabPane>
+                </Tabs>
                 <div className='form'>
                     <div className="head">
                         <Button icon={<SyncOutlined />} type="link" size='middle' onClick={refresh}>

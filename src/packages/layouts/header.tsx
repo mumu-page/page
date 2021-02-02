@@ -38,7 +38,6 @@ export default function () {
   }
 
   useEffect(() => {
-    // preview.current?.setCode('')
   }, [])
 
   return (

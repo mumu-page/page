@@ -6,10 +6,33 @@
     display: flex;
     width: 100%;
     height: 100%;
-    #code-editor {
+    .code-container {
         flex: 0.5;
         width: 100%;
         height: 100%;
+        .ant-tabs-content {
+            height: 100%;
+        }
+        .ant-tabs-nav {
+            margin-bottom: 0!important;
+        }
+        .ant-tabs-nav-wrap {
+            background-color: #100f0f;
+            &::before {
+                border-color: #100f0f;
+            }
+            .ant-tabs-tab {
+                border: 0!important;
+                color: #888a8e!important;
+                background-color: #363636;
+            }
+            .ant-tabs-tab-active {
+                background-color: rgb(30, 30, 30);
+                .ant-tabs-tab-btn {
+                    color: #fff!important;
+                }
+            }
+        }
     }
     .form {
         flex: 0.5;

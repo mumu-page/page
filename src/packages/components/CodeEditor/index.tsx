@@ -3,9 +3,11 @@ import * as monaco from 'monaco-editor';
 import { CodeEditorProp } from "./typings";
 import './index.scss'
 
+const defaultCode = ['function x() {', '\tconsole.log("Hello world! 111");', '}'].join('\n')
 export default forwardRef((props, ref: ((instance: CodeEditorProp) => void) | React.MutableRefObject<unknown> | null) => {
     const element = useRef<HTMLDivElement>(null);
     const editor = useRef<monaco.editor.IStandaloneCodeEditor>()
+
     const create = (el: HTMLElement, value: string, options?: object) => {
         const _options = {
             theme: 'vs-dark',
@@ -22,21 +24,29 @@ export default forwardRef((props, ref: ((instance: CodeEditorProp) => void) | Re
         mount(el: HTMLDivElement, code: string) {
             create(el, code)
         },
+        resetMount(code: string) {
+            if (element.current) {
+                editor.current?.dispose();
+                create(element.current, code)
+            }
+        },
         setCode(code: string) {
             editor.current?.setValue(code)
         }
     }))
 
     useEffect(() => {
-        // console.log('useEffect')
-        console.log('element.current', element.current)
-        if (element.current) {
-            create(element.current, ['function x() {', '\tconsole.log("Hello world! 111");', '}'].join('\n'))
-        }
+        setTimeout(() => {
+            editor.current?.dispose();
+            if (element.current) {
+                create(element.current, defaultCode)
+            }
+        })
+
         return () => {
             editor.current?.dispose();
         };
-    }, []);
+    }, [])
 
-    return <div id="code-editor" ref={element}></div>;
+    return <div className="code-editor" ref={element}></div>;
 })
