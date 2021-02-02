@@ -31,6 +31,7 @@ export default () => {
             <div className="editor-area-scroll">
               <div className="editor-area">
                 <EditorArea />
+                
               </div>
             </div>
           </div>

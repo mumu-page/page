@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Button, Modal } from "antd";
 import {
   PlayCircleOutlined,
@@ -13,9 +13,12 @@ import { Context } from "../stores/context";
 import {
   SET_COMPONENT_LIST,
 } from "../stores/action-type";
+import { Preview } from '../components';
+import { PreviewProp } from '../components/Preview/typings';
 
 export default function () {
   const { commonDispatch } = useContext(Context);
+  const preview = useRef<PreviewProp>(null)
 
   const clean = () => {
     Modal.confirm({
@@ -30,6 +33,14 @@ export default function () {
     });
   };
 
+  const run = () => {
+    preview.current?.open()
+  }
+
+  useEffect(() => {
+    // preview.current?.setCode('')
+  }, [])
+
   return (
     <>
       <div className="title">
@@ -37,7 +48,12 @@ export default function () {
         <span style={{ marginLeft: "10px" }}>Form Generator</span>
       </div>
       <div className="actions">
-        <Button icon={<PlayCircleOutlined />} type="link" size="large">
+        <Button
+          icon={<PlayCircleOutlined />}
+          type="link"
+          size="large"
+          onClick={run}
+        >
           运行
         </Button>
         <Button icon={<EyeOutlined />} type="link" size="large">
@@ -59,6 +75,8 @@ export default function () {
           清空
         </Button>
       </div>
+      {/* <CodeEditor /> */}
+      <Preview ref={preview} />
     </>
   );
 }

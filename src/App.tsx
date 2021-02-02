@@ -1,12 +1,12 @@
 import React from "react";
 import { VisualEditor } from "./packages";
-// import {Editor} from './test'
+// import { CodeEditor } from "./packages/components";
 
 function App() {
   return (
     <div className="App">
       <VisualEditor />
-      {/* <Editor /> */}
+      {/* <CodeEditor /> */}
     </div>
   );
 }

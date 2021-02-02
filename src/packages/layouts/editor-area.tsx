@@ -104,8 +104,10 @@ const EditorArea = memo((props: EditorAreaProps) => {
           put: true,
         }}
         list={componentList}
+        ghostClass="sortable-ghost"
         chosenClass="sortable-chosen"
         animation={200}
+        fallbackTolerance={5}
         delayOnTouchOnly
         setList={(newState) => {
           if (shouldUpdate) {

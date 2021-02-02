@@ -1,0 +1,25 @@
+.ant-drawer-body {
+    padding: 0!important;
+    overflow: hidden;
+}
+.preview {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    #code-editor {
+        flex: 0.5;
+        width: 100%;
+        height: 100%;
+    }
+    .form {
+        flex: 0.5;
+        align-items: center;
+        .head {
+            height: 35px;
+            background-color: #f2fafb;
+            .ant-btn {
+                padding-right: 0!important;
+            }
+        }
+    }
+}

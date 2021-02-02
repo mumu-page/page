@@ -29,7 +29,7 @@
         // padding-top: 10px;
         .editor-area {
           padding: 15px 10px 10px 10px;
-          height: 100%;
+          height: calc(100% - 5px);
           position: relative;
           .not-found-info {
             display: flex;
@@ -136,28 +136,24 @@
       z-index: 99;
     }
   }
-  // 正在拖拽中的类样式
-  // .sortable-drag {
-  //   background-color: #f8f8f8;
-  //   border-bottom-left-radius: 10px;
-  //   border-bottom-right-radius: 10px;
-  //   position: relative;
-  //   transition: all 0.1s;
-  //   &::before {
-  //     content: "";
-  //     display: block;
-  //     position: absolute;
-  //     top: 0;
-  //     left: 0;
-  //     right: 0;
-  //     height: 4px;
-  //     background-color: hsl(207, 100%, 63%);
-  //     z-index: 10;
-  //   }
-  //   .component-warp {
-  //     padding-top: 2px;
-  //   }
-  // }
+  // drop placeholder的css类名
+  .sortable-ghost {
+    background-color: #f8f8f8;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: relative;
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background-color: hsl(207, 100%, 63%);
+      z-index: 10;
+    }
+  }
   // 所选项目的类样式
   .sortable-chosen {
     background-color: #f8f8f8;
@@ -169,11 +165,4 @@
     flex: 0 0 100% !important;
     max-width: 100% !important;
   }
-}
-
-// 代码编辑器
-.code-editor {
-  width: 800px;
-  height: 600px;
-  border: 1px solid #ccc;
 }
