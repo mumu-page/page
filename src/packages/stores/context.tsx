@@ -1,5 +1,5 @@
 import React from "react";
-import { guid } from "../utils";
+import { guid } from "../utils/utils";
 import { CommonState, FlagState, NotFoundState } from "./typings";
 
 export const initialState: CommonState & FlagState & NotFoundState = {

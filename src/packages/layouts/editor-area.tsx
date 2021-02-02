@@ -10,6 +10,7 @@ import {
 } from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
+import {generate} from '../utils/genrate'
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
 let canChosen = true; // 能否选择，解决点击右上角按钮和列表选中的冲突
@@ -33,6 +34,8 @@ interface EditorAreaProps extends commonDispatch<object> {
 const EditorArea = memo((props: EditorAreaProps) => {
   const { componentList, commonDispatch } = props;
   const [form] = Form.useForm();
+
+  console.log(generate(componentList))
 
   const ComponentItem = (prop: FormComProp) => {
     const { componentKey, formItemProps = {}, componentProps = {} } = prop;

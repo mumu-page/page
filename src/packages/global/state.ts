@@ -1,5 +1,5 @@
 import { FormComProp } from "../stores/typings";
-import { guid } from "../utils";
+import { guid } from "../utils/utils";
 export const globalState: {
   currentDragComponent: FormComProp;
 } = {

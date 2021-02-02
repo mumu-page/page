@@ -5,3 +5,4 @@ export function guid() {
         return v.toString(16);
     });
 }
+
