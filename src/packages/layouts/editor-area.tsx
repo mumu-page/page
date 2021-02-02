@@ -1,5 +1,5 @@
 import React, { memo, useContext } from "react";
-import { Form, Button } from "antd";
+import { Form, Button, Input } from "antd";
 import { Context } from "../stores/context";
 import { globalState } from "../global/state";
 import { key2Component } from "../constants";
@@ -37,48 +37,44 @@ const EditorArea = memo((props: EditorAreaProps) => {
   const ComponentItem = (prop: FormComProp) => {
     const { componentKey, formItemProps = {}, componentProps = {} } = prop;
     return (
-      <Form.Item {...formItemProps} className="component-warp">
-        <>
-          <div className="action-btn">
-            <Button
-              type="primary"
-              shape="circle"
-              size="small"
-              icon={<CopyOutlined />}
-              onMouseLeave={() => {
-                console.log("onMouseLeave");
-                canChosen = true;
-              }}
-              onMouseEnter={() => {
-                console.log("onMouseEnter");
-                canChosen = false;
-              }}
-              onClick={() => {}}
-            />
-            <Button
-              type="default"
-              shape="circle"
-              size="small"
-              style={{ marginLeft: "5px" }}
-              danger
-              icon={<DeleteOutlined />}
-              onMouseLeave={() => {
-                console.log("onMouseLeave");
-                canChosen = true;
-              }}
-              onMouseEnter={() => {
-                console.log("onMouseEnter");
-                canChosen = false;
-              }}
-              onClick={() => {}}
-            />
-          </div>
+      <div className="component-warp">
+        <div className="action-btn">
+          <Button
+            type="primary"
+            shape="circle"
+            size="small"
+            icon={<CopyOutlined />}
+            onMouseLeave={() => {
+              canChosen = true;
+            }}
+            onMouseEnter={() => {
+              canChosen = false;
+            }}
+            onClick={() => { }}
+          />
+          <Button
+            type="default"
+            shape="circle"
+            size="small"
+            style={{ marginLeft: "5px" }}
+            danger
+            icon={<DeleteOutlined />}
+            onMouseLeave={() => {
+              canChosen = true;
+            }}
+            onMouseEnter={() => {
+              canChosen = false;
+            }}
+            onClick={() => { }}
+          />
+        </div>
+        <Form.Item {...formItemProps} valuePropName="checked" style={{marginBottom: 0}}>
           {React.cloneElement(
             key2Component[componentKey]?.component || <></>,
             componentProps
           )}
-        </>
-      </Form.Item>
+        </Form.Item>
+      </div>
     );
   };
 
@@ -108,7 +104,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
           put: true,
         }}
         list={componentList}
-        chosenClass="sortable-drag"
+        chosenClass="sortable-chosen"
         animation={200}
         delayOnTouchOnly
         setList={(newState) => {
@@ -149,7 +145,14 @@ const EditorArea = memo((props: EditorAreaProps) => {
           allDIV.forEach((item: any) => {
             item.className = "";
           });
-          e.item.className = "sortable-drag";
+          e.item.className = "sortable-chosen";
+          let currentDrag: any = {}
+          componentList.forEach(item => {
+            if (e.item.dataset.id === item.id) {
+              currentDrag = item
+            }
+          })
+          globalState.currentDragComponent = currentDrag
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT,
             payload: globalState?.currentDragComponent,
