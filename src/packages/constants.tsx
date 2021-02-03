@@ -37,19 +37,27 @@ import {
     Row,
     Button,
 } from "antd";
+import { componentKeys } from "./stores/typings";
 
-interface ItemType {
+export interface OptionGroup {
     label: string;
     key: string;
     value: string;
     icon: string;
-    children?: ItemType[]
+    children?: OptionItem[]
+}
+
+export interface OptionItem {
+    label: string;
+    key: string;
+    value: componentKeys;
+    icon: string;
 }
 export const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2351518_3b6485fr71i.js',
 });
 
-export const options: ItemType[] = [
+export const options: OptionGroup[] = [
     {
         label: '输入型组件',
         key: 'input-group',

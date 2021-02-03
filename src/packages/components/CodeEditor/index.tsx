@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react';
 import * as monaco from 'monaco-editor';
 import { CodeEditorInstanceProps, CodeEditorProps } from "./typings";
 import { Spin } from 'antd'
@@ -9,12 +9,21 @@ const defaultOptions = {
     theme: 'vs-dark',
     language: 'typescript',
 }
-export default forwardRef((props: CodeEditorProps, ref: ((instance: CodeEditorInstanceProps) => void) | React.MutableRefObject<unknown> | null) => {
-    const { code = defaultCode, options: optionProp = defaultOptions } = props;
+const CodeEditor = forwardRef((props: CodeEditorProps, ref: ((instance: CodeEditorInstanceProps) => void) | React.MutableRefObject<unknown> | null) => {
+    const { code = defaultCode, options: optionProp = defaultOptions, onChangeCode } = props;
     const [spinning, setSpinning] = useState(false)
     const element = useRef<HTMLDivElement>(null);
     const editor = useRef<monaco.editor.IStandaloneCodeEditor>()
-    const options = {...defaultOptions, ...optionProp}
+    const options = { ...defaultOptions, ...optionProp }
+    const onLayoutChange = useCallback(() => {
+        const { offsetHeight, offsetWidth } = element.current || {}
+        if (offsetHeight && offsetWidth) {
+            editor.current?.layout({
+                width: offsetWidth,
+                height: offsetHeight
+            })
+        }
+    }, [])
 
     const create = (el: HTMLElement, value: string, options?: object) => {
         const _options = {
@@ -23,8 +32,11 @@ export default forwardRef((props: CodeEditorProps, ref: ((instance: CodeEditorIn
         }
         editor.current = monaco.editor.create(el, {
             value,
-            ..._options
+            ..._options,
         });
+        editor.current.onDidChangeModelContent(listeners => {
+            onChangeCode && onChangeCode(editor.current?.getValue())
+        })
     }
 
     useImperativeHandle(ref, () => ({
@@ -40,7 +52,7 @@ export default forwardRef((props: CodeEditorProps, ref: ((instance: CodeEditorIn
         },
         setCode(code: string) {
             editor.current?.setValue(code)
-        }
+        },
     }))
 
     useEffect(() => {
@@ -60,12 +72,25 @@ export default forwardRef((props: CodeEditorProps, ref: ((instance: CodeEditorIn
                 setSpinning(false)
             }
         })
+        window?.addEventListener('resize', onLayoutChange)
         return () => {
+            window?.removeEventListener('resize', onLayoutChange)
             editor.current?.dispose();
         };
     }, [])
+
+    useEffect(() => {
+        const { offsetHeight, offsetWidth } = element.current || {}
+        if (offsetHeight && offsetWidth) {
+            editor.current?.layout({
+                width: offsetWidth,
+                height: offsetHeight
+            })
+        }
+    })
 
     return <Spin spinning={spinning}>
         <div className="code-editor" ref={element}></div>
     </Spin>
 })
+export default CodeEditor

@@ -28,7 +28,7 @@ export type componentKeys = 'Input' |
 
 
 export interface FormComProp {
-    componentKey: componentKeys;            // 当前拖拽的控件key
+    componentKey: componentKeys;                            // 当前拖拽的控件key
     componentProps: {[key: string]: any};                   // 当前拖拽的控件属性设置
     formItemProps: {[key: string]: any}                     // 当前FormItem属性设置
     /** The unique id associated with your item. It's recommended this is the same as the key prop for your list item. */
@@ -39,6 +39,7 @@ export interface FormComProp {
     chosen?: boolean;
     /** When true, it will not be possible to pick this item up in the list. */
     filtered?: boolean;
+    [key: string]: any;
 }
 
 export interface FlagState extends commonDispatch<boolean> {

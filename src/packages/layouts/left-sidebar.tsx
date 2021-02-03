@@ -1,26 +1,29 @@
 import React, { useContext, forwardRef, useState } from "react";
 import { Button, Col, Row } from "antd";
-import { IconFont, options } from "../constants";
+import { IconFont, options, OptionGroup, OptionItem } from "../constants";
 import { Context } from "../stores/context";
 import {
   PUT_COMPONENT_LIST,
 } from "../stores/action-type";
-import {globalState} from '../global/state'
+import { globalState } from '../global/state'
 import { ReactSortable } from "react-sortablejs";
 import * as uuid from "uuid";
+import { hasNotPlaceholder, isSelct } from "../utils/utils";
+import { FormComProp } from "../stores/typings";
 
-const getNewOptions = (data: any[]) => {
+const getNewOptions = (data: OptionGroup[]) => {
   return data.map((item) => {
     return {
       ...item,
-      children: item?.children?.map((cItem: any) => {
+      children: item?.children?.map((cItem) => {
         const { value, label, icon } = cItem || {};
         const id = uuid.v4();
-        return {
+        const ret: FormComProp & OptionItem = {
           value,
           label,
           icon,
           id,
+          key: id,
           chosen: true,
           componentKey: value,
           formItemProps: {
@@ -33,10 +36,20 @@ const getNewOptions = (data: any[]) => {
               span: 24,
             },
           },
-          componentProps: {
-            placeholder: "请输入" + label,
-          },
+          componentProps: {},
         };
+        if (!hasNotPlaceholder(value)) {
+          const placeholderEnum: any = {
+            'TimePicker.RangePicker': ['开始时间', '结束时间'],
+            'DatePicker.RangePicker': ['开始日期', '结束日期'],
+          }
+          if (isSelct(value)) {
+            ret.componentProps.placeholder = placeholderEnum[value] || ('请选择' + label)
+          } else {
+            ret.componentProps.placeholder = '请输入' + label
+          }
+        }
+        return ret
       }),
     };
   });
@@ -81,7 +94,7 @@ export default () => {
             sort={false}
             tag={CustomRow}
             list={item.children}
-            setList={(newState) => {}}
+            setList={(newState) => { }}
             animation={200}
             delayOnTouchOnly
             onEnd={() => {
