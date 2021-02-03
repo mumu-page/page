@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, forwardRef, useImperativeHandle, useState } from "react";
 import { Button, Tabs, Drawer } from "antd";
-import { PreviewProp } from './typings'
+import { PreviewInstanceProps, PreviewProps } from './typings'
 import {
     SyncOutlined,
     VerticalAlignBottomOutlined,
@@ -10,16 +10,17 @@ import {
     EditOutlined
 } from "@ant-design/icons";
 import CodeEditor from "../CodeEditor";
-import { CodeEditorProp } from "../CodeEditor/typings";
+import { CodeEditorInstanceProps } from "../CodeEditor/typings";
 import './index.scss'
 
 const { TabPane } = Tabs;
 
-export default forwardRef(function (props, ref: ((instance: PreviewProp) => void) | React.MutableRefObject<unknown> | null) {
+export default forwardRef(function (props: PreviewProps, ref: ((instance: PreviewInstanceProps) => void) | React.MutableRefObject<unknown> | null) {
+    const { code } = props;
     const [visible, setVisible] = useState(false)
     const [activeKey, setActiveKey] = useState('tsx')
-    const tsEditor = useRef<CodeEditorProp>(null)
-    const scssEditor = useRef<CodeEditorProp>(null)
+    const tsEditor = useRef<CodeEditorInstanceProps>(null)
+    const scssEditor = useRef<CodeEditorInstanceProps>(null)
 
     const refresh = () => {
 
@@ -34,6 +35,7 @@ export default forwardRef(function (props, ref: ((instance: PreviewProp) => void
     }
 
     const close = () => {
+        setActiveKey('tsx')
         setVisible(false)
     }
 
@@ -42,6 +44,8 @@ export default forwardRef(function (props, ref: ((instance: PreviewProp) => void
     }
 
     useImperativeHandle(ref, () => ({
+        tsEditor: tsEditor.current,
+        scssEditor: scssEditor.current,
         open() {
             setVisible(true)
         },
@@ -58,10 +62,7 @@ export default forwardRef(function (props, ref: ((instance: PreviewProp) => void
                     activeKey={activeKey}
                     className='code-container'
                     onChange={onTabChange}
-                    tabBarStyle={{
-                        height: '35px'
-                        // backgroundColor: '#363636'
-                    }}
+                    tabBarStyle={{ height: '35px' }}
                     type="card">
                     <TabPane
                         tab={<div>
@@ -70,7 +71,7 @@ export default forwardRef(function (props, ref: ((instance: PreviewProp) => void
                         </div>}
                         key="tsx"
                     >
-                        <CodeEditor ref={tsEditor} />
+                        <CodeEditor ref={tsEditor} code={code} options={{language: 'html'}} />
                     </TabPane>
                     <TabPane
                         tab={<div>
@@ -78,7 +79,7 @@ export default forwardRef(function (props, ref: ((instance: PreviewProp) => void
                             <span>scss</span>
                         </div>}
                         key="scss">
-                        <CodeEditor ref={scssEditor} />
+                        <CodeEditor ref={scssEditor} code={'.code-editor { width: 100%;height: 100%;}'} options={{language: 'scss'}} />
                     </TabPane>
                 </Tabs>
                 <div className='form'>

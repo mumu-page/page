@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { Button, Modal } from "antd";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Button, Modal, message } from "antd";
 import {
   PlayCircleOutlined,
   EyeOutlined,
@@ -14,11 +14,13 @@ import {
   SET_COMPONENT_LIST,
 } from "../stores/action-type";
 import { Preview } from '../components';
-import { PreviewProp } from '../components/Preview/typings';
+import { PreviewInstanceProps } from '../components/Preview/typings';
+import {generate} from '../utils/genrate'
 
 export default function () {
-  const { commonDispatch } = useContext(Context);
-  const preview = useRef<PreviewProp>(null)
+  const { componentList ,commonDispatch } = useContext(Context);
+  const preview = useRef<PreviewInstanceProps>(null)
+  const [code, setCode] = useState('')
 
   const clean = () => {
     Modal.confirm({
@@ -34,7 +36,20 @@ export default function () {
   };
 
   const run = () => {
+    setCode(generate(componentList))
     preview.current?.open()
+  }
+
+  const handlePreview = () => {
+    message.info('敬请期待')
+  }
+
+  const download = () => {
+
+  }
+
+  const copy = () => {
+
   }
 
   useEffect(() => {
@@ -55,13 +70,13 @@ export default function () {
         >
           运行
         </Button>
-        <Button icon={<EyeOutlined />} type="link" size="large">
+        <Button icon={<EyeOutlined />} type="link" size="large" onClick={handlePreview}>
           查看JSON
         </Button>
-        <Button icon={<VerticalAlignBottomOutlined />} type="link" size="large">
+        <Button icon={<VerticalAlignBottomOutlined />} type="link" size="large" onClick={download}>
           导出TSX文件
         </Button>
-        <Button icon={<CopyOutlined />} type="link" size="large">
+        <Button icon={<CopyOutlined />} type="link" size="large" onClick={copy}>
           复制代码
         </Button>
         <Button
@@ -74,8 +89,7 @@ export default function () {
           清空
         </Button>
       </div>
-      {/* <CodeEditor /> */}
-      <Preview ref={preview} />
+      <Preview ref={preview} code={code} />
     </>
   );
 }

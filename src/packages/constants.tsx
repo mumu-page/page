@@ -58,32 +58,32 @@ export const options: ItemType[] = [
         children: [
             {
                 label: '单行文本',
-                key: 'input',
-                value: 'input',
+                key: 'Input',
+                value: 'Input',
                 icon: 'icon-input',
             },
             {
                 label: '多行文本',
-                key: 'textarea',
-                value: 'textarea',
+                key: 'Input.TextArea',
+                value: 'Input.TextArea',
                 icon: 'icon-textarea',
             },
             {
                 label: '密码',
-                key: 'password',
-                value: 'password',
+                key: 'Input.Password',
+                value: 'Input.Password',
                 icon: 'icon-password',
             },
             {
                 label: '计数器',
-                key: 'number',
-                value: 'number',
+                key: 'InputNumber',
+                value: 'InputNumber',
                 icon: 'icon-shuzi',
             },
             {
                 label: '编辑器',
-                key: 'editor',
-                value: 'editor',
+                key: 'Editor',
+                value: 'Editor',
                 icon: 'icon-icon-editor',
             },
         ]
@@ -96,68 +96,69 @@ export const options: ItemType[] = [
         children: [
             {
                 label: '下拉选择',
-                key: 'select',
-                value: 'select',
+                key: 'Select',
+                value: 'Select',
                 icon: 'icon-xiala',
             },
             {
                 label: '级联选择',
-                key: 'cascader',
-                value: 'cascader',
+                key: 'Cascader',
+                value: 'Cascader',
                 icon: 'icon-jilianxuanze',
             },
             {
                 label: '单选框组',
-                key: 'radio',
-                value: 'radio',
+                key: 'Radio',
+                value: 'Radio',
                 icon: 'icon-danxuan',
             },
             {
                 label: '多选框组',
-                key: 'checkbox',
-                value: 'checkbox',
+                key: 'Checkbox',
+                value: 'Checkbox',
                 icon: 'icon-duoxuan',
             },
             {
                 label: '开关',
-                key: 'switch',
-                value: 'switch',
+                key: 'Switch',
+                value: 'Switch',
                 icon: 'icon-kaiguan',
             },
             {
                 label: '滑块',
-                key: 'slider',
-                value: 'slider',
+                key: 'Slider',
+                value: 'Slider',
                 icon: 'icon-huakuai',
             },
             {
                 label: '时间选择',
-                key: 'time-picker',
-                value: 'time-picker',
+                key: 'TimePicker',
+                value: 'TimePicker',
                 icon: 'icon-date-1',
             },
+            
             {
                 label: '时间范围',
-                key: 'time-range-picker',
-                value: 'time-range-picker',
+                key: 'TimePicker.RangePicker',
+                value: 'TimePicker.RangePicker',
                 icon: 'icon-shijianfanwei',
             },
             {
                 label: '日期选择',
-                key: 'date-picker',
-                value: 'date-picker',
+                key: 'DatePicker',
+                value: 'DatePicker',
                 icon: 'icon-riqi',
             },
             {
                 label: '日期范围',
-                key: 'date-range-picker',
-                value: 'date-range-picker',
+                key: 'DatePicker.RangePicker',
+                value: 'DatePicker.RangePicker',
                 icon: 'icon-riqifanwei',
             },
             {
                 label: '评分',
-                key: 'rate',
-                value: 'rate',
+                key: 'Rate',
+                value: 'Rate',
                 icon: 'icon-pingfen',
             },
             // {
@@ -167,8 +168,8 @@ export const options: ItemType[] = [
             // },
             {
                 label: '上传',
-                key: 'upload',
-                value: 'upload',
+                key: 'Upload',
+                value: 'Upload',
                 icon: 'icon-shangchuan',
             },
         ]
@@ -181,14 +182,14 @@ export const options: ItemType[] = [
         children: [
             {
                 label: '行容器',
-                key: 'row',
-                value: 'row',
+                key: 'Row',
+                value: 'Row',
                 icon: 'icon-hangrongqi',
             },
             {
                 label: '按钮',
-                key: 'button',
-                value: 'button',
+                key: 'Button',
+                value: 'Button',
                 icon: 'icon-Onebuttonalarm',
             },
         ]
@@ -196,79 +197,79 @@ export const options: ItemType[] = [
 ]
 
 export const key2Component = {
-    input: {
+    Input: {
         properties: <InputProperties />,
         component: <Input />
     },
-    textarea: {
+    'Input.TextArea': {
         properties: <TextAreaProperties />,
         component: <Input.TextArea />
     },
-    password: {
+    'Input.Password': {
         properties: <PasswordProperties />,
         component: <Input.Password />
     },
-    number: {
+    InputNumber: {
         properties: <NumberProperties />,
         component: <InputNumber />
     },
-    editor: {
+    Editor: {
         properties: <EditorProperties />,
         component: <>editor</>
     },
-    select: {
+    Select: {
         properties: <SelectProperties />,
         component: <Select />
     },
-    cascader: {
+    Cascader: {
         properties: <CascaderProperties />,
         component: <Cascader />
     },
-    radio: {
+    Radio: {
         properties: <RadioProperties />,
         component: <Radio />
     },
-    checkbox: {
+    Checkbox: {
         properties: <CheckboxProperties />,
         component: <Checkbox />
     },
-    switch: {
+    Switch: {
         properties: <SwitchProperties />,
         component: <Switch />
     },
-    slider: {
+    Slider: {
         properties: <SliderProperties />,
         component: <Slider />
     },
-    'time-picker': {
+    'TimePicker': {
         properties: <TimePickerProperties />,
         component: <TimePicker />
     },
-    'time-range-picker': {
+    'TimePicker.RangePicker': {
         properties: <TimeRangePickerProperties />,
         component: <TimePicker.RangePicker />
     },
-    'date-picker': {
+    'DatePicker': {
         properties: <DatePickerProperties />,
         component: <DatePicker />
     },
-    'date-range-picker': {
+    'DatePicker.RangePicker': {
         properties: <DateRangePickerProperties />,
         component: <DatePicker.RangePicker />
     },
-    rate: {
+    Rate: {
         properties: <RateProperties />,
         component: <Rate />
     },
-    upload: {
+    Upload: {
         properties: <UploadProperties />,
         component: <Upload />
     },
-    row: {
+    Row: {
         properties: <RowProperties />,
         component: <Row />
     },
-    button: {
+    Button: {
         properties: <ButtonProperties />,
         component: <Button />
     },

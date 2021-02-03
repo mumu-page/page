@@ -1,17 +1,24 @@
-import React, { useRef, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import * as monaco from 'monaco-editor';
-import { CodeEditorProp } from "./typings";
+import { CodeEditorInstanceProps, CodeEditorProps } from "./typings";
+import { Spin } from 'antd'
 import './index.scss'
 
 const defaultCode = ['function x() {', '\tconsole.log("Hello world! 111");', '}'].join('\n')
-export default forwardRef((props, ref: ((instance: CodeEditorProp) => void) | React.MutableRefObject<unknown> | null) => {
+const defaultOptions = {
+    theme: 'vs-dark',
+    language: 'typescript',
+}
+export default forwardRef((props: CodeEditorProps, ref: ((instance: CodeEditorInstanceProps) => void) | React.MutableRefObject<unknown> | null) => {
+    const { code = defaultCode, options: optionProp = defaultOptions } = props;
+    const [spinning, setSpinning] = useState(false)
     const element = useRef<HTMLDivElement>(null);
     const editor = useRef<monaco.editor.IStandaloneCodeEditor>()
+    const options = {...defaultOptions, ...optionProp}
 
     const create = (el: HTMLElement, value: string, options?: object) => {
         const _options = {
-            theme: 'vs-dark',
-            language: 'typescript',
+            ...defaultOptions,
             ...(options || {})
         }
         editor.current = monaco.editor.create(el, {
@@ -21,6 +28,7 @@ export default forwardRef((props, ref: ((instance: CodeEditorProp) => void) | Re
     }
 
     useImperativeHandle(ref, () => ({
+        editor: editor.current,
         mount(el: HTMLDivElement, code: string) {
             create(el, code)
         },
@@ -36,17 +44,28 @@ export default forwardRef((props, ref: ((instance: CodeEditorProp) => void) | Re
     }))
 
     useEffect(() => {
+        setSpinning(true)
         setTimeout(() => {
-            editor.current?.dispose();
+            editor.current?.setValue(code)
+            setSpinning(false)
+        })
+    }, [code])
+
+    useEffect(() => {
+        setSpinning(true)
+        setTimeout(() => {
             if (element.current) {
-                create(element.current, defaultCode)
+                editor.current?.dispose();
+                create(element.current, code, options)
+                setSpinning(false)
             }
         })
-
         return () => {
             editor.current?.dispose();
         };
     }, [])
 
-    return <div className="code-editor" ref={element}></div>;
+    return <Spin spinning={spinning}>
+        <div className="code-editor" ref={element}></div>
+    </Spin>
 })

@@ -5,25 +5,25 @@ export interface commonDispatch<T = boolean> {
     }>
 }
 
-export type componentKeys = 'input' |
-    'textarea' |
-    'password' |
-    'number' |
-    'editor' |
-    'select' |
-    'cascader' |
-    'radio' |
-    'checkbox' |
-    'switch' |
-    'slider' |
-    'time-picker' |
-    'time-range-picker' |
-    'date-picker' |
-    'date-range-picker' |
-    'rate' |
-    'upload' |
-    'row' |
-    'button' |
+export type componentKeys = 'Input' |
+    'Input.TextArea' |
+    'Input.Password' |
+    'InputNumber' |
+    'Editor' |
+    'Select' |
+    'Cascader' |
+    'Radio' |
+    'Checkbox' |
+    'Switch' |
+    'Slider' |
+    'TimePicker' |
+    'TimePicker.RangePicker' |
+    'DatePicker' |
+    'DatePicker.RangePicker' |
+    'Rate' |
+    'Upload' |
+    'Row' |
+    'Button' |
     '';
 
 
