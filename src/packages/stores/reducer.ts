@@ -8,7 +8,7 @@ import {
   UPDATE_COMPONENT_LIST_CHOSEN,
 } from "./action-type";
 import { CommonState, FlagState, NotFoundState } from "./typings";
-// import { deepClone } from "resonance-utils/utils/deepClone";
+import { merge } from "lodash";
 
 /**
  * 公共
@@ -56,10 +56,7 @@ export const commonReducer = (
         action.payload || {};
       for (let i = 0; i < componentList.length; i++) {
         if (componentList[i].id === id) {
-          componentList[i] = {
-            ...(componentList[i] || {}),
-            ...data2
-          };
+          componentList[i] = merge(componentList[i], data2);
           break;
         }
       }

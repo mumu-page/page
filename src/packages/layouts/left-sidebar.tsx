@@ -8,7 +8,7 @@ import {
 import { globalState } from '../global/state'
 import { ReactSortable } from "react-sortablejs";
 import * as uuid from "uuid";
-import { hasNotPlaceholder, isSelct } from "../utils/utils";
+import { hasNotPlaceholder, isSelect } from "../utils/utils";
 import { FormComProp } from "../stores/typings";
 
 const getNewOptions = (data: OptionGroup[]) => {
@@ -43,7 +43,7 @@ const getNewOptions = (data: OptionGroup[]) => {
             'TimePicker.RangePicker': ['开始时间', '结束时间'],
             'DatePicker.RangePicker': ['开始日期', '结束日期'],
           }
-          if (isSelct(value)) {
+          if (isSelect(value)) {
             ret.componentProps.placeholder = placeholderEnum[value] || ('请选择' + label)
           } else {
             ret.componentProps.placeholder = '请输入' + label

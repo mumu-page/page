@@ -26,7 +26,7 @@ export function guid() {
   });
 }
 
-export function isSelct(componentKey: string) {
+export function isSelect(componentKey: string) {
   return [
     "Select",
     "Cascader",
@@ -81,4 +81,12 @@ export async function string2Component(input?: string) {
   } catch (e) {
     throw "代码运行错误";
   }
+}
+
+export function isCheck(componentKey: string) {
+  return [
+    "Radio",
+    "Checkbox",
+    "Switch",
+  ].includes(componentKey);
 }

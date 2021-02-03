@@ -14,13 +14,18 @@ export default function () {
   const { id, componentProps = {} } = currentDragComponent || {};
 
   const onValuesChange = (changedValues: any, allValues: any) => {
+    const params = allValues
+    if(typeof params.value === 'undefined') {
+      delete params.value
+    }
+    console.log(params)
     commonDispatch({
       type: UPDATE_COMPONENT_LIST,
       payload: {
         id,
         data: {
           componentProps: {
-            ...allValues,
+            ...params,
           },
         }
       },

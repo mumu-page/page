@@ -1,5 +1,5 @@
 import React, { memo, useContext } from "react";
-import { Form, Button, Input } from "antd";
+import { Form, Button } from "antd";
 import { Context } from "../stores/context";
 import { globalState } from "../global/state";
 import { key2Component } from "../constants";
@@ -7,9 +7,11 @@ import { FormComProp, commonDispatch } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
+  UPDATE_COMPONENT_LIST,
 } from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
+import { isCheck } from "../utils/utils";
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
 let canChosen = true; // 能否选择，解决点击右上角按钮和列表选中的冲突
@@ -35,7 +37,45 @@ const EditorArea = memo((props: EditorAreaProps) => {
   const [form] = Form.useForm();
 
   const ComponentItem = (prop: FormComProp) => {
-    const { componentKey, formItemProps = {}, componentProps = {} } = prop;
+    const { id, componentKey, formItemProps = {}, componentProps = {} } = prop;
+    if (["Select"].includes(componentKey)) {
+      componentProps.onSelect = (value: any) => {
+        console.log("value", value);
+      };
+    } else if (["Input", "Input.TextArea"].includes(componentKey)) {
+      componentProps.onChange = (e: any) => {
+        const value = e?.target?.value;
+        // console.log("value", value);
+        commonDispatch({
+          type: SET_CURRENT_DRAG_COMPONENT,
+          payload: {
+            id,
+            componentProps: {
+              value
+            }
+          },
+        });
+        commonDispatch({
+          type: UPDATE_COMPONENT_LIST,
+          payload: {
+            id,
+            data: {
+              formItemProps: {
+                ...formItemProps,
+                initialValue: value
+              },
+              componentProps: {
+                ...componentProps,
+              },
+            },
+          },
+        });
+      };
+    } else {
+      componentProps.onChange = (value: any) => {
+        console.log("value", value);
+      };
+    }
     return (
       <div className="component-warp">
         <div className="action-btn">
@@ -50,7 +90,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
             onMouseEnter={() => {
               canChosen = false;
             }}
-            onClick={() => { }}
+            onClick={() => {}}
           />
           <Button
             type="default"
@@ -65,10 +105,14 @@ const EditorArea = memo((props: EditorAreaProps) => {
             onMouseEnter={() => {
               canChosen = false;
             }}
-            onClick={() => { }}
+            onClick={() => {}}
           />
         </div>
-        <Form.Item {...formItemProps} valuePropName="checked" style={{marginBottom: 0}}>
+        <Form.Item
+          {...formItemProps}
+          valuePropName={isCheck(componentKey) ? "checked" : "value"}
+          style={{ marginBottom: 0 }}
+        >
           {React.cloneElement(
             key2Component[componentKey]?.component || <></>,
             componentProps
@@ -76,10 +120,6 @@ const EditorArea = memo((props: EditorAreaProps) => {
         </Form.Item>
       </div>
     );
-  };
-
-  const onValuesChange = (changedValues: any, allValues: any) => {
-    console.log("allValues", allValues);
   };
 
   return (
@@ -92,7 +132,6 @@ const EditorArea = memo((props: EditorAreaProps) => {
         shouldUpdate = true;
       }}
       form={form}
-      onValuesChange={onValuesChange}
     >
       <ReactSortable
         sort
@@ -148,13 +187,13 @@ const EditorArea = memo((props: EditorAreaProps) => {
             item.className = "";
           });
           e.item.className = "sortable-chosen";
-          let currentDrag: any = {}
-          componentList.forEach(item => {
+          let currentDrag: any = {};
+          componentList.forEach((item) => {
             if (e.item.dataset.id === item.id) {
-              currentDrag = item
+              currentDrag = item;
             }
-          })
-          globalState.currentDragComponent = currentDrag
+          });
+          globalState.currentDragComponent = currentDrag;
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT,
             payload: globalState?.currentDragComponent,
