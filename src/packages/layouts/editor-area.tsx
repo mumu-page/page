@@ -1,4 +1,4 @@
-import React, { memo, useContext } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { Form, Button } from "antd";
 import { Context } from "../stores/context";
 import { globalState } from "../global/state";
@@ -7,14 +7,17 @@ import { FormComProp, commonDispatch } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
+  UPDATE_COMPONENT_LIST
 } from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
 import { isCheck } from "../utils/utils";
+import { debounce } from "lodash";
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
 let canChosen = true; // 能否选择，解决点击右上角按钮和列表选中的冲突
 function areEqual(prevProps: any, nextProps: any) {
+  console.log('shouldUpdate', shouldUpdate)
   if (!shouldUpdate) {
     return true;
   }
@@ -32,6 +35,8 @@ interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
 }
 const EditorArea = memo((props: EditorAreaProps) => {
+  console.log('render')
+  const [initialValues, setInitialValues] = useState({})
   const { componentList, commonDispatch } = props;
   const [form] = Form.useForm();
   const ComponentItem = (prop: FormComProp) => {
@@ -41,21 +46,30 @@ const EditorArea = memo((props: EditorAreaProps) => {
         console.log("value", value);
       };
     } else if (["Input", "Input.TextArea"].includes(componentKey)) {
-      componentProps.onChange = (e: any) => {
+      componentProps.onChange = debounce((e: any) => {
         const value = e?.target?.value;
-        console.log("value", value);
-        // setTimeout(() => {
-        //   commonDispatch({
-        //     type: SET_CURRENT_DRAG_COMPONENT,
-        //     payload: {
-        //       id,
-        //       componentProps: {
-        //         value
-        //       }
-        //     },
-        //   });
-        // })
-      };
+        shouldUpdate = false
+        commonDispatch({
+          type: SET_CURRENT_DRAG_COMPONENT,
+          payload: {
+            id,
+            componentProps: {
+              initialValues: value
+            }
+          },
+        });
+        commonDispatch({
+          type: UPDATE_COMPONENT_LIST,
+          payload: {
+            id,
+            data: {
+              componentProps: {
+                initialValues: value
+              },
+            }
+          },
+        });
+      });
     } else {
       componentProps.onChange = (value: any) => {
         console.log("value", value);
@@ -75,7 +89,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
             onMouseEnter={() => {
               canChosen = false;
             }}
-            onClick={() => {}}
+            onClick={() => { }}
           />
           <Button
             type="default"
@@ -90,7 +104,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
             onMouseEnter={() => {
               canChosen = false;
             }}
-            onClick={() => {}}
+            onClick={() => { }}
           />
         </div>
         <Form.Item
@@ -107,12 +121,25 @@ const EditorArea = memo((props: EditorAreaProps) => {
     );
   };
 
+  useEffect(() => {
+    const _initialValues = {} as any
+    componentList.forEach(item => {
+      const { formItemProps, componentProps } = item
+      const { name } = formItemProps || {}
+      const { initialValues } = componentProps || {}
+      _initialValues[name] = initialValues
+    })
+    console.log('_initialValues', _initialValues)
+    form.setFieldsValue(_initialValues)
+  }, [componentList])
+
   return (
     <Form
       style={{
         height: "100%",
         position: "relative",
       }}
+      initialValues={initialValues}
       onMouseLeave={() => {
         shouldUpdate = true;
       }}
@@ -127,6 +154,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
           name: "editor-area",
           put: true,
         }}
+        // direction='vertical'
         list={componentList}
         ghostClass="sortable-ghost"
         chosenClass="sortable-chosen"
@@ -187,7 +215,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
       >
         {componentList.map((item: any) => {
           return (
-            <div key={item.id}>
+            <div key={item.id} style={{/* display: item?.componentKey === 'Row' ? 'inline-block' : 'block' */ }}>
               <ComponentItem
                 id={item.id}
                 key={item.id}

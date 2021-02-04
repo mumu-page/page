@@ -1,37 +1,47 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { Form, Input, InputNumber, Radio, Switch } from "antd";
 import { CommonProperties } from "./index";
 import { Context } from "../stores/context";
-import { UPDATE_COMPONENT_LIST } from "../stores/action-type";
+import {
+  UPDATE_COMPONENT_LIST,
+  SET_CURRENT_DRAG_COMPONENT,
+} from "../stores/action-type";
+import { debounce } from "lodash";
 
 const layout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 15 },
 };
+let shouldUpdate = true;
 export default function () {
   const [form] = Form.useForm();
   const { currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {} } = currentDragComponent || {};
 
-  const onValuesChange = (changedValues: any, allValues: any) => {
-    const params = allValues
-    if(typeof params.value === 'undefined') {
-      delete params.value
-    }
+  const onValuesChange = useCallback(debounce((changedValues: any, allValues: any) => {
+    shouldUpdate = false
+    commonDispatch({
+      type: SET_CURRENT_DRAG_COMPONENT,
+      payload: {
+        id,
+        componentProps: {
+          initialValues: allValues?.initialValues
+        }
+      },
+    });
     commonDispatch({
       type: UPDATE_COMPONENT_LIST,
       payload: {
         id,
         data: {
-          componentProps: {
-            ...params,
-          },
+          componentProps: allValues,
         }
       },
     });
-  }
+  }), [])
 
   useEffect(() => {
+    if (!shouldUpdate) return
     form.resetFields()
     form.setFieldsValue(componentProps)
   }, [componentProps, currentDragComponent, form])
@@ -40,8 +50,8 @@ export default function () {
     <>
       <CommonProperties />
       <Form form={form} {...layout} onValuesChange={onValuesChange}>
-        <Form.Item label="输入框内容" name="value">
-          <Input />
+        <Form.Item label="默认值" name="initialValues">
+          <Input onBlur={() => shouldUpdate = true} onPressEnter={() => shouldUpdate = true} />
         </Form.Item>
         <Form.Item
           label="前置"

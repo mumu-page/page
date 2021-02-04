@@ -45,10 +45,6 @@ export default function () {
       <Form
         {...layout}
         form={form}
-        initialValues={{
-          wrapperCol: 24,
-          labelCol: 4,
-        }}
         onValuesChange={onValuesChange}
       >
         <Form.Item label="字段名" name="name">
