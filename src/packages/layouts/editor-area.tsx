@@ -9,6 +9,7 @@ import {
   SET_CURRENT_DRAG_COMPONENT,
   UPDATE_COMPONENT_LIST,
   PUT_COMPONENT_LIST,
+  DEL_COMPONENT_LIST
 } from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -143,7 +144,13 @@ const EditorArea = memo((props: EditorAreaProps) => {
             onMouseEnter={() => {
               canChosen = false;
             }}
-            onClick={() => {}}
+            onClick={() => {
+              shouldUpdate = true;
+              commonDispatch({
+                type: DEL_COMPONENT_LIST,
+                payload: { id },
+              });
+            }}
           />
         </div>
         <Form.Item

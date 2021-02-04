@@ -33,9 +33,8 @@ export const commonReducer = (
       return { ...state, componentList: action.payload };
     case DEL_COMPONENT_LIST:
       componentList = JSON.parse(JSON.stringify(state.componentList));
-      const { componentKey } = action.payload || {};
       for (let i = 0; i < componentList.length; i++) {
-        if (componentList[i].componentKey === componentKey) {
+        if (componentList[i].id === action.payload?.id) {
           componentList.splice(i, 1);
           break;
         }
