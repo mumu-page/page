@@ -16,7 +16,8 @@
       display: flex;
       .sidebar {
         height: 100%;
-        width: 350px;
+        width: 260px;
+        padding-top: 5px;
         border-right: 1px solid #f1f1f1;
         flex-shrink: 0;
         overflow-y: scroll;

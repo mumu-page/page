@@ -79,7 +79,7 @@ export default () => {
             style={{ paddingLeft: 12 }}
             icon={<IconFont type={item.icon} />}
             type="text"
-            size="large"
+            // size="large"
             disabled
           >
             {item.label}
@@ -117,6 +117,7 @@ export default () => {
                   <Col span={12} key={childItem.value}>
                     <Button
                       block
+                      style={{backgroundColor: '#f8f8f8', fontSize: '12px'}}
                       type="default"
                       icon={<IconFont type={childItem.icon} />}
                       onFocus={() => {

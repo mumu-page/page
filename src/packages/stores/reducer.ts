@@ -62,9 +62,9 @@ export const commonReducer = (
       }
       return { ...state, componentList: componentList };
     case UPDATE_COMPONENT_LIST_CHOSEN:
-      componentList = JSON.parse(JSON.stringify(state.componentList));
-      const { id: id2 } =
-        action.payload || {};
+      componentList = cloneDeep(state.componentList);
+      const { id: id2 } = action.payload || {};
+        if(!id2) return state
       for (let i = 0; i < componentList.length; i++) {
         if (componentList[i].id === id2) {
           componentList[i] = {

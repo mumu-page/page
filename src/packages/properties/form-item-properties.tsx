@@ -38,7 +38,7 @@ export default function () {
       wrapperCol: wrapperCol?.span,
       labelCol: labelCol?.span,
     })
-  }, [currentDragComponent, form, formItemProps])
+  }, [currentDragComponent])
 
   return (
     <>

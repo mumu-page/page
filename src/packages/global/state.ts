@@ -1,12 +1,22 @@
 import { FormComProp } from "../stores/typings";
-import { guid } from "../utils/utils";
-export const globalState: {
-  currentDragComponent: FormComProp;
-} = {
-  currentDragComponent: {
-    id: guid(),
-    componentKey: "",
-    formItemProps: {},
-    componentProps: {},
-  },
-};
+import { LOCAL_STORE_KEY } from "../constants";
+
+function initGlobalState(): {currentDragComponent: FormComProp;} {
+  const local = window.localStorage.getItem(LOCAL_STORE_KEY) || ''
+  const ret = {
+    currentDragComponent: {
+      id: '',
+      componentKey: "",
+      formItemProps: {},
+      componentProps: {},
+    }
+  } as {currentDragComponent: FormComProp;}
+  try {
+    const globalState = JSON.parse(local) || {}
+    ret.currentDragComponent = globalState?.currentDragComponent
+  } catch (error) {
+    return ret
+  }
+  return ret
+}
+export const globalState: {currentDragComponent: FormComProp;} = initGlobalState();

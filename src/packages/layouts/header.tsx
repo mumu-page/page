@@ -20,7 +20,8 @@ import {generate} from '../utils/genrate'
 export default function () {
   const { componentList ,commonDispatch } = useContext(Context);
   const preview = useRef<PreviewInstanceProps>(null)
-  const [code, setCode] = useState('')
+  const [tsxCode, setTsxCode] = useState('')
+  const [scssCode, setScssCode] = useState('.code-editor { width: 100%;height: 100%;}')
 
   const clean = () => {
     Modal.confirm({
@@ -36,7 +37,7 @@ export default function () {
   };
 
   const run = () => {
-    setCode(generate(componentList))
+    setTsxCode(generate(componentList))
     preview.current?.open()
   }
 
@@ -65,31 +66,31 @@ export default function () {
         <Button
           icon={<PlayCircleOutlined />}
           type="link"
-          size="large"
+          size='middle'
           onClick={run}
         >
           运行
         </Button>
-        <Button icon={<EyeOutlined />} type="link" size="large" onClick={handlePreview}>
+        <Button icon={<EyeOutlined />} type="link" size="middle" onClick={handlePreview}>
           查看JSON
         </Button>
-        <Button icon={<VerticalAlignBottomOutlined />} type="link" size="large" onClick={download}>
+        <Button icon={<VerticalAlignBottomOutlined />} type="link" size="middle" onClick={download}>
           导出TSX文件
         </Button>
-        <Button icon={<CopyOutlined />} type="link" size="large" onClick={copy}>
+        <Button icon={<CopyOutlined />} type="link" size="middle" onClick={copy}>
           复制代码
         </Button>
         <Button
           icon={<DeleteOutlined />}
           type="link"
           danger
-          size="large"
+          size="middle"
           onClick={clean}
         >
           清空
         </Button>
       </div>
-      <Preview ref={preview} code={code} />
+      <Preview ref={preview} tsxCode={tsxCode} scssCode={scssCode} />
     </>
   );
 }

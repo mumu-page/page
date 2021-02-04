@@ -8,5 +8,6 @@ export interface PreviewInstanceProps {
 }
 
 export interface PreviewProps {
-    code: string;
+    tsxCode: string;
+    scssCode: string;
 }

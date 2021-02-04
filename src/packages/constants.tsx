@@ -54,7 +54,7 @@ export interface OptionItem {
     icon: string;
 }
 export const IconFont = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_2351518_3b6485fr71i.js',
+    scriptUrl: '//at.alicdn.com/t/font_2351518_b097rjuqmfk.js',
 });
 
 export const options: OptionGroup[] = [
@@ -86,7 +86,7 @@ export const options: OptionGroup[] = [
                 label: '计数器',
                 key: 'InputNumber',
                 value: 'InputNumber',
-                icon: 'icon-shuzi',
+                icon: 'icon-number',
             },
             {
                 label: '编辑器',
@@ -186,7 +186,7 @@ export const options: OptionGroup[] = [
         label: '布局型组件',
         key: 'layout-group',
         value: 'layout-group',
-        icon: 'icon-input',
+        icon: 'icon-layout',
         children: [
             {
                 label: '行容器',
@@ -286,3 +286,5 @@ export const key2Component = {
         component: <></>
     },
 }
+
+export const LOCAL_STORE_KEY = 'STORE'

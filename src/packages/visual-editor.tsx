@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { } from "react";
 import {
   Header,
   LeftSidebar,
@@ -10,9 +10,10 @@ import { commonReducer } from "./stores/reducer";
 import { useLocallyPersistedReducer } from "./hooks";
 import "./visual-editor.scss";
 import { CommonState, FlagState, NotFoundState } from "./stores/typings";
+import { LOCAL_STORE_KEY } from "./constants";
 
 export default () => {
-  const [state, commonDispatch] = useLocallyPersistedReducer(commonReducer, initialState, 'STORE');
+  const [state, commonDispatch] = useLocallyPersistedReducer(commonReducer, initialState, LOCAL_STORE_KEY);
 
   return (
     <Context.Provider

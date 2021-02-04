@@ -7,7 +7,6 @@ import { FormComProp, commonDispatch } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST,
 } from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";

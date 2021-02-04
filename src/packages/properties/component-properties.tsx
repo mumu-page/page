@@ -53,9 +53,9 @@ export default function () {
                     </Select>
                 </Form.Item>
             </Form>
-            <Divider style={{padding: '0 20px'}}>表单字段组件</Divider>
+            <Divider style={{padding: '0 20px', fontSize: '14px'}}>表单字段组件</Divider>
             <FormItemProperties />
-            {currentDragComponent.componentKey && <Divider style={{padding: '0 20px'}}>控件</Divider>}
+            {currentDragComponent.componentKey && <Divider style={{padding: '0 20px', fontSize: '14px'}}>控件</Divider>}
             {key2Component[currentDragComponent.componentKey].properties}
         </>
     );

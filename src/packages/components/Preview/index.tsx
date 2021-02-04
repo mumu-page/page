@@ -16,9 +16,9 @@ import './index.scss'
 
 const { TabPane } = Tabs;
 export default forwardRef(function (props: PreviewProps, ref: ((instance: PreviewInstanceProps) => void) | React.MutableRefObject<unknown> | null) {
-    const { code: parentCode } = props;
-    const [tsCode, setTsCode] = useState<string | undefined>('')
-    const [scssCode, setScssCode] = useState<string | undefined>('')
+    const { tsxCode: tsxCodeProp, scssCode: scssCodeProp } = props;
+    const [tsxCode, setTsxCode] = useState<string | undefined>(tsxCodeProp)
+    const [scssCode, setScssCode] = useState<string | undefined>(scssCodeProp)
     const [visible, setVisible] = useState(false)
     const [activeKey, setActiveKey] = useState('tsx')
     const tsEditor = useRef<CodeEditorInstanceProps>(null)
@@ -26,7 +26,7 @@ export default forwardRef(function (props: PreviewProps, ref: ((instance: Previe
     const [component, setComponent] = useState(<></>)
 
     const refresh = () => {
-        string2Component(tsCode).then(newComponent => {
+        string2Component(tsxCode).then(newComponent => {
             setComponent(newComponent)
         }).catch(info => {
             message.error(info)
@@ -62,12 +62,24 @@ export default forwardRef(function (props: PreviewProps, ref: ((instance: Previe
     }));
 
     useEffect(() => {
-        string2Component(parentCode).then(newComponent => {
+        setTsxCode(tsxCodeProp)
+    }, [tsxCodeProp])
+
+    useEffect(() => {
+        setScssCode(scssCodeProp)
+    }, [scssCodeProp])
+
+    useEffect(() => {
+        string2Component(tsxCodeProp).then(newComponent => {
             setComponent(newComponent)
         }).catch(info => {
             message.error(info)
         })
-    }, [parentCode])
+    }, [tsxCodeProp])
+
+    useEffect(() => {
+        
+    }, [scssCode])
 
     return (
         <Drawer
@@ -93,10 +105,10 @@ export default forwardRef(function (props: PreviewProps, ref: ((instance: Previe
                     >
                         <CodeEditor
                             ref={tsEditor}
-                            code={parentCode}
+                            code={tsxCodeProp}
                             options={{ language: 'html' }}
                             onChangeCode={(newCode) => {
-                                setTsCode(newCode)
+                                setTsxCode(newCode)
                             }}
                         />
                     </TabPane>
@@ -109,7 +121,7 @@ export default forwardRef(function (props: PreviewProps, ref: ((instance: Previe
                         key="scss">
                         <CodeEditor
                             ref={scssEditor}
-                            code={'.code-editor { width: 100%;height: 100%;}'}
+                            code={scssCodeProp}
                             options={{ language: 'scss' }}
                             onChangeCode={(newCode) => {
                                 setScssCode(newCode)
