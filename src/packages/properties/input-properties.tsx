@@ -18,7 +18,6 @@ export default function () {
     if(typeof params.value === 'undefined') {
       delete params.value
     }
-    console.log(params)
     commonDispatch({
       type: UPDATE_COMPONENT_LIST,
       payload: {

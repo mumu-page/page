@@ -35,7 +35,6 @@ interface EditorAreaProps extends commonDispatch<object> {
 const EditorArea = memo((props: EditorAreaProps) => {
   const { componentList, commonDispatch } = props;
   const [form] = Form.useForm();
-
   const ComponentItem = (prop: FormComProp) => {
     const { id, componentKey, formItemProps = {}, componentProps = {} } = prop;
     if (["Select"].includes(componentKey)) {
@@ -45,31 +44,18 @@ const EditorArea = memo((props: EditorAreaProps) => {
     } else if (["Input", "Input.TextArea"].includes(componentKey)) {
       componentProps.onChange = (e: any) => {
         const value = e?.target?.value;
-        // console.log("value", value);
-        commonDispatch({
-          type: SET_CURRENT_DRAG_COMPONENT,
-          payload: {
-            id,
-            componentProps: {
-              value
-            }
-          },
-        });
-        commonDispatch({
-          type: UPDATE_COMPONENT_LIST,
-          payload: {
-            id,
-            data: {
-              formItemProps: {
-                ...formItemProps,
-                initialValue: value
-              },
-              componentProps: {
-                ...componentProps,
-              },
-            },
-          },
-        });
+        console.log("value", value);
+        // setTimeout(() => {
+        //   commonDispatch({
+        //     type: SET_CURRENT_DRAG_COMPONENT,
+        //     payload: {
+        //       id,
+        //       componentProps: {
+        //         value
+        //       }
+        //     },
+        //   });
+        // })
       };
     } else {
       componentProps.onChange = (value: any) => {

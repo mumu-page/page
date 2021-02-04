@@ -51,6 +51,6 @@ export interface NotFoundState extends commonDispatch<boolean> {
 }
 
 export interface CommonState extends commonDispatch<object> {
-    currentDragComponent: FormComProp;              // 当前拖拽的表单控件
-    componentList: FormComProp[],                   // 当前编辑区的组件列表
+    currentDragComponent: FormComProp;                      // 当前拖拽的表单控件
+    componentList: FormComProp[],                           // 当前编辑区的组件列表
 }

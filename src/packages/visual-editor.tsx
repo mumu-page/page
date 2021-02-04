@@ -7,15 +7,17 @@ import {
 } from "./layouts";
 import { Context, initialState } from "./stores/context";
 import { commonReducer } from "./stores/reducer";
+import { useLocallyPersistedReducer } from "./hooks";
 import "./visual-editor.scss";
+import { CommonState, FlagState, NotFoundState } from "./stores/typings";
 
 export default () => {
-  const [state, commonDispatch] = useReducer(commonReducer, initialState);
+  const [state, commonDispatch] = useLocallyPersistedReducer(commonReducer, initialState, 'STORE');
 
   return (
     <Context.Provider
       value={{
-        ...state,
+        ...(state as CommonState & FlagState & NotFoundState || {}),
         commonDispatch,
       }}
     >
@@ -31,7 +33,7 @@ export default () => {
             <div className="editor-area-scroll">
               <div className="editor-area">
                 <EditorArea />
-                
+
               </div>
             </div>
           </div>

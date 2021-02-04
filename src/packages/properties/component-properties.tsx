@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Form, Select } from "antd";
+import { Form, Select, Divider } from "antd";
 import { options, key2Component } from '../constants';
 import FormItemProperties from "./form-item-properties";
 import { Context } from '../stores/context';
@@ -53,7 +53,9 @@ export default function () {
                     </Select>
                 </Form.Item>
             </Form>
+            <Divider style={{padding: '0 20px'}}>表单字段组件</Divider>
             <FormItemProperties />
+            {currentDragComponent.componentKey && <Divider style={{padding: '0 20px'}}>控件</Divider>}
             {key2Component[currentDragComponent.componentKey].properties}
         </>
     );

@@ -8,7 +8,7 @@ import {
   UPDATE_COMPONENT_LIST_CHOSEN,
 } from "./action-type";
 import { CommonState, FlagState, NotFoundState } from "./typings";
-import { merge } from "lodash";
+import { merge, cloneDeep } from "lodash";
 
 /**
  * 公共
@@ -51,7 +51,7 @@ export const commonReducer = (
       componentList.splice(index, 0, data);
       return { ...state, componentList: componentList };
     case UPDATE_COMPONENT_LIST:
-      componentList = JSON.parse(JSON.stringify(state.componentList));
+      componentList = cloneDeep(state.componentList);
       const { id, data: data2 = {} } =
         action.payload || {};
       for (let i = 0; i < componentList.length; i++) {
