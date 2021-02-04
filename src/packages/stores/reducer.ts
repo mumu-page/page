@@ -42,7 +42,10 @@ export const commonReducer = (
       }
       return { ...state, componentList: componentList };
     case PUT_COMPONENT_LIST:
-      componentList = JSON.parse(JSON.stringify(state.componentList)); // TODO deelpClone
+      componentList = cloneDeep(state.componentList); // TODO deelpClone
+      for (let i = 0; i < componentList.length; i++) {
+        componentList[i].chosen = false
+      }
       componentList.push(action.payload);
       return { ...state, componentList: componentList };
     case INSERT_COMPONENT_LIST:

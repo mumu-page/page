@@ -23,6 +23,12 @@ export default function () {
   const { id } = currentDragComponent;
   const onValuesChange = (changedValues: any, allValues: FormData) => {
     commonDispatch({
+      type: SET_CURRENT_DRAG_COMPONENT,
+      payload: {
+        componentKey: allValues?.componentKey,
+      },
+    });
+    commonDispatch({
       type: UPDATE_COMPONENT_LIST,
       payload: {
         id,

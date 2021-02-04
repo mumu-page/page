@@ -7,17 +7,19 @@ import { FormComProp, commonDispatch } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST
+  UPDATE_COMPONENT_LIST,
+  PUT_COMPONENT_LIST,
 } from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
 import { isCheck } from "../utils/utils";
+import * as uuid from "uuid";
 import { debounce } from "lodash";
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
 let canChosen = true; // 能否选择，解决点击右上角按钮和列表选中的冲突
 function areEqual(prevProps: any, nextProps: any) {
-  console.log('shouldUpdate', shouldUpdate)
+  console.log("shouldUpdate", shouldUpdate);
   if (!shouldUpdate) {
     return true;
   }
@@ -35,9 +37,24 @@ interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
 }
 const EditorArea = memo((props: EditorAreaProps) => {
-  console.log('render')
+  console.log("render");
   const { componentList, commonDispatch } = props;
   const [form] = Form.useForm();
+
+  const setChosen = (newState: FormComProp[]) => {
+    return newState?.map((item) => {
+      let ret = {
+        ...item,
+      };
+      if (globalState?.currentDragComponent?.id === item.id) {
+        ret.chosen = true;
+      } else {
+        ret.chosen = false;
+      }
+      return ret;
+    });
+  }
+
   const ComponentItem = (prop: FormComProp) => {
     const { id, componentKey, formItemProps = {}, componentProps = {} } = prop;
     if (["Select"].includes(componentKey)) {
@@ -47,14 +64,14 @@ const EditorArea = memo((props: EditorAreaProps) => {
     } else if (["Input", "Input.TextArea"].includes(componentKey)) {
       componentProps.onChange = debounce((e: any) => {
         const value = e?.target?.value;
-        shouldUpdate = false
+        shouldUpdate = false;
         commonDispatch({
           type: SET_CURRENT_DRAG_COMPONENT,
           payload: {
             id,
             componentProps: {
-              initialValues: value
-            }
+              initialValues: value,
+            },
           },
         });
         commonDispatch({
@@ -63,9 +80,9 @@ const EditorArea = memo((props: EditorAreaProps) => {
             id,
             data: {
               componentProps: {
-                initialValues: value
+                initialValues: value,
               },
-            }
+            },
           },
         });
       });
@@ -74,7 +91,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
         console.log("value", value);
       };
     }
-    const {initialValues, ...componentOtherProps} = componentProps
+    const { initialValues, ...componentOtherProps } = componentProps;
     return (
       <div className="component-warp">
         <div className="action-btn">
@@ -89,7 +106,29 @@ const EditorArea = memo((props: EditorAreaProps) => {
             onMouseEnter={() => {
               canChosen = false;
             }}
-            onClick={() => { }}
+            onClick={() => {
+              shouldUpdate = true;
+              const newId = uuid.v4()
+              globalState.currentDragComponent = {
+                ...(globalState?.currentDragComponent || {}),
+                id: newId,
+              }
+              commonDispatch({
+                type: SET_CURRENT_DRAG_COMPONENT,
+                payload: {
+                  id: newId,
+                  componentKey
+                },
+              })
+              commonDispatch({
+                type: PUT_COMPONENT_LIST,
+                payload: {
+                  ...prop,
+                  id: newId,
+                  chosen: true
+                },
+              });
+            }}
           />
           <Button
             type="default"
@@ -104,7 +143,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
             onMouseEnter={() => {
               canChosen = false;
             }}
-            onClick={() => { }}
+            onClick={() => {}}
           />
         </div>
         <Form.Item
@@ -122,16 +161,15 @@ const EditorArea = memo((props: EditorAreaProps) => {
   };
 
   useEffect(() => {
-    const _initialValues = {} as any
-    componentList.forEach(item => {
-      const { formItemProps, componentProps } = item
-      const { name } = formItemProps || {}
-      const { initialValues } = componentProps || {}
-      _initialValues[name] = initialValues
-    })
-    console.log('_initialValues', _initialValues)
-    form.setFieldsValue(_initialValues)
-  }, [componentList]) 
+    const _initialValues = {} as any;
+    componentList.forEach((item) => {
+      const { formItemProps, componentProps } = item;
+      const { name } = formItemProps || {};
+      const { initialValues } = componentProps || {};
+      _initialValues[name] = initialValues;
+    });
+    form.setFieldsValue(_initialValues);
+  }, [componentList]);
 
   return (
     <Form
@@ -162,17 +200,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
         delayOnTouchOnly
         setList={(newState) => {
           if (shouldUpdate) {
-            let params = newState.map((item) => {
-              let ret = {
-                ...item,
-              };
-              if (globalState?.currentDragComponent?.id === item.id) {
-                ret.chosen = true;
-              } else {
-                ret.chosen = false;
-              }
-              return ret;
-            });
+            let params = setChosen(newState)
             commonDispatch({
               type: SET_COMPONENT_LIST,
               payload: params,
@@ -214,7 +242,14 @@ const EditorArea = memo((props: EditorAreaProps) => {
       >
         {componentList.map((item: any) => {
           return (
-            <div key={item.id} style={{/* display: item?.componentKey === 'Row' ? 'inline-block' : 'block' */ }}>
+            <div
+              key={item.id}
+              style={
+                {
+                  /* display: item?.componentKey === 'Row' ? 'inline-block' : 'block' */
+                }
+              }
+            >
               <ComponentItem
                 id={item.id}
                 key={item.id}
