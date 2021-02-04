@@ -49,7 +49,15 @@ export default function () {
   return (
     <>
       <CommonProperties />
-      <Form form={form} {...layout} onValuesChange={onValuesChange}>
+      <Form
+        form={form}
+        {...layout}
+        initialValues={{
+          bordered: true,
+          disabled: false,
+          size: 'middle'
+        }}
+        onValuesChange={onValuesChange}>
         <Form.Item label="默认值" name="initialValues">
           <Input onBlur={() => shouldUpdate = true} onPressEnter={() => shouldUpdate = true} />
         </Form.Item>

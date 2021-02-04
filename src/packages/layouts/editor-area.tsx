@@ -36,7 +36,6 @@ interface EditorAreaProps extends commonDispatch<object> {
 }
 const EditorArea = memo((props: EditorAreaProps) => {
   console.log('render')
-  const [initialValues, setInitialValues] = useState({})
   const { componentList, commonDispatch } = props;
   const [form] = Form.useForm();
   const ComponentItem = (prop: FormComProp) => {
@@ -75,6 +74,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
         console.log("value", value);
       };
     }
+    const {initialValues, ...componentOtherProps} = componentProps
     return (
       <div className="component-warp">
         <div className="action-btn">
@@ -114,7 +114,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
         >
           {React.cloneElement(
             key2Component[componentKey]?.component || <></>,
-            componentProps
+            componentOtherProps
           )}
         </Form.Item>
       </div>
@@ -131,7 +131,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
     })
     console.log('_initialValues', _initialValues)
     form.setFieldsValue(_initialValues)
-  }, [componentList])
+  }, [componentList]) 
 
   return (
     <Form
@@ -139,7 +139,6 @@ const EditorArea = memo((props: EditorAreaProps) => {
         height: "100%",
         position: "relative",
       }}
-      initialValues={initialValues}
       onMouseLeave={() => {
         shouldUpdate = true;
       }}

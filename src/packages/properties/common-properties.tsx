@@ -20,7 +20,7 @@ export default function () {
   const { currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {} } = currentDragComponent || {};
   const onValuesChange = (changedValues: any, allValues: FormData) => {
-    const {placeholder, componentWidth} = allValues
+    const { placeholder, componentWidth } = allValues
     const style = {
       width: componentWidth + '%'
     }
@@ -44,12 +44,12 @@ export default function () {
   }, [componentProps, currentDragComponent, form]);
   return (
     <>
-      <Form form={form} {...layout} onValuesChange={onValuesChange}>
+      <Form form={form} {...layout} initialValues={{ componentWidth: 100 }} onValuesChange={onValuesChange}>
         <Form.Item label="占位提示" name="placeholder">
           <Input />
         </Form.Item>
         <Form.Item label="组件宽度" name="componentWidth">
-          <Slider defaultValue={100} marks={{ 0: '0%', 50: "50%", 100: "100%" }} min={0} max={100} tipFormatter={val => val + '%'} />
+          <Slider marks={{ 0: '0%', 50: "50%", 100: "100%" }} min={0} max={100} tipFormatter={val => val + '%'} />
         </Form.Item>
       </Form>
     </>

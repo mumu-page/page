@@ -44,6 +44,9 @@ export default function () {
     <>
       <Form
         {...layout}
+        initialValues={{
+          labelAlign: 'right'
+        }}
         form={form}
         onValuesChange={onValuesChange}
       >
