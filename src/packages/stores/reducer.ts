@@ -4,8 +4,8 @@ import {
   DEL_COMPONENT_LIST,
   PUT_COMPONENT_LIST,
   INSERT_COMPONENT_LIST,
-  UPDATE_COMPONENT_LIST,
-  UPDATE_COMPONENT_LIST_CHOSEN,
+  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  UPDATE_COMPONENT_LIST_BY_CHOSEN,
 } from "./action-type";
 import { CommonState, FlagState, NotFoundState } from "./typings";
 import { merge, cloneDeep } from "lodash";
@@ -19,20 +19,18 @@ export const commonReducer = (
   state: CommonState & FlagState & NotFoundState,
   action: { type: string; payload: any }
 ) => {
-  let componentList = []
-  switch (action.type) {
-    case SET_CURRENT_DRAG_COMPONENT: // 设置当前拖拽的组件
+  const strategy: { [key: string]: () => CommonState & FlagState & NotFoundState } = {
+    [SET_CURRENT_DRAG_COMPONENT]: () => {
       return {
         ...state,
-        currentDragComponent: {
-          ...state.currentDragComponent,
-          ...action.payload,
-        },
+        currentDragComponent: cloneDeep(merge(state.currentDragComponent, action.payload)),
       };
-    case SET_COMPONENT_LIST:
+    },
+    [SET_COMPONENT_LIST]: () => {
       return { ...state, componentList: action.payload };
-    case DEL_COMPONENT_LIST:
-      componentList = JSON.parse(JSON.stringify(state.componentList));
+    },
+    [DEL_COMPONENT_LIST]: () => {
+      const componentList = cloneDeep(state.componentList);
       for (let i = 0; i < componentList.length; i++) {
         if (componentList[i].id === action.payload?.id) {
           componentList.splice(i, 1);
@@ -40,35 +38,38 @@ export const commonReducer = (
         }
       }
       return { ...state, componentList: componentList };
-    case PUT_COMPONENT_LIST:
-      componentList = cloneDeep(state.componentList); // TODO deelpClone
+    },
+    [PUT_COMPONENT_LIST]: () => {
+      const componentList = cloneDeep(state.componentList);
       for (let i = 0; i < componentList.length; i++) {
         componentList[i].chosen = false
       }
       componentList.push(action.payload);
       return { ...state, componentList: componentList };
-    case INSERT_COMPONENT_LIST:
-      componentList = JSON.parse(JSON.stringify(state.componentList));
+    },
+    [INSERT_COMPONENT_LIST]: () => {
       const { index, data } = action.payload;
+      const componentList = cloneDeep(state.componentList);
       componentList.splice(index, 0, data);
       return { ...state, componentList: componentList };
-    case UPDATE_COMPONENT_LIST:
-      componentList = cloneDeep(state.componentList);
-      const { id, data: data2 = {} } =
-        action.payload || {};
+    },
+    [UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG]: () => {
+      const componentList = cloneDeep(state.componentList);
+      const { data = {} } = action.payload || {};
       for (let i = 0; i < componentList.length; i++) {
-        if (componentList[i].id === id) {
-          componentList[i] = merge(componentList[i], data2);
+        if (componentList[i].id === state.currentDragComponent?.id) {
+          componentList[i] = merge(componentList[i], data);
           break;
         }
       }
-      return { ...state, componentList: componentList };
-    case UPDATE_COMPONENT_LIST_CHOSEN:
-      componentList = cloneDeep(state.componentList);
-      const { id: id2 } = action.payload || {};
-        if(!id2) return state
+      return { ...state, componentList };
+    },
+    [UPDATE_COMPONENT_LIST_BY_CHOSEN]: () => {
+      const componentList = cloneDeep(state.componentList);
+      const { id } = action.payload || {};
+      if (!id) return state
       for (let i = 0; i < componentList.length; i++) {
-        if (componentList[i].id === id2) {
+        if (componentList[i].id === id) {
           componentList[i] = {
             ...(componentList[i] || {}),
             chosen: true,
@@ -81,7 +82,12 @@ export const commonReducer = (
         }
       }
       return { ...state, componentList: componentList };
-    default:
-      return { ...state };
+    }
+  }
+
+  if (typeof strategy[action.type] === 'function') {
+    return strategy[action.type]()
+  } else {
+    return { ...state };
   }
 };
