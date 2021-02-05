@@ -4,8 +4,7 @@ import { options, key2Component } from "../constants";
 import FormItemProperties from "./form-item-properties";
 import { Context } from "../stores/context";
 import {
-  SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG,
 } from "../stores/action-type";
 import { ComponentKeys } from "../stores/typings";
 import { isDatePicker } from "../utils/utils";
@@ -22,36 +21,20 @@ interface FormData {
 export default function () {
   const [form] = Form.useForm<FormData>();
   const { componentList, currentDragComponent, commonDispatch } = useContext(Context);
-  const { id } = currentDragComponent;
 
   const onValuesChange = (changedValues: any, allValues: FormData) => {
-    const currentDragParams = {
-      componentKey: allValues?.componentKey,
-    } as any
-    const componentListParams = {
-      id,
-      data: {
-        componentKey: allValues?.componentKey,
-      },
-    } as any
+    const { componentKey } = allValues
+    const newComponentProps = {} as any
     if (isDatePicker(allValues.componentKey)) {
-      currentDragParams.componentProps = {
-        defaultValue: ''
-      }
-      componentListParams.data.componentProps = {
-        defaultValue: ''
-      }
+      newComponentProps.defaultValue = ''
     }
+    // 同时更新当前选中控件和设计区列表 清除
     commonDispatch({
-      type: SET_CURRENT_DRAG_COMPONENT,
+      type: UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG,
       payload: {
-        componentKey: allValues?.componentKey,
-        componentProps: currentDragParams
+        componentKey,
+        newComponentProps
       },
-    });
-    commonDispatch({
-      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-      payload: componentListParams,
     });
   };
 

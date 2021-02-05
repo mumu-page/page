@@ -22,8 +22,12 @@ export default function () {
   const [form] = Form.useForm<FormData>();
   const { currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {}, componentKey } = currentDragComponent || {};
+
   const placeholderRef = useRef(
-    isDatePickerRange(componentKey) ? componentProps?.placeholder : ['', '']
+    isDatePickerRange(componentKey) ?
+      Array.isArray(componentProps?.placeholder) ?
+        componentProps?.placeholder
+        : ['', ''] : ['', '']
   )
   const onValuesChange = useCallback(debounce((changedValues: any, allValues: FormData) => {
     if (isDatePickerRange(currentDragComponent?.componentKey)) {
@@ -53,7 +57,6 @@ export default function () {
       commonDispatch({
         type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
         payload: {
-          id,
           data: {
             componentProps: {
               placeholder: placeholderRef.current,
@@ -95,8 +98,10 @@ export default function () {
           {
             isDatePickerRange(currentDragComponent?.componentKey) ? <Input.Group compact>
               <Input
-                value={placeholderRef.current[0]}
-                defaultValue={PLACEHOLDER_ENUM[currentDragComponent.componentKey][0]}
+                value={placeholderRef.current && placeholderRef.current[0]}
+                defaultValue={
+                  PLACEHOLDER_ENUM[currentDragComponent.componentKey] &&
+                  PLACEHOLDER_ENUM[currentDragComponent.componentKey][0]}
                 style={{ width: '50%' }}
                 onBlur={() => upCurrenDrag(placeholderRef?.current)}
                 onPressEnter={() => upCurrenDrag(placeholderRef?.current)}
@@ -105,11 +110,13 @@ export default function () {
                   setPlaceholderRef(0, value)
                 }} />
               <Input
-                value={placeholderRef.current[1]}
-                defaultValue={PLACEHOLDER_ENUM[currentDragComponent.componentKey][1]}
+                value={placeholderRef.current && placeholderRef.current[1]}
+                defaultValue={
+                  PLACEHOLDER_ENUM[currentDragComponent.componentKey] &&
+                  PLACEHOLDER_ENUM[currentDragComponent.componentKey][1]}
                 style={{ width: '50%' }}
-                onBlur={upCurrenDrag}
-                onPressEnter={upCurrenDrag}
+                onBlur={() => upCurrenDrag(placeholderRef?.current)}
+                onPressEnter={() => upCurrenDrag(placeholderRef?.current)}
                 onInput={(e: any) => {
                   const value = e.target.value;
                   setPlaceholderRef(1, value)

@@ -5,7 +5,7 @@ import {
   PUT_COMPONENT_LIST,
   INSERT_COMPONENT_LIST,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-  UPDATE_COMPONENT_LIST_BY_CHOSEN,
+  UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG,
 } from "./action-type";
 import { CommonState } from "./typings";
 import { merge, cloneDeep } from "lodash";
@@ -19,7 +19,7 @@ export const commonReducer = (
   state: CommonState,
   action: { type: string; payload: any }
 ) => {
-  const strategy: { [key: string]: () => CommonState} = {
+  const strategy: { [key: string]: () => CommonState } = {
     [SET_CURRENT_DRAG_COMPONENT]: () => {
       return {
         ...state,
@@ -40,10 +40,12 @@ export const commonReducer = (
       return { ...state, componentList: componentList };
     },
     [PUT_COMPONENT_LIST]: () => {
-      const componentList = cloneDeep(state.componentList);
-      for (let i = 0; i < componentList.length; i++) {
-        componentList[i].chosen = false
-      }
+      const componentList = state?.componentList?.map(item => {
+        if (item.id === state.currentDragComponent?.id) {
+          item.chosen = false
+        }
+        return item
+      })
       componentList.push(action.payload);
       return { ...state, componentList: componentList };
     },
@@ -54,34 +56,36 @@ export const commonReducer = (
       return { ...state, componentList: componentList };
     },
     [UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG]: () => {
-      const componentList = cloneDeep(state.componentList);
       const { data = {} } = action.payload || {};
-      for (let i = 0; i < componentList.length; i++) {
-        if (componentList[i].id === state.currentDragComponent?.id) {
-          componentList[i] = merge(componentList[i], data);
-          break;
+      const componentList = state?.componentList?.map(item => {
+        if (item.id === state.currentDragComponent?.id) {
+          item = merge(item, data);
         }
-      }
+        return item
+      })
       return { ...state, componentList };
     },
-    [UPDATE_COMPONENT_LIST_BY_CHOSEN]: () => {
-      const componentList = cloneDeep(state.componentList);
-      const { id } = action.payload || {};
-      if (!id) return state
-      for (let i = 0; i < componentList.length; i++) {
-        if (componentList[i].id === id) {
-          componentList[i] = {
-            ...(componentList[i] || {}),
-            chosen: true,
-          };
-        } else {
-          componentList[i] = {
-            ...(componentList[i] || {}),
-            chosen: false,
-          };
+    [UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG]: () => {
+      const { componentKey, newComponentProps } = action.payload || {};
+      const componentList = state?.componentList?.map(item => {
+        if (item.id === state.currentDragComponent?.id) {
+          item.componentKey = componentKey
+          item.componentProps = {
+            ...item.componentProps,
+            ...newComponentProps
+          }
         }
+        return item
+      })
+      return {
+        ...state,
+        currentDragComponent: {
+          ...state.currentDragComponent,
+          componentKey,
+          componentProps: newComponentProps
+        },
+        componentList
       }
-      return { ...state, componentList: componentList };
     }
   }
 

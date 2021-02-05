@@ -16,6 +16,7 @@ import { isCheck, isDatePicker } from "../utils/utils";
 import * as uuid from "uuid";
 import { debounce } from "lodash";
 import { GLOBAL_STATE } from "../stores/state";
+import * as moment from "moment";
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
 let canChosen = true; // 能否选择，解决点击右上角按钮和列表选中的冲突
@@ -40,6 +41,7 @@ interface EditorAreaProps extends commonDispatch<object> {
 const EditorArea = memo((props: EditorAreaProps) => {
   const { currentDragComponent, componentList, commonDispatch } = props;
   const [form] = Form.useForm();
+  console.log('componentList', componentList)
 
   const setChosen = (newState: FormComProp[]) => {
     return newState?.map((item) => {
@@ -57,6 +59,12 @@ const EditorArea = memo((props: EditorAreaProps) => {
 
   const ComponentItem = (prop: FormComProp) => {
     const { id, componentKey, formItemProps = {}, componentProps = {} } = prop;
+    // 清除值 
+    if (isDatePicker(componentKey) && !moment.isMoment(form.getFieldValue(formItemProps.name))) {
+      form.setFieldsValue({
+        [formItemProps.name]: ''
+      })
+    }
     if (["Select"].includes(componentKey)) {
       componentProps.onSelect = (value: any) => {
         console.log("value", value);
@@ -186,9 +194,9 @@ const EditorArea = memo((props: EditorAreaProps) => {
   };
 
   useEffect(() => {
-    const { id, componentProps } = currentDragComponent
+    const { componentProps, formItemProps } = currentDragComponent
     form.setFieldsValue({
-      [id]: componentProps?.defaultValue
+      [formItemProps.name]: componentProps?.defaultValue
     })
   }, [currentDragComponent])
 
@@ -203,7 +211,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
       }
     });
     form.setFieldsValue(_initialValues);
-  }, []);
+  }, [componentList]);
 
   return (
     <Form
