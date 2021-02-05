@@ -1,20 +1,34 @@
-import React from 'react'
+import { ICONS } from "../constants";
 import { FormComProp } from "../stores/typings";
-import {key2Component} from '../constants'
 
 function createFormItem(item: FormComProp) {
-    const {formItemProps, componentProps, componentKey} = item
+    const { formItemProps, componentProps, componentKey } = item
     let formItemPropsStr = ''
     let componentPropsStr = ''
     Object.keys(formItemProps).forEach(key => {
         const value = JSON.stringify(formItemProps[key])
-        if(typeof value !== 'undefined') {
+        if (typeof value !== 'undefined') {
             formItemPropsStr += ` ${key}={${value}}`
         }
     })
-    Object.keys(componentProps).forEach(key => {
-        const value = JSON.stringify(componentProps[key])
-        if(typeof value !== 'undefined') {
+    const { defaultValue, ...componentOtherProps } = componentProps;
+    const componentPropsKey = Object.keys(componentOtherProps)
+    if (['Input'].includes(componentKey)) {
+        if (componentPropsKey.includes('prefix')) {
+          const IconComponent = componentOtherProps['prefix'] || 'React.Fragment'
+          componentOtherProps['prefix'] = `<${IconComponent} />`
+        }
+        if (componentPropsKey.includes('suffix')) {
+          const IconComponent = componentOtherProps['suffix'] || 'React.Fragment'
+          componentOtherProps['suffix'] = `<${IconComponent} />`
+        }
+      }
+    componentPropsKey.forEach(key => {
+        let value = JSON.stringify(componentOtherProps[key])
+        if(['prefix', 'suffix'].includes(key)) {
+            value = value.replace(/"/g, '')
+        }
+        if (typeof value !== 'undefined') {
             componentPropsStr += ` ${key}={${value}}`
         }
     })

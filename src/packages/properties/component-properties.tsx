@@ -1,13 +1,15 @@
 import React, { useContext, useEffect } from "react";
-import { Form, Select, Divider } from "antd";
+import { Form, Select, Empty } from "antd";
 import { options, key2Component } from "../constants";
 import FormItemProperties from "./form-item-properties";
 import { Context } from "../stores/context";
 import {
   SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST,
+  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
 } from "../stores/action-type";
-import { componentKeys } from "../stores/typings";
+import { ComponentKeys } from "../stores/typings";
+import { isDatePicker } from "../utils/utils";
+import { CommonProperties } from ".";
 
 const layout = {
   labelCol: { span: 7 },
@@ -15,29 +17,44 @@ const layout = {
 };
 const { Option, OptGroup } = Select;
 interface FormData {
-  componentKey: componentKeys;
+  componentKey: ComponentKeys;
 }
 export default function () {
   const [form] = Form.useForm<FormData>();
-  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { componentList, currentDragComponent, commonDispatch } = useContext(Context);
   const { id } = currentDragComponent;
+
   const onValuesChange = (changedValues: any, allValues: FormData) => {
+    const currentDragParams = {
+      componentKey: allValues?.componentKey,
+    } as any
+    const componentListParams = {
+      id,
+      data: {
+        componentKey: allValues?.componentKey,
+      },
+    } as any
+    if (isDatePicker(allValues.componentKey)) {
+      currentDragParams.componentProps = {
+        defaultValue: ''
+      }
+      componentListParams.data.componentProps = {
+        defaultValue: ''
+      }
+    }
     commonDispatch({
       type: SET_CURRENT_DRAG_COMPONENT,
       payload: {
         componentKey: allValues?.componentKey,
+        componentProps: currentDragParams
       },
     });
     commonDispatch({
-      type: UPDATE_COMPONENT_LIST,
-      payload: {
-        id,
-        data: {
-          componentKey: allValues?.componentKey,
-        },
-      },
+      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+      payload: componentListParams,
     });
   };
+
   useEffect(() => {
     form.setFieldsValue({
       componentKey: currentDragComponent.componentKey,
@@ -46,34 +63,33 @@ export default function () {
 
   return (
     <>
-      <Form {...layout} form={form} onValuesChange={onValuesChange}>
-        <Form.Item label="组件类型" name="componentKey">
-          <Select>
-            {options.map((item) => {
-              return (
-                <OptGroup label={item.label} key={item.key}>
-                  {Array.isArray(item.children) &&
-                    item.children.map((childItem) => {
-                      return (
-                        <Option key={childItem.key} value={childItem.value}>
-                          {childItem.label}
-                        </Option>
-                      );
-                    })}
-                </OptGroup>
-              );
-            })}
-          </Select>
-        </Form.Item>
-      </Form>
-      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
-        表单字段组件
-      </Divider>
-      <FormItemProperties />
-      {currentDragComponent.componentKey && (
-        <Divider style={{ padding: "0 20px", fontSize: "14px" }}>控件</Divider>
-      )}
-      {key2Component[currentDragComponent.componentKey].properties}
+      {componentList.length ? (
+        <>
+          <Form {...layout} form={form} onValuesChange={onValuesChange}>
+            <Form.Item label="组件类型" name="componentKey">
+              <Select>
+                {options.map((item) => {
+                  return (
+                    <OptGroup label={item.label} key={item.key}>
+                      {Array.isArray(item.children) &&
+                        item.children.map((childItem) => {
+                          return (
+                            <Option key={childItem.key} value={childItem.value}>
+                              {childItem.label}
+                            </Option>
+                          );
+                        })}
+                    </OptGroup>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Form>
+          <FormItemProperties />
+          <CommonProperties />
+          {key2Component[currentDragComponent.componentKey].properties}
+        </>
+      ) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
     </>
   );
 }

@@ -1,40 +1,12 @@
 import React from "react";
 import * as Babel from "@babel/standalone";
-import {
-  Input,
-  InputNumber,
-  Select,
-  Cascader,
-  Radio,
-  Checkbox,
-  Switch,
-  Slider,
-  TimePicker,
-  DatePicker,
-  Rate,
-  Upload,
-  Row,
-  Button,
-  Form,
-} from "antd";
+import * as Antd from "antd";
+import * as Icons  from "@ant-design/icons";
 
 const context = {
   React,
-  Input,
-  InputNumber,
-  Select,
-  Cascader,
-  Radio,
-  Checkbox,
-  Switch,
-  Slider,
-  TimePicker,
-  DatePicker,
-  Rate,
-  Upload,
-  Row,
-  Button,
-  Form,
+  ...Antd,
+  ...Icons
 };
 
 export function guid() {
@@ -66,6 +38,22 @@ export function hasNotPlaceholder(componentKey: string) {
     "Upload",
     "Row",
     "Button",
+  ].includes(componentKey);
+}
+
+export function isDatePicker(componentKey: string) {
+  return [
+    "TimePicker",
+    "TimePicker.RangePicker",
+    "DatePicker",
+    "DatePicker.RangePicker",
+  ].includes(componentKey);
+}
+
+export function isDatePickerRange(componentKey: string) {
+  return [
+    "TimePicker.RangePicker",
+    "DatePicker.RangePicker",
   ].includes(componentKey);
 }
 

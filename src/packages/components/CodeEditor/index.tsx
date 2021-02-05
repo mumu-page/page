@@ -53,7 +53,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: ((instance: CodeEdit
         setCode(code: string) {
             editor.current?.setValue(code)
         },
-    }))
+    }), [])
 
     useEffect(() => {
         setSpinning(true)

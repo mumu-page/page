@@ -1,26 +1,24 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, FocusEvent, KeyboardEvent } from "react";
 import { Form, Button } from "antd";
 import { Context } from "../stores/context";
-import { globalState } from "../global/state";
-import { key2Component } from "../constants";
+import { ICONS, key2Component } from "../constants";
 import { FormComProp, commonDispatch } from "../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST,
+  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
   PUT_COMPONENT_LIST,
   DEL_COMPONENT_LIST
 } from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
-import { isCheck } from "../utils/utils";
+import { isCheck, isDatePicker } from "../utils/utils";
 import * as uuid from "uuid";
 import { debounce } from "lodash";
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
 let canChosen = true; // 能否选择，解决点击右上角按钮和列表选中的冲突
 function areEqual(prevProps: any, nextProps: any) {
-  console.log("shouldUpdate", shouldUpdate);
   if (!shouldUpdate) {
     return true;
   }
@@ -36,10 +34,10 @@ function areEqual(prevProps: any, nextProps: any) {
 }
 interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
+  currentDragComponent: FormComProp
 }
 const EditorArea = memo((props: EditorAreaProps) => {
-  console.log("render");
-  const { componentList, commonDispatch } = props;
+  const { currentDragComponent, componentList, commonDispatch } = props;
   const [form] = Form.useForm();
 
   const setChosen = (newState: FormComProp[]) => {
@@ -47,7 +45,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
       let ret = {
         ...item,
       };
-      if (globalState?.currentDragComponent?.id === item.id) {
+      if (currentDragComponent?.id === item.id) {
         ret.chosen = true;
       } else {
         ret.chosen = false;
@@ -71,28 +69,52 @@ const EditorArea = memo((props: EditorAreaProps) => {
           payload: {
             id,
             componentProps: {
-              initialValues: value,
-            },
-          },
-        });
-        commonDispatch({
-          type: UPDATE_COMPONENT_LIST,
-          payload: {
-            id,
-            data: {
-              componentProps: {
-                initialValues: value,
-              },
+              defaultValue: value,
             },
           },
         });
       });
+      const upList = (value: any) => {
+        commonDispatch({
+          type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+          payload: {
+            id,
+            data: {
+              componentProps: {
+                defaultValue: value,
+              },
+            },
+          },
+        });
+      }
+      componentProps.onPressEnter = (e: any) => {
+        const value = e?.target?.value;
+        upList(value)
+      }
+      componentProps.onBlur = (e: any) => {
+        const value = e?.target?.value;
+        upList(value)
+      }
     } else {
       componentProps.onChange = (value: any) => {
         console.log("value", value);
       };
     }
-    const { initialValues, ...componentOtherProps } = componentProps;
+    const { defaultValue, ...componentOtherProps } = componentProps;
+    // 输入框前后图标处理
+    const componentPropsKey = Object.keys(componentOtherProps)
+    if (['Input'].includes(componentKey)) {
+      if (componentPropsKey.includes('prefix')) {
+        console.log(ICONS)
+        const IconComponent = (ICONS as any)[componentOtherProps['prefix']] || React.Fragment
+        componentOtherProps['prefix'] = <IconComponent />
+      }
+      if (componentPropsKey.includes('suffix')) {
+        const IconComponent = (ICONS as any)[componentOtherProps['suffix']] || React.Fragment
+        componentOtherProps['suffix'] = <IconComponent />
+      }
+    }
+
     return (
       <div className="component-warp">
         <div className="action-btn">
@@ -110,10 +132,6 @@ const EditorArea = memo((props: EditorAreaProps) => {
             onClick={() => {
               shouldUpdate = true;
               const newId = uuid.v4()
-              globalState.currentDragComponent = {
-                ...(globalState?.currentDragComponent || {}),
-                id: newId,
-              }
               commonDispatch({
                 type: SET_CURRENT_DRAG_COMPONENT,
                 payload: {
@@ -168,15 +186,24 @@ const EditorArea = memo((props: EditorAreaProps) => {
   };
 
   useEffect(() => {
+    const { id, componentProps } = currentDragComponent
+    form.setFieldsValue({
+      [id]: componentProps?.defaultValue
+    })
+  }, [currentDragComponent])
+
+  useEffect(() => {
     const _initialValues = {} as any;
     componentList.forEach((item) => {
-      const { formItemProps, componentProps } = item;
+      const { componentKey, formItemProps, componentProps } = item;
       const { name } = formItemProps || {};
-      const { initialValues } = componentProps || {};
-      _initialValues[name] = initialValues;
+      const { defaultValue } = componentProps || {};
+      if (!isDatePicker(componentKey)) {
+        _initialValues[name] = defaultValue;
+      }
     });
     form.setFieldsValue(_initialValues);
-  }, [componentList]);
+  }, []);
 
   return (
     <Form
@@ -222,10 +249,6 @@ const EditorArea = memo((props: EditorAreaProps) => {
         }}
         onAdd={(e) => {
           shouldUpdate = true;
-          commonDispatch({
-            type: SET_CURRENT_DRAG_COMPONENT,
-            payload: globalState?.currentDragComponent,
-          });
         }}
         onUnchoose={(e) => {
           if (!canChosen) return;
@@ -240,10 +263,9 @@ const EditorArea = memo((props: EditorAreaProps) => {
               currentDrag = item;
             }
           });
-          globalState.currentDragComponent = currentDrag;
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT,
-            payload: globalState?.currentDragComponent,
+            payload: currentDrag,
           });
         }}
       >
@@ -273,10 +295,11 @@ const EditorArea = memo((props: EditorAreaProps) => {
 }, areEqual);
 
 export default () => {
-  const { componentList, commonDispatch } = useContext(Context);
+  const { currentDragComponent, componentList, commonDispatch } = useContext(Context);
   return (
     <>
       <EditorArea
+        currentDragComponent={currentDragComponent}
         componentList={componentList}
         commonDispatch={commonDispatch}
       />

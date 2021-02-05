@@ -5,7 +5,7 @@ export interface commonDispatch<T = boolean> {
     }>
 }
 
-export type componentKeys = 'Input' |
+export type ComponentKeys = 'Input' |
     'Input.TextArea' |
     'Input.Password' |
     'InputNumber' |
@@ -28,7 +28,7 @@ export type componentKeys = 'Input' |
 
 
 export interface FormComProp {
-    componentKey: componentKeys;                            // 当前拖拽的控件key
+    componentKey: ComponentKeys;                            // 当前拖拽的控件key
     componentProps: {[key: string]: any};                   // 当前拖拽的控件属性设置
     formItemProps: {[key: string]: any}                     // 当前FormItem属性设置
     /** The unique id associated with your item. It's recommended this is the same as the key prop for your list item. */

@@ -59,7 +59,7 @@ export default forwardRef(function (props: PreviewProps, ref: ((instance: Previe
         close() {
             setVisible(false)
         },
-    }));
+    }), []);
 
     useEffect(() => {
         setTsxCode(tsxCodeProp)

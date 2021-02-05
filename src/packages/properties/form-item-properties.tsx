@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, } from "react";
 import { Form, Input, Slider, Radio } from "antd";
 import { Context } from "../stores/context";
-import { UPDATE_COMPONENT_LIST } from "../stores/action-type";
+import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from "../stores/action-type";
 
 const layout = {
   labelCol: { span: 7 },
@@ -16,7 +16,7 @@ export default function () {
   const onValuesChange = (changedValues: any, allValues: any) => {
     const { wrapperCol, labelCol } = allValues;
     commonDispatch({
-      type: UPDATE_COMPONENT_LIST,
+      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
       payload: {
         id,
         data: {
@@ -51,7 +51,7 @@ export default function () {
         onValuesChange={onValuesChange}
       >
         <Form.Item label="字段名" name="name">
-          <Input />
+          <Input onPressEnter={e => {}}/>
         </Form.Item>
         <Form.Item label="标题" name="label">
           <Input />

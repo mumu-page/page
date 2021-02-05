@@ -8,9 +8,9 @@ import {
 import { Context, initialState } from "./stores/context";
 import { commonReducer } from "./stores/reducer";
 import { useLocallyPersistedReducer } from "./hooks";
-import "./visual-editor.scss";
 import { CommonState, FlagState, NotFoundState } from "./stores/typings";
 import { LOCAL_STORE_KEY } from "./constants";
+import "./visual-editor.scss";
 
 export default () => {
   const [state, commonDispatch] = useLocallyPersistedReducer(commonReducer, initialState, LOCAL_STORE_KEY);

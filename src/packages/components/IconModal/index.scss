@@ -1,0 +1,38 @@
+.icon-col {
+    cursor: pointer;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    &:hover {
+        color: white;
+        background-color: #1890ff;
+        border-radius: 6px;
+        .icon-item {
+            font-size: 26px;
+        }
+    }
+    .icon-item {
+        transition: all .2s;
+        padding: 10px;
+        font-size: 20px;
+    }
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+    span {
+        margin-bottom: 0;
+        margin-right: 30px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .search {
+        width: 60%;
+        .anticon-search {
+            margin-right: 0;
+        }
+    }
+}

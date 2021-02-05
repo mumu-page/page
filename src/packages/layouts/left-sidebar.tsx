@@ -1,11 +1,11 @@
 import React, { useContext, forwardRef, useState } from "react";
 import { Button, Col, Row } from "antd";
-import { IconFont, options, OptionGroup, OptionItem } from "../constants";
+import { IconFont, options } from "../constants";
+import { OptionGroup, OptionItem } from "../typings/option";
 import { Context } from "../stores/context";
 import {
-  PUT_COMPONENT_LIST,
+  PUT_COMPONENT_LIST, SET_CURRENT_DRAG_COMPONENT,
 } from "../stores/action-type";
-import { globalState } from '../global/state'
 import { ReactSortable } from "react-sortablejs";
 import * as uuid from "uuid";
 import { hasNotPlaceholder, isSelect } from "../utils/utils";
@@ -65,7 +65,7 @@ const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
 
 const initOptions = getNewOptions(options);
 export default () => {
-  const { componentList, commonDispatch } = useContext(Context);
+  const { currentDragComponent ,componentList, commonDispatch } = useContext(Context);
   const [_options, setOptions] = useState(initOptions);
 
   const generator = (data: any[]) => {
@@ -103,7 +103,7 @@ export default () => {
                 commonDispatch({
                   type: PUT_COMPONENT_LIST,
                   payload: {
-                    ...(globalState.currentDragComponent || {}),
+                    ...(currentDragComponent || {}),
                     chosen: true,
                   },
                 });
@@ -117,11 +117,14 @@ export default () => {
                   <Col span={12} key={childItem.value}>
                     <Button
                       block
-                      style={{backgroundColor: '#f8f8f8', fontSize: '12px'}}
+                      style={{ backgroundColor: '#f8f8f8', fontSize: '12px' }}
                       type="default"
                       icon={<IconFont type={childItem.icon} />}
                       onFocus={() => {
-                        globalState.currentDragComponent = childItem
+                        commonDispatch({
+                          type: SET_CURRENT_DRAG_COMPONENT,
+                          payload: childItem,
+                        });
                       }}
                     >
                       {childItem.label}
