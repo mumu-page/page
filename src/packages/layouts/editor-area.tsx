@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, FocusEvent, KeyboardEvent } from "react";
+import React, { memo, useContext, useEffect } from "react";
 import { Form, Button } from "antd";
 import { Context } from "../stores/context";
 import { ICONS, key2Component } from "../constants";
@@ -15,6 +15,7 @@ import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
 import { isCheck, isDatePicker } from "../utils/utils";
 import * as uuid from "uuid";
 import { debounce } from "lodash";
+import { GLOBAL_STATE } from "../stores/state";
 
 let shouldUpdate = true; // FIX: 控件焦点和拖拽的冲突
 let canChosen = true; // 能否选择，解决点击右上角按钮和列表选中的冲突
@@ -45,7 +46,7 @@ const EditorArea = memo((props: EditorAreaProps) => {
       let ret = {
         ...item,
       };
-      if (currentDragComponent?.id === item.id) {
+      if (GLOBAL_STATE?.currentDragComponent?.id === item.id) {
         ret.chosen = true;
       } else {
         ret.chosen = false;
@@ -105,7 +106,6 @@ const EditorArea = memo((props: EditorAreaProps) => {
     const componentPropsKey = Object.keys(componentOtherProps)
     if (['Input'].includes(componentKey)) {
       if (componentPropsKey.includes('prefix')) {
-        console.log(ICONS)
         const IconComponent = (ICONS as any)[componentOtherProps['prefix']] || React.Fragment
         componentOtherProps['prefix'] = <IconComponent />
       }
@@ -225,7 +225,6 @@ const EditorArea = memo((props: EditorAreaProps) => {
           name: "editor-area",
           put: true,
         }}
-        // direction='vertical'
         list={componentList}
         ghostClass="sortable-ghost"
         chosenClass="sortable-chosen"
@@ -249,9 +248,14 @@ const EditorArea = memo((props: EditorAreaProps) => {
         }}
         onAdd={(e) => {
           shouldUpdate = true;
+          commonDispatch({
+            type: SET_CURRENT_DRAG_COMPONENT,
+            payload: GLOBAL_STATE.currentDragComponent,
+          });
         }}
         onUnchoose={(e) => {
           if (!canChosen) return;
+          // FIX: 避免更新带来的卡顿
           const allDIV = e.target.childNodes;
           allDIV.forEach((item: any) => {
             item.className = "";

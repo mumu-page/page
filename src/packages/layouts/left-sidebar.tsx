@@ -1,15 +1,12 @@
-import React, { useContext, forwardRef, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { Button, Col, Row } from "antd";
 import { IconFont, options } from "../constants";
 import { OptionGroup, OptionItem } from "../typings/option";
-import { Context } from "../stores/context";
-import {
-  PUT_COMPONENT_LIST, SET_CURRENT_DRAG_COMPONENT,
-} from "../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import * as uuid from "uuid";
 import { hasNotPlaceholder, isSelect } from "../utils/utils";
 import { FormComProp } from "../stores/typings";
+import { GLOBAL_STATE } from "../stores/state";
 
 const getNewOptions = (data: OptionGroup[]) => {
   return data.map((item) => {
@@ -65,8 +62,11 @@ const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
 
 const initOptions = getNewOptions(options);
 export default () => {
-  const { currentDragComponent ,componentList, commonDispatch } = useContext(Context);
   const [_options, setOptions] = useState(initOptions);
+
+  const onFocus = (childItem: any) => {
+    GLOBAL_STATE.currentDragComponent = childItem
+  }
 
   const generator = (data: any[]) => {
     return data.map((item) => {
@@ -79,7 +79,6 @@ export default () => {
             style={{ paddingLeft: 12 }}
             icon={<IconFont type={item.icon} />}
             type="text"
-            // size="large"
             disabled
           >
             {item.label}
@@ -98,16 +97,6 @@ export default () => {
             animation={200}
             delayOnTouchOnly
             onEnd={() => {
-              // 仅仅在初始化时生效
-              if (componentList.length === 0) {
-                commonDispatch({
-                  type: PUT_COMPONENT_LIST,
-                  payload: {
-                    ...(currentDragComponent || {}),
-                    chosen: true,
-                  },
-                });
-              }
               setOptions(getNewOptions(_options));
             }}
           >
@@ -120,12 +109,7 @@ export default () => {
                       style={{ backgroundColor: '#f8f8f8', fontSize: '12px' }}
                       type="default"
                       icon={<IconFont type={childItem.icon} />}
-                      onFocus={() => {
-                        commonDispatch({
-                          type: SET_CURRENT_DRAG_COMPONENT,
-                          payload: childItem,
-                        });
-                      }}
+                      onFocus={() => onFocus(childItem)}
                     >
                       {childItem.label}
                     </Button>

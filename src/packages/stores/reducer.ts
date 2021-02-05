@@ -7,7 +7,7 @@ import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
   UPDATE_COMPONENT_LIST_BY_CHOSEN,
 } from "./action-type";
-import { CommonState, FlagState, NotFoundState } from "./typings";
+import { CommonState } from "./typings";
 import { merge, cloneDeep } from "lodash";
 
 /**
@@ -16,10 +16,10 @@ import { merge, cloneDeep } from "lodash";
  * @param action
  */
 export const commonReducer = (
-  state: CommonState & FlagState & NotFoundState,
+  state: CommonState,
   action: { type: string; payload: any }
 ) => {
-  const strategy: { [key: string]: () => CommonState & FlagState & NotFoundState } = {
+  const strategy: { [key: string]: () => CommonState} = {
     [SET_CURRENT_DRAG_COMPONENT]: () => {
       return {
         ...state,

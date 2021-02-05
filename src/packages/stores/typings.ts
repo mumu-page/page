@@ -42,14 +42,6 @@ export interface FormComProp {
     [key: string]: any;
 }
 
-export interface FlagState extends commonDispatch<boolean> {
-    flag: boolean;
-}
-
-export interface NotFoundState extends commonDispatch<boolean> {
-    showNotFound: boolean;
-}
-
 export interface CommonState extends commonDispatch<object> {
     currentDragComponent: FormComProp;                      // 当前拖拽的表单控件
     componentList: FormComProp[],                           // 当前编辑区的组件列表

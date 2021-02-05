@@ -1,9 +1,7 @@
 import React from "react";
-import { CommonState, FlagState, NotFoundState } from "./typings";
+import { CommonState } from "./typings";
 
-export const initialState: CommonState & FlagState & NotFoundState = {
-  flag: false,
-  showNotFound: true,
+export const initialState: CommonState = {
   currentDragComponent: {
     id: '',
     componentKey: '',

@@ -8,7 +8,7 @@ import {
 import { Context, initialState } from "./stores/context";
 import { commonReducer } from "./stores/reducer";
 import { useLocallyPersistedReducer } from "./hooks";
-import { CommonState, FlagState, NotFoundState } from "./stores/typings";
+import { CommonState } from "./stores/typings";
 import { LOCAL_STORE_KEY } from "./constants";
 import "./visual-editor.scss";
 
@@ -18,7 +18,7 @@ export default () => {
   return (
     <Context.Provider
       value={{
-        ...(state as CommonState & FlagState & NotFoundState || {}),
+        ...(state as CommonState || {}),
         commonDispatch,
       }}
     >
