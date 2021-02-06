@@ -46,7 +46,7 @@ export default function () {
 
   return (
     <>
-      {componentList.length ? (
+      {componentList.length && currentDragComponent?.id ? (
         <>
           <Form {...layout} form={form} onValuesChange={onValuesChange}>
             <Form.Item label="组件类型" name="componentKey">

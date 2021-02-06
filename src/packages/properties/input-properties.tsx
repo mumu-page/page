@@ -1,47 +1,55 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { Form, Input, InputNumber, Radio, Switch, Button, Divider } from "antd";
-import { Context } from "../stores/context";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import { Form, Input, InputNumber, Radio, Switch, Button, Divider } from 'antd'
+import { Context } from '../stores/context'
 import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
   SET_CURRENT_DRAG_COMPONENT,
-} from "../stores/action-type";
-import { debounce } from "lodash";
-import { SelectOutlined } from "@ant-design/icons";
-import { IconModal, IconModalInstanceProp } from "../components";
+} from '../stores/action-type'
+import { debounce } from 'lodash'
+import { SelectOutlined } from '@ant-design/icons'
+import { IconModal, IconModalInstanceProp } from '../components'
 
 const layout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 15 },
-};
-let shouldUpdate = true;
+}
+let shouldUpdate = true
 export default () => {
-  const [form] = Form.useForm();
-  const iconModal = useRef<IconModalInstanceProp>(null);
-  const { currentDragComponent, commonDispatch } = useContext(Context);
-  const { id, componentProps = {} } = currentDragComponent || {};
+  const [form] = Form.useForm()
+  const iconModal = useRef<IconModalInstanceProp>(null)
+  const { currentDragComponent, commonDispatch } = useContext(Context)
+  const { id, componentProps = {} } = currentDragComponent || {}
   const [iconType, setIconType] = useState<'prefix' | 'suffix'>('prefix')
 
-  const onValuesChange = useCallback(debounce((changedValues: any, allValues: any) => {
-    shouldUpdate = false
-    commonDispatch({
-      type: SET_CURRENT_DRAG_COMPONENT,
-      payload: {
-        id,
-        componentProps: {
-          defaultValue: allValues?.defaultValue
-        }
-      },
-    });
-    commonDispatch({
-      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-      payload: {
-        id,
-        data: {
-          componentProps: allValues,
-        }
-      },
-    });
-  }), [])
+  const onValuesChange = debounce(
+    useCallback((changedValues: any, allValues: any) => {
+      shouldUpdate = false
+      commonDispatch({
+        type: SET_CURRENT_DRAG_COMPONENT,
+        payload: {
+          id,
+          componentProps: {
+            defaultValue: allValues?.defaultValue,
+          },
+        },
+      })
+      commonDispatch({
+        type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+        payload: {
+          id,
+          data: {
+            componentProps: allValues,
+          },
+        },
+      })
+    }, [commonDispatch, id])
+  )
 
   const setPrefix = () => {
     iconModal.current?.show()
@@ -59,21 +67,21 @@ export default () => {
       payload: {
         id,
         componentProps: {
-          [iconType]: iconKey
-        }
+          [iconType]: iconKey,
+        },
       },
-    });
+    })
     commonDispatch({
       type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
       payload: {
         id,
         data: {
           componentProps: {
-            [iconType]: iconKey
+            [iconType]: iconKey,
           },
-        }
+        },
       },
-    });
+    })
   }
 
   useEffect(() => {
@@ -85,7 +93,7 @@ export default () => {
   return (
     <>
       <IconModal ref={iconModal} onOk={onOk} />
-      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
+      <Divider style={{ padding: '0 20px', fontSize: '14px' }}>
         输入框属性
       </Divider>
       <Form
@@ -94,22 +102,28 @@ export default () => {
         initialValues={{
           bordered: true,
           disabled: false,
-          size: 'middle'
+          size: 'middle',
         }}
-        onValuesChange={onValuesChange}>
+        onValuesChange={onValuesChange}
+      >
         <Form.Item label="默认值" name="defaultValue">
-          <Input onBlur={() => shouldUpdate = true} onPressEnter={() => shouldUpdate = true} />
+          <Input
+            onBlur={() => (shouldUpdate = true)}
+            onPressEnter={() => (shouldUpdate = true)}
+          />
         </Form.Item>
         <Form.Item
           label="前置标签"
           tooltip="带标签的 input，设置前置标签"
-          name="addonBefore">
+          name="addonBefore"
+        >
           <Input />
         </Form.Item>
         <Form.Item
           label="后置标签"
           tooltip="带标签的 input，设置后置标签"
-          name="addonAfter">
+          name="addonAfter"
+        >
           <Input />
         </Form.Item>
         <Form.Item
@@ -117,18 +131,38 @@ export default () => {
           tooltip="带有前缀图标的 input"
           name="prefix"
         >
-          <Input readOnly addonAfter={
-            <Button onClick={setPrefix} size='small' type="link" icon={<SelectOutlined />}>选择</Button>
-          } />
+          <Input
+            readOnly
+            addonAfter={
+              <Button
+                onClick={setPrefix}
+                size="small"
+                type="link"
+                icon={<SelectOutlined />}
+              >
+                选择
+              </Button>
+            }
+          />
         </Form.Item>
         <Form.Item
           label="后缀图标"
           tooltip="带有后缀图标的 input"
           name="suffix"
         >
-          <Input readOnly addonAfter={
-            <Button onClick={setSuffix} size='small' type="link" icon={<SelectOutlined />}>选择</Button>
-          } />
+          <Input
+            readOnly
+            addonAfter={
+              <Button
+                onClick={setSuffix}
+                size="small"
+                type="link"
+                icon={<SelectOutlined />}
+              >
+                选择
+              </Button>
+            }
+          />
         </Form.Item>
         <Form.Item label="最大长度" name="maxLength">
           <InputNumber />
@@ -170,5 +204,5 @@ export default () => {
         </Form.Item>
       </Form>
     </>
-  );
+  )
 }

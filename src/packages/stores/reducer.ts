@@ -41,9 +41,7 @@ export const commonReducer = (
     },
     [PUT_COMPONENT_LIST]: () => {
       const componentList = state?.componentList?.map(item => {
-        if (item.id === state.currentDragComponent?.id) {
-          item.chosen = false
-        }
+        item.chosen = false
         return item
       })
       componentList.push(action.payload);

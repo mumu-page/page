@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, } from "react";
-import { Form, Input, Slider, Radio } from "antd";
-import { Context } from "../stores/context";
-import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from "../stores/action-type";
+import React, { useContext, useEffect } from 'react'
+import { Form, Input, Slider, Radio } from 'antd'
+import { Context } from '../stores/context'
+import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from '../stores/action-type'
 
 const layout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 15 },
-};
+}
 
 export default function () {
-  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { currentDragComponent, commonDispatch } = useContext(Context)
   const [form] = Form.useForm()
-  const { id, formItemProps = {} } = currentDragComponent || {};
+  const { id, formItemProps = {} } = currentDragComponent || {}
 
   const onValuesChange = (changedValues: any, allValues: any) => {
-    const { wrapperCol, labelCol } = allValues;
+    const { wrapperCol, labelCol } = allValues
     commonDispatch({
       type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
       payload: {
@@ -25,10 +25,10 @@ export default function () {
             wrapperCol: { span: wrapperCol },
             labelCol: { span: labelCol },
           },
-        }
+        },
       },
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     const { wrapperCol = {}, labelCol = {} } = formItemProps as any
@@ -38,20 +38,20 @@ export default function () {
       wrapperCol: wrapperCol?.span,
       labelCol: labelCol?.span,
     })
-  }, [currentDragComponent])
+  }, [currentDragComponent, form, formItemProps])
 
   return (
     <>
       <Form
         {...layout}
         initialValues={{
-          labelAlign: 'right'
+          labelAlign: 'right',
         }}
         form={form}
         onValuesChange={onValuesChange}
       >
         <Form.Item label="字段名" name="name">
-          <Input onPressEnter={e => {}}/>
+          <Input onPressEnter={(e) => {}} />
         </Form.Item>
         <Form.Item label="标题" name="label">
           <Input />
@@ -61,14 +61,14 @@ export default function () {
           tooltip="需要为输入控件设置布局样式时，使用该属性，用法同 标签布局。"
           name="wrapperCol"
         >
-          <Slider marks={{ 0: "0", 12: "12", 24: "24" }} max={24} />
+          <Slider marks={{ 0: '0', 12: '12', 24: '24' }} max={24} />
         </Form.Item>
         <Form.Item
           label="标签布局"
           tooltip="label 标签布局，同 <Col> 组件"
           name="labelCol"
         >
-          <Slider marks={{ 0: "0", 12: "12", 24: "24" }} max={24} />
+          <Slider marks={{ 0: '0', 12: '12', 24: '24' }} max={24} />
         </Form.Item>
         <Form.Item label="标签对齐" name="labelAlign">
           <Radio.Group>
@@ -78,5 +78,5 @@ export default function () {
         </Form.Item>
       </Form>
     </>
-  );
+  )
 }
