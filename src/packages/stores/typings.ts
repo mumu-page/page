@@ -1,7 +1,7 @@
 export interface commonDispatch<T = boolean> {
     commonDispatch: React.Dispatch<{
         type: string;
-        payload: T;
+        payload?: T;
     }>
 }
 

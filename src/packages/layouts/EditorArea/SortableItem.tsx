@@ -14,7 +14,8 @@ import { ICONS, key2Component } from '../../constants'
 import * as moment from 'moment'
 import * as uuid from 'uuid'
 import { Context } from '../../stores/context'
-import { canChosen, shouldUpdate } from './data'
+import { canChosen } from './data'
+import { areEqualItem } from './utils'
 
 export default memo((prop: FormComProp) => {
   const {
@@ -42,7 +43,6 @@ export default memo((prop: FormComProp) => {
   } else if (['Input', 'Input.TextArea'].includes(componentKey)) {
     componentProps.onChange = debounce((e: any) => {
       const value = e?.target?.value
-      shouldUpdate.set(false)
       commonDispatch({
         type: SET_CURRENT_DRAG_COMPONENT,
         payload: {
@@ -111,7 +111,6 @@ export default memo((prop: FormComProp) => {
           }}
           onClick={() => {
             canChosen.set(true)
-            shouldUpdate.set(true)
             const newId = uuid.v4()
             commonDispatch({
               type: SET_CURRENT_DRAG_COMPONENT,
@@ -144,7 +143,6 @@ export default memo((prop: FormComProp) => {
             canChosen.set(false)
           }}
           onClick={() => {
-            shouldUpdate.set(true)
             commonDispatch({
               type: DEL_COMPONENT_LIST,
               payload: { id },
@@ -164,4 +162,4 @@ export default memo((prop: FormComProp) => {
       </Form.Item>
     </div>
   )
-})
+}, areEqualItem)

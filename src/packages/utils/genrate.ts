@@ -25,7 +25,7 @@ function createFormItem(item: FormComProp) {
   componentPropsKey.forEach((key) => {
     let value = JSON.stringify(componentOtherProps[key])
     if (['prefix', 'suffix'].includes(key)) {
-      value = value.replace(/"/g, '')
+      value = value?.replace(/"/g, '')
     }
     if (typeof value !== 'undefined') {
       componentPropsStr += ` ${key}={${value}}`

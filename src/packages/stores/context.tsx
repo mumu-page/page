@@ -1,5 +1,5 @@
-import React from "react";
-import { CommonState } from "./typings";
+import React from 'react'
+import { CommonState } from './typings'
 
 export const initialState: CommonState = {
   currentDragComponent: {
@@ -9,7 +9,13 @@ export const initialState: CommonState = {
     componentProps: {},
   },
   componentList: [],
-  commonDispatch: ({ type, payload }: { type: string; payload: unknown }) => {},
-};
+  commonDispatch: ({
+    type,
+    payload,
+  }: {
+    type: string
+    payload?: unknown
+  }) => {},
+}
 
-export const Context = React.createContext(initialState);
+export const Context = React.createContext(initialState)

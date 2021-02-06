@@ -1,12 +1,16 @@
+import { isEqual } from 'lodash'
 
-export function areEqual(prevProps: any, nextProps: any) {
-  if (
-    prevProps?.currentDragComponent?.id !== nextProps?.currentDragComponent?.id
-  ) {
-    return false;
+export function areEqualIndex(prevProps: any, nextProps: any) {
+  if (isEqual(prevProps, nextProps)) {
+    return true
   }
-  if (prevProps.componentList === nextProps.componentList) {
-    return true;
+
+  return false
+}
+
+export function areEqualItem(prevProps: any, nextProps: any) {
+  if (isEqual(prevProps, nextProps)) {
+    return true
   }
-  return false;
+  return false
 }
