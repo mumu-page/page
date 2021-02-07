@@ -51,6 +51,7 @@ export default memo((props: EditorAreaProps) => {
     >
       <ReactSortable
         sort
+        className='sortable-list'
         style={{
           height: '100%' ,
         }}
@@ -90,7 +91,7 @@ export default memo((props: EditorAreaProps) => {
       >
         {componentList.map((item: any) => {
           return (
-            <div key={item.id}>
+            <div key={item.id} className='sortable-item-wrap'>
               <SortableItem
                 id={item.id}
                 key={item.id}
