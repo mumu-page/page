@@ -59,10 +59,10 @@ export default function () {
                             <Option key={childItem.key} value={childItem.value}>
                               {childItem.label}
                             </Option>
-                          )
+                          );
                         })}
                     </OptGroup>
-                  )
+                  );
                 })}
               </Select>
             </Form.Item>
@@ -72,8 +72,8 @@ export default function () {
           {key2Component[currentDragComponent.componentKey].properties}
         </>
       ) : (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="未选中控件" />
       )}
     </>
-  )
+  );
 }

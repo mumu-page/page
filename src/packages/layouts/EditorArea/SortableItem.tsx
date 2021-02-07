@@ -1,21 +1,21 @@
-import React, { memo, useContext } from 'react'
-import { Form, Button } from 'antd'
-import { FormComProp } from '../../stores/typings'
-import { cloneDeep, debounce } from 'lodash'
+import React, { memo, useContext } from "react";
+import { Form, Button } from "antd";
+import { FormComProp } from "../../stores/typings";
+import { cloneDeep, debounce } from "lodash";
 import {
   DEL_COMPONENT_LIST,
   PUT_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-} from '../../stores/action-type'
-import { CopyOutlined, DeleteOutlined } from '@ant-design/icons'
-import { isCheck, isDatePicker } from '../../utils/utils'
-import { ICONS, key2Component } from '../../constants'
-import * as moment from 'moment'
-import * as uuid from 'uuid'
-import { Context } from '../../stores/context'
-import { canChosen } from './data'
-import { areEqualItem } from './utils'
+} from "../../stores/action-type";
+import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
+import { isCheck, isDatePicker } from "../../utils/utils";
+import { ICONS, key2Component } from "../../constants";
+import * as moment from "moment";
+import * as uuid from "uuid";
+import { Context } from "../../stores/context";
+import { canChosen } from "./data";
+import { areEqualItem } from "./utils";
 
 export default memo((prop: FormComProp) => {
   const {
@@ -28,10 +28,12 @@ export default memo((prop: FormComProp) => {
   const { componentList, commonDispatch } = useContext(Context);
 
   const handler = {} as any;
-  // 如果是日期类控件，但值不是moment类型，清除值
+  // 1.如果是日期类控件，但值不是moment类型，清除值
+  // 2.如果是级联控件，清除值
   if (
-    isDatePicker(componentKey) &&
-    !moment.isMoment(form.getFieldValue(formItemProps.name))
+    (isDatePicker(componentKey) &&
+      !moment.isMoment(form.getFieldValue(formItemProps.name))) ||
+    ["Cascader"].includes(componentKey)
   ) {
     form?.setFieldsValue({
       [formItemProps.name]: "",
@@ -164,4 +166,4 @@ export default memo((prop: FormComProp) => {
       </Form.Item>
     </div>
   );
-}, areEqualItem)
+}, areEqualItem);
