@@ -107,7 +107,7 @@ export const key2Component = {
     },
     Row: {
         properties: <RowProperties />,
-        component: <Row />
+        component: <Row className='row-wrap' />
     },
     Button: {
         properties: <ButtonProperties />,

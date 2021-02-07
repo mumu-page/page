@@ -83,9 +83,8 @@ export default memo((props: EditorAreaProps) => {
         }}
         onUnchoose={(e) => {
           if (!canChosen.value) return;
-          if (componentList.length === 1) {
-            e.item.classList.add("sortable-chosen");
-          }
+          // FIX: 修复已选中，再次选中则样式丢失
+          e.item.classList.add("sortable-chosen");
           GLOBAL_STATE.currentDragComponent.id = e.item.dataset?.id || "";
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
