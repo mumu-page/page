@@ -82,7 +82,10 @@ export default memo((props: EditorAreaProps) => {
         }}
         onUnchoose={(e) => {
           if (!canChosen.value) return
-          GLOBAL_STATE.currentDragComponent.id = e.item.dataset?.id || ''
+          if (componentList.length === 1) {
+            e.item.classList.add("sortable-chosen");
+          }
+          GLOBAL_STATE.currentDragComponent.id = e.item.dataset?.id || "";
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
             payload: { id: GLOBAL_STATE.currentDragComponent.id },

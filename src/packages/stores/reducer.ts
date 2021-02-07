@@ -25,26 +25,29 @@ export const commonReducer = (
     [SET_CURRENT_DRAG_COMPONENT]: () => {
       return {
         ...state,
-        currentDragComponent: merge(state.currentDragComponent, action.payload),
-      }
+        currentDragComponent: merge(
+          cloneDeep(state.currentDragComponent),
+          action.payload
+        ),
+      };
     },
     [SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST]: () => {
-      let currentDragComponent = {} as any
+      let currentDragComponent = {} as any;
       state.componentList.forEach((item) => {
         if (item?.id === action.payload?.id) {
-          currentDragComponent = cloneDeep(item)
+          currentDragComponent = cloneDeep(item);
         }
-      })
+      });
       return {
         ...state,
         currentDragComponent,
-      } as any
+      } as any;
     },
     [DELETE_ALL_COMPONENT_LIST]: () => {
       return {
         ...state,
         componentList: [],
-      }
+      };
     },
     /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
     [SET_COMPONENT_LIST]: () => {
@@ -54,61 +57,62 @@ export const commonReducer = (
             item?.id ===
             (action.payload?.currentId || state.currentDragComponent?.id)
           ) {
-            item.chosen = true
+            item.chosen = true;
           } else {
-            item.chosen = false
+            item.chosen = false;
           }
-          return item
+          return item;
         }
-      )
-      return { ...state, componentList }
+      );
+      return { ...state, componentList };
     },
     [DEL_COMPONENT_LIST]: () => {
-      const componentList = cloneDeep(state.componentList)
+      const componentList = cloneDeep(state.componentList);
       for (let i = 0; i < componentList.length; i++) {
         if (componentList[i].id === action.payload?.id) {
-          componentList.splice(i, 1)
-          break
+          componentList.splice(i, 1);
+          break;
         }
       }
-      return { ...state, componentList: componentList }
+      return { ...state, componentList: componentList };
     },
     [PUT_COMPONENT_LIST]: () => {
       const componentList = state?.componentList?.map((item) => {
-        item.chosen = false
-        return item
-      })
-      componentList.push(action.payload)
-      return { ...state, componentList: componentList }
+        item.chosen = false;
+        return item;
+      });
+      componentList.push(action.payload);
+      return { ...state, componentList: componentList };
     },
     [INSERT_COMPONENT_LIST]: () => {
-      const { index, data } = action.payload
-      const componentList = cloneDeep(state.componentList)
-      componentList.splice(index, 0, data)
-      return { ...state, componentList: componentList }
+      const { index, data } = action.payload;
+      const componentList = cloneDeep(state.componentList);
+      componentList.splice(index, 0, data);
+      return { ...state, componentList: componentList };
     },
     [UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG]: () => {
-      const { data = {} } = action.payload || {}
+      const { data = {} } = action.payload || {};
       const componentList = state?.componentList?.map((item) => {
         if (item.id === state.currentDragComponent?.id) {
-          item = merge(item, data)
+          item = merge(cloneDeep(item), data);
         }
-        return item
-      })
-      return { ...state, componentList }
+        return item;
+      });
+      return { ...state, componentList };
     },
+    // 同时更新当前选中控件和设计区控件列表
     [UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG]: () => {
-      const { componentKey, newComponentProps } = action.payload || {}
+      const { componentKey, newComponentProps } = action.payload || {};
       const componentList = state?.componentList?.map((item) => {
         if (item.id === state.currentDragComponent?.id) {
-          item.componentKey = componentKey
+          item.componentKey = componentKey;
           item.componentProps = {
             ...item.componentProps,
             ...newComponentProps,
-          }
+          };
         }
-        return item
-      })
+        return item;
+      });
       return {
         ...state,
         currentDragComponent: {
@@ -117,12 +121,15 @@ export const commonReducer = (
           componentProps: newComponentProps,
         },
         componentList,
-      }
+      };
     },
-  }
+  };
 
   if (typeof strategy[action.type] === 'function') {
-    console.table({[action.type]: strategy[action.type]()})
+    console.table({
+      [action.type]: strategy[action.type](),
+      payload: action.payload,
+    });
     return strategy[action.type]()
   } else {
     return { ...state }

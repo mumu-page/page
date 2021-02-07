@@ -1,52 +1,52 @@
-import React, { useEffect, useContext, useRef, useCallback } from 'react'
-import { Divider, Form, Input, Slider } from 'antd'
-import { Context } from '../stores/context'
+import React, { useEffect, useContext, useRef, useCallback } from "react";
+import { Divider, Form, Input, Slider } from "antd";
+import { Context } from "../stores/context";
 import {
   SET_CURRENT_DRAG_COMPONENT,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-} from '../stores/action-type'
-import { isDatePickerRange } from '../utils/utils'
-import { PLACEHOLDER_ENUM } from '../constants'
-import { debounce } from 'lodash'
+} from "../stores/action-type";
+import { isDatePickerRange } from "../utils/utils";
+import { PLACEHOLDER_ENUM } from "../constants";
+import { debounce } from "lodash";
 
 const layout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 15 },
-}
+};
 
 interface FormData {
-  componentWidth: string
-  placeholder: string | string[]
+  componentWidth: string;
+  placeholder: string | string[];
 }
 /**
  * 组件的公共属性设置
  */
 export default function () {
-  const [form] = Form.useForm<FormData>()
-  const { currentDragComponent, commonDispatch } = useContext(Context)
-  const { id, componentProps = {}, componentKey } = currentDragComponent || {}
+  const [form] = Form.useForm<FormData>();
+  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { id, componentProps = {}, componentKey } = currentDragComponent || {};
 
   const placeholderRef = useRef(
     isDatePickerRange(componentKey)
       ? Array.isArray(componentProps?.placeholder)
         ? componentProps?.placeholder
-        : ['', '']
-      : ['', '']
-  )
+        : ["", ""]
+      : ["", ""]
+  );
   const onValuesChange = debounce(
     useCallback(
       (changedValues: any, allValues: FormData) => {
+        // 如果是日期范围类控件，设置placeholder为数组
         if (isDatePickerRange(currentDragComponent?.componentKey)) {
-          allValues.placeholder = placeholderRef.current
+          allValues.placeholder = placeholderRef.current;
         }
-        const { placeholder, componentWidth } = allValues
+        const { placeholder, componentWidth } = allValues;
         const style = {
-          width: componentWidth + '%',
-        }
+          width: componentWidth + "%",
+        };
         commonDispatch({
           type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
           payload: {
-            id,
             data: {
               componentProps: {
                 placeholder,
@@ -54,15 +54,29 @@ export default function () {
               },
             },
           },
-        })
+        });
+
+        // 如果是设置的组件宽度，更新当前控件
+        if (changedValues?.componentWidth) {
+          commonDispatch({
+            type: SET_CURRENT_DRAG_COMPONENT,
+            payload: {
+              id,
+              componentProps: {
+                placeholder,
+                style,
+              },
+            },
+          });
+        }
       },
       [commonDispatch, currentDragComponent?.componentKey, id]
     )
-  )
+  );
 
   const setPlaceholderRef = (index: number, value: any) => {
     try {
-      placeholderRef.current[index] = value
+      placeholderRef.current[index] = value;
       commonDispatch({
         type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
         payload: {
@@ -72,9 +86,9 @@ export default function () {
             },
           },
         },
-      })
+      });
     } catch (error) {}
-  }
+  };
 
   const upCurrenDrag = (placeholder: any) => {
     commonDispatch({
@@ -85,17 +99,21 @@ export default function () {
           placeholder,
         },
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    form.resetFields()
-    form.setFieldsValue(componentProps)
-  }, [componentProps, currentDragComponent, form])
+    const { style } = componentProps || {};
+    form.resetFields();
+    form.setFieldsValue({
+      ...componentProps,
+      componentWidth: style?.width?.replace("%", ""),
+    });
+  }, [componentProps, currentDragComponent, form]);
 
   return (
     <>
-      <Divider style={{ padding: '0 20px', fontSize: '14px' }}>
+      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
         公共属性
       </Divider>
       <Form
@@ -106,10 +124,10 @@ export default function () {
       >
         <Form.Item label="组件宽度" name="componentWidth">
           <Slider
-            marks={{ 0: '0%', 50: '50%', 100: '100%' }}
+            marks={{ 0: "0%", 50: "50%", 100: "100%" }}
             min={0}
             max={100}
-            tipFormatter={(val) => val + '%'}
+            tipFormatter={(val) => val + "%"}
           />
         </Form.Item>
         <Form.Item label="占位提示" name="placeholder">
@@ -121,12 +139,12 @@ export default function () {
                   PLACEHOLDER_ENUM[currentDragComponent.componentKey] &&
                   PLACEHOLDER_ENUM[currentDragComponent.componentKey][0]
                 }
-                style={{ width: '50%' }}
+                style={{ width: "50%" }}
                 onBlur={() => upCurrenDrag(placeholderRef?.current)}
                 onPressEnter={() => upCurrenDrag(placeholderRef?.current)}
                 onInput={(e: any) => {
-                  const value = e.target.value
-                  setPlaceholderRef(0, value)
+                  const value = e.target.value;
+                  setPlaceholderRef(0, value);
                 }}
               />
               <Input
@@ -135,12 +153,12 @@ export default function () {
                   PLACEHOLDER_ENUM[currentDragComponent.componentKey] &&
                   PLACEHOLDER_ENUM[currentDragComponent.componentKey][1]
                 }
-                style={{ width: '50%' }}
+                style={{ width: "50%" }}
                 onBlur={upCurrenDrag}
                 onPressEnter={upCurrenDrag}
                 onInput={(e: any) => {
-                  const value = e.target.value
-                  setPlaceholderRef(1, value)
+                  const value = e.target.value;
+                  setPlaceholderRef(1, value);
                 }}
               />
             </Input.Group>
@@ -153,5 +171,5 @@ export default function () {
         </Form.Item>
       </Form>
     </>
-  )
+  );
 }

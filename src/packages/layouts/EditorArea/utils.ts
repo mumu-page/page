@@ -1,16 +1,11 @@
 import { isEqual } from 'lodash'
 
 export function areEqualIndex(prevProps: any, nextProps: any) {
-  if (isEqual(prevProps, nextProps)) {
-    return true
-  }
-
-  return false
+  //  return isEqual(prevProps, nextProps);
+  return false;
 }
 
 export function areEqualItem(prevProps: any, nextProps: any) {
-  if (isEqual(prevProps, nextProps)) {
-    return true
-  }
-  return false
+  // return isEqual(prevProps, nextProps);
+  return false;
 }

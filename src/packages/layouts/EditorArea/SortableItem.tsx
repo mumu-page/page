@@ -24,26 +24,26 @@ export default memo((prop: FormComProp) => {
     formItemProps = {},
     componentProps = {},
     form,
-  } = prop
-  const { componentList,commonDispatch } = useContext(Context)
+  } = prop;
+  const { componentList, commonDispatch } = useContext(Context);
 
-  const handler = {} as any
-  // 清除值
+  const handler = {} as any;
+  // 如果是日期类控件，但值不是moment类型，清除值
   if (
     isDatePicker(componentKey) &&
     !moment.isMoment(form.getFieldValue(formItemProps.name))
   ) {
-    form.setFieldsValue({
-      [formItemProps.name]: '',
-    })
+    form?.setFieldsValue({
+      [formItemProps.name]: "",
+    });
   }
-  if (['Select'].includes(componentKey)) {
+  if (["Select"].includes(componentKey)) {
     handler.onSelect = (value: any) => {
-      console.log('value', value)
-    }
-  } else if (['Input', 'Input.TextArea'].includes(componentKey)) {
+      console.log("value", value);
+    };
+  } else if (["Input", "Input.TextArea"].includes(componentKey)) {
     handler.onChange = debounce((e: any) => {
-      const value = e?.target?.value
+      const value = e?.target?.value;
       commonDispatch({
         type: SET_CURRENT_DRAG_COMPONENT,
         payload: {
@@ -52,8 +52,8 @@ export default memo((prop: FormComProp) => {
             defaultValue: value,
           },
         },
-      })
-    })
+      });
+    });
     const upList = (value: any) => {
       commonDispatch({
         type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
@@ -64,35 +64,35 @@ export default memo((prop: FormComProp) => {
             },
           },
         },
-      })
-    }
+      });
+    };
     handler.onPressEnter = (e: any) => {
-      const value = e?.target?.value
-      upList(value)
-    }
+      const value = e?.target?.value;
+      upList(value);
+    };
     handler.onBlur = (e: any) => {
-      const value = e?.target?.value
-      console.log('onBlur')
-      upList(value)
-    }
+      const value = e?.target?.value;
+      console.log("onBlur");
+      upList(value);
+    };
   } else {
     handler.onChange = (value: any) => {
-      console.log('value', value)
-    }
+      console.log("value", value);
+    };
   }
-  const { defaultValue, ...componentOtherProps } = componentProps
+  const { defaultValue, ...componentOtherProps } = componentProps;
   // 输入框前后图标处理
-  const componentPropsKey = Object.keys(componentOtherProps)
-  if (['Input'].includes(componentKey)) {
-    if (componentPropsKey.includes('prefix')) {
+  const componentPropsKey = Object.keys(componentOtherProps);
+  if (["Input"].includes(componentKey)) {
+    if (componentPropsKey.includes("prefix")) {
       const IconComponent =
-        (ICONS as any)[componentOtherProps['prefix']] || React.Fragment
-      componentOtherProps['prefix'] = <IconComponent />
+        (ICONS as any)[componentOtherProps["prefix"]] || React.Fragment;
+      componentOtherProps["prefix"] = <IconComponent />;
     }
-    if (componentPropsKey.includes('suffix')) {
+    if (componentPropsKey.includes("suffix")) {
       const IconComponent =
-        (ICONS as any)[componentOtherProps['suffix']] || React.Fragment
-      componentOtherProps['suffix'] = <IconComponent />
+        (ICONS as any)[componentOtherProps["suffix"]] || React.Fragment;
+      componentOtherProps["suffix"] = <IconComponent />;
     }
   }
 
@@ -105,66 +105,63 @@ export default memo((prop: FormComProp) => {
           size="small"
           icon={<CopyOutlined />}
           onMouseLeave={() => {
-            canChosen.set(true)
+            canChosen.set(true);
           }}
           onMouseEnter={() => {
-            canChosen.set(false)
+            canChosen.set(false);
           }}
           onClick={() => {
-            let current = {} as any
-            const newId = uuid.v4()
-            componentList.forEach(item => {
-              if(item?.id === id) {
-                current = cloneDeep(item)
+            let current = {} as any;
+            const newId = uuid.v4();
+            componentList.forEach((item) => {
+              if (item?.id === id) {
+                current = cloneDeep(item);
               }
-            })
-            current.id = newId
-            current.key = newId
-            current.chosen = true
+            });
+            current.id = newId;
+            current.key = newId;
+            current.chosen = true;
             commonDispatch({
               type: SET_CURRENT_DRAG_COMPONENT,
               payload: current,
-            })  
+            });
             commonDispatch({
               type: PUT_COMPONENT_LIST,
               payload: current,
-            })
+            });
           }}
         />
         <Button
           type="default"
           shape="circle"
           size="small"
-          style={{ marginLeft: '5px' }}
+          style={{ marginLeft: "5px" }}
           danger
           icon={<DeleteOutlined />}
           onMouseLeave={() => {
-            canChosen.set(true)
+            canChosen.set(true);
           }}
           onMouseEnter={() => {
-            canChosen.set(false)
+            canChosen.set(false);
           }}
           onClick={() => {
             commonDispatch({
               type: DEL_COMPONENT_LIST,
               payload: { id },
-            })
+            });
           }}
         />
       </div>
       <Form.Item
         {...formItemProps}
-        valuePropName={isCheck(componentKey) ? 'checked' : 'value'}
+        valuePropName={isCheck(componentKey) ? "checked" : "value"}
         style={{ marginBottom: 0 }}
       >
-        {React.cloneElement(
-          key2Component[componentKey]?.component || <></>,
-          {
-            ...componentOtherProps,
-            ...handler
-          }
-        )}
+        {React.cloneElement(key2Component[componentKey]?.component || <></>, {
+          ...componentOtherProps,
+          ...handler,
+        })}
       </Form.Item>
     </div>
-  )
+  );
 }, areEqualItem)

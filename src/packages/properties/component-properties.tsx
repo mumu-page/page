@@ -28,7 +28,6 @@ export default function () {
     if (isDatePicker(allValues.componentKey)) {
       newComponentProps.defaultValue = ''
     }
-    // 同时更新当前选中控件和设计区列表 清除
     commonDispatch({
       type: UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG,
       payload: {
