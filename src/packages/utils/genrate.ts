@@ -39,12 +39,17 @@ function createFormItem(item: FormComProp) {
 
 function generate(componentList: FormComProp[]) {
   let ret = ''
+  const initialValues = {} as any;
   componentList.forEach((item) => {
     ret += createFormItem(item)
+    if (item.componentProps?.defaultValue && item.formItemProps?.name) {
+      initialValues[item.formItemProps.name] =
+        item.componentProps?.defaultValue;
+    }
   })
-  return `<Form>
+  return `<Form initialValues={${JSON.stringify(initialValues)}}>
         ${ret}
-    </Form>`
+    </Form>`;
 }
 
 export { generate }
