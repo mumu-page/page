@@ -7,8 +7,8 @@ import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
   UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG,
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
-  DELETE_ALL_COMPONENT_LIST,
-} from './action-type'
+  DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG,
+} from "./action-type";
 import { CommonState } from './typings'
 import { merge, cloneDeep } from 'lodash'
 
@@ -43,10 +43,17 @@ export const commonReducer = (
         currentDragComponent,
       } as any;
     },
-    [DELETE_ALL_COMPONENT_LIST]: () => {
+    // 清空控件列表和当前拖拽控件数据
+    [DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG]: () => {
       return {
         ...state,
         componentList: [],
+        currentDragComponent: {
+          id: "",
+          componentKey: "",
+          formItemProps: {},
+          componentProps: {},
+        },
       };
     },
     /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */

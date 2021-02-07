@@ -107,7 +107,7 @@ export default function () {
     form.resetFields();
     form.setFieldsValue({
       ...componentProps,
-      componentWidth: style?.width?.replace("%", ""),
+      componentWidth: style?.width?.replace("%", "") || 100,
     });
   }, [componentProps, currentDragComponent, form]);
 

@@ -10,7 +10,7 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons'
 import { Context } from '../stores/context'
-import { DELETE_ALL_COMPONENT_LIST } from '../stores/action-type'
+import { DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG } from '../stores/action-type'
 import { Preview } from '../components'
 import { PreviewInstanceProps } from '../components/Preview/typings'
 import { generate } from '../utils/genrate'
@@ -29,7 +29,7 @@ export default function () {
       okText: '确定',
       cancelText: '取消',
       onOk() {
-        commonDispatch({ type: DELETE_ALL_COMPONENT_LIST })
+        commonDispatch({ type: DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG })
       },
     })
   }
