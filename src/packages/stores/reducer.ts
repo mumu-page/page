@@ -32,7 +32,7 @@ export const commonReducer = (
       let currentDragComponent = {} as any
       state.componentList.forEach((item) => {
         if (item?.id === action.payload?.id) {
-          currentDragComponent = item
+          currentDragComponent = cloneDeep(item)
         }
       })
       return {
@@ -46,6 +46,7 @@ export const commonReducer = (
         componentList: [],
       }
     },
+    /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
     [SET_COMPONENT_LIST]: () => {
       const componentList = action.payload?.newState?.map(
         (item: { id: any; chosen: boolean }) => {
@@ -121,6 +122,7 @@ export const commonReducer = (
   }
 
   if (typeof strategy[action.type] === 'function') {
+    console.table({[action.type]: strategy[action.type]()})
     return strategy[action.type]()
   } else {
     return { ...state }

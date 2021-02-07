@@ -1,7 +1,7 @@
 import React, { memo, useContext } from 'react'
 import { Form, Button } from 'antd'
 import { FormComProp } from '../../stores/typings'
-import { debounce } from 'lodash'
+import { cloneDeep, debounce } from 'lodash'
 import {
   DEL_COMPONENT_LIST,
   PUT_COMPONENT_LIST,
@@ -25,8 +25,9 @@ export default memo((prop: FormComProp) => {
     componentProps = {},
     form,
   } = prop
-  const { commonDispatch } = useContext(Context)
+  const { componentList,commonDispatch } = useContext(Context)
 
+  const handler = {} as any
   // 清除值
   if (
     isDatePicker(componentKey) &&
@@ -37,11 +38,11 @@ export default memo((prop: FormComProp) => {
     })
   }
   if (['Select'].includes(componentKey)) {
-    componentProps.onSelect = (value: any) => {
+    handler.onSelect = (value: any) => {
       console.log('value', value)
     }
   } else if (['Input', 'Input.TextArea'].includes(componentKey)) {
-    componentProps.onChange = debounce((e: any) => {
+    handler.onChange = debounce((e: any) => {
       const value = e?.target?.value
       commonDispatch({
         type: SET_CURRENT_DRAG_COMPONENT,
@@ -57,7 +58,6 @@ export default memo((prop: FormComProp) => {
       commonDispatch({
         type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
         payload: {
-          id,
           data: {
             componentProps: {
               defaultValue: value,
@@ -66,16 +66,17 @@ export default memo((prop: FormComProp) => {
         },
       })
     }
-    componentProps.onPressEnter = (e: any) => {
+    handler.onPressEnter = (e: any) => {
       const value = e?.target?.value
       upList(value)
     }
-    componentProps.onBlur = (e: any) => {
+    handler.onBlur = (e: any) => {
       const value = e?.target?.value
+      console.log('onBlur')
       upList(value)
     }
   } else {
-    componentProps.onChange = (value: any) => {
+    handler.onChange = (value: any) => {
       console.log('value', value)
     }
   }
@@ -110,22 +111,23 @@ export default memo((prop: FormComProp) => {
             canChosen.set(false)
           }}
           onClick={() => {
-            canChosen.set(true)
+            let current = {} as any
             const newId = uuid.v4()
+            componentList.forEach(item => {
+              if(item?.id === id) {
+                current = cloneDeep(item)
+              }
+            })
+            current.id = newId
+            current.key = newId
+            current.chosen = true
             commonDispatch({
               type: SET_CURRENT_DRAG_COMPONENT,
-              payload: {
-                id: newId,
-                componentKey,
-              },
-            })
+              payload: current,
+            })  
             commonDispatch({
               type: PUT_COMPONENT_LIST,
-              payload: {
-                ...prop,
-                id: newId,
-                chosen: true,
-              },
+              payload: current,
             })
           }}
         />
@@ -157,7 +159,10 @@ export default memo((prop: FormComProp) => {
       >
         {React.cloneElement(
           key2Component[componentKey]?.component || <></>,
-          componentOtherProps
+          {
+            ...componentOtherProps,
+            ...handler
+          }
         )}
       </Form.Item>
     </div>

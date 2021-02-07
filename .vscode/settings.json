@@ -1,0 +1,11 @@
+{
+  "eslint.run": "onSave",
+  "eslint.alwaysShowStatus": true,
+  "eslint.packageManager": "yarn",
+  "eslint.quiet": true,
+  "css.lint.float": "warning",
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modifications"
+}

@@ -85,7 +85,7 @@ export default memo((props: EditorAreaProps) => {
           GLOBAL_STATE.currentDragComponent.id = e.item.dataset?.id || ''
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
-            payload: { id: e.item.dataset.id },
+            payload: { id: GLOBAL_STATE.currentDragComponent.id },
           })
         }}
       >
