@@ -31,17 +31,7 @@ export default () => {
               <LeftSidebar />
             </div>
             <div className="editor-area-scroll">
-              <div
-                className="editor-area"
-                style={{
-                  height:
-                    (state as CommonState)?.componentList?.length === 0
-                      ? '100%'
-                      : 'auto',
-                }}
-              >
-                <EditorArea />
-              </div>
+            <EditorArea />
             </div>
           </div>
         </div>

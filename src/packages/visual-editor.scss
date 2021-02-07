@@ -27,11 +27,10 @@
         overflow-y: auto;
         flex-shrink: 0;
         flex: 1;
-        padding: 0 10px;
+        height: 100%;
+        padding: 0 15px;
         position: relative;
-        .editor-area {
-          padding: 15px 0;
-          .not-found-info {
+        .not-found-info {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -46,7 +45,6 @@
             bottom: 0;
             letter-spacing: 4px;
           }
-        }
       }
     }
   }
@@ -114,7 +112,7 @@
   border-bottom-right-radius: 10px;
 }
 
-.editor-area {
+.editor-area-scroll {
   .component-warp {
     margin: 12px 0 !important;
     padding: 11px;
@@ -127,6 +125,12 @@
       .action-btn {
         display: block;
       }
+    }
+    &:first-child {
+        margin-top: 24px!important;
+    }
+    &:last-child {
+        margin-bottom: 24px!important;
     }
     .action-btn {
       display: none;
@@ -157,8 +161,7 @@
   // 所选项目的类样式
   .sortable-chosen {
     background-color: #f8f8f8;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-radius: 10px;
   }
   .ant-col-12 {
     padding: 10px !important;

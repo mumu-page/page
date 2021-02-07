@@ -44,7 +44,7 @@ export default memo((props: EditorAreaProps) => {
   return (
     <Form
       style={{
-        height: componentList.length === 0 ? '100%' : 'auto',
+        height:'100%' ,
         position: 'relative',
       }}
       form={form}
@@ -52,7 +52,7 @@ export default memo((props: EditorAreaProps) => {
       <ReactSortable
         sort
         style={{
-          height: componentList.length === 0 ? '100%' : 'auto',
+          height: '100%' ,
         }}
         group={{
           name: 'editor-area',
