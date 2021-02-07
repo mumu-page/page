@@ -44,19 +44,20 @@ export default memo((props: EditorAreaProps) => {
   return (
     <Form
       style={{
-        height:'100%' ,
-        position: 'relative',
+        height: "100%",
+        position: "relative",
       }}
       form={form}
     >
       <ReactSortable
         sort
-        className='sortable-list'
+        className="sortable-list"
         style={{
-          height: '100%' ,
+          height: "100%",
+          paddingTop: componentList.length === 0 ? "17px" : "",
         }}
         group={{
-          name: 'editor-area',
+          name: "editor-area",
           put: true,
         }}
         list={componentList}
@@ -72,16 +73,16 @@ export default memo((props: EditorAreaProps) => {
               currentId: GLOBAL_STATE?.currentDragComponent?.id,
               newState,
             },
-          })
+          });
         }}
         onAdd={(e) => {
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT,
             payload: GLOBAL_STATE.currentDragComponent,
-          })
+          });
         }}
         onUnchoose={(e) => {
-          if (!canChosen.value) return
+          if (!canChosen.value) return;
           if (componentList.length === 1) {
             e.item.classList.add("sortable-chosen");
           }
@@ -89,12 +90,12 @@ export default memo((props: EditorAreaProps) => {
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
             payload: { id: GLOBAL_STATE.currentDragComponent.id },
-          })
+          });
         }}
       >
         {componentList.map((item: any) => {
           return (
-            <div key={item.id} className='sortable-item-wrap'>
+            <div key={item.id} className="sortable-item-wrap">
               <SortableItem
                 id={item.id}
                 key={item.id}
@@ -104,9 +105,9 @@ export default memo((props: EditorAreaProps) => {
                 componentKey={item.componentKey}
               />
             </div>
-          )
+          );
         })}
       </ReactSortable>
     </Form>
-  )
+  );
 }, areEqualIndex)
