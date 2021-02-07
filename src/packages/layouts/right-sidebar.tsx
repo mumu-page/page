@@ -9,7 +9,7 @@ export default function () {
   const { componentList, commonDispatch } = useContext(Context);
 
   useEffect(() => {
-    // 如果空间列表没有被选中的，则清空当前选中控件
+    // 如果控件列表没有被选中的，则清空当前选中控件
     const comList = componentList?.filter((item) => item.chosen);
     if (!comList.length) {
       commonDispatch({
