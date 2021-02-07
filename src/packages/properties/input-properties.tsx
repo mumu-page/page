@@ -88,7 +88,6 @@ export default () => {
     if (!shouldUpdate) return
     form.resetFields()
     form.setFieldsValue(componentProps)
-    console.log("componentProps", componentProps);
   }, [componentProps, currentDragComponent, form])
 
   return (
