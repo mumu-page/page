@@ -11,10 +11,26 @@ import React, {
 import * as monaco from "monaco-editor";
 import { CodeEditorInstanceProps, CodeEditorProps } from "./typings";
 import { Spin } from "antd";
-import "./index.scss";
 import { isEqual } from "lodash";
+import "./index.scss";
 
-// const defaultCode = ['function x() {', '\tconsole.log("Hello world! 111");', '}'].join('\n')
+// 禁用了语法错误，但无法获得语法高亮支持 tsx
+monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  target: monaco.languages.typescript.ScriptTarget.Latest,
+  allowNonTsExtensions: true,
+  moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+  module: monaco.languages.typescript.ModuleKind.CommonJS,
+  noEmit: true,
+  esModuleInterop: true,
+  jsx: monaco.languages.typescript.JsxEmit.React,
+  reactNamespace: "React",
+  allowJs: true,
+  typeRoots: ["node_modules/@types"],
+});
+monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+  noSemanticValidation: false,
+  noSyntaxValidation: false,
+});
 const defaultOptions = {
   theme: "vs-dark",
   language: "typescript",
@@ -38,6 +54,7 @@ const CodeEditor = forwardRef(
     const options = useMemo(() => ({ ...defaultOptions, ...optionProp }), [
       optionProp,
     ]);
+
     const onLayoutChange = useCallback(() => {
       const { offsetHeight, offsetWidth } = element.current || {};
       if (offsetHeight && offsetWidth) {
@@ -47,6 +64,12 @@ const CodeEditor = forwardRef(
         });
       }
     }, []);
+
+    const formatDocument = () => {
+      (editor?.current?.getAction(
+        "editor.action.formatDocument"
+      ) as any)?._run();
+    };
 
     const create = useCallback(
       (el: HTMLElement, value: string, options?: object) => {
@@ -58,7 +81,10 @@ const CodeEditor = forwardRef(
           value,
           ..._options,
         });
-        editor.current.onDidChangeModelContent((_listeners) => {
+        setTimeout(() => {
+          formatDocument();
+        }, 100)
+        editor.current.onDidChangeModelContent(() => {
           onChangeCode && onChangeCode(editor.current?.getValue());
         });
       },
@@ -86,10 +112,6 @@ const CodeEditor = forwardRef(
     );
 
     useEffect(() => {
-      editor.current?.setValue(code);
-    }, [code]);
-
-    useEffect(() => {
       setSpinning(true);
       setTimeout(() => {
         if (element.current) {
@@ -98,43 +120,30 @@ const CodeEditor = forwardRef(
           setSpinning(false);
         }
       });
+    }, []);
+
+    useEffect(() => {
       window?.addEventListener("resize", onLayoutChange);
       return () => {
         window?.removeEventListener("resize", onLayoutChange);
         editor.current?.dispose();
       };
-    }, [code, create, onLayoutChange, options]);
-
-    useEffect(() => {
-      const { offsetHeight, offsetWidth } = element.current || {};
-      if (offsetHeight && offsetWidth) {
-        editor.current?.layout({
-          width: offsetWidth,
-          height: offsetHeight,
-        });
-      }
-    });
+    }, [onLayoutChange]);
 
     return (
-      <>
+      <div className="container">
         {/* 当编辑器插件还没没有加载完成，是没有dom样式的，所以不能直接包裹它 */}
         <Spin
           spinning={spinning}
-          style={{
-            backgroundColor: "#1e1e1e",
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+          className="code-spinning"
         />
         <div className="code-editor" ref={element}></div>
-      </>
+      </div>
     );
   }
 );
 
 export default memo(CodeEditor, (prevProps: any, nextProps: any) => {
+  console.log(prevProps, nextProps);
   return isEqual(prevProps, nextProps);
 });

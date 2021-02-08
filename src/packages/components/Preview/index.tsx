@@ -1,6 +1,5 @@
 import React, {
   useRef,
-  useEffect,
   forwardRef,
   useImperativeHandle,
   useState,
@@ -22,6 +21,12 @@ import { string2Component } from "../../utils/utils";
 import "./index.scss";
 
 const { TabPane } = Tabs;
+const SelectedIcon = () => (
+  <EditOutlined style={{ color: "#f1fa8c", marginRight: "5px" }} />
+);
+const UnSelectedIcon = () => (
+  <FileTextOutlined style={{ color: "#a95812", marginRight: "5px" }} />
+);
 export default forwardRef(function (
   props: PreviewProps,
   ref:
@@ -29,17 +34,32 @@ export default forwardRef(function (
     | React.MutableRefObject<unknown>
     | null
 ) {
-  const { tsxCode: tsxCodeProp, scssCode: scssCodeProp } = props;
-  const [tsxCode, setTsxCode] = useState<string | undefined>(tsxCodeProp);
-  const [scssCode, setScssCode] = useState<string | undefined>(scssCodeProp);
+  const [xmlCode, setXmlCode] = useState<string>("");
+  const [tsCode, setTsCode] = useState<string>("");
+  const [scssCode, setScssCode] = useState<string>("");
   const [visible, setVisible] = useState(false);
-  const [activeKey, setActiveKey] = useState("tsx");
+  const [activeKey, setActiveKey] = useState("xml");
+  const [component, setComponent] = useState(<></>);
+  const xmlEditor = useRef<CodeEditorInstanceProps>(null);
   const tsEditor = useRef<CodeEditorInstanceProps>(null);
   const scssEditor = useRef<CodeEditorInstanceProps>(null);
-  const [component, setComponent] = useState(<></>);
 
-  const onTsxChangCode = useCallback((newCode) => {
-    setTsxCode(newCode);
+  const parseXml = (newCode: string) => {
+    string2Component(newCode)
+      .then((newComponent) => {
+        setComponent(newComponent);
+      })
+      .catch((info) => {
+        message.error(info);
+      });
+  };
+
+  const onXmlChangCode = useCallback((newCode) => {
+    setXmlCode(newCode);
+  }, []);
+
+  const onTsChangCode = useCallback((newCode) => {
+    setTsCode(newCode);
   }, []);
 
   const onScssChangCode = useCallback((newCode) => {
@@ -47,7 +67,7 @@ export default forwardRef(function (
   }, []);
 
   const refresh = () => {
-    string2Component(tsxCode)
+    string2Component(xmlCode)
       .then((newComponent) => {
         setComponent(newComponent);
       })
@@ -61,7 +81,7 @@ export default forwardRef(function (
   const download = () => {};
 
   const close = () => {
-    setActiveKey("tsx");
+    setActiveKey("xml");
     setVisible(false);
   };
 
@@ -72,8 +92,19 @@ export default forwardRef(function (
   useImperativeHandle(
     ref,
     () => ({
+      xmlEditor: xmlEditor.current,
       tsEditor: tsEditor.current,
       scssEditor: scssEditor.current,
+      setXmlCode: (newCode: string) => {
+        setXmlCode(newCode);
+        parseXml(newCode);
+      },
+      setTsCode: (newCode: string) => {
+        setTsCode(newCode);
+      },
+      setScssCode: (newCode: string) => {
+        setScssCode(newCode);
+      },
       open() {
         setVisible(true);
       },
@@ -83,26 +114,6 @@ export default forwardRef(function (
     }),
     []
   );
-
-  useEffect(() => {
-    setTsxCode(tsxCodeProp);
-  }, [tsxCodeProp]);
-
-  useEffect(() => {
-    setScssCode(scssCodeProp);
-  }, [scssCodeProp]);
-
-  useEffect(() => {
-    string2Component(tsxCodeProp)
-      .then((newComponent) => {
-        setComponent(newComponent);
-      })
-      .catch((info) => {
-        message.error(info);
-      });
-  }, [tsxCodeProp]);
-
-  useEffect(() => {}, [scssCode]);
 
   return (
     <Drawer width="100%" visible={visible} closable={false} destroyOnClose>
@@ -116,42 +127,41 @@ export default forwardRef(function (
           type="card"
         >
           <TabPane
-            forceRender
             tab={
               <div>
-                {activeKey === "tsx" ? (
-                  <EditOutlined
-                    style={{ color: "#f1fa8c", marginRight: "5px" }}
-                  />
-                ) : (
-                  <FileTextOutlined
-                    style={{ color: "#a95812", marginRight: "5px" }}
-                  />
-                )}
-                <span>tsx</span>
+                {activeKey === "xml" ? <SelectedIcon /> : <UnSelectedIcon />}
+                <span>xml</span>
               </div>
             }
-            key="tsx"
+            key="xml"
           >
             <CodeEditor
-              ref={tsEditor}
-              code={tsxCodeProp}
+              ref={xmlEditor}
+              code={xmlCode}
               options={{ language: "html" }}
-              onChangeCode={onTsxChangCode}
+              onChangeCode={onXmlChangCode}
             />
           </TabPane>
           <TabPane
             tab={
               <div>
-                {activeKey === "scss" ? (
-                  <EditOutlined
-                    style={{ color: "#f1fa8c", marginRight: "5px" }}
-                  />
-                ) : (
-                  <FileTextOutlined
-                    style={{ color: "#a95812", marginRight: "5px" }}
-                  />
-                )}
+                {activeKey === "ts" ? <SelectedIcon /> : <UnSelectedIcon />}
+                <span>ts</span>
+              </div>
+            }
+            key="ts"
+          >
+            <CodeEditor
+              ref={tsEditor}
+              code={tsCode}
+              options={{ language: "typescript" }}
+              onChangeCode={onTsChangCode}
+            />
+          </TabPane>
+          <TabPane
+            tab={
+              <div>
+                {activeKey === "scss" ? <SelectedIcon /> : <UnSelectedIcon />}
                 <span>scss</span>
               </div>
             }
@@ -159,7 +169,7 @@ export default forwardRef(function (
           >
             <CodeEditor
               ref={scssEditor}
-              code={scssCodeProp}
+              code={scssCode}
               options={{ language: "scss" }}
               onChangeCode={onScssChangCode}
             />

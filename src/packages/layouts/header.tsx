@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef } from "react";
 import { Button, Modal, message } from 'antd'
 import {
   PlayCircleOutlined,
@@ -17,9 +17,7 @@ import { generate } from '../utils/genrate'
 
 export default function () {
   const { componentList, commonDispatch } = useContext(Context)
-  const preview = useRef<PreviewInstanceProps>(null)
-  const [tsxCode, setTsxCode] = useState('')
-  const [scssCode] = useState('.code-editor { width: 100%;height: 100%;}')
+  const preview = useRef<PreviewInstanceProps>(null);
 
   const clean = () => {
     Modal.confirm({
@@ -35,7 +33,7 @@ export default function () {
   }
 
   const run = () => {
-    setTsxCode(generate(componentList))
+    preview.current?.setXmlCode(generate(componentList));
     preview.current?.open()
   }
 
@@ -53,7 +51,7 @@ export default function () {
     <>
       <div className="title">
         <LayoutTwoTone />
-        <span style={{ marginLeft: '10px' }}>Form Generator</span>
+        <span style={{ marginLeft: "10px" }}>Form Generator</span>
       </div>
       <div className="actions">
         <Button
@@ -98,7 +96,7 @@ export default function () {
           清空
         </Button>
       </div>
-      <Preview ref={preview} tsxCode={tsxCode} scssCode={scssCode} />
+      <Preview ref={preview} />
     </>
-  )
+  );
 }
