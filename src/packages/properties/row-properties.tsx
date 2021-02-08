@@ -1,75 +1,81 @@
-import React, { useState } from 'react';
-import { Form, Input, InputNumber, Radio, Switch } from "antd";
+import React, { useState } from 'react'
+import { Form, Input, InputNumber, Radio, Slider, Switch } from 'antd'
 
-type SizeType = Parameters<typeof Form>[0]['size'];
+type SizeType = Parameters<typeof Form>[0]['size']
 const layout = {
-    labelCol: { span: 7 },
-    wrapperCol: { span: 15 },
-};
+  labelCol: { span: 7 },
+  wrapperCol: { span: 15 },
+}
 export default function () {
-    const [componentSize, setComponentSize] = useState<SizeType | 'default'>('default');
-    const onFormLayoutChange = ({ size }: { size: SizeType, labelAlign: 'left' | 'right' }) => {
-        setComponentSize(size);
-    };
-    return (
-        <Form
-            {...layout}
-            initialValues={{ size: componentSize }}
-            onValuesChange={onFormLayoutChange}
-        >
-            <Form.Item
-                label="表单名"
-                name="name">
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label="表单模型"
-                name="initialValues">
-                <Input />
-            </Form.Item>
-            <Form.Item
-                label="表单尺寸"
-                name="size">
-                <Radio.Group>
-                    <Radio.Button value="large">中等</Radio.Button>
-                    <Radio.Button value="default">较小</Radio.Button>
-                    <Radio.Button value="small">迷你</Radio.Button>
-                </Radio.Group>
-            </Form.Item>
-            <Form.Item
-                label="标签对齐"
-                name="labelAlign">
-                <Radio.Group>
-                    <Radio.Button value="left">左对齐</Radio.Button>
-                    <Radio.Button value="right">右对齐</Radio.Button>
-                </Radio.Group>
-            </Form.Item>
-            <Form.Item
-                label="栅格间隔"
-                name="gutter">
-                <InputNumber />
-            </Form.Item>
-            
-            <Form.Item
-                label="禁用表单"
-                name="disabled">
-                <Switch />
-            </Form.Item>
-            
-            <Form.Item
-                label="表单按钮"
-                name="showButton">
-                <Switch />
-            </Form.Item>
-                
-            <Form.Item
-                label="显示边框"
-                tooltip="显示未选中组件边框"
-                name="showOtherBorder">
-                <Switch />
-            </Form.Item>
-
-        </Form>
-    );
+  const [componentSize, setComponentSize] = useState<SizeType | 'default'>(
+    'default'
+  )
+  const onFormLayoutChange = ({
+    size,
+  }: {
+    size: SizeType
+    labelAlign: 'left' | 'right'
+  }) => {
+    setComponentSize(size)
+  }
+  return (
+    <Form
+      {...layout}
+      initialValues={{
+        align: 'top',
+        gutter: 0,
+        justify: 'start',
+        wrap: true,
+      }}
+      onValuesChange={onFormLayoutChange}
+    >
+      <Form.Item label="垂直对齐方式" name="align">
+        <Radio.Group>
+          <Radio.Button value="top">top</Radio.Button>
+          <Radio.Button value="middle">middle</Radio.Button>
+          <Radio.Button value="bottom">bottom</Radio.Button>
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item label="水平排列方式" name="justify">
+        <Radio.Group>
+          <Radio value="start">start</Radio>
+          <Radio value="middle">end</Radio>
+          <Radio value="center">center</Radio>
+          <Radio value="space-around">space-around</Radio>
+          <Radio value="space-between">space-between</Radio>
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item label="自动换行" name="wrap" valuePropName="checked">
+        <Switch />
+      </Form.Item>
+      <Form.Item label="栅格间隔" name="gutter">
+        <Slider
+          marks={{ 0: '0', 24: '24', 48: '48', 72: '72', 100: '100' }}
+          min={0}
+          max={100}
+        />
+      </Form.Item>
+      <Form.Item label="栅格数(span)" name="span">
+        <Slider marks={{ 0: '0', 12: '12', 24: '24' }} min={0} max={24} />
+      </Form.Item>
+      <Form.Item label="栅格数(xs)" name="xs">
+        <Slider marks={{ 0: '0', 12: '12', 24: '24' }} min={0} max={24} />
+      </Form.Item>
+      <Form.Item label="栅格数(sm)" name="sm">
+        <Slider marks={{ 0: '0', 12: '12', 24: '24' }} min={0} max={24} />
+      </Form.Item>
+      <Form.Item label="栅格数(md)" name="md">
+        <Slider marks={{ 0: '0', 12: '12', 24: '24' }} min={0} max={24} />
+      </Form.Item>
+      <Form.Item label="栅格数(lg)" name="lg">
+        <Slider marks={{ 0: '0', 12: '12', 24: '24' }} min={0} max={24} />
+      </Form.Item>
+      <Form.Item label="栅格数(xl)" name="xl">
+        <Slider marks={{ 0: '0', 12: '12', 24: '24' }} min={0} max={24} />
+      </Form.Item>
+      <Form.Item label="栅格数(xxl)" name="xxl">
+        <Slider marks={{ 0: '0', 12: '12', 24: '24' }} min={0} max={24} />
+      </Form.Item>
+    </Form>
+  )
 }

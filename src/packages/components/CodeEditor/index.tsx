@@ -83,7 +83,7 @@ const CodeEditor = forwardRef(
         });
         setTimeout(() => {
           formatDocument();
-        }, 100)
+        }, 500)
         editor.current.onDidChangeModelContent(() => {
           onChangeCode && onChangeCode(editor.current?.getValue());
         });
