@@ -114,7 +114,7 @@ export default function () {
   return (
     <>
       <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
-        公共属性
+        通用属性
       </Divider>
       <Form
         form={form}
