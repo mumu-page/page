@@ -51,7 +51,19 @@ export default function () {
     <>
       <div className="title">
         <LayoutTwoTone />
-        <span style={{ marginLeft: "10px" }}>Form Generator</span>
+        <span style={{ marginLeft: "5px" }}>
+          Form Generator
+          <a
+            href="https://gitee.com/resonances/react-visual-editor"
+            style={{ marginLeft: "20px" }}
+          >
+            <img
+              width={20}
+              src="https://gitee.com/resonances/react-visual-editor/widgets/widget_5.svg?color=00aeff"
+              alt="Fork me on Gitee"
+            ></img>
+          </a>
+        </span>
       </div>
       <div className="actions">
         <Button

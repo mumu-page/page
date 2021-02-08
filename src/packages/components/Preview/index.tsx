@@ -212,6 +212,7 @@ export default forwardRef(function (
             </Button>
           </div>
           <div className="body">{component}</div>
+        
         </div>
       </div>
     </Drawer>
