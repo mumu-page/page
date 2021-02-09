@@ -53,7 +53,7 @@ export default memo((props: EditorAreaProps) => {
         sort
         className="sortable-list"
         style={{
-          height: "100%",
+          paddingBottom: componentList.length === 0 ? "50%" : "",
         }}
         group={{
           name: "editor-area",
@@ -94,17 +94,18 @@ export default memo((props: EditorAreaProps) => {
       >
         {componentList.map((item: any) => {
           const {
+            id,
             componentKey,
             formItemProps,
             componentProps,
             colProps = {},
           } = item;
-          
+
           return (
             <Col key={item.id} {...colProps} className="sortable-item-wrap">
               <SortableItem
-                id={item.id}
-                key={item.id}
+                id={id}
+                key={id}
                 form={form}
                 colProps={colProps}
                 formItemProps={formItemProps}

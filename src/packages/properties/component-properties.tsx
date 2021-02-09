@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { Form, Select, Empty, Divider } from "antd";
+import { Form, Select, Empty } from "antd";
 import { options, key2Component } from '../constants'
 import FormItemProperties from './form-item-properties'
 import { Context } from '../stores/context'

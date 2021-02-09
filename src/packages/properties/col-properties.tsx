@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Divider, Form, Radio, Slider, Switch } from "antd";
+import { Divider, Form, Slider } from "antd";
 import { Context } from "../stores/context";
 import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from "../stores/action-type";
 
@@ -10,7 +10,7 @@ const layout = {
 
 export default function () {
   const { currentDragComponent, commonDispatch } = useContext(Context);
-  const { id, colProps = {} } = currentDragComponent || {};
+  const { id /*  colProps = {} */ } = currentDragComponent || {};
   
   const onValuesChange = (changedValues: any, allValues: any) => {
     commonDispatch({
