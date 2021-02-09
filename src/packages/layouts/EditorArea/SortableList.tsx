@@ -1,45 +1,50 @@
-import React, { memo, useEffect } from 'react'
-import { Form } from 'antd'
-import { FormComProp, commonDispatch } from '../../stores/typings'
+import React, { memo, useEffect } from "react";
+import { Form, Row } from "antd";
+import { FormComProp, commonDispatch } from "../../stores/typings";
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
-} from '../../stores/action-type'
-import { ReactSortable } from 'react-sortablejs'
-import { GLOBAL_STATE } from '../../stores/state'
-import SortableItem from './SortableItem'
-import { isDatePicker } from '../../utils/utils'
-import { canChosen } from './data'
-import { areEqualIndex } from './utils'
+} from "../../stores/action-type";
+import { ReactSortable } from "react-sortablejs";
+import { GLOBAL_STATE } from "../../stores/state";
+import SortableItem from "./SortableItem";
+import {
+  isDatePicker,
+  isRenderFormItem,
+  isRowComponent,
+} from "../../utils/utils";
+import { canChosen } from "./data";
+import { areEqualIndex } from "./utils";
+import HasNotFormItemSortableItem from "./HasNotFormItemSortableItem";
 
 interface EditorAreaProps extends commonDispatch<object> {
-  componentList: FormComProp[]
-  currentDragComponent: FormComProp
+  componentList: FormComProp[];
+  currentDragComponent: FormComProp;
 }
 export default memo((props: EditorAreaProps) => {
-  const { currentDragComponent, componentList, commonDispatch } = props
-  const [form] = Form.useForm()
+  const { currentDragComponent, componentList, commonDispatch } = props;
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    const { componentProps, formItemProps } = currentDragComponent
+    const { componentProps, formItemProps } = currentDragComponent;
     form.setFieldsValue({
       [formItemProps.name]: componentProps?.defaultValue,
-    })
-  }, [currentDragComponent, form])
+    });
+  }, [currentDragComponent, form]);
 
   useEffect(() => {
-    const _initialValues = {} as any
+    const _initialValues = {} as any;
     componentList.forEach((item) => {
-      const { componentKey, formItemProps, componentProps } = item
-      const { name } = formItemProps || {}
-      const { defaultValue } = componentProps || {}
+      const { componentKey, formItemProps, componentProps } = item;
+      const { name } = formItemProps || {};
+      const { defaultValue } = componentProps || {};
       if (!isDatePicker(componentKey)) {
-        _initialValues[name] = defaultValue
+        _initialValues[name] = defaultValue;
       }
-    })
-    form.setFieldsValue(_initialValues)
-  }, [componentList, form])
+    });
+    form.setFieldsValue(_initialValues);
+  }, [componentList, form]);
 
   return (
     <Form
@@ -54,7 +59,6 @@ export default memo((props: EditorAreaProps) => {
         className="sortable-list"
         style={{
           height: "100%",
-          paddingTop: componentList.length === 0 ? "17px" : "",
         }}
         group={{
           name: "editor-area",
@@ -94,7 +98,7 @@ export default memo((props: EditorAreaProps) => {
       >
         {componentList.map((item: any) => {
           return (
-            <div key={item.id} className="sortable-item-wrap">
+            <Row key={item.id} className="sortable-item-wrap">
               <SortableItem
                 id={item.id}
                 key={item.id}
@@ -103,10 +107,10 @@ export default memo((props: EditorAreaProps) => {
                 componentProps={item.componentProps}
                 componentKey={item.componentKey}
               />
-            </div>
+            </Row>
           );
         })}
       </ReactSortable>
     </Form>
   );
-}, areEqualIndex)
+}, areEqualIndex);

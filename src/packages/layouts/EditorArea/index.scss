@@ -1,21 +1,24 @@
 .sortable-list {
+  padding-top: 5px;
   .ant-col-12 {
     padding: 10px !important;
     flex: 0 0 100% !important;
     max-width: 100% !important;
   }
   .sortable-item-wrap {
-    &:first-child {
-      padding-top: 5px;
-    }
     &:last-child {
       padding-bottom: 5px;
     }
   }
+  .sortable-item-wrap-no-form-item {
+    // width: 45%;
+    // display: inline-block;
+  }
 
   .component-warp {
-    margin: 12px 0 !important;
-    padding: 11px;
+    width: 100%;
+    margin: 6px 0 !important;
+    padding: 6px;
     border-radius: 10px;
     transition: all 0.3s;
     cursor: move !important;
@@ -36,15 +39,18 @@
   }
   // drop placeholder的css类名
   .sortable-ghost {
-    background-color: #f8f8f8;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     position: relative;
+    .component-warp {
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+    }
     &::before {
       content: "";
       display: block;
       position: absolute;
-      top: 0;
+      top: 2px;
       left: 0;
       right: 0;
       height: 4px;
@@ -52,6 +58,11 @@
       z-index: 10;
     }
   }
+  // 从左侧拖拽过来时的样式
+  .ant-col.ant-col-12.sortable-chosen {
+    background-color: #f8f8f8;
+  }
+
   // 所选项目的类样式
   .sortable-chosen {
     .component-warp {
@@ -60,4 +71,3 @@
     }
   }
 }
-

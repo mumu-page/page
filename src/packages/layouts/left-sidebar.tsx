@@ -71,9 +71,7 @@ export default () => {
   const generator = (data: any[]) => {
     return data.map((item) => {
       return (
-        <div
-          key={item.key}
-        >
+        <div key={item.key}>
           <Button
             className="title-btn"
             style={{ paddingLeft: 12 }}
@@ -93,7 +91,7 @@ export default () => {
             sort={false}
             tag={CustomRow}
             list={item.children}
-            setList={(newState) => { }}
+            setList={(newState) => {}}
             animation={200}
             delayOnTouchOnly
             onEnd={() => {
@@ -106,7 +104,7 @@ export default () => {
                   <Col span={12} key={childItem.value}>
                     <Button
                       block
-                      style={{ backgroundColor: '#f8f8f8', fontSize: '12px' }}
+                      style={{ backgroundColor: "#f8f8f8", fontSize: "12px" }}
                       type="default"
                       icon={<IconFont type={childItem.icon} />}
                       onFocus={() => onFocus(childItem)}

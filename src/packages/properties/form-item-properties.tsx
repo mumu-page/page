@@ -56,7 +56,7 @@ export default function () {
         <Form.Item label="标题" name="label">
           <Input />
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="表单栅格"
           tooltip="需要为输入控件设置布局样式时，使用该属性，用法同 标签布局。"
           name="wrapperCol"
@@ -69,7 +69,7 @@ export default function () {
           name="labelCol"
         >
           <Slider marks={{ 0: '0', 12: '12', 24: '24' }} max={24} />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="标签对齐" name="labelAlign">
           <Radio.Group>
             <Radio.Button value="left">左对齐</Radio.Button>

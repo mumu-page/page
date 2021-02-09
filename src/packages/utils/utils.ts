@@ -80,6 +80,14 @@ export function isDatePicker(componentKey: string) {
   ].includes(componentKey);
 }
 
+export function isRenderFormItem(componentKey: string) {
+  return !["Row", "Button"].includes(componentKey);
+}
+
+export function isRowComponent(componentKey: string) {
+  return ["Row"].includes(componentKey);
+}
+
 export function isDatePickerRange(componentKey: string) {
   return ["TimePicker.RangePicker", "DatePicker.RangePicker"].includes(
     componentKey
