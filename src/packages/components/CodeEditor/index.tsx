@@ -144,6 +144,5 @@ const CodeEditor = forwardRef(
 );
 
 export default memo(CodeEditor, (prevProps: any, nextProps: any) => {
-  console.log(prevProps, nextProps);
   return isEqual(prevProps, nextProps);
 });
