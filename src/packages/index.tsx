@@ -1,5 +1,3 @@
 import VisualEditor from './visual-editor'
 
-export {
-    VisualEditor
-}
+export { VisualEditor }

@@ -53,7 +53,7 @@ export default memo((props: EditorAreaProps) => {
         sort
         className="sortable-list"
         style={{
-          paddingBottom: componentList.length === 0 ? "50%" : "",
+          paddingBottom: componentList.length === 0 ? "30%" : "",
         }}
         group={{
           name: "editor-area",

@@ -4,7 +4,7 @@ import { IconFont, options } from "../constants";
 import { OptionGroup, OptionItem } from "../typings/option";
 import { ReactSortable } from "react-sortablejs";
 import * as uuid from "uuid";
-import { hasNotPlaceholder, isSelect } from "../utils/utils";
+import { hasNotPlaceholder, isRowComponent, isSelect } from '../utils/utils'
 import { FormComProp } from "../stores/typings";
 import { GLOBAL_STATE } from "../stores/state";
 
@@ -33,9 +33,11 @@ const getNewOptions = (data: OptionGroup[]) => {
               span: 24,
             },
           },
-          colProps: {},
+          colProps: {
+            span: isRowComponent(value) ? 12 : 24,
+          },
           componentProps: {},
-        };
+        }
         if (!hasNotPlaceholder(value)) {
           const placeholderEnum: any = {
             'TimePicker.RangePicker': ['开始时间', '结束时间'],
