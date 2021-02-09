@@ -45,16 +45,6 @@
           bottom: 0;
           letter-spacing: 4px;
         }
-        .sortable-list {
-          .sortable-item-wrap {
-            &:first-child {
-              padding-top: 5px;
-            }
-            &:last-child {
-              padding-bottom: 5px;
-            }
-          }
-        }
       }
     }
   }
@@ -105,75 +95,6 @@
 .form-properties {
   height: calc(100vh - 46px - 16px);
   overflow-y: scroll;
-}
-
-.editor-area-flag {
-  height: 80px;
-  width: calc(100% + 20px);
-  top: 60px;
-  left: 0;
-  right: 0;
-  margin: 0 -15px;
-  position: absolute;
-  border-top: 4px solid hsl(207, 100%, 63%);
-  background-color: rgba(#40a9ff, 0.2);
-  z-index: 8;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-.editor-area-scroll {
-  .component-warp {
-    margin: 12px 0 !important;
-    padding: 11px;
-    border-radius: 10px;
-    transition: all 0.3s;
-    cursor: move !important;
-    position: relative;
-    &:hover {
-      background-color: #f8f8f8;
-      .action-btn {
-        display: block;
-      }
-    }
-    .action-btn {
-      display: none;
-      position: absolute;
-      right: -5px;
-      top: -15px;
-      z-index: 99;
-    }
-  }
-  // drop placeholder的css类名
-  .sortable-ghost {
-    background-color: #f8f8f8;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    position: relative;
-    &::before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background-color: hsl(207, 100%, 63%);
-      z-index: 10;
-    }
-  }
-  // 所选项目的类样式
-  .sortable-chosen {
-    .component-warp {
-      border-radius: 10px;
-      background-color: #f8f8f8;
-    }
-  }
-  .ant-col-12 {
-    padding: 10px !important;
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
-  }
 }
 
 .row-wrap {

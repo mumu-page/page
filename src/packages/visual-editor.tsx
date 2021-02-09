@@ -1,18 +1,18 @@
-import React from 'react'
-import { Header, LeftSidebar, RightSidebar, EditorArea } from './layouts'
-import { Context, initialState } from './stores/context'
-import { commonReducer } from './stores/reducer'
-import { useLocallyPersistedReducer } from './hooks'
-import { CommonState } from './stores/typings'
-import { LOCAL_STORE_KEY } from './constants'
-import './visual-editor.scss'
+import React from "react";
+import { Header, LeftSidebar, RightSidebar, EditorArea } from "./layouts";
+import { Context, initialState } from "./stores/context";
+import { commonReducer } from "./stores/reducer";
+import { useLocallyPersistedReducer } from "./hooks";
+import { CommonState } from "./stores/typings";
+import { LOCAL_STORE_KEY } from "./constants";
+import "./visual-editor.scss";
 
 export default () => {
   const [state, commonDispatch] = useLocallyPersistedReducer(
     commonReducer,
     initialState,
     LOCAL_STORE_KEY
-  )
+  );
 
   return (
     <Context.Provider
@@ -31,7 +31,7 @@ export default () => {
               <LeftSidebar />
             </div>
             <div className="editor-area-scroll">
-            <EditorArea />
+              <EditorArea />
             </div>
           </div>
         </div>
@@ -40,5 +40,5 @@ export default () => {
         </div>
       </div>
     </Context.Provider>
-  )
-}
+  );
+};

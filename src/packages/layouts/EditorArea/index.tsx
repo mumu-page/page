@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Context } from '../../stores/context'
 import SortableList from './SortableList'
+import "./index.scss";
 
 export default () => {
   const { currentDragComponent, componentList, commonDispatch } = useContext(
