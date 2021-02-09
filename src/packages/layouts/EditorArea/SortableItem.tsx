@@ -9,7 +9,11 @@ import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
 } from "../../stores/action-type";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
-import { isCheck, isDatePicker } from "../../utils/utils";
+import {
+  isCheck,
+  isDatePicker,
+  isRenderFormItem,
+} from "../../utils/utils";
 import { ICONS, key2Component } from "../../constants";
 import * as moment from "moment";
 import * as uuid from "uuid";
@@ -154,16 +158,23 @@ export default memo((prop: FormComProp) => {
           }}
         />
       </div>
-      <Form.Item
-        {...formItemProps}
-        valuePropName={isCheck(componentKey) ? "checked" : "value"}
-        style={{ marginBottom: 0 }}
-      >
-        {React.cloneElement(key2Component[componentKey]?.component || <></>, {
+      {isRenderFormItem(componentKey) ? (
+        <Form.Item
+          {...formItemProps}
+          valuePropName={isCheck(componentKey) ? "checked" : "value"}
+          style={{ marginBottom: 0 }}
+        >
+          {React.cloneElement(key2Component[componentKey]?.component || <></>, {
+            ...componentOtherProps,
+            ...handler,
+          })}
+        </Form.Item>
+      ) : (
+        React.cloneElement(key2Component[componentKey]?.component || <></>, {
           ...componentOtherProps,
           ...handler,
-        })}
-      </Form.Item>
+        })
+      )}
     </div>
   );
 }, areEqualItem);

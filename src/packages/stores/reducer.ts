@@ -53,6 +53,7 @@ export const commonReducer = (
           componentKey: "",
           formItemProps: {},
           componentProps: {},
+          colProps: {},
         },
       };
     },

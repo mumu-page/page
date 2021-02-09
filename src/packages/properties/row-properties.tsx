@@ -1,10 +1,11 @@
 import React from "react";
-import { Form, Radio, Slider, Switch } from "antd";
+import { Divider, Form, Radio, Slider, Switch } from "antd";
 
 const layout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 15 },
 }
+
 export default function () {
   const onValuesChange = (changedValues: any, allValues: any) => {};
   
@@ -19,6 +20,9 @@ export default function () {
       }}
       onValuesChange={onValuesChange}
     >
+      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
+        Row属性
+      </Divider>
       <Form.Item label="垂直对齐方式" name="align">
         <Radio.Group>
           <Radio.Button value="top">top</Radio.Button>
@@ -44,27 +48,6 @@ export default function () {
           min={0}
           max={100}
         />
-      </Form.Item>
-      <Form.Item label="栅格数(span)" name="span">
-        <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />
-      </Form.Item>
-      <Form.Item label="栅格数(xs)" name="xs">
-        <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />
-      </Form.Item>
-      <Form.Item label="栅格数(sm)" name="sm">
-        <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />
-      </Form.Item>
-      <Form.Item label="栅格数(md)" name="md">
-        <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />
-      </Form.Item>
-      <Form.Item label="栅格数(lg)" name="lg">
-        <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />
-      </Form.Item>
-      <Form.Item label="栅格数(xl)" name="xl">
-        <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />
-      </Form.Item>
-      <Form.Item label="栅格数(xxl)" name="xxl">
-        <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />
       </Form.Item>
     </Form>
   );

@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from "react";
-import { Form, Row } from "antd";
+import { Col, Form, Row } from "antd";
 import { FormComProp, commonDispatch } from "../../stores/typings";
 import {
   SET_COMPONENT_LIST,
@@ -9,14 +9,9 @@ import {
 import { ReactSortable } from "react-sortablejs";
 import { GLOBAL_STATE } from "../../stores/state";
 import SortableItem from "./SortableItem";
-import {
-  isDatePicker,
-  isRenderFormItem,
-  isRowComponent,
-} from "../../utils/utils";
+import { isDatePicker } from "../../utils/utils";
 import { canChosen } from "./data";
 import { areEqualIndex } from "./utils";
-import HasNotFormItemSortableItem from "./HasNotFormItemSortableItem";
 
 interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
@@ -49,7 +44,7 @@ export default memo((props: EditorAreaProps) => {
   return (
     <Form
       style={{
-        height: "100%",
+        // height: "100%",
         position: "relative",
       }}
       form={form}
@@ -64,6 +59,7 @@ export default memo((props: EditorAreaProps) => {
           name: "editor-area",
           put: true,
         }}
+        tag={Row}
         list={componentList}
         ghostClass="sortable-ghost"
         chosenClass="sortable-chosen"
@@ -97,17 +93,25 @@ export default memo((props: EditorAreaProps) => {
         }}
       >
         {componentList.map((item: any) => {
+          const {
+            componentKey,
+            formItemProps,
+            componentProps,
+            colProps = {},
+          } = item;
+          
           return (
-            <Row key={item.id} className="sortable-item-wrap">
+            <Col key={item.id} {...colProps} className="sortable-item-wrap">
               <SortableItem
                 id={item.id}
                 key={item.id}
                 form={form}
-                formItemProps={item.formItemProps}
-                componentProps={item.componentProps}
-                componentKey={item.componentKey}
+                colProps={colProps}
+                formItemProps={formItemProps}
+                componentProps={componentProps}
+                componentKey={componentKey}
               />
-            </Row>
+            </Col>
           );
         })}
       </ReactSortable>

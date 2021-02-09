@@ -7,6 +7,7 @@ export const initialState: CommonState = {
     componentKey: '',
     formItemProps: {},
     componentProps: {},
+    colProps: {},
   },
   componentList: [],
   commonDispatch: ({

@@ -33,6 +33,7 @@ const getNewOptions = (data: OptionGroup[]) => {
               span: 24,
             },
           },
+          colProps: {},
           componentProps: {},
         };
         if (!hasNotPlaceholder(value)) {

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { Form, Input, Slider, Radio } from 'antd'
+import { Form, Input, Slider, Radio, Divider } from "antd";
 import { Context } from '../stores/context'
 import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from '../stores/action-type'
 
@@ -45,31 +45,35 @@ export default function () {
       <Form
         {...layout}
         initialValues={{
-          labelAlign: 'right',
+          labelAlign: "right",
+          span: 24,
         }}
         form={form}
         onValuesChange={onValuesChange}
       >
+        <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
+          表单项属性
+        </Divider>
         <Form.Item label="字段名" name="name">
           <Input onPressEnter={(e) => {}} />
         </Form.Item>
         <Form.Item label="标题" name="label">
           <Input />
         </Form.Item>
-        {/* <Form.Item
-          label="表单栅格"
+        <Form.Item
+          label="控件栅格"
           tooltip="需要为输入控件设置布局样式时，使用该属性，用法同 标签布局。"
           name="wrapperCol"
         >
-          <Slider marks={{ 0: '0', 12: '12', 24: '24' }} max={24} />
+          <Slider marks={{ 0: "0", 12: "12", 24: "24" }} max={24} />
         </Form.Item>
         <Form.Item
           label="标签布局"
           tooltip="label 标签布局，同 <Col> 组件"
           name="labelCol"
         >
-          <Slider marks={{ 0: '0', 12: '12', 24: '24' }} max={24} />
-        </Form.Item> */}
+          <Slider marks={{ 0: "0", 12: "12", 24: "24" }} max={24} />
+        </Form.Item>
         <Form.Item label="标签对齐" name="labelAlign">
           <Radio.Group>
             <Radio.Button value="left">左对齐</Radio.Button>
@@ -78,5 +82,5 @@ export default function () {
         </Form.Item>
       </Form>
     </>
-  )
+  );
 }

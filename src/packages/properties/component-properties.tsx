@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react'
-import { Form, Select, Empty } from 'antd'
+import { Form, Select, Empty, Divider } from "antd";
 import { options, key2Component } from '../constants'
 import FormItemProperties from './form-item-properties'
 import { Context } from '../stores/context'
 import { UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG } from '../stores/action-type'
 import { ComponentKeys } from '../stores/typings'
 import { isDatePicker } from '../utils/utils'
-import { CommonProperties } from '.'
+import { CommonProperties, RowProperties, ColProperties } from ".";
 
 const layout = {
   labelCol: { span: 7 },
@@ -67,6 +67,8 @@ export default function () {
               </Select>
             </Form.Item>
           </Form>
+          <RowProperties />
+          <ColProperties />
           <FormItemProperties />
           <CommonProperties />
           {key2Component[currentDragComponent.componentKey].properties}
