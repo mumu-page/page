@@ -1,55 +1,81 @@
-import { FormComProp } from '../stores/typings'
+import { ComponentKeys, FormComProp } from "../stores/typings";
 
-function createFormItem(item: FormComProp) {
-  const { formItemProps, componentProps, componentKey } = item
-  let formItemPropsStr = ''
-  let componentPropsStr = ''
-  Object.keys(formItemProps).forEach((key) => {
-    const value = JSON.stringify(formItemProps[key])
-    if (typeof value !== 'undefined') {
-      formItemPropsStr += ` ${key}={${value}}`
+function generateProps(props: { [key: string]: any }, result = "") {
+  Object.keys(props).forEach((key) => {
+    const value = JSON.stringify(props[key]);
+    if (typeof value !== "undefined") {
+      result += ` ${key}={${value}}`;
     }
-  })
-  const { defaultValue, ...componentOtherProps } = componentProps
-  const componentPropsKey = Object.keys(componentOtherProps)
-  if (['Input'].includes(componentKey)) {
-    if (componentPropsKey.includes('prefix')) {
-      const IconComponent = componentOtherProps['prefix'] || 'React.Fragment'
-      componentOtherProps['prefix'] = `<${IconComponent} />`
+  });
+  return result;
+}
+
+function generateComProps(
+  componentProps: { [key: string]: any },
+  componentKey: ComponentKeys,
+  result = ""
+) {
+  const { defaultValue, ...componentOtherProps } = componentProps;
+  const componentPropsKey = Object.keys(componentOtherProps);
+  // 处理输入框前后置图标
+  if (["Input"].includes(componentKey)) {
+    if (componentPropsKey.includes("prefix")) {
+      const IconComponent = componentOtherProps["prefix"] || "React.Fragment";
+      componentOtherProps["prefix"] = `<${IconComponent} />`;
     }
-    if (componentPropsKey.includes('suffix')) {
-      const IconComponent = componentOtherProps['suffix'] || 'React.Fragment'
-      componentOtherProps['suffix'] = `<${IconComponent} />`
+    if (componentPropsKey.includes("suffix")) {
+      const IconComponent = componentOtherProps["suffix"] || "React.Fragment";
+      componentOtherProps["suffix"] = `<${IconComponent} />`;
     }
   }
+  // 控件参数
   componentPropsKey.forEach((key) => {
-    let value = JSON.stringify(componentOtherProps[key])
-    if (['prefix', 'suffix'].includes(key)) {
-      value = value?.replace(/"/g, '')
+    let value = JSON.stringify(componentOtherProps[key]);
+    // 处理输入框前后缀标签
+    if (["prefix", "suffix"].includes(key)) {
+      value = value?.replace(/"/g, "");
     }
-    if (typeof value !== 'undefined') {
-      componentPropsStr += ` ${key}={${value}}`
+    if (typeof value !== "undefined") {
+      result += ` ${key}={${value}}`;
     }
-  })
-  let ret = `<Form.Item${formItemPropsStr}>
+  });
+  return result;
+}
+
+function createFormItem(item: FormComProp) {
+  const { formItemProps, componentProps, componentKey, colProps } = item;
+  const colPropsStr = generateProps(colProps);
+  const formItemPropsStr = generateProps(formItemProps);
+  const componentPropsStr = generateComProps(componentProps, componentKey);
+  return `<Col${colPropsStr}>
+  ${
+    componentKey === "Col"
+      ? item.children?.map((cItem: any) => {
+          return createFormItem(cItem);
+        })
+      : `<Form.Item${formItemPropsStr}>
         <${componentKey}${componentPropsStr} />
     </Form.Item>`
-  return ret
+  }
+    </Col>`;
 }
 
 function generate(componentList: FormComProp[]) {
-  let ret = ''
+  let ret = "";
   const initialValues = {} as any;
   componentList.forEach((item) => {
-    ret += createFormItem(item)
+    ret += createFormItem(item);
     if (item.componentProps?.defaultValue && item.formItemProps?.name) {
       initialValues[item.formItemProps.name] =
         item.componentProps?.defaultValue;
     }
-  })
-  return `<Form initialValues={${JSON.stringify(initialValues)}}>
-        ${ret}
+  });
+  let initialValuesStr = Object.keys(initialValues).length
+    ? `initialValues={${JSON.stringify(initialValues)}}`
+    : "";
+  return `<Form ${initialValuesStr}>
+        <Row>${ret}</Row>
     </Form>`;
 }
 
-export { generate }
+export { generate };

@@ -105,7 +105,7 @@ export const key2Component = {
     properties: <UploadProperties />,
     component: <Upload />,
   },
-  Row: {
+  Col: {
     properties: <RowProperties />,
     component: <RowSortable children={[{ id: 'asasasas' }]} />,
   },

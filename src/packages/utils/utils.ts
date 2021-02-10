@@ -14,6 +14,7 @@ import {
   Rate,
   Upload,
   Row,
+  Col,
   Button,
   Form,
 } from "antd";
@@ -35,6 +36,7 @@ const context = {
   Rate,
   Upload,
   Row,
+  Col,
   Button,
   ...ICONS,
 };
@@ -81,11 +83,11 @@ export function isDatePicker(componentKey: string) {
 }
 
 export function isRenderFormItem(componentKey: string) {
-  return !["Row", "Button"].includes(componentKey);
+  return !["Col", "Button"].includes(componentKey);
 }
 
-export function isRowComponent(componentKey: string) {
-  return ["Row"].includes(componentKey);
+export function isColComponent(componentKey: string) {
+  return ["Col"].includes(componentKey);
 }
 
 export function isDatePickerRange(componentKey: string) {

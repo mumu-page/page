@@ -4,7 +4,7 @@ import { IconFont, options } from "../constants";
 import { OptionGroup, OptionItem } from "../typings/option";
 import { ReactSortable } from "react-sortablejs";
 import * as uuid from "uuid";
-import { hasNotPlaceholder, isRowComponent, isSelect } from '../utils/utils'
+import { hasNotPlaceholder, isColComponent, isSelect } from '../utils/utils'
 import { FormComProp } from "../stores/typings";
 import { GLOBAL_STATE } from "../stores/state";
 
@@ -34,7 +34,7 @@ const getNewOptions = (data: OptionGroup[]) => {
             },
           },
           colProps: {
-            span: isRowComponent(value) ? 12 : 24,
+            span: isColComponent(value) ? 12 : 24,
           },
           componentProps: {},
         }

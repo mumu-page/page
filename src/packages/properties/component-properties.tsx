@@ -71,7 +71,7 @@ export default function () {
           <ColProperties />
           <FormItemProperties />
           <CommonProperties />
-          {key2Component[currentDragComponent.componentKey].properties}
+          {key2Component[currentDragComponent.componentKey]?.properties}
         </>
       ) : (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="未选中控件" />
