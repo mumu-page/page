@@ -42,7 +42,7 @@ function generateComProps(
   return result;
 }
 
-function createFormItem(item: FormComProp) {
+function createFormItem(item: FormComProp) : string {
   const { formItemProps, componentProps, componentKey, colProps } = item;
   const colPropsStr = generateProps(colProps);
   const formItemPropsStr = generateProps(formItemProps);
@@ -50,7 +50,7 @@ function createFormItem(item: FormComProp) {
   return `<Col${colPropsStr}>
   ${
     componentKey === "Col"
-      ? item.children?.map((cItem: any) => {
+      ? item?.children?.map((cItem: any) => {
           return createFormItem(cItem);
         })
       : `<Form.Item${formItemPropsStr}>

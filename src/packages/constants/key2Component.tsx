@@ -1,23 +1,23 @@
 import {
-    InputProperties,
-    TextAreaProperties,
-    PasswordProperties,
-    NumberProperties,
-    EditorProperties,
-    SelectProperties,
-    CascaderProperties,
-    RadioProperties,
-    CheckboxProperties,
-    SwitchProperties,
-    SliderProperties,
-    TimePickerProperties,
-    TimeRangePickerProperties,
-    DatePickerProperties,
-    DateRangePickerProperties,
-    RateProperties,
-    UploadProperties,
-    RowProperties,
-    ButtonProperties,
+  InputProperties,
+  TextAreaProperties,
+  PasswordProperties,
+  NumberProperties,
+  EditorProperties,
+  SelectProperties,
+  CascaderProperties,
+  RadioProperties,
+  CheckboxProperties,
+  SwitchProperties,
+  SliderProperties,
+  TimePickerProperties,
+  TimeRangePickerProperties,
+  DatePickerProperties,
+  DateRangePickerProperties,
+  RateProperties,
+  UploadProperties,
+  RowProperties,
+  ButtonProperties,
 } from "../properties";
 import {
   Input,
@@ -33,19 +33,20 @@ import {
   Rate,
   Upload,
   Button,
-} from 'antd'
-import RowSortable from '../components/RowSortable'
+} from "antd";
+import RowSortable from "../components/RowSortable";
+import { ComponentKeys } from "../stores/typings";
 
 export const key2Component = {
   Input: {
     properties: <InputProperties />,
     component: <Input />,
   },
-  'Input.TextArea': {
+  "Input.TextArea": {
     properties: <TextAreaProperties />,
     component: <Input.TextArea />,
   },
-  'Input.Password': {
+  "Input.Password": {
     properties: <PasswordProperties />,
     component: <Input.Password />,
   },
@@ -85,7 +86,7 @@ export const key2Component = {
     properties: <TimePickerProperties />,
     component: <TimePicker />,
   },
-  'TimePicker.RangePicker': {
+  "TimePicker.RangePicker": {
     properties: <TimeRangePickerProperties />,
     component: <TimePicker.RangePicker />,
   },
@@ -93,7 +94,7 @@ export const key2Component = {
     properties: <DatePickerProperties />,
     component: <DatePicker />,
   },
-  'DatePicker.RangePicker': {
+  "DatePicker.RangePicker": {
     properties: <DateRangePickerProperties />,
     component: <DatePicker.RangePicker />,
   },
@@ -107,14 +108,28 @@ export const key2Component = {
   },
   Col: {
     properties: <RowProperties />,
-    component: <RowSortable children={[{ id: 'asasasas' }]} />,
+    component: <RowSortable />,
   },
   Button: {
     properties: <ButtonProperties />,
     component: <Button />,
   },
-  '': {
+  "": {
     properties: <></>,
     component: <></>,
   },
+};
+
+export function getComponent(componentKey: ComponentKeys) {
+  if (key2Component[componentKey]) {
+    return key2Component[componentKey].component
+  }; 
+  return <></>
+}
+
+export function getProperties(componentKey: ComponentKeys) {
+  if (key2Component[componentKey]) {
+    return key2Component[componentKey].properties;
+  }
+  return <></>;
 }

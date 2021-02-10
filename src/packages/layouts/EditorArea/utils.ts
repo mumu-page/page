@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash'
 
-export function areEqualIndex(prevProps: any, nextProps: any) {
+export function areEqualList(prevProps: any, nextProps: any) {
   return isEqual(prevProps, nextProps);
 }
 

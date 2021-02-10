@@ -41,6 +41,7 @@ export interface FormComProp {
   /** When true, it will not be possible to pick this item up in the list. */
   filtered?: boolean;
   [key: string]: any;
+  children?: FormComProp[]
 }
 
 export interface CommonState extends commonDispatch<object> {

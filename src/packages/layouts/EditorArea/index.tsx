@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
-import { Context } from '../../stores/context'
-import SortableList from './SortableList'
+import React, { useContext } from "react";
+import { Context } from "../../stores/context";
+import { SortableList } from "../../components";
 import "./index.scss";
 
 export default () => {
   const { currentDragComponent, componentList, commonDispatch } = useContext(
     Context
-  )
+  );
   return (
     <>
       <SortableList
@@ -18,5 +18,5 @@ export default () => {
         <div className="not-found-info">从左侧拖入或点选组件进行表单设计</div>
       )}
     </>
-  )
-}
+  );
+};

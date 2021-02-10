@@ -9,17 +9,13 @@ import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
 } from "../../stores/action-type";
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
-import {
-  isCheck,
-  isDatePicker,
-  isRenderFormItem,
-} from "../../utils/utils";
-import { ICONS, key2Component } from "../../constants";
+import { isCheck, isDatePicker, isRenderFormItem } from "../../utils/utils";
+import { ICONS, getComponent } from "../../constants";
 import * as moment from "moment";
 import * as uuid from "uuid";
 import { Context } from "../../stores/context";
-import { canChosen } from "./data";
-import { areEqualItem } from "./utils";
+import { canChosen } from "../../layouts/EditorArea/data";
+import { areEqualItem } from "../../layouts/EditorArea/utils";
 
 export default memo((prop: FormComProp) => {
   const {
@@ -103,7 +99,12 @@ export default memo((prop: FormComProp) => {
   }
 
   return (
-    <div key={id} className="component-warp">
+    <div
+      key={id}
+      className={`component-warp ${
+        isRenderFormItem(componentKey) ? "" : "component-col-warp"
+      }`}
+    >
       <div className="action-btn">
         <Button
           type="primary"
@@ -164,13 +165,13 @@ export default memo((prop: FormComProp) => {
           valuePropName={isCheck(componentKey) ? "checked" : "value"}
           style={{ marginBottom: 0 }}
         >
-          {React.cloneElement(key2Component[componentKey]?.component || <></>, {
+          {React.cloneElement(getComponent(componentKey) || <></>, {
             ...componentOtherProps,
             ...handler,
           })}
         </Form.Item>
       ) : (
-        React.cloneElement(key2Component[componentKey]?.component || <></>, {
+        React.cloneElement(getComponent(componentKey) || <></>, {
           ...componentOtherProps,
           ...handler,
         })

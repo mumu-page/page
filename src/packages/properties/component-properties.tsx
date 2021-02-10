@@ -1,32 +1,32 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from "react";
 import { Form, Select, Empty } from "antd";
-import { options, key2Component } from '../constants'
-import FormItemProperties from './form-item-properties'
-import { Context } from '../stores/context'
-import { UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG } from '../stores/action-type'
-import { ComponentKeys } from '../stores/typings'
-import { isDatePicker } from '../utils/utils'
+import { options, getProperties } from "../constants";
+import FormItemProperties from "./form-item-properties";
+import { Context } from "../stores/context";
+import { UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG } from "../stores/action-type";
+import { ComponentKeys } from "../stores/typings";
+import { isDatePicker } from "../utils/utils";
 import { CommonProperties, RowProperties, ColProperties } from ".";
 
 const layout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 15 },
-}
-const { Option, OptGroup } = Select
+};
+const { Option, OptGroup } = Select;
 interface FormData {
-  componentKey: ComponentKeys
+  componentKey: ComponentKeys;
 }
 export default function () {
-  const [form] = Form.useForm<FormData>()
+  const [form] = Form.useForm<FormData>();
   const { componentList, currentDragComponent, commonDispatch } = useContext(
     Context
-  )
+  );
 
   const onValuesChange = (changedValues: any, allValues: FormData) => {
-    const { componentKey } = allValues
-    const newComponentProps = {} as any
+    const { componentKey } = allValues;
+    const newComponentProps = {} as any;
     if (isDatePicker(allValues.componentKey)) {
-      newComponentProps.defaultValue = ''
+      newComponentProps.defaultValue = "";
     }
     commonDispatch({
       type: UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG,
@@ -34,14 +34,14 @@ export default function () {
         componentKey,
         newComponentProps,
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     form.setFieldsValue({
       componentKey: currentDragComponent.componentKey,
-    })
-  }, [currentDragComponent, form])
+    });
+  }, [currentDragComponent, form]);
 
   return (
     <>
@@ -71,7 +71,7 @@ export default function () {
           <ColProperties />
           <FormItemProperties />
           <CommonProperties />
-          {key2Component[currentDragComponent.componentKey]?.properties}
+          {getProperties(currentDragComponent.componentKey)}
         </>
       ) : (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="未选中控件" />

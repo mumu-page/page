@@ -92,4 +92,9 @@
     flex: 0 0 100%;
     max-width: 100%;
   }
+
+  .row-wrap {
+    min-height: 130px;
+    border: 1px dashed #ccc;
+  }
 }

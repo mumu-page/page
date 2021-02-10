@@ -8,10 +8,10 @@ import {
 } from "../../stores/action-type";
 import { ReactSortable } from "react-sortablejs";
 import { GLOBAL_STATE } from "../../stores/state";
-import SortableItem from "./SortableItem";
+import SortableItem from "../SortableItem";
 import { isDatePicker } from "../../utils/utils";
-import { canChosen } from "./data";
-import { areEqualIndex } from "./utils";
+import { canChosen } from "../../layouts/EditorArea/data";
+import { areEqualList } from "../../layouts/EditorArea/utils";
 
 interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
@@ -118,4 +118,4 @@ export default memo((props: EditorAreaProps) => {
       </ReactSortable>
     </Form>
   );
-}, areEqualIndex);
+}, areEqualList);
