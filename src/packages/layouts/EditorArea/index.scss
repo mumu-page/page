@@ -6,11 +6,6 @@
       padding-bottom: 5px;
     }
   }
-  .sortable-item-wrap-no-form-item {
-    // width: 45%;
-    // display: inline-block;
-  }
-
   .component-warp {
     width: 100%;
     margin: 6px 0 !important;
@@ -54,19 +49,20 @@
       border-top-right-radius: 0 !important;
     }
   }
-  //   .sortable-chosen.ant-col.ant-col-12 {
-  //     padding: 10px !important;
-  //     flex: 0 0 100% !important;
-  //     max-width: 100% !important;
-  //   }
-  //   [data-id='Row'] {
-  //     flex: 0 0 50% !important;
-  //   }
   // 从左侧拖拽过来时的样式
   .ant-col.ant-col-12.sortable-chosen {
     background-color: #f8f8f8;
+    display: flex;
+    align-items: center;
+    .ant-btn {
+      border: none!important;
+      outline: none!important;
+      box-shadow: none!important;
+    }
   }
-
+  .ant-col.ant-col-12.sortable-item-wrap.sortable-chosen {
+    background-color: transparent!important;
+  }
   // 所选项目的类样式
   .sortable-chosen {
     .component-warp {
