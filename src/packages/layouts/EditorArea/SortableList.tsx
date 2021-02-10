@@ -102,7 +102,7 @@ export default memo((props: EditorAreaProps) => {
           } = item;
 
           return (
-            <Col key={item.id} {...colProps} className="sortable-item-wrap">
+            <Col key={item.id} {...colProps} className="editor-area-item-col">
               <SortableItem
                 id={id}
                 key={id}

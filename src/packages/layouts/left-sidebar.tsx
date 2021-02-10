@@ -104,7 +104,7 @@ export default () => {
             {item.children &&
               item.children.map((childItem: any) => {
                 return (
-                  <Col span={12} key={childItem.value}>
+                  <Col span={12} key={childItem.value} className='left-sidebar-col'>
                     <Button
                       block
                       style={{ backgroundColor: "#f8f8f8", fontSize: "12px" }}

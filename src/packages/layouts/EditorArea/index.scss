@@ -34,7 +34,7 @@
     border-bottom-right-radius: 10px;
     position: relative;
     &::before {
-      content: '';
+      content: "";
       display: block;
       position: absolute;
       top: 2px;
@@ -50,18 +50,18 @@
     }
   }
   // 从左侧拖拽过来时的样式
-  .ant-col.ant-col-12.sortable-chosen {
+  .ant-col.ant-col-12.left-sidebar-col {
     background-color: #f8f8f8;
     display: flex;
     align-items: center;
     .ant-btn {
-      border: none!important;
-      outline: none!important;
-      box-shadow: none!important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
     }
   }
-  .ant-col.ant-col-12.sortable-item-wrap.sortable-chosen {
-    background-color: transparent!important;
+  .ant-col.ant-col-12.editor-area-item-col.sortable-chosen {
+    background-color: transparent !important;
   }
   // 所选项目的类样式
   .sortable-chosen {
@@ -69,5 +69,27 @@
       border-radius: 10px;
       background-color: #f8f8f8;
     }
+  }
+
+  [data-id="Input"],
+  [data-id="Input.TextArea"],
+  [data-id="Input.Password"],
+  [data-id="Editor"],
+  [data-id="InputNumber"],
+  [data-id="Select"],
+  [data-id="Cascader"],
+  [data-id="Radio"],
+  [data-id="Checkbox"],
+  [data-id="Switch"],
+  [data-id="Slider"],
+  [data-id="TimePicker"],
+  [data-id="TimePicker.RangePicker"],
+  [data-id="DatePicker"],
+  [data-id="DatePicker.RangePicker"],
+  [data-id="Rate"],
+  [data-id="Upload"],
+  [data-id="Button"] {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 }
