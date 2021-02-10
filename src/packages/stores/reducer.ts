@@ -8,6 +8,7 @@ import {
   UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG,
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
   DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG,
+  UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
 } from "./action-type";
 import { CommonState } from './typings'
 import { merge, cloneDeep } from 'lodash'
@@ -130,6 +131,17 @@ export const commonReducer = (
         },
         componentList,
       };
+    },
+    // 更新容器中的列表组件
+    [UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN]: () => {
+      const { id, children = {} } = action.payload || {};
+      const componentList = state?.componentList?.map((item) => {
+        if (item.id === id) {
+          item.children = children;
+        }
+        return item;
+      });
+      return { ...state, componentList: cloneDeep(componentList) };
     },
   };
 

@@ -95,6 +95,7 @@ export default memo((props: EditorAreaProps) => {
         {componentList.map((item: any) => {
           const {
             id,
+            children,
             componentKey,
             formItemProps,
             componentProps,
@@ -107,6 +108,7 @@ export default memo((props: EditorAreaProps) => {
                 id={id}
                 key={id}
                 form={form}
+                children={children}
                 colProps={colProps}
                 formItemProps={formItemProps}
                 componentProps={componentProps}

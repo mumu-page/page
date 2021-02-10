@@ -1,16 +1,20 @@
-import React, { memo } from "react";
+import React, { memo, useContext } from "react";
 import { Col, Row } from "antd";
 import { ReactSortable } from "react-sortablejs";
 import { isEqual } from "lodash";
 import { FormComProp } from "../../stores/typings";
 import SortableItem from "../SortableItem";
+import { Context } from "../../stores/context";
+import { UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN } from "../../stores/action-type";
 
 export interface RowSortableProp {
+  id?: string; // 父ID
   children?: FormComProp[];
 }
 export default memo(
   (props: RowSortableProp) => {
-    const { children = [] } = props;
+    const { id, children = [] } = props;
+    const { componentList, commonDispatch } = useContext(Context);
 
     return (
       <Row className="row-wrap">
@@ -24,7 +28,15 @@ export default memo(
             minWidth: "100%",
           }}
           list={children}
-          setList={(newState) => {}}
+          setList={(newState) => {
+            commonDispatch({
+              type: UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
+              payload: {
+                id,
+                children: newState,
+              },
+            });
+          }}
           animation={200}
           delayOnTouchOnly
         >

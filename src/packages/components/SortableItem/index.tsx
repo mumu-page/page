@@ -20,6 +20,7 @@ import { areEqualItem } from "../../layouts/EditorArea/utils";
 export default memo((prop: FormComProp) => {
   const {
     id,
+    children,
     componentKey,
     formItemProps = {},
     componentProps = {},
@@ -32,7 +33,7 @@ export default memo((prop: FormComProp) => {
   // 2.如果是级联控件，清除值
   if (
     (isDatePicker(componentKey) &&
-      !moment.isMoment(form.getFieldValue(formItemProps.name))) ||
+      !moment.isMoment(form?.getFieldValue(formItemProps.name))) ||
     ["Cascader"].includes(componentKey)
   ) {
     form?.setFieldsValue({
@@ -174,6 +175,8 @@ export default memo((prop: FormComProp) => {
         React.cloneElement(getComponent(componentKey) || <></>, {
           ...componentOtherProps,
           ...handler,
+          id,
+          children,
         })
       )}
     </div>

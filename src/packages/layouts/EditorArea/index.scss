@@ -96,5 +96,14 @@
   .row-wrap {
     min-height: 130px;
     border: 1px dashed #ccc;
+    &::before {
+      content: 'Row';
+      display: block;
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      border-bottom: 1px dashed #ccc;
+      padding-left: 10px;
+    }
   }
 }

@@ -42,7 +42,7 @@ function generateComProps(
   return result;
 }
 
-function createFormItem(item: FormComProp) : string {
+function createFormItem(item: FormComProp): string {
   const { formItemProps, componentProps, componentKey, colProps } = item;
   const colPropsStr = generateProps(colProps);
   const formItemPropsStr = generateProps(formItemProps);
