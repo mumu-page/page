@@ -14,7 +14,7 @@ export interface RowSortableProp {
 export default memo(
   (props: RowSortableProp) => {
     const { id, children = [] } = props;
-    const { componentList, commonDispatch } = useContext(Context);
+    const {  commonDispatch } = useContext(Context);
 
     return (
       <Row className="row-wrap">
