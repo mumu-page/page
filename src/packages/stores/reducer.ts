@@ -24,14 +24,14 @@ export const commonReducer = produce(
     const strategy: { [key: string]: () => void } = {
       [SET_CURRENT_DRAG_COMPONENT]: () => {
         draft.currentDragComponent = merge(
-          cloneDeep(draft.currentDragComponent),
+          draft.currentDragComponent,
           action.payload
         )
       },
       [SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST]: () => {
         draft.componentList.forEach((item) => {
           if (item?.id === action.payload?.id) {
-            draft.currentDragComponent = cloneDeep(item)
+            draft.currentDragComponent = item
           }
         })
       },
@@ -49,30 +49,26 @@ export const commonReducer = produce(
       /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
       [SET_COMPONENT_LIST]: () => {
         const newState = cloneDeep(action.payload?.newState)
-        const componentList = newState?.map(
-          (item: { id: any; chosen: boolean }) => {
-            if (
-              item?.id ===
-              (action.payload?.currentId || draft.currentDragComponent?.id)
-            ) {
-              item.chosen = true
-            } else {
-              item.chosen = false
-            }
-            return item
+        newState?.map((item: { id: any; chosen: boolean }) => {
+          if (
+            item?.id ===
+            (action.payload?.currentId || draft.currentDragComponent?.id)
+          ) {
+            item.chosen = true
+          } else {
+            item.chosen = false
           }
-        )
-        draft.componentList = componentList
+          return item
+        })
+        draft.componentList = newState
       },
       [DEL_COMPONENT_LIST]: () => {
-        const componentList = cloneDeep(draft.componentList)
-        for (let i = 0; i < componentList.length; i++) {
-          if (componentList[i].id === action.payload?.id) {
-            componentList.splice(i, 1)
+        for (let i = 0; i < draft?.componentList.length; i++) {
+          if (draft?.componentList[i].id === action.payload?.id) {
+            draft?.componentList.splice(i, 1)
             break
           }
         }
-        draft.componentList = componentList
       },
       [PUT_COMPONENT_LIST]: () => {
         const componentList = draft?.componentList?.map((item) => {
@@ -84,19 +80,18 @@ export const commonReducer = produce(
       },
       [INSERT_COMPONENT_LIST]: () => {
         const { index, data } = action.payload
-        const componentList = cloneDeep(draft.componentList)
+        const componentList = draft.componentList
         componentList.splice(index, 0, data)
         draft.componentList = componentList
       },
       [UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG]: () => {
         const { data = {} } = action.payload || {}
-        const componentList = draft?.componentList?.map((item) => {
+        draft?.componentList?.map((item, index) => {
           if (item.id === draft.currentDragComponent?.id) {
-            item = merge(cloneDeep(item), data)
+            draft.currentDragComponent[index] = merge(item, data)
           }
           return item
         })
-        draft.componentList = componentList
       },
       // 同时更新当前选中控件和设计区控件列表
       [UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG]: () => {
