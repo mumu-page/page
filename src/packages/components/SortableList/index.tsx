@@ -1,51 +1,51 @@
-import React, { memo, useEffect } from "react";
-import { Col, Form, Row } from "antd";
-import { FormComProp, commonDispatch } from "../../stores/typings";
+import React, { memo, useEffect } from 'react'
+import { Col, Form, Row } from 'antd'
+import { FormComProp, commonDispatch } from '../../stores/typings'
 import {
   SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
-} from "../../stores/action-type";
-import { ReactSortable } from "react-sortablejs";
-import { GLOBAL_STATE } from "../../stores/state";
-import SortableItem from "../SortableItem";
-import { isDatePicker } from "../../utils/utils";
-import { canChosen } from "../../layouts/EditorArea/data";
-import { areEqualList } from "../../layouts/EditorArea/utils";
+} from '../../stores/action-type'
+import { ReactSortable } from 'react-sortablejs'
+import { GLOBAL_STATE } from '../../stores/state'
+import SortableItem from '../SortableItem'
+import { isDatePicker } from '../../utils/utils'
+import { canChosen } from '../../layouts/EditorArea/data'
+import { areEqualList } from '../../layouts/EditorArea/utils'
 
 interface EditorAreaProps extends commonDispatch<object> {
-  componentList: FormComProp[];
-  currentDragComponent: FormComProp;
+  componentList: FormComProp[]
+  currentDragComponent: FormComProp
 }
 export default memo((props: EditorAreaProps) => {
-  const { currentDragComponent, componentList, commonDispatch } = props;
-  const [form] = Form.useForm();
+  const { currentDragComponent, componentList, commonDispatch } = props
+  const [form] = Form.useForm()
 
   useEffect(() => {
-    const { componentProps, formItemProps } = currentDragComponent;
+    const { componentProps, formItemProps } = currentDragComponent
     form.setFieldsValue({
       [formItemProps.name]: componentProps?.defaultValue,
-    });
-  }, [currentDragComponent, form]);
+    })
+  }, [currentDragComponent, form])
 
   useEffect(() => {
-    const _initialValues = {} as any;
+    const _initialValues = {} as any
     componentList.forEach((item) => {
-      const { componentKey, formItemProps, componentProps } = item;
-      const { name } = formItemProps || {};
-      const { defaultValue } = componentProps || {};
+      const { componentKey, formItemProps, componentProps } = item
+      const { name } = formItemProps || {}
+      const { defaultValue } = componentProps || {}
       if (!isDatePicker(componentKey)) {
-        _initialValues[name] = defaultValue;
+        _initialValues[name] = defaultValue
       }
-    });
-    form.setFieldsValue(_initialValues);
-  }, [componentList, form]);
+    })
+    form.setFieldsValue(_initialValues)
+  }, [componentList, form])
 
   return (
     <Form
       style={{
         // height: "100%",
-        position: "relative",
+        position: 'relative',
       }}
       form={form}
     >
@@ -53,10 +53,10 @@ export default memo((props: EditorAreaProps) => {
         sort
         className="sortable-list"
         style={{
-          paddingBottom: componentList.length === 0 ? "30%" : "",
+          paddingBottom: componentList.length === 0 ? '30%' : '',
         }}
         group={{
-          name: "editor-area",
+          name: 'editor-area',
           put: true,
         }}
         tag={Row}
@@ -73,23 +73,23 @@ export default memo((props: EditorAreaProps) => {
               currentId: GLOBAL_STATE?.currentDragComponent?.id,
               newState,
             },
-          });
+          })
         }}
         onAdd={(e) => {
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT,
             payload: GLOBAL_STATE.currentDragComponent,
-          });
+          })
         }}
         onUnchoose={(e) => {
-          if (!canChosen.value) return;
+          if (!canChosen.value) return
           // FIX: 修复已选中，再次选中则样式丢失
-          e.item.classList.add("sortable-chosen");
-          GLOBAL_STATE.currentDragComponent.id = e.item.dataset?.id || "";
+          e.item.classList.add('sortable-chosen')
+          GLOBAL_STATE.currentDragComponent.id = e.item.dataset?.id || ''
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
             payload: { id: GLOBAL_STATE.currentDragComponent.id },
-          });
+          })
         }}
       >
         {componentList.map((item: any) => {
@@ -100,7 +100,7 @@ export default memo((props: EditorAreaProps) => {
             formItemProps,
             componentProps,
             colProps = {},
-          } = item;
+          } = item
 
           return (
             <Col key={item.id} {...colProps} className="editor-area-item-col">
@@ -115,9 +115,9 @@ export default memo((props: EditorAreaProps) => {
                 componentKey={componentKey}
               />
             </Col>
-          );
+          )
         })}
       </ReactSortable>
     </Form>
-  );
-}, areEqualList);
+  )
+}, areEqualList)
