@@ -197,14 +197,14 @@ export default forwardRef(function (
             >
               刷新
             </Button>
-            <Button
+            {/* <Button
               icon={<VerticalAlignBottomOutlined />}
               type="link"
               size="middle"
               onClick={download}
             >
               导出TSX文件
-            </Button>
+            </Button> */}
             <Button
               icon={<CopyOutlined />}
               type="link"

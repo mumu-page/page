@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { Button, Modal, message } from 'antd'
+import { Button, Modal, message } from "antd";
 import {
   PlayCircleOutlined,
   EyeOutlined,
@@ -8,44 +8,45 @@ import {
   DeleteOutlined,
   LayoutTwoTone,
   ExclamationCircleOutlined,
-} from '@ant-design/icons'
-import { Context } from '../stores/context'
-import { DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG } from '../stores/action-type'
-import { Preview } from '../components'
-import { PreviewInstanceProps } from '../components/Preview/typings'
-import { generate } from '../utils/genrate'
+} from "@ant-design/icons";
+import { Context } from "../stores/context";
+import { DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG } from "../stores/action-type";
+import { Preview } from "../components";
+import { PreviewInstanceProps } from "../components/Preview/typings";
+import { generate, generateImport } from "../utils/genrate";
 
 export default function () {
-  const { componentList, commonDispatch } = useContext(Context)
+  const { componentList, commonDispatch } = useContext(Context);
   const preview = useRef<PreviewInstanceProps>(null);
 
   const clean = () => {
     Modal.confirm({
-      title: '提示',
+      title: "提示",
       icon: <ExclamationCircleOutlined />,
-      content: '确定要清空所有组件吗？',
-      okText: '确定',
-      cancelText: '取消',
+      content: "确定要清空所有组件吗？",
+      okText: "确定",
+      cancelText: "取消",
       onOk() {
-        commonDispatch({ type: DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG })
+        commonDispatch({ type: DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG });
       },
-    })
-  }
+    });
+  };
 
   const run = () => {
     preview.current?.setXmlCode(generate(componentList));
-    preview.current?.open()
-  }
+    preview.current?.setTsCode(generateImport(componentList));
+    preview.current?.open();
+  };
 
   const handlePreview = () => {
-    message.info('敬请期待')
-  }
+    message.info("敬请期待");
+  };
 
-  const download = () => {}
+  const download = () => {};
 
-  const copy = () => {}
+  const copy = () => {};
 
-  useEffect(() => {}, [])
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -74,7 +75,7 @@ export default function () {
         >
           运行
         </Button>
-        <Button
+        {/* <Button
           icon={<EyeOutlined />}
           type="link"
           size="middle"
@@ -89,15 +90,15 @@ export default function () {
           onClick={download}
         >
           导出TSX文件
-        </Button>
-        <Button
+        </Button> */}
+        {/*  <Button
           icon={<CopyOutlined />}
           type="link"
           size="middle"
           onClick={copy}
         >
           复制代码
-        </Button>
+        </Button> */}
         <Button
           icon={<DeleteOutlined />}
           type="link"

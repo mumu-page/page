@@ -85,4 +85,43 @@ function generate(componentList: FormComProp[]) {
     </Form>`;
 }
 
-export { generate };
+/**
+ * 寻找所有使用到的组件Key
+ */
+function getAllComponentKey(
+  componentList: FormComProp[],
+  keys = [] as string[]
+) {
+  componentList?.forEach((item) => {
+    keys.push(item.componentKey);
+    if (item?.children) {
+      getAllComponentKey(item?.children, keys);
+    }
+  });
+  keys.push("Form");
+  return keys;
+}
+
+/**
+ * 生成引用代码
+ */
+function generateImport(componentList: FormComProp[]) {
+  const keys = getAllComponentKey(componentList);
+  // 引用
+  let comImport = Array.from(
+    new Set(keys.filter((item) => item.indexOf(".") === -1))
+  );
+  // 嵌套引用
+  const childImport = keys?.filter((item) => item.indexOf(".") !== -1);
+  const uniqueChildKeys = new Set(childImport);
+  const childImportList = [] as string[];
+  uniqueChildKeys.forEach((item) => {
+    const [parent, child] = item?.split('.') || []
+    childImportList.push(`const {${child}} = ${parent};\n`);
+  });
+  const importReact = `import React from "react";\n`;
+  const importAntd = `import {${[comImport]}} from 'antd';\n`;
+  return importReact + importAntd + childImportList?.toString()?.replace(',', '');
+}
+
+export { generate, generateImport };
