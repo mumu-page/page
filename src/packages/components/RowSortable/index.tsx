@@ -1,5 +1,5 @@
 import React, { memo, useContext } from 'react'
-import { Col, Row } from 'antd'
+import { Col, Row, message } from "antd";
 import { ReactSortable } from 'react-sortablejs'
 import { isEqual } from 'lodash'
 import { FormComProp } from '../../stores/typings'
@@ -11,7 +11,7 @@ import {
   UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
 } from '../../stores/action-type'
 import { GLOBAL_STATE } from '../../stores/state'
-import { canChosen } from '../../layouts/EditorArea/data'
+import { canChosen, canAddCol } from "../../layouts/EditorArea/data";
 import './index.scss'
 
 export interface RowSortableProp {
@@ -38,6 +38,12 @@ export default memo(
           animation={200}
           delayOnTouchOnly
           setList={(newState) => {
+            if (newState?.find((item) => item.componentKey === "Col")) {
+              message.info("不能嵌套添加行容器");
+              canAddCol.set(false);
+              return;
+            }
+            canAddCol.set(true);
             commonDispatch({
               type: UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
               payload: {

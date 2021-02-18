@@ -65,9 +65,12 @@
   }
   // 所选项目的类样式
   .sortable-chosen {
-    >.component-warp {
+    > .component-warp {
       border-radius: 10px;
-      background-color: #f8f8f8;
+      background-color: #fbf6d985;
+    }
+    > .component-col-warp {
+      background-color: #fbf6d985;
     }
   }
 
@@ -97,8 +100,8 @@
     min-height: 130px;
     border: 1px dashed #ccc;
     .action-btn {
-        // right: 50%;
-        left: -5px;
+      // right: 50%;
+      left: -5px;
     }
   }
 }

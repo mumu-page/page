@@ -14,8 +14,7 @@ import { ICONS, getComponent } from '../../constants'
 import * as moment from 'moment'
 import { Context } from '../../stores/context'
 import { canChosen } from '../../layouts/EditorArea/data'
-import { areEqualItem } from '../../layouts/EditorArea/utils'
-import './index.scss'
+import { areEqualItem } from "../../layouts/EditorArea/utils";
 
 export default memo((prop: FormComProp) => {
   const {
