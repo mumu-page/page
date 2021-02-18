@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Form, Radio, Slider, Switch } from "antd";
+import { Divider, Form, Slider, Switch, Select } from "antd";
 
 const layout = {
   labelCol: { span: 7 },
@@ -20,24 +20,22 @@ export default function () {
       }}
       onValuesChange={onValuesChange}
     >
-      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
-        Row属性
-      </Divider>
-      <Form.Item label="垂直对齐方式" name="align">
-        <Radio.Group>
-          <Radio.Button value="top">top</Radio.Button>
-          <Radio.Button value="middle">middle</Radio.Button>
-          <Radio.Button value="bottom">bottom</Radio.Button>
-        </Radio.Group>
+      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>Row属性</Divider>
+      <Form.Item label="垂直对齐" name="align">
+        <Select>
+          <Select.Option value="top">靠上</Select.Option>
+          <Select.Option value="middle">居中</Select.Option>
+          <Select.Option value="bottom">靠下</Select.Option>
+        </Select>
       </Form.Item>
-      <Form.Item label="水平排列方式" name="justify">
-        <Radio.Group>
-          <Radio value="start">start</Radio>
-          <Radio value="middle">end</Radio>
-          <Radio value="center">center</Radio>
-          <Radio value="space-around">space-around</Radio>
-          <Radio value="space-between">space-between</Radio>
-        </Radio.Group>
+      <Form.Item label="水平排列" name="justify">
+        <Select>
+          <Select.Option value="start">水平靠左分布</Select.Option>
+          <Select.Option value="middle">水平靠右分布</Select.Option>
+          <Select.Option value="center">水平居中分布</Select.Option>
+          <Select.Option value="space-around">水平平均分布</Select.Option>
+          <Select.Option value="space-between">水平两侧顶格分布</Select.Option>
+        </Select>
       </Form.Item>
       <Form.Item label="自动换行" name="wrap" valuePropName="checked">
         <Switch />
