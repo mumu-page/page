@@ -94,9 +94,14 @@ export const commonReducer = produce(
           return item
         })
         draft?.componentList?.forEach((item, index) => {
-          draft.componentList[index].chosen = false
+          item.chosen = false
+          if (item?.children) {
+            item.children?.forEach(cItem => {
+              cItem.chosen = false
+            })
+          }
           if (item.id === id) {
-            draft.componentList[index].children = _children
+            item.children = _children
           }
         })
       },
