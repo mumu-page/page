@@ -20,7 +20,7 @@ export default function () {
       }}
       onValuesChange={onValuesChange}
     >
-      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>Row属性</Divider>
+      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>行属性</Divider>
       <Form.Item label="垂直对齐" name="align">
         <Select>
           <Select.Option value="top">靠上</Select.Option>

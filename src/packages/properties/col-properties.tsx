@@ -30,7 +30,7 @@ export default function () {
 
   return (
     <Form {...layout} onValuesChange={onValuesChange}>
-      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>Col属性</Divider>
+      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>列属性</Divider>
       <Form.Item label="栅格数1" tooltip="栅格占位格数" name="span">
         <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />
       </Form.Item>
