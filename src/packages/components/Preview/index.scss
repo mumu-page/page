@@ -1,53 +1,73 @@
 .ant-drawer-body {
-    padding: 0!important;
-    overflow: hidden;
+  padding: 0 !important;
+  overflow: hidden;
 }
 .preview {
-    display: flex;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .code-container {
+    flex: 0.5;
+    transition: flex 0.3s;
     width: 100%;
     height: 100%;
-    .code-container {
-        flex: 0.5;
-        width: 100%;
-        height: 100%;
-        .ant-tabs-content {
-            height: 100%;
-        }
-        .ant-tabs-nav {
-            margin-bottom: 0!important;
-        }
-        .ant-tabs-nav-wrap {
-            background-color: #100f0f;
-            &::before {
-                border-color: #100f0f;
-            }
-            .ant-tabs-tab {
-                border: 0!important;
-                color: #888a8e!important;
-                background-color: #363636;
-            }
-            .ant-tabs-tab-active {
-                background-color: rgb(30, 30, 30);
-                .ant-tabs-tab-btn {
-                    color: #fff!important;
-                }
-            }
-        }
+    .ant-tabs-content {
+      height: 100%;
     }
-    .form {
-        flex: 0.5;
-        align-items: center;
-        .head {
-            height: 35px;
-            background-color: #f2fafb;
-            .ant-btn {
-                padding-right: 0!important;
-            }
-        }
-        .body {
-            padding: 12px;
-            height: calc(100% - 35px);
-            overflow-y: auto;
-        }
+    .ant-tabs-nav {
+      margin-bottom: 0 !important;
     }
+    .ant-tabs-nav-wrap {
+      background-color: #100f0f;
+      &::before {
+        border-color: #100f0f;
+      }
+      .ant-tabs-tab {
+        border: 0 !important;
+        color: #888a8e !important;
+        background-color: #363636;
+      }
+      .ant-tabs-tab-active {
+        background-color: rgb(30, 30, 30);
+        .ant-tabs-tab-btn {
+          color: #fff !important;
+        }
+      }
+    }
+  }
+  .form {
+    flex: 0.5;
+    align-items: center;
+    transition: flex .3s;
+    .head {
+      height: 35px;
+      background-color: #f2fafb;
+      .ant-btn {
+        padding-right: 0 !important;
+      }
+    }
+    .body {
+      padding: 12px;
+      height: calc(100% - 35px);
+      overflow-y: auto;
+    }
+  }
+  .form-open {
+    flex: 1;
+  }
+
+  .affix {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -15px;
+    transition: left 0.3s;
+  }
+  .affix-folded {
+    left: 6px;
+  }
+  .code-folded {
+    flex: 0;
+  }
 }

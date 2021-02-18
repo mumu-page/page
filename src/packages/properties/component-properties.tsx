@@ -6,7 +6,7 @@ import { Context } from "../stores/context";
 import { UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG } from "../stores/action-type";
 import { ComponentKeys } from "../stores/typings";
 import { isDatePicker } from "../utils/utils";
-import { CommonProperties, RowProperties, ColProperties } from ".";
+import { CommonProperties, /* RowProperties, */ ColProperties } from ".";
 
 const layout = {
   labelCol: { span: 7 },
@@ -67,7 +67,7 @@ export default function () {
               </Select>
             </Form.Item>
           </Form>
-          <RowProperties />
+          {/* <RowProperties /> */}
           <ColProperties />
           <FormItemProperties />
           <CommonProperties />

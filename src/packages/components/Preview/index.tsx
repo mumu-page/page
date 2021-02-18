@@ -14,6 +14,8 @@ import {
   CloseCircleOutlined,
   FileTextOutlined,
   EditOutlined,
+  RightOutlined,
+  LeftOutlined,
 } from "@ant-design/icons";
 import CodeEditor from "../CodeEditor";
 import { CodeEditorInstanceProps } from "../CodeEditor/typings";
@@ -34,6 +36,7 @@ export default forwardRef(function (
     | React.MutableRefObject<unknown>
     | null
 ) {
+  const [folded, setFolded] = useState(false);
   const [xmlCode, setXmlCode] = useState<string>("");
   const [tsCode, setTsCode] = useState<string>("");
   const [scssCode, setScssCode] = useState<string>("");
@@ -116,12 +119,21 @@ export default forwardRef(function (
   );
 
   return (
-    <Drawer width="100%" visible={visible} closable={false} destroyOnClose>
+    <Drawer
+      width="100%"
+      visible={visible}
+      closable={false}
+      destroyOnClose
+      onClose={() => {
+        setFolded(false);
+        setVisible(false);
+      }}
+    >
       <div className="preview">
         <Tabs
           tabBarGutter={5}
           activeKey={activeKey}
-          className="code-container"
+          className={`code-container ${folded ? "code-folded" : ""}`}
           onChange={onTabChange}
           tabBarStyle={{ height: "35px" }}
           type="card"
@@ -175,7 +187,7 @@ export default forwardRef(function (
             />
           </TabPane>
         </Tabs>
-        <div className="form">
+        <div className={`form ${folded ? "form-open" : ""}`}>
           <div className="head">
             <Button
               icon={<SyncOutlined />}
@@ -212,8 +224,15 @@ export default forwardRef(function (
             </Button>
           </div>
           <div className="body">{component}</div>
-        
         </div>
+        <Button
+          shape="circle"
+          className={`affix ${folded ? "affix-folded" : ""}`}
+          icon={folded ? <RightOutlined /> : <LeftOutlined />}
+          onClick={() => {
+            setFolded(!folded);
+          }}
+        ></Button>
       </div>
     </Drawer>
   );

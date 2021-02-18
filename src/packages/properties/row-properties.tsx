@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Divider, Form, Slider, Switch, Select } from "antd";
+import { Context } from "../stores/context";
+import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from "../stores/action-type";
 
 const layout = {
   labelCol: { span: 7 },
@@ -7,11 +9,33 @@ const layout = {
 }
 
 export default function () {
-  const onValuesChange = (changedValues: any, allValues: any) => {};
+  const [form] = Form.useForm();
+  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { id, colProps = {} } = currentDragComponent || {};
+
+  const onValuesChange = (changedValues: any, allValues: any) => {
+    commonDispatch({
+      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+      payload: {
+        id,
+        data: {
+          colProps: {
+            ...allValues,
+          },
+        },
+      },
+    });
+  };
   
+    useEffect(() => {
+      form.resetFields();
+      form.setFieldsValue(colProps);
+    }, [colProps, currentDragComponent, form]);
+    
   return (
     <Form
       {...layout}
+      form={form}
       initialValues={{
         align: "top",
         gutter: 0,

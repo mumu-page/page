@@ -53,6 +53,7 @@ export const commonReducer = produce(
           formItemProps: {},
           componentProps: {},
           colProps: {},
+          rowProps: {},
         };
       },
       /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */

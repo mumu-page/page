@@ -3,20 +3,21 @@ import { CommonState } from './typings'
 
 export const initialState: CommonState = {
   currentDragComponent: {
-    id: '',
-    componentKey: '',
+    id: "",
+    componentKey: "",
     formItemProps: {},
     componentProps: {},
     colProps: {},
+    rowProps: {},
   },
   componentList: [],
   commonDispatch: ({
     type,
     payload,
   }: {
-    type: string
-    payload?: unknown
+    type: string;
+    payload?: unknown;
   }) => {},
-}
+};
 
 export const Context = React.createContext(initialState)

@@ -29,9 +29,10 @@ export type ComponentKeys =
 
 export interface FormComProp {
   componentKey: ComponentKeys; // 当前拖拽的控件key
-  componentProps: { [key: string]: any }; // 当前拖拽的控件属性设置
-  formItemProps: { [key: string]: any }; // 当前FormItem属性设置
-  colProps: { [key: string]: any }; // 当前Col属性设置
+  componentProps: { [key: string]: any };   // 当前拖拽的控件属性设置
+  formItemProps: { [key: string]: any };    // 当前FormItem属性设置
+  colProps: { [key: string]: any };         // 当前Col属性设置
+  rowProps: { [key: string]: any };         // 当前Row属性设置
   /** The unique id associated with your item. It's recommended this is the same as the key prop for your list item. */
   id: string | number;
   /** When true, the item is selected using MultiDrag */

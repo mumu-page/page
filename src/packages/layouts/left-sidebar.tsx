@@ -36,8 +36,9 @@ const getNewOptions = (data: OptionGroup[]) => {
           colProps: {
             span: isColComponent(value) ? 12 : 24,
           },
+          rowProps: {},
           componentProps: {},
-        }
+        };
         if (!hasNotPlaceholder(value)) {
           const placeholderEnum: any = {
             'TimePicker.RangePicker': ['开始时间', '结束时间'],

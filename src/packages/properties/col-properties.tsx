@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Divider, Form, Slider, Button } from "antd";
 import { Context } from "../stores/context";
 import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from "../stores/action-type";
@@ -10,9 +10,10 @@ const layout = {
 };
 
 export default function () {
+  const [form] = Form.useForm();
   const [showMore, setShowMore] = useState(false);
   const { currentDragComponent, commonDispatch } = useContext(Context);
-  const { id /*  colProps = {} */ } = currentDragComponent || {};
+  const { id, colProps = {} } = currentDragComponent || {};
 
   const onValuesChange = (changedValues: any, allValues: any) => {
     commonDispatch({
@@ -28,8 +29,13 @@ export default function () {
     });
   };
 
+  useEffect(() => {
+    form.resetFields();
+    form.setFieldsValue(colProps);
+  }, [colProps, currentDragComponent, form]);
+
   return (
-    <Form {...layout} onValuesChange={onValuesChange}>
+    <Form {...layout} form={form} onValuesChange={onValuesChange}>
       <Divider style={{ padding: "0 20px", fontSize: "14px" }}>列属性</Divider>
       <Form.Item label="栅格数1" tooltip="栅格占位格数" name="span">
         <Slider marks={{ 0: "0", 12: "12", 24: "24" }} min={0} max={24} />

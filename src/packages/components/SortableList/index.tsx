@@ -105,6 +105,7 @@ export default memo((props: EditorAreaProps) => {
             formItemProps,
             componentProps,
             colProps = {},
+            rowProps = {},
           } = item;
 
           return (
@@ -115,6 +116,7 @@ export default memo((props: EditorAreaProps) => {
                 form={form}
                 children={children}
                 colProps={colProps}
+                rowProps={rowProps}
                 formItemProps={formItemProps}
                 componentProps={componentProps}
                 componentKey={componentKey}

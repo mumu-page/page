@@ -61,7 +61,7 @@ export default function () {
           <Input />
         </Form.Item>
         <Form.Item
-          label="控件栅格"
+          label="控件布局"
           tooltip="需要为输入控件设置布局样式时，使用该属性，用法同 标签布局。"
           name="wrapperCol"
         >
