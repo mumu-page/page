@@ -4,16 +4,18 @@ function parseProp(key: string, value: any, result = "") {
   if (!value) return "";
   try {
     result = JSON.parse(value);
-    if (
-      (typeof result === "object" && result !== null) ||
-      ["boolean", "number"].includes(typeof result)
-    ) {
+    if (result !== null && ["object", "number"].includes(typeof result)) {
       result = ` ${key}={${value}}`;
+    } else if (typeof result === "boolean") {
+      if (result === true) {
+        result = ` ${key}`;
+      } else {
+        result = ` ${key}={${value}}`;
+      }
     } else if (typeof result === "string") {
       result = ` ${key}=${value}`;
     }
   } catch (e) {
-    console.log(value);
     if (value?.indexOf("<") !== -1) {
       result = ` ${key}={${value}}`;
     } else {
