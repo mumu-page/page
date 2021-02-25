@@ -38,13 +38,13 @@ export default forwardRef(function (
 ) {
   const [folded, setFolded] = useState(false);
   const [xmlCode, setXmlCode] = useState<string>("");
-  const [tsCode, setTsCode] = useState<string>("");
+  const [tsxCode, setTsCode] = useState<string>("");
   const [scssCode, setScssCode] = useState<string>("");
   const [visible, setVisible] = useState(false);
   const [activeKey, setActiveKey] = useState("xml");
   const [component, setComponent] = useState(<></>);
   const xmlEditor = useRef<CodeEditorInstanceProps>(null);
-  const tsEditor = useRef<CodeEditorInstanceProps>(null);
+  const tsxEditor = useRef<CodeEditorInstanceProps>(null);
   const scssEditor = useRef<CodeEditorInstanceProps>(null);
 
   const parseXml = (newCode: string) => {
@@ -61,7 +61,7 @@ export default forwardRef(function (
     setXmlCode(newCode);
   }, []);
 
-  const onTsChangCode = useCallback((newCode) => {
+  const onTsxChangCode = useCallback((newCode) => {
     setTsCode(newCode);
   }, []);
 
@@ -86,6 +86,7 @@ export default forwardRef(function (
   const close = () => {
     setActiveKey("xml");
     setVisible(false);
+    setFolded(false);
   };
 
   const onTabChange = (activeKey: string) => {
@@ -96,7 +97,7 @@ export default forwardRef(function (
     ref,
     () => ({
       xmlEditor: xmlEditor.current,
-      tsEditor: tsEditor.current,
+      tsEditor: tsxEditor.current,
       scssEditor: scssEditor.current,
       setXmlCode: (newCode: string) => {
         setXmlCode(newCode);
@@ -157,17 +158,17 @@ export default forwardRef(function (
           <TabPane
             tab={
               <div>
-                {activeKey === "ts" ? <SelectedIcon /> : <UnSelectedIcon />}
-                <span>ts</span>
+                {activeKey === "tsx" ? <SelectedIcon /> : <UnSelectedIcon />}
+                <span>tsx</span>
               </div>
             }
-            key="ts"
+            key="tsx"
           >
             <CodeEditor
-              ref={tsEditor}
-              code={tsCode}
+              ref={tsxEditor}
+              code={tsxCode}
               options={{ language: "typescript" }}
-              onChangeCode={onTsChangCode}
+              onChangeCode={onTsxChangCode}
             />
           </TabPane>
           <TabPane

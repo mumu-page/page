@@ -17,6 +17,7 @@
     }
     .ant-tabs-nav {
       margin-bottom: 0 !important;
+      display: block;
     }
     .ant-tabs-nav-wrap {
       background-color: #100f0f;
@@ -65,7 +66,9 @@
     transition: left 0.3s;
   }
   .affix-folded {
-    left: 6px;
+    left: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
   .code-folded {
     flex: 0;
