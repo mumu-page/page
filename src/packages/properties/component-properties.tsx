@@ -54,7 +54,7 @@ export default function () {
           >
             <Typography.Title level={5}>
               <Typography.Text type="secondary" style={{ paddingLeft: 10 }}>
-                属性
+                类型
               </Typography.Text>
             </Typography.Title>
             <Collapse
