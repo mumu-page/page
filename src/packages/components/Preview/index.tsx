@@ -37,7 +37,6 @@ export default forwardRef(function (
     | null
 ) {
   const [folded, setFolded] = useState(false);
-  const [xmlCode, setXmlCode] = useState<string>("");
   const [tsxCode, setTsxCode] = useState<string>("");
   const [scssCode, setScssCode] = useState<string>("");
   const [visible, setVisible] = useState(false);
@@ -104,7 +103,6 @@ export default forwardRef(function (
       tsEditor: tsxEditor.current,
       scssEditor: scssEditor.current,
       setXmlCode: (newCode: string) => {
-        setXmlCode(newCode);
         parseXml(newCode);
       },
       setTsxCode: (newCode: string) => {
