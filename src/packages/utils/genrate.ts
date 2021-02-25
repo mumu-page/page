@@ -1,10 +1,33 @@
 import { ComponentKeys, FormComProp } from "../stores/typings";
 
+function parseProp(key: string, value: any, result = "") {
+  if (!value) return "";
+  try {
+    result = JSON.parse(value);
+    if (
+      (typeof result === "object" && result !== null) ||
+      ["boolean", "number"].includes(typeof result)
+    ) {
+      result = ` ${key}={${value}}`;
+    } else if (typeof result === "string") {
+      result = ` ${key}=${value}`;
+    }
+  } catch (e) {
+    console.log(value);
+    if (value?.indexOf("<") !== -1) {
+      result = ` ${key}={${value}}`;
+    } else {
+      result = "";
+    }
+  }
+  return result;
+}
+
 function generateProps(props: { [key: string]: any }, result = "") {
   Object.keys(props).forEach((key) => {
     const value = JSON.stringify(props[key]);
     if (typeof value !== "undefined") {
-      result += ` ${key}={${value}}`;
+      result += `${parseProp(key, value)}`;
     }
   });
   return result;
@@ -36,7 +59,7 @@ function generateComProps(
       value = value?.replace(/"/g, "");
     }
     if (typeof value !== "undefined") {
-      result += ` ${key}={${value}}`;
+      result += `${parseProp(key, value)}`;
     }
   });
   return result;
@@ -64,7 +87,7 @@ function createFormItem(item: FormComProp): string {
         <${componentKey?.replace(/^.*\./, "")}${componentPropsStr} />
     </Form.Item>`
   }
-    </Col>`;
+    </Col>\n`;
 }
 
 function generate(componentList: FormComProp[]) {
@@ -106,6 +129,7 @@ function getAllComponentKey(
 
 /**
  * 生成引用代码
+ * TODO: 生成ICON引用代码
  */
 function generateImport(componentList: FormComProp[]) {
   const keys = getAllComponentKey(componentList);
@@ -113,17 +137,24 @@ function generateImport(componentList: FormComProp[]) {
   let comImport = Array.from(
     new Set(keys.filter((item) => item.indexOf(".") === -1))
   );
+  comImport.push("Row");
+  comImport.push("Col");
   // 嵌套引用
   const childImport = keys?.filter((item) => item.indexOf(".") !== -1);
   const uniqueChildKeys = new Set(childImport);
   const childImportList = [] as string[];
   uniqueChildKeys.forEach((item) => {
-    const [parent, child] = item?.split('.') || []
+    const [parent, child] = item?.split(".") || [];
     childImportList.push(`const {${child}} = ${parent};\n`);
   });
   const importReact = `import React from "react";\n`;
   const importAntd = `import {${[comImport]}} from 'antd';\n`;
-  return importReact + importAntd + childImportList?.toString()?.replace(',', '');
+  return (
+    importReact +
+    importAntd +
+    "\n" +
+    childImportList?.toString()?.replace(",", "")
+  );
 }
 
 export { generate, generateImport };
