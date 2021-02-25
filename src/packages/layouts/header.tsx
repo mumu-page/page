@@ -38,7 +38,9 @@ export default function () {
     preview.current?.setTsxCode(`
       ${generateImport(componentList)}
       export default () => {
+        /* 主要代码开始 */
         return ${xmlCode}
+        /* 主要代码结束 */
       }
     `);
     preview.current?.open();

@@ -66,7 +66,15 @@ export default forwardRef(function (
   }, []);
 
   const refresh = () => {
-    string2Component(xmlCode)
+    const _xmlCode = tsxCode
+      .substring(
+        tsxCode.indexOf("/* 主要代码开始 */"),
+        tsxCode.indexOf("/* 主要代码结束 */")
+      )
+      .replace("/* 主要代码开始 */", "")
+      .replace("return", "");
+    console.log(_xmlCode);
+    string2Component(_xmlCode)
       .then((newComponent) => {
         setComponent(newComponent);
       })
