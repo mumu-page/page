@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { Button, Modal, message } from "antd";
+import { Button, Modal /* message */ } from "antd";
 import {
   PlayCircleOutlined,
-  EyeOutlined,
-  VerticalAlignBottomOutlined,
-  CopyOutlined,
+  // EyeOutlined,
+  // VerticalAlignBottomOutlined,
+  // CopyOutlined,
   DeleteOutlined,
   LayoutTwoTone,
   ExclamationCircleOutlined,
@@ -33,18 +33,24 @@ export default function () {
   };
 
   const run = () => {
-    preview.current?.setXmlCode(generate(componentList));
-    preview.current?.setTsCode(generateImport(componentList));
+    const xmlCode = generate(componentList);
+    preview.current?.setXmlCode(xmlCode);
+    preview.current?.setTsxCode(`
+      ${generateImport(componentList)}
+      export default () => {
+        return ${xmlCode}
+      }
+    `);
     preview.current?.open();
   };
 
-  const handlePreview = () => {
-    message.info("敬请期待");
-  };
+  // const handlePreview = () => {
+  //   message.info("敬请期待");
+  // };
 
-  const download = () => {};
+  // const download = () => {};
 
-  const copy = () => {};
+  // const copy = () => {};
 
   useEffect(() => {}, []);
 

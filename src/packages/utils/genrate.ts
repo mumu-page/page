@@ -61,7 +61,7 @@ function createFormItem(item: FormComProp): string {
         ${createCol(item?.children)}  
       </Row>`
       : `<Form.Item${formItemPropsStr}>
-        <${componentKey}${componentPropsStr} />
+        <${componentKey?.replace(/^.*\./, "")}${componentPropsStr} />
     </Form.Item>`
   }
     </Col>`;
@@ -78,10 +78,12 @@ function generate(componentList: FormComProp[]) {
     }
   });
   let initialValuesStr = Object.keys(initialValues).length
-    ? `initialValues={${JSON.stringify(initialValues)}}`
+    ? ` initialValues={${JSON.stringify(initialValues)}}`
     : "";
-  return `<Form ${initialValuesStr}>
-        <Row>${ret}</Row>
+  return `<Form${initialValuesStr}>
+        <Row>
+          ${ret}
+        </Row>
     </Form>`;
 }
 

@@ -9,7 +9,7 @@ import { Button, Tabs, Drawer, message } from "antd";
 import { PreviewInstanceProps, PreviewProps } from "./typings";
 import {
   SyncOutlined,
-  VerticalAlignBottomOutlined,
+  // VerticalAlignBottomOutlined,
   CopyOutlined,
   CloseCircleOutlined,
   FileTextOutlined,
@@ -38,10 +38,10 @@ export default forwardRef(function (
 ) {
   const [folded, setFolded] = useState(false);
   const [xmlCode, setXmlCode] = useState<string>("");
-  const [tsxCode, setTsCode] = useState<string>("");
+  const [tsxCode, setTsxCode] = useState<string>("");
   const [scssCode, setScssCode] = useState<string>("");
   const [visible, setVisible] = useState(false);
-  const [activeKey, setActiveKey] = useState("xml");
+  const [activeKey, setActiveKey] = useState("tsx");
   const [component, setComponent] = useState(<></>);
   const xmlEditor = useRef<CodeEditorInstanceProps>(null);
   const tsxEditor = useRef<CodeEditorInstanceProps>(null);
@@ -55,14 +55,10 @@ export default forwardRef(function (
       .catch((info) => {
         message.error(info);
       });
-  };
-
-  const onXmlChangCode = useCallback((newCode) => {
-    setXmlCode(newCode);
-  }, []);
+  };;
 
   const onTsxChangCode = useCallback((newCode) => {
-    setTsCode(newCode);
+    setTsxCode(newCode);
   }, []);
 
   const onScssChangCode = useCallback((newCode) => {
@@ -81,10 +77,10 @@ export default forwardRef(function (
 
   const copy = () => {};
 
-  const download = () => {};
+  // const download = () => {};
 
   const close = () => {
-    setActiveKey("xml");
+    setActiveKey("tsx");
     setVisible(false);
     setFolded(false);
   };
@@ -103,8 +99,8 @@ export default forwardRef(function (
         setXmlCode(newCode);
         parseXml(newCode);
       },
-      setTsCode: (newCode: string) => {
-        setTsCode(newCode);
+      setTsxCode: (newCode: string) => {
+        setTsxCode(newCode);
       },
       setScssCode: (newCode: string) => {
         setScssCode(newCode);
@@ -139,22 +135,6 @@ export default forwardRef(function (
           tabBarStyle={{ height: "35px" }}
           type="card"
         >
-          <TabPane
-            tab={
-              <div>
-                {activeKey === "xml" ? <SelectedIcon /> : <UnSelectedIcon />}
-                <span>xml</span>
-              </div>
-            }
-            key="xml"
-          >
-            <CodeEditor
-              ref={xmlEditor}
-              code={xmlCode}
-              options={{ language: "html" }}
-              onChangeCode={onXmlChangCode}
-            />
-          </TabPane>
           <TabPane
             tab={
               <div>

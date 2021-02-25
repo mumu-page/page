@@ -20,19 +20,24 @@ import {
 } from "antd";
 import { ICONS } from "../constants";
 
+const { TimePicker: TP, ...OtherDatePickerCom } = DatePicker;
 const context = {
   React,
   Form,
   Input,
+  ...Input,
   InputNumber,
   Select,
+  ...Select,
   Cascader,
   Radio,
   Checkbox,
   Switch,
   Slider,
   TimePicker,
+  ...TimePicker,
   DatePicker,
+  ...OtherDatePickerCom,
   Rate,
   Upload,
   Row,
