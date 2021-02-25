@@ -2,11 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Divider, Form, Slider, Switch, Select } from "antd";
 import { Context } from "../stores/context";
 import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from "../stores/action-type";
-
-const layout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 15 },
-}
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 
 export default function () {
   const [form] = Form.useForm();
@@ -34,7 +30,7 @@ export default function () {
     
   return (
     <Form
-      {...layout}
+      {...FORM_PROPERTIES_OPTIONS}
       form={form}
       initialValues={{
         align: "top",

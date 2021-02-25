@@ -14,11 +14,8 @@ import {
 import { debounce } from 'lodash'
 import { SelectOutlined } from '@ant-design/icons'
 import { IconModal, IconModalInstanceProp } from '../components'
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 
-const layout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 15 },
-}
 let shouldUpdate = true
 export default () => {
   const [form] = Form.useForm()
@@ -93,17 +90,17 @@ export default () => {
   return (
     <>
       <IconModal ref={iconModal} onOk={onOk} />
-      <Divider style={{ padding: '0 20px', fontSize: '14px' }}>
+      <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
         输入框属性
       </Divider>
       <Form
-        form={form}
-        {...layout}
+        {...FORM_PROPERTIES_OPTIONS}
         initialValues={{
           bordered: true,
           disabled: false,
-          size: 'middle',
+          size: "middle",
         }}
+        form={form}
         onValuesChange={onValuesChange}
       >
         <Form.Item label="默认值" name="defaultValue">
@@ -138,6 +135,7 @@ export default () => {
                 onClick={setPrefix}
                 size="small"
                 type="link"
+                style={{ fontSize: 13 }}
                 icon={<SelectOutlined />}
               >
                 选择
@@ -157,6 +155,7 @@ export default () => {
                 onClick={setSuffix}
                 size="small"
                 type="link"
+                style={{ fontSize: 13 }}
                 icon={<SelectOutlined />}
               >
                 选择
@@ -204,5 +203,5 @@ export default () => {
         </Form.Item>
       </Form>
     </>
-  )
+  );
 }

@@ -6,11 +6,7 @@ import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
 } from "../stores/action-type";
 import { Context } from "../stores/context";
-
-const layout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 15 },
-};
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 
 interface FormData {
   [key: string]: any;
@@ -60,7 +56,11 @@ export default function () {
       <Divider style={{ padding: "0 20px", fontSize: "14px" }}>
         文本域属性
       </Divider>
-      <Form form={form} {...layout} onValuesChange={onValuesChange}>
+      <Form
+        {...FORM_PROPERTIES_OPTIONS}
+        form={form}
+        onValuesChange={onValuesChange}
+      >
         <Form.Item label="默认值" name="defaultValue">
           <Input
             onBlur={() => (shouldUpdate = true)}

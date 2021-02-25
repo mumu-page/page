@@ -95,4 +95,55 @@
 .form-properties {
   height: calc(100vh - 46px - 16px);
   overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* 重置手风琴样式 */
+.ant-collapse {
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  border-color: #f2f2f2;
+  margin-bottom: 15px;
+  .ant-collapse-item,
+  .ant-collapse-header,
+  .ant-collapse-content,
+  .ant-collapse-content-box {
+    border-color: #f2f2f2;
+  }
+  .site-collapse-custom-panel:last-child {
+    border-radius: 0;
+    border-color: #f2f2f2;
+  }
+  .ant-collapse-content-box {
+    padding: 10px;
+    .ant-form-item {
+      margin-bottom: 0;
+      padding: 8px 0;
+      border-bottom: 1px solid #f8f8f8;
+    }
+    .ant-form-item:first-child {
+      padding-top: 0;
+    }
+    .ant-form-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border: 0;
+    }
+  }
+}
+[data-theme="compact"]
+  .site-collapse-custom-collapse
+  .site-collapse-custom-panel,
+.site-collapse-custom-collapse .site-collapse-custom-panel {
+  overflow: hidden;
+  background: #f7f7f7;
+  border-radius: 0;
+  .ant-collapse-header {
+    padding: 5px 10px 5px 25px;
+    .ant-collapse-arrow {
+      padding: 5px 10px 5px 3px;
+      left: 6px;
+    }
+  }
 }

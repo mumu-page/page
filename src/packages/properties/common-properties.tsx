@@ -8,11 +8,7 @@ import {
 import { isDatePickerRange } from "../utils/utils";
 import { PLACEHOLDER_ENUM } from "../constants";
 import { debounce } from "lodash";
-
-const layout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 15 },
-};
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 
 interface FormData {
   componentWidth: string;
@@ -117,8 +113,8 @@ export default function () {
         通用属性
       </Divider>
       <Form
+        {...FORM_PROPERTIES_OPTIONS}
         form={form}
-        {...layout}
         initialValues={{ componentWidth: 100 }}
         onValuesChange={onValuesChange}
       >

@@ -1,12 +1,8 @@
 import React, { useContext, useEffect } from 'react'
-import { Form, Input, Slider, Radio, Divider } from "antd";
+import { Form, Input, Slider, Radio, Divider, InputNumber } from "antd";
 import { Context } from '../stores/context'
 import { UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from '../stores/action-type'
-
-const layout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 15 },
-}
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 
 export default function () {
   const { currentDragComponent, commonDispatch } = useContext(Context)
@@ -43,7 +39,7 @@ export default function () {
   return (
     <>
       <Form
-        {...layout}
+        {...FORM_PROPERTIES_OPTIONS}
         initialValues={{
           labelAlign: "right",
           span: 24,
@@ -65,14 +61,14 @@ export default function () {
           tooltip="需要为输入控件设置布局样式时，使用该属性，用法同 标签布局。"
           name="wrapperCol"
         >
-          <Slider marks={{ 0: "0", 12: "12", 24: "24" }} max={24} />
+          <InputNumber min={0} max={24} style={{ width: "100%" }} />
         </Form.Item>
         <Form.Item
           label="标签布局"
           tooltip="label 标签布局，同 <Col> 组件"
           name="labelCol"
         >
-          <Slider marks={{ 0: "0", 12: "12", 24: "24" }} max={24} />
+          <InputNumber min={0} max={24} style={{ width: "100%" }} />
         </Form.Item>
         <Form.Item label="标签对齐" name="labelAlign">
           <Radio.Group>

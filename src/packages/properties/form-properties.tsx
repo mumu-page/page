@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Form, Input, InputNumber, Radio, Switch } from "antd";
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 
 type SizeType = Parameters<typeof Form>[0]["size"];
-const layout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 15 },
-};
+
 export default function () {
   const [componentSize, setComponentSize] = useState<SizeType | "default">(
     "default"
@@ -20,7 +18,7 @@ export default function () {
   };
   return (
     <Form
-      {...layout}
+      {...FORM_PROPERTIES_OPTIONS}
       initialValues={{ size: componentSize }}
       onValuesChange={onFormLayoutChange}
     >
