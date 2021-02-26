@@ -72,7 +72,6 @@ export default forwardRef(function (
       )
       .replace("/* 主要代码开始 */", "")
       .replace("return", "");
-    console.log(_xmlCode);
     string2Component(_xmlCode)
       .then((newComponent) => {
         setComponent(newComponent);

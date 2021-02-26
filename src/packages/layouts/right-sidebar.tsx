@@ -1,21 +1,16 @@
-import React from 'react'
+import React from "react";
 import { Tabs } from "antd";
-import { FormProperties, ComponentProperties } from '../properties'
+import { Properties } from "../properties";
 
 const { TabPane } = Tabs;
 export default function () {
   return (
     <Tabs defaultActiveKey="1" centered>
-      <TabPane tab="组件属性" key="1">
-        <div className="component-properties">
-          <ComponentProperties />
-        </div>
-      </TabPane>
-      <TabPane tab="表单属性" key="2">
+      <TabPane tab="属性设置" key="1">
         <div className="form-properties">
-          <FormProperties />
+          <Properties />
         </div>
       </TabPane>
     </Tabs>
-  )
+  );
 }

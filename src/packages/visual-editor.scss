@@ -91,13 +91,16 @@
   }
 }
 
-.component-properties,
 .form-properties {
   height: calc(100vh - 46px - 16px);
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
+/* 重置标题样式 */
+h5.ant-typography {
+  font-size: 14px;
+}
 /* 重置手风琴样式 */
 .ant-collapse {
   border-left: 0;

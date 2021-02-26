@@ -20,7 +20,7 @@ import UploadProperties from "./upload-properties";
 import RowProperties from "./row-properties";
 import ColProperties from "./col-properties";
 import ButtonProperties from "./button-properties";
-import ComponentProperties from "./component-properties";
+import Properties from "./properties";
 
 export {
   FormProperties,
@@ -44,6 +44,6 @@ export {
   UploadProperties,
   RowProperties,
   ButtonProperties,
-  ComponentProperties,
+  Properties,
   ColProperties,
 };
