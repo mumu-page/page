@@ -7,6 +7,7 @@ import {
 import { Context } from "../stores/context";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { CaretRightOutlined } from "@ant-design/icons";
+import CheckboxField from "../components/FormFields/CheckboxField";
 
 interface FormData {
   [key: string]: any;
@@ -54,7 +55,7 @@ export default function () {
         onValuesChange={onValuesChange}
       >
         <Collapse
-          // defaultActiveKey={["栅格数"]}
+          defaultActiveKey={["文本域"]}
           className="site-collapse-custom-collapse"
           expandIcon={({ isActive }) => (
             <CaretRightOutlined rotate={isActive ? 90 : 0} />
@@ -74,39 +75,49 @@ export default function () {
             <Form.Item label="最大长度" name="maxLength">
               <InputNumber />
             </Form.Item>
-            <Form.Item
-              label="展示字数"
-              valuePropName="checked"
-              tooltip="	是否展示字数"
-              name="showCount"
-            >
-              <Switch />
+            <Form.Item label="" valuePropName="checked" name="showCount">
+              <CheckboxField tooltipTitle="是否展示字数" text="展示字数" />
             </Form.Item>
-            <Form.Item
-              label="支持清除"
-              valuePropName="checked"
-              tooltip="可以点击清除图标删除内容"
-              name="allowClear"
-            >
-              <Switch />
+            <Form.Item label="" valuePropName="checked" name="allowClear">
+              <CheckboxField
+                tooltipTitle="可以点击清除图标删除内容"
+                text="支持清除"
+              />
             </Form.Item>
-            <Form.Item
-              label="自适应高"
-              valuePropName="checked"
-              // tooltip="自适应内容高度，可设置为 true | false 或对象：{ minRows: 2, maxRows: 6 }"
-              tooltip="自适应内容高度，可设置为true或false"
-              name="autoSize"
-            >
-              <Switch />
+            <Form.Item label="" valuePropName="checked" name="bordered">
+              <CheckboxField tooltipTitle="是否有边框" text="显示边框" />
             </Form.Item>
-            <Form.Item
-              label="显示边框"
-              valuePropName="checked"
-              tooltip="是否有边框"
-              name="bordered"
+            <Collapse
+              className="site-collapse-custom-collapse mb-0"
+              expandIcon={({ isActive }) => (
+                <CaretRightOutlined rotate={isActive ? 90 : 0} />
+              )}
             >
-              <Switch />
-            </Form.Item>
+              <Collapse.Panel
+                header={
+                  <Form.Item
+                    label=""
+                    valuePropName="checked"
+                    name="autoSize"
+                    style={{ padding: 0 }}
+                  >
+                    <CheckboxField
+                      tooltipTitle="自适应内容高度，可设置为 true | false 或对象：{ minRows: 2, maxRows: 6 }"
+                      text="自适应高"
+                    />
+                  </Form.Item>
+                }
+                key="自适应高"
+                className="site-collapse-custom-panel"
+              >
+                <Form.Item label="最小行数" name="autoSize.minRows">
+                  <InputNumber />
+                </Form.Item>
+                <Form.Item label="最大行数" name="autoSize.maxRows">
+                  <InputNumber />
+                </Form.Item>
+              </Collapse.Panel>
+            </Collapse>
           </Collapse.Panel>
         </Collapse>
       </Form>

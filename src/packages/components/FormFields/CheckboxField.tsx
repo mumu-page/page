@@ -4,13 +4,14 @@ import React from "react";
 interface CheckboxFieldType {
   tooltipTitle: string;
   text: string;
+  onChange?: any;
 }
 export default (props: CheckboxFieldType) => {
-  const { tooltipTitle, text } = props;
+  const { tooltipTitle, text, onChange } = props;
 
   return (
     <>
-      <Checkbox>
+      <Checkbox onChange={onChange}>
         <Tooltip title={tooltipTitle}>{text}</Tooltip>
       </Checkbox>
     </>
