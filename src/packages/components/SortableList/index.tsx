@@ -20,9 +20,13 @@ interface EditorAreaProps extends commonDispatch<object> {
 export default memo((props: EditorAreaProps) => {
   const { currentDragComponent, componentList, commonDispatch } = props;
   const [form] = Form.useForm();
+  const {
+    componentProps,
+    formItemProps,
+    formProps = {},
+  } = currentDragComponent;
 
   useEffect(() => {
-    const { componentProps, formItemProps } = currentDragComponent;
     form.setFieldsValue({
       [formItemProps.name]: componentProps?.defaultValue,
     });
@@ -43,6 +47,7 @@ export default memo((props: EditorAreaProps) => {
 
   return (
     <Form
+      {...formProps}
       style={{
         // height: "100%",
         position: "relative",

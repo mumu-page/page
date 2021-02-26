@@ -5,6 +5,7 @@ export const initialState: CommonState = {
   currentDragComponent: {
     id: "",
     componentKey: "",
+    formProps: {},
     formItemProps: {},
     componentProps: {},
     colProps: {},

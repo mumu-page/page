@@ -18,7 +18,6 @@ export default function () {
         <Form.Item label="表单名" name="name">
           <Input />
         </Form.Item>
-
         <Form.Item label="表单模型" name="initialValues">
           <Input />
         </Form.Item>
@@ -38,15 +37,12 @@ export default function () {
         <Form.Item label="栅格间隔" name="gutter">
           <InputNumber />
         </Form.Item>
-
         <Form.Item label="禁用表单" name="disabled">
           <Switch />
         </Form.Item>
-
         <Form.Item label="表单按钮" name="showButton">
           <Switch />
         </Form.Item>
-
         <Form.Item
           label="显示边框"
           tooltip="显示未选中组件边框"

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useRef, useCallback } from "react";
-import { Collapse, Divider, Form, Input, InputNumber, Select, Slider, Typography } from "antd";
+import { Collapse, Form, Input, InputNumber, Select } from "antd";
 import { Context } from "../stores/context";
 import {
   SET_CURRENT_DRAG_COMPONENT,
@@ -117,11 +117,6 @@ export default function () {
 
   return (
     <>
-      <Typography.Title level={5}>
-        <Typography.Text type="secondary" style={{ paddingLeft: 10 }}>
-          通用属性
-        </Typography.Text>
-      </Typography.Title>
       <Form
         {...FORM_PROPERTIES_OPTIONS}
         form={form}

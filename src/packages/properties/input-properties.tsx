@@ -100,11 +100,6 @@ export default () => {
   return (
     <>
       <IconModal ref={iconModal} onOk={onOk} />
-      <Typography.Title level={5}>
-        <Typography.Text type="secondary" style={{ paddingLeft: 10 }}>
-          输入框属性
-        </Typography.Text>
-      </Typography.Title>
       <Form
         {...FORM_PROPERTIES_OPTIONS}
         initialValues={{

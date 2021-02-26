@@ -18,7 +18,6 @@ import DateRangePickerProperties from "./date-range-picker-properties";
 import RateProperties from "./rate-properties";
 import UploadProperties from "./upload-properties";
 import RowProperties from "./row-properties";
-import ColProperties from "./col-properties";
 import ButtonProperties from "./button-properties";
 import Properties from "./properties";
 
@@ -45,5 +44,4 @@ export {
   RowProperties,
   ButtonProperties,
   Properties,
-  ColProperties,
 };
