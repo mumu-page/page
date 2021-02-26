@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef, useCallback } from "react";
+import React, { useEffect, useContext, useRef, useCallback, memo } from "react";
 import { Collapse, Form, Input, InputNumber, Select } from "antd";
 import { Context } from "../stores/context";
 import {
@@ -11,18 +11,22 @@ import { debounce } from "lodash";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { ComponentKeys } from "../stores/typings";
 import { CaretRightOutlined } from "@ant-design/icons";
+import CheckboxField from "../components/FormFields/CheckboxField";
 
 const { Option, OptGroup } = Select;
 
 interface FormData {
   componentKey: ComponentKeys;
   componentWidth: string;
+  bordered: boolean;
   placeholder: string | string[];
 }
+let shouldUpdate = true;
+
 /**
  * 组件的公共属性设置
  */
-export default function () {
+export default memo(function () {
   const [form] = Form.useForm<FormData>();
   const { currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {}, componentKey } = currentDragComponent || {};
@@ -34,48 +38,42 @@ export default function () {
         : ["", ""]
       : ["", ""]
   );
-  const onValuesChange = debounce(
-    useCallback(
-      (changedValues: any, allValues: FormData) => {
-        const { componentKey } = allValues;
-        // 如果是日期范围类控件，设置placeholder为数组
-        if (isDatePickerRange(currentDragComponent?.componentKey)) {
-          allValues.placeholder = placeholderRef.current;
-        }
-        const { placeholder, componentWidth } = allValues;
-        const style = {
-          width: componentWidth + "%",
-        };
-        commonDispatch({
-          type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-          payload: {
-            data: {
-              componentKey,
-              componentProps: {
-                placeholder,
-                style,
-              },
-            },
+  const onValuesChange = (changedValues: any, allValues: FormData) => {
+    const { componentKey } = allValues;
+    // 如果是日期范围类控件，设置placeholder为数组
+    if (isDatePickerRange(currentDragComponent?.componentKey)) {
+      allValues.placeholder = placeholderRef.current;
+    }
+    const { placeholder, componentWidth, bordered } = allValues;
+    const style = {
+      width: componentWidth + "%",
+    };
+    commonDispatch({
+      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+      payload: {
+        data: {
+          componentKey,
+          componentProps: {
+            placeholder,
+            style,
+            bordered,
           },
-        });
-
-        // 如果是设置的组件宽度，更新当前控件
-        if (changedValues?.componentWidth) {
-          commonDispatch({
-            type: SET_CURRENT_DRAG_COMPONENT,
-            payload: {
-              id,
-              componentProps: {
-                placeholder,
-                style,
-              },
-            },
-          });
-        }
+        },
       },
-      [commonDispatch, currentDragComponent?.componentKey, id]
-    )
-  );
+    });
+
+    commonDispatch({
+      type: SET_CURRENT_DRAG_COMPONENT,
+      payload: {
+        id,
+        componentProps: {
+          placeholder,
+          style,
+          bordered,
+        },
+      },
+    });
+  };
 
   const setPlaceholderRef = (index: number, value: any) => {
     try {
@@ -201,9 +199,12 @@ export default function () {
                 />
               )}
             </Form.Item>
+            <Form.Item label="" valuePropName="checked" name="bordered">
+              <CheckboxField tooltipTitle="是否有边框" text="显示边框" />
+            </Form.Item>
           </Collapse.Panel>
         </Collapse>
       </Form>
     </>
   );
-}
+});

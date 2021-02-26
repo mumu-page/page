@@ -191,11 +191,6 @@ export default () => {
                 <Tooltip title="可以点击清除图标删除内容">支持清除</Tooltip>
               </Checkbox>
             </Form.Item>
-            <Form.Item label="" valuePropName="checked" name="bordered">
-              <Checkbox>
-                <Tooltip title="是否有边框">显示边框</Tooltip>
-              </Checkbox>
-            </Form.Item>
             <Form.Item label="" valuePropName="checked" name="disabled">
               <Checkbox>
                 <Tooltip title="是否禁用状态，默认为 false">禁用</Tooltip>
