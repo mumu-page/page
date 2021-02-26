@@ -1,29 +1,19 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Form,
   Input,
   InputNumber,
   Radio,
-  Switch,
   Button,
-  Divider,
-  Typography,
-  Collapse,
   Checkbox,
   Tooltip,
+  Collapse,
 } from "antd";
 import { Context } from "../stores/context";
 import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
   SET_CURRENT_DRAG_COMPONENT,
 } from "../stores/action-type";
-import { debounce } from "lodash";
 import { CaretRightOutlined, SelectOutlined } from "@ant-design/icons";
 import { IconModal, IconModalInstanceProp } from "../components";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";

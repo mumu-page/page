@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import {
+  Collapse,
   Form,
   Input,
   InputNumber,
@@ -11,7 +12,7 @@ import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
 } from "../stores/action-type";
 import { Context } from "../stores/context";
-import { CustomCollapse } from "../components";
+import { CaretRightOutlined } from "@ant-design/icons";
 
 export default function () {
   const { currentDragComponent, commonDispatch } = useContext(Context);
@@ -85,12 +86,17 @@ export default function () {
       form={form}
       onValuesChange={onValuesChange}
     >
-      <CustomCollapse
+      <Collapse
         defaultActiveKey={["表单"]}
+        className="site-collapse-custom-collapse"
+        expandIcon={({ isActive }) => (
+          <CaretRightOutlined rotate={isActive ? 90 : 0} />
+        )}
       >
-        <CustomCollapse.Panel
+        <Collapse.Panel
           header="表单"
           key="表单"
+          className="site-collapse-custom-panel"
         >
           <Form.Item label="表单名" name="formName">
             <Input />
@@ -126,10 +132,11 @@ export default function () {
               <Tooltip title="显示未选中组件边框">显示边框</Tooltip>
             </Checkbox>
           </Form.Item> */}
-        </CustomCollapse.Panel>
-        <CustomCollapse.Panel
+        </Collapse.Panel>
+        <Collapse.Panel
           header="表单项"
           key="表单项"
+          className="site-collapse-custom-panel"
         >
           <Form.Item label="字段名" name="name">
             <Input onPressEnter={(e) => {}} />
@@ -157,8 +164,8 @@ export default function () {
               <Radio.Button value="right">右对齐</Radio.Button>
             </Radio.Group>
           </Form.Item>
-        </CustomCollapse.Panel>
-      </CustomCollapse>
+        </Collapse.Panel>
+      </Collapse>
     </Form>
   );
 }

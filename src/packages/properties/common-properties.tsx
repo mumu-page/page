@@ -9,8 +9,8 @@ import { isDatePickerRange } from "../utils/utils";
 import { PLACEHOLDER_ENUM, options } from "../constants";
 import { debounce } from "lodash";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
-import { CaretRightOutlined } from "@ant-design/icons";
 import { ComponentKeys } from "../stores/typings";
+import { CaretRightOutlined } from "@ant-design/icons";
 
 const { Option, OptGroup } = Select;
 

@@ -1,18 +1,9 @@
 import React, { useContext } from "react";
-import { Empty, Typography } from "antd";
+import { Empty } from "antd";
 import { getProperties } from "../constants";
 import { Context } from "../stores/context";
 import { CommonProperties, RowProperties, FormProperties } from ".";
-
-const Title = (props: { text: string }) => {
-  return (
-    <Typography.Title level={5}>
-      <Typography.Text type="secondary" style={{ paddingLeft: 10 }}>
-        {props.text}
-      </Typography.Text>
-    </Typography.Title>
-  );
-};
+import { Title } from "../components";
 
 export default function () {
   const { componentList, currentDragComponent } = useContext(Context);

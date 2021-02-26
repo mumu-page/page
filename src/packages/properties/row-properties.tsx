@@ -1,18 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import {
-  Divider,
   Form,
-  Slider,
-  Switch,
   Select,
-  Collapse,
   InputNumber,
+  Collapse,
 } from "antd";
 import { Context } from "../stores/context";
 import { SET_CURRENT_DRAG_COMPONENT, UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG } from "../stores/action-type";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
-import { CaretRightOutlined } from "@ant-design/icons";
 import CheckboxField from "../components/FormFields/CheckboxField";
+import { CaretRightOutlined } from "@ant-design/icons";
 
 export default function () {
   const [form] = Form.useForm();
