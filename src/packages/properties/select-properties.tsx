@@ -1,59 +1,54 @@
-import React, { useState } from 'react';
-import { Form, Input, InputNumber, Radio, Switch } from "antd";
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants';
-
-type SizeType = Parameters<typeof Form>[0]['size'];
+import React, { useState } from "react";
+import { Button, Checkbox, Collapse, Form, Input, InputNumber, Radio, Switch } from "antd";
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
+import { CaretRightOutlined } from "@ant-design/icons";
+import CheckboxField from "../components/FormFields/CheckboxField";
 
 export default function () {
-    const [componentSize, setComponentSize] = useState<SizeType | 'default'>('default');
-    const onFormLayoutChange = ({ size }: { size: SizeType, labelAlign: 'left' | 'right' }) => {
-        setComponentSize(size);
-    };
-    return (
-      <Form
-        {...FORM_PROPERTIES_OPTIONS}
-        initialValues={{ size: componentSize }}
-        onValuesChange={onFormLayoutChange}
+  const [form] = Form.useForm()
+  
+  const onFormLayoutChange = (_: any, allValues: any) => {
+    
+  };
+
+  return (
+    <Form
+      {...FORM_PROPERTIES_OPTIONS}
+      form={form}
+      onValuesChange={onFormLayoutChange}
+    >
+      <Collapse
+        defaultActiveKey={["下拉框"]}
+        className="site-collapse-custom-collapse"
+        expandIcon={({ isActive }) => (
+          <CaretRightOutlined rotate={isActive ? 90 : 0} />
+        )}
       >
-        <Form.Item label="表单名" name="name">
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="表单模型" name="initialValues">
-          <Input />
-        </Form.Item>
-        <Form.Item label="表单尺寸" name="size">
-          <Radio.Group>
-            <Radio.Button value="large">中等</Radio.Button>
-            <Radio.Button value="default">较小</Radio.Button>
-            <Radio.Button value="small">迷你</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item label="标签对齐" name="labelAlign">
-          <Radio.Group>
-            <Radio.Button value="left">左对齐</Radio.Button>
-            <Radio.Button value="right">右对齐</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item label="栅格间隔" name="gutter">
-          <InputNumber />
-        </Form.Item>
-
-        <Form.Item label="禁用表单" name="disabled">
-          <Switch />
-        </Form.Item>
-
-        <Form.Item label="表单按钮" name="showButton">
-          <Switch />
-        </Form.Item>
-
-        <Form.Item
-          label="显示边框"
-          tooltip="显示未选中组件边框"
-          name="showOtherBorder"
+        <Collapse.Panel
+          header="下拉框"
+          key="下拉框"
+          className="site-collapse-custom-panel"
         >
-          <Switch />
-        </Form.Item>
-      </Form>
-    );
+          <Form.Item label="配置选项" name="options">
+            <Button size="small" block>
+              配置数据
+            </Button>
+          </Form.Item>
+          <Form.Item label="" valuePropName="checked" name="allowClear">
+            <Checkbox>支持清除</Checkbox>
+          </Form.Item>
+          <Form.Item
+            label=""
+            valuePropName="checked"
+            name="autoClearSearchValue"
+          >
+            <CheckboxField
+              tooltipTitle="是否在选中项后清空搜索框，只在 mode 为 multiple 或 tags 时有效"
+              text="自动清空搜索框"
+            />
+          </Form.Item>
+        </Collapse.Panel>
+      </Collapse>
+    </Form>
+  );
 }

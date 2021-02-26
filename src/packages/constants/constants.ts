@@ -50,4 +50,5 @@ export const FORM_PROPERTIES_OPTIONS: {
   labelAlign: "left",
   labelCol: { span: 8 },
   wrapperCol: { span: 24 },
+  colon: false,
 };
