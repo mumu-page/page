@@ -1,53 +1,52 @@
-import React, { useEffect, useContext, useRef, useCallback, memo } from "react";
-import { Collapse, Form, Input, InputNumber, Select } from "antd";
-import { Context } from "../stores/context";
+import React, { useEffect, useContext, useRef, useCallback, memo } from 'react'
+import { Collapse, Form, Input, InputNumber, Select } from 'antd'
+import { Context } from '../stores/context'
 import {
   SET_CURRENT_DRAG_COMPONENT,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-} from "../stores/action-type";
-import { isDatePickerRange } from "../utils/utils";
-import { PLACEHOLDER_ENUM, options } from "../constants";
-import { debounce } from "lodash";
-import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
-import { ComponentKeys } from "../stores/typings";
-import { CaretRightOutlined } from "@ant-design/icons";
-import CheckboxField from "../components/FormFields/CheckboxField";
+} from '../stores/action-type'
+import { isDatePickerRange } from '../utils/utils'
+import { PLACEHOLDER_ENUM, options } from '../constants'
+import { debounce } from 'lodash'
+import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
+import { ComponentKeys } from '../stores/typings'
+import { CaretRightOutlined } from '@ant-design/icons'
+import CheckboxField from '../components/FormFields/CheckboxField'
 
-const { Option, OptGroup } = Select;
+const { Option, OptGroup } = Select
 
 interface FormData {
-  componentKey: ComponentKeys;
-  componentWidth: string;
-  bordered: boolean;
-  placeholder: string | string[];
+  componentKey: ComponentKeys
+  componentWidth: string
+  bordered: boolean
+  placeholder: string | string[]
 }
-let shouldUpdate = true;
 
 /**
  * 组件的公共属性设置
  */
 export default memo(function () {
-  const [form] = Form.useForm<FormData>();
-  const { currentDragComponent, commonDispatch } = useContext(Context);
-  const { id, componentProps = {}, componentKey } = currentDragComponent || {};
+  const [form] = Form.useForm<FormData>()
+  const { currentDragComponent, commonDispatch } = useContext(Context)
+  const { id, componentProps = {}, componentKey } = currentDragComponent || {}
 
   const placeholderRef = useRef(
     isDatePickerRange(componentKey)
       ? Array.isArray(componentProps?.placeholder)
         ? componentProps?.placeholder
-        : ["", ""]
-      : ["", ""]
-  );
+        : ['', '']
+      : ['', '']
+  )
   const onValuesChange = (changedValues: any, allValues: FormData) => {
-    const { componentKey } = allValues;
+    const { componentKey } = allValues
     // 如果是日期范围类控件，设置placeholder为数组
     if (isDatePickerRange(currentDragComponent?.componentKey)) {
-      allValues.placeholder = placeholderRef.current;
+      allValues.placeholder = placeholderRef.current
     }
-    const { placeholder, componentWidth, bordered } = allValues;
+    const { placeholder, componentWidth, bordered } = allValues
     const style = {
-      width: componentWidth + "%",
-    };
+      width: componentWidth + '%',
+    }
     commonDispatch({
       type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
       payload: {
@@ -60,8 +59,7 @@ export default memo(function () {
           },
         },
       },
-    });
-
+    })
     commonDispatch({
       type: SET_CURRENT_DRAG_COMPONENT,
       payload: {
@@ -72,12 +70,12 @@ export default memo(function () {
           bordered,
         },
       },
-    });
-  };
+    })
+  }
 
   const setPlaceholderRef = (index: number, value: any) => {
     try {
-      placeholderRef.current[index] = value;
+      placeholderRef.current[index] = value
       commonDispatch({
         type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
         payload: {
@@ -87,9 +85,9 @@ export default memo(function () {
             },
           },
         },
-      });
+      })
     } catch (error) {}
-  };
+  }
 
   const upCurrenDrag = (placeholder: any) => {
     commonDispatch({
@@ -100,18 +98,18 @@ export default memo(function () {
           placeholder,
         },
       },
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    const { style } = componentProps || {};
+    const { style } = componentProps || {}
     form.resetFields();
     form.setFieldsValue({
       ...componentProps,
       componentKey: currentDragComponent.componentKey,
       componentWidth: style?.width?.replace("%", "") || 100,
     });
-  }, [componentProps, currentDragComponent, form]);
+  }, [])
 
   return (
     <>
@@ -144,10 +142,10 @@ export default memo(function () {
                             <Option key={childItem.key} value={childItem.value}>
                               {childItem.label}
                             </Option>
-                          );
+                          )
                         })}
                     </OptGroup>
-                  );
+                  )
                 })}
               </Select>
             </Form.Item>
@@ -169,12 +167,12 @@ export default memo(function () {
                       PLACEHOLDER_ENUM[currentDragComponent.componentKey] &&
                       PLACEHOLDER_ENUM[currentDragComponent.componentKey][0]
                     }
-                    style={{ width: "50%" }}
+                    style={{ width: '50%' }}
                     onBlur={() => upCurrenDrag(placeholderRef?.current)}
                     onPressEnter={() => upCurrenDrag(placeholderRef?.current)}
                     onInput={(e: any) => {
-                      const value = e.target.value;
-                      setPlaceholderRef(0, value);
+                      const value = e.target.value
+                      setPlaceholderRef(0, value)
                     }}
                   />
                   <Input
@@ -183,12 +181,12 @@ export default memo(function () {
                       PLACEHOLDER_ENUM[currentDragComponent.componentKey] &&
                       PLACEHOLDER_ENUM[currentDragComponent.componentKey][1]
                     }
-                    style={{ width: "50%" }}
+                    style={{ width: '50%' }}
                     onBlur={upCurrenDrag}
                     onPressEnter={upCurrenDrag}
                     onInput={(e: any) => {
-                      const value = e.target.value;
-                      setPlaceholderRef(1, value);
+                      const value = e.target.value
+                      setPlaceholderRef(1, value)
                     }}
                   />
                 </Input.Group>
@@ -206,5 +204,5 @@ export default memo(function () {
         </Collapse>
       </Form>
     </>
-  );
-});
+  )
+})

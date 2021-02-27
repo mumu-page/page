@@ -55,15 +55,15 @@ export default function () {
         onValuesChange={onValuesChange}
       >
         <Collapse
-          defaultActiveKey={["文本域"]}
+          defaultActiveKey={['基本']}
           className="site-collapse-custom-collapse"
           expandIcon={({ isActive }) => (
             <CaretRightOutlined rotate={isActive ? 90 : 0} />
           )}
         >
           <Collapse.Panel
-            header="文本域"
-            key="文本域"
+            header="基本"
+            key="基本"
             className="site-collapse-custom-panel"
           >
             <Form.Item label="默认值" name="defaultValue">
@@ -87,40 +87,33 @@ export default function () {
             <Form.Item label="" valuePropName="checked" name="bordered">
               <CheckboxField tooltipTitle="是否有边框" text="显示边框" />
             </Form.Item>
-            <Collapse
-              className="site-collapse-custom-collapse mb-0"
-              expandIcon={({ isActive }) => (
-                <CaretRightOutlined rotate={isActive ? 90 : 0} />
-              )}
-            >
-              <Collapse.Panel
-                header={
-                  <Form.Item
-                    label=""
-                    valuePropName="checked"
-                    name="autoSize"
-                    style={{ padding: 0 }}
-                  >
-                    <CheckboxField
-                      tooltipTitle="自适应内容高度，可设置为 true | false 或对象：{ minRows: 2, maxRows: 6 }"
-                      text="自适应高"
-                    />
-                  </Form.Item>
-                }
-                key="自适应高"
-                className="site-collapse-custom-panel"
+          </Collapse.Panel>
+          <Collapse.Panel
+            header={
+              <Form.Item
+                label=""
+                valuePropName="checked"
+                name="autoSize"
+                className="mb-0"
               >
-                <Form.Item label="最小行数" name="autoSize.minRows">
-                  <InputNumber />
-                </Form.Item>
-                <Form.Item label="最大行数" name="autoSize.maxRows">
-                  <InputNumber />
-                </Form.Item>
-              </Collapse.Panel>
-            </Collapse>
+                <CheckboxField
+                  tooltipTitle="自适应内容高度，可设置为 true | false 或对象：{ minRows: 2, maxRows: 6 }"
+                  text="自适应高"
+                />
+              </Form.Item>
+            }
+            key="自适应高"
+            className="site-collapse-custom-panel"
+          >
+            <Form.Item label="最小行数" name="autoSize.minRows">
+              <InputNumber />
+            </Form.Item>
+            <Form.Item label="最大行数" name="autoSize.maxRows">
+              <InputNumber />
+            </Form.Item>
           </Collapse.Panel>
         </Collapse>
       </Form>
     </>
-  );
+  )
 }

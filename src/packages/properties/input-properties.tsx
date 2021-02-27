@@ -18,7 +18,6 @@ import { CaretRightOutlined, SelectOutlined } from "@ant-design/icons";
 import { IconModal, IconModalInstanceProp } from "../components";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 
-let shouldUpdate = true;
 export default () => {
   const [form] = Form.useForm();
   const iconModal = useRef<IconModalInstanceProp>(null);
@@ -27,7 +26,6 @@ export default () => {
   const [iconType, setIconType] = useState<"prefix" | "suffix">("prefix");
 
   const onValuesChange = (changedValues: any, allValues: any) => {
-    shouldUpdate = false;
     commonDispatch({
       type: SET_CURRENT_DRAG_COMPONENT,
       payload: {
@@ -82,10 +80,9 @@ export default () => {
   };
 
   useEffect(() => {
-    if (!shouldUpdate) return;
     form.resetFields();
     form.setFieldsValue(componentProps);
-  }, [componentProps, currentDragComponent, form]);
+  }, []);
 
   return (
     <>
@@ -113,10 +110,7 @@ export default () => {
             className="site-collapse-custom-panel"
           >
             <Form.Item label="默认值" name="defaultValue">
-              <Input
-                onBlur={() => (shouldUpdate = true)}
-                onPressEnter={() => (shouldUpdate = true)}
-              />
+              <Input />
             </Form.Item>
             <Form.Item
               label="前置标签"
