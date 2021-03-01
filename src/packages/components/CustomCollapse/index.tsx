@@ -1,8 +1,10 @@
 import { CaretRightOutlined } from "@ant-design/icons";
 import Collapse from "antd/lib/collapse";
 import React from "react";
+import "./index.scss";
 
 export const CustomCollapse = (props: any) => {
+  console.log(props);
   return (
     <Collapse
       {...props}
@@ -16,14 +18,8 @@ export const CustomCollapse = (props: any) => {
   );
 };
 CustomCollapse.Panel = (props: any) => {
-  const { header } = props;
   return (
-    <Collapse.Panel
-      {...props}
-      header={header}
-      key={header}
-      className="site-collapse-custom-panel"
-    >
+    <Collapse.Panel {...props} className="site-collapse-custom-panel">
       {props.children}
     </Collapse.Panel>
   );

@@ -101,9 +101,7 @@ export default () => {
         onValuesChange={onValuesChange}
       >
         <CustomCollapse defaultActiveKey={["输入框属性"]}>
-          <CustomCollapse.Panel
-            header="输入框属性"
-          >
+          <CustomCollapse.Panel header="输入框属性" key="输入框属性">
             <Form.Item label="默认值" name="defaultValue">
               <Input />
             </Form.Item>

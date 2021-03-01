@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, memo } from "react";
+import React, { useEffect, useContext, memo, useCallback } from "react";
 import { Form, Input, InputNumber, Select } from "antd";
 import { Context } from "../stores/context";
 import {
@@ -11,6 +11,7 @@ import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { ComponentKeys } from "../stores/typings";
 import CheckboxField from "../components/FormFields/CheckboxField";
 import { CustomCollapse } from "../components";
+import { debounce } from "lodash";
 
 const { Option, OptGroup } = Select;
 
@@ -30,45 +31,57 @@ export default memo(function () {
   const { currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {} } = currentDragComponent || {};
 
-  const onValuesChange = (changedValues: any, allValues: FormData) => {
-    const { componentKey } = allValues;
-    // 如果是日期范围类控件，设置placeholder为数组
-    if (isDatePickerRange(currentDragComponent?.componentKey)) {
-      allValues.placeholder = [allValues.placeholder1, allValues.placeholder2];
-    }
-    const { placeholder, componentWidth, bordered } = allValues;
-    const style = {
-      width: componentWidth + "%",
-    };
-    commonDispatch({
-      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-      payload: {
-        data: {
-          componentKey,
-          componentProps: {
-            placeholder,
-            style,
-            bordered,
+  const onValuesChange = debounce(
+    useCallback(
+      (
+        { componentWidth: cw, placeholder: p, placeholder1, placeholder2 }: any,
+        allValues: FormData
+      ) => {
+        const { componentKey } = allValues;
+        // 如果是日期范围类控件，设置placeholder为数组
+        if (isDatePickerRange(currentDragComponent?.componentKey)) {
+          allValues.placeholder = [
+            allValues.placeholder1,
+            allValues.placeholder2,
+          ];
+        }
+        const { placeholder, componentWidth, bordered } = allValues;
+        const style = {
+          width: componentWidth + "%",
+        };
+        commonDispatch({
+          type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+          payload: {
+            data: {
+              componentKey,
+              componentProps: {
+                placeholder,
+                style,
+                bordered,
+              },
+            },
           },
-        },
+        });
+        commonDispatch({
+          type: SET_CURRENT_DRAG_COMPONENT,
+          payload: {
+            id,
+            componentProps: {
+              placeholder,
+              style,
+              bordered,
+            },
+          },
+        });
       },
-    });
-    commonDispatch({
-      type: SET_CURRENT_DRAG_COMPONENT,
-      payload: {
-        id,
-        componentProps: {
-          placeholder,
-          style,
-          bordered,
-        },
-      },
-    });
-  };
+      []
+    ),
+    500
+  );
 
   useEffect(() => {
     const { style = {}, placeholder, ...other } = componentProps || {};
-    const width = style?.width?.replace("%", "")?.replace("null", "");
+    const width = style?.width?.replace("%", "")?.replace(/null|undefined/, "");
     let placeholder1;
     let placeholder2;
     if (Array.isArray(placeholder)) {
@@ -84,7 +97,7 @@ export default memo(function () {
       placeholder1,
       placeholder2,
     });
-  }, []);
+  }, [currentDragComponent]);
 
   return (
     <>
@@ -94,7 +107,7 @@ export default memo(function () {
         onValuesChange={onValuesChange}
       >
         <CustomCollapse defaultActiveKey={["控件类型"]}>
-          <CustomCollapse.Panel header="控件类型">
+          <CustomCollapse.Panel header="控件类型" key="控件类型">
             <Form.Item label="" name="componentKey">
               <Select>
                 {options.map((item) => {
@@ -130,7 +143,7 @@ export default memo(function () {
               <CheckboxField tooltipTitle="是否有边框" text="显示边框" />
             </Form.Item>
           </CustomCollapse.Panel>
-          <CustomCollapse.Panel header="占位提示">
+          <CustomCollapse.Panel header="占位提示" key="占位提示">
             {isDatePickerRange(currentDragComponent?.componentKey) ? (
               <>
                 <Form.Item label="" name="placeholder1">
