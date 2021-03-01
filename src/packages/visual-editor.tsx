@@ -1,6 +1,6 @@
 import React from "react";
 import { Header, LeftSidebar, RightSidebar, EditorArea } from "./layouts";
-import { Context, initialState } from "./stores/context";
+import { Context, INITAL_STATE } from "./stores/context";
 import { commonReducer } from "./stores/reducer";
 import { useLocallyPersistedReducer } from "./hooks";
 import { CommonState } from "./stores/typings";
@@ -10,7 +10,7 @@ import "./visual-editor.scss";
 export default () => {
   const [state, commonDispatch] = useLocallyPersistedReducer(
     commonReducer,
-    initialState,
+    INITAL_STATE,
     LOCAL_STORE_KEY
   );
 

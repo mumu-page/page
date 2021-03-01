@@ -1,7 +1,7 @@
 import React from 'react'
 import { CommonState } from './typings'
 
-export const initialState: CommonState = {
+export const INITAL_STATE: CommonState = {
   currentDragComponent: {
     id: "",
     componentKey: "",
@@ -21,4 +21,4 @@ export const initialState: CommonState = {
   }) => {},
 };
 
-export const Context = React.createContext(initialState)
+export const Context = React.createContext(INITAL_STATE)

@@ -15,6 +15,7 @@ import { CommonState, FormComProp } from "./typings";
 import { merge, cloneDeep } from "lodash";
 import produce from "immer";
 import * as uuid from "uuid";
+import { INITAL_STATE } from "./context";
 
 /**
  * 公共
@@ -66,7 +67,6 @@ export const commonReducer = produce(
           item.chosen = false;
         }
         draft.componentList?.push(action.payload);
-        console.log("PUT_COMPONENT_LIST");
       },
       /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
       [SET_COMPONENT_LIST]: () => {
@@ -199,5 +199,6 @@ export const commonReducer = produce(
       });
       strategy[action.type]();
     }
-  }
+  },
+  INITAL_STATE
 );
