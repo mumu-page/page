@@ -9,6 +9,7 @@ import {
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
   DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG,
   UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
+  PUT_COMPONENT_LIST,
 } from "./action-type";
 import { CommonState, FormComProp } from "./typings";
 import { merge, cloneDeep } from "lodash";
@@ -55,6 +56,17 @@ export const commonReducer = produce(
           colProps: {},
           rowProps: {},
         };
+      },
+      [PUT_COMPONENT_LIST]: () => {
+        for (let i = 0; i < draft.componentList?.length; i++) {
+          const item = draft.componentList[i];
+          if (item.id === action.payload?.id) {
+            return;
+          }
+          item.chosen = false;
+        }
+        draft.componentList?.push(action.payload);
+        console.log("PUT_COMPONENT_LIST");
       },
       /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
       [SET_COMPONENT_LIST]: () => {
