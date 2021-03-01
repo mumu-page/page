@@ -9,6 +9,7 @@ import { Context } from '../stores/context'
 import { CaretRightOutlined } from '@ant-design/icons'
 import CheckboxField from '../components/FormFields/CheckboxField'
 import { formatObject } from '../utils/utils'
+import { CustomCollapse } from '../components'
 
 export default function () {
   const { currentDragComponent, commonDispatch } = useContext(Context)
@@ -50,17 +51,9 @@ export default function () {
       form={form}
       onValuesChange={onValuesChange}
     >
-      <Collapse
-        defaultActiveKey={['表单']}
-        className="site-collapse-custom-collapse"
-        expandIcon={({ isActive }) => (
-          <CaretRightOutlined rotate={isActive ? 90 : 0} />
-        )}
-      >
-        <Collapse.Panel
+      <CustomCollapse defaultActiveKey={["表单"]}>
+        <CustomCollapse.Panel
           header="表单"
-          key="表单"
-          className="site-collapse-custom-panel"
         >
           <Form.Item label="表单名" name="form.name">
             <Input />
@@ -93,11 +86,9 @@ export default function () {
           <Form.Item label="" name="form.bordered" valuePropName="checked">
             <CheckboxField tooltipTitle="显示未选中组件边框" text="显示边框" />
           </Form.Item>
-        </Collapse.Panel>
-        <Collapse.Panel
+        </CustomCollapse.Panel>
+        <CustomCollapse.Panel
           header="表单项"
-          key="表单项"
-          className="site-collapse-custom-panel"
         >
           <Form.Item label="字段名" name="formItem.name">
             <Input onPressEnter={(e) => {}} />
@@ -110,14 +101,14 @@ export default function () {
             tooltip="需要为输入控件设置布局样式时，使用该属性，用法同 标签布局。"
             name="formItem.wrapperCol"
           >
-            <InputNumber min={0} max={24} style={{ width: '100%' }} />
+            <InputNumber min={0} max={24} style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item
             label="标签布局"
             tooltip="label 标签布局，同 <Col> 组件"
             name="formItem.labelCol"
           >
-            <InputNumber min={0} max={24} style={{ width: '100%' }} />
+            <InputNumber min={0} max={24} style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item label="标签对齐" name="formItem.labelAlign">
             <Radio.Group>
@@ -125,8 +116,8 @@ export default function () {
               <Radio.Button value="right">右对齐</Radio.Button>
             </Radio.Group>
           </Form.Item>
-        </Collapse.Panel>
-      </Collapse>
+        </CustomCollapse.Panel>
+      </CustomCollapse>
     </Form>
-  )
+  );
 }

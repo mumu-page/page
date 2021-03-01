@@ -1,22 +1,22 @@
-import React, { useContext, useEffect } from 'react'
-import { Form, Select, InputNumber, Collapse, Tooltip } from 'antd'
-import { Context } from '../stores/context'
+import React, { useContext, useEffect } from "react";
+import { Form, Select, InputNumber } from "antd";
+import { Context } from "../stores/context";
 import {
   SET_CURRENT_DRAG_COMPONENT,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-} from '../stores/action-type'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
-import CheckboxField from '../components/FormFields/CheckboxField'
-import { CaretRightOutlined } from '@ant-design/icons'
-import { formatObject } from '../utils/utils'
+} from "../stores/action-type";
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
+import CheckboxField from "../components/FormFields/CheckboxField";
+import { formatObject } from "../utils/utils";
+import { CustomCollapse } from "../components";
 
 export default function () {
-  const [form] = Form.useForm()
-  const { currentDragComponent, commonDispatch } = useContext(Context)
-  const { id, colProps = {}, rowProps = {} } = currentDragComponent || {}
+  const [form] = Form.useForm();
+  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { id, colProps = {}, rowProps = {} } = currentDragComponent || {};
 
   const onValuesChange = (changedValues: any, allValues: any) => {
-    const newAllValues = formatObject(allValues, ['all', 'single'])
+    const newAllValues = formatObject(allValues, ["all", "single"]);
     commonDispatch({
       type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
       payload: {
@@ -25,7 +25,7 @@ export default function () {
           colProps: newAllValues?.single,
         },
       },
-    })
+    });
     commonDispatch({
       type: SET_CURRENT_DRAG_COMPONENT,
       payload: {
@@ -33,37 +33,31 @@ export default function () {
         colProps: newAllValues?.single,
         rowProps: newAllValues?.all,
       },
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    form.resetFields()
+    form.resetFields();
     form.setFieldsValue({
       ...colProps,
       ...rowProps,
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <Form
       {...FORM_PROPERTIES_OPTIONS}
       form={form}
       initialValues={{
-        align: 'top',
+        align: "top",
         gutter: 0,
-        justify: 'start',
+        justify: "start",
         wrap: true,
       }}
       onValuesChange={onValuesChange}
     >
-      <Collapse
-        defaultActiveKey={['栅格数']}
-        className="site-collapse-custom-collapse"
-        expandIcon={({ isActive }) => (
-          <CaretRightOutlined rotate={isActive ? 90 : 0} />
-        )}
-      >
-        <Collapse.Panel
+      <CustomCollapse defaultActiveKey={["栅格数"]}>
+        <CustomCollapse.Panel
           header={
             <Form.Item
               label="全部布局"
@@ -71,8 +65,6 @@ export default function () {
               className="mb-0"
             ></Form.Item>
           }
-          key="全部布局"
-          className="site-collapse-custom-panel"
         >
           <Form.Item label="垂直对齐" name="all.align">
             <Select>
@@ -147,8 +139,8 @@ export default function () {
           <Form.Item label="" name="all.wrap" valuePropName="checked">
             <CheckboxField tooltipTitle="是否自动换行" text="自动换行" />
           </Form.Item>
-        </Collapse.Panel>
-        <Collapse.Panel
+        </CustomCollapse.Panel>
+        <CustomCollapse.Panel
           header={
             <Form.Item
               label="单个布局"
@@ -160,8 +152,6 @@ export default function () {
               <InputNumber className="w-100" min={0} max={24} />
             </Form.Item>
           }
-          key="栅格占位数"
-          className="site-collapse-custom-panel"
         >
           <Form.Item
             name="single.xs"
@@ -205,8 +195,8 @@ export default function () {
           >
             <InputNumber className="w-100" min={0} max={24} />
           </Form.Item>
-        </Collapse.Panel>
-      </Collapse>
+        </CustomCollapse.Panel>
+      </CustomCollapse>
     </Form>
-  )
+  );
 }

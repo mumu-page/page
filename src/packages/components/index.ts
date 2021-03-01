@@ -4,6 +4,7 @@ import IconModal from "./IconModal";
 import RowSortable from "./RowSortable";
 import SortableList from "./SortableList";
 import SortableItem from "./SortableItem";
+import CustomCollapse from "./CustomCollapse";
 import Title from "./Title";
 
 import { IconModalInstanceProp, IconModalProp } from "./IconModal/typings";
@@ -18,6 +19,7 @@ export {
   SortableList,
   SortableItem,
   Title,
+  CustomCollapse,
 };
 
 export type {

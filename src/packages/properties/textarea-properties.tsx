@@ -8,6 +8,7 @@ import { Context } from "../stores/context";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { CaretRightOutlined } from "@ant-design/icons";
 import CheckboxField from "../components/FormFields/CheckboxField";
+import { CustomCollapse } from "../components";
 
 interface FormData {
   [key: string]: any;
@@ -54,18 +55,8 @@ export default function () {
         form={form}
         onValuesChange={onValuesChange}
       >
-        <Collapse
-          defaultActiveKey={['基本']}
-          className="site-collapse-custom-collapse"
-          expandIcon={({ isActive }) => (
-            <CaretRightOutlined rotate={isActive ? 90 : 0} />
-          )}
-        >
-          <Collapse.Panel
-            header="基本"
-            key="基本"
-            className="site-collapse-custom-panel"
-          >
+        <CustomCollapse defaultActiveKey={["基本"]}>
+          <CustomCollapse.Panel header="基本">
             <Form.Item label="默认值" name="defaultValue">
               <Input
                 onBlur={() => (shouldUpdate = true)}
@@ -87,8 +78,8 @@ export default function () {
             <Form.Item label="" valuePropName="checked" name="bordered">
               <CheckboxField tooltipTitle="是否有边框" text="显示边框" />
             </Form.Item>
-          </Collapse.Panel>
-          <Collapse.Panel
+          </CustomCollapse.Panel>
+          <CustomCollapse.Panel
             header={
               <Form.Item
                 label=""
@@ -102,8 +93,6 @@ export default function () {
                 />
               </Form.Item>
             }
-            key="自适应高"
-            className="site-collapse-custom-panel"
           >
             <Form.Item label="最小行数" name="autoSize.minRows">
               <InputNumber />
@@ -111,9 +100,9 @@ export default function () {
             <Form.Item label="最大行数" name="autoSize.maxRows">
               <InputNumber />
             </Form.Item>
-          </Collapse.Panel>
-        </Collapse>
+          </CustomCollapse.Panel>
+        </CustomCollapse>
       </Form>
     </>
-  )
+  );
 }

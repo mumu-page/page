@@ -7,15 +7,18 @@ import {
   Button,
   Checkbox,
   Tooltip,
-  Collapse,
 } from "antd";
 import { Context } from "../stores/context";
 import {
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
   SET_CURRENT_DRAG_COMPONENT,
 } from "../stores/action-type";
-import { CaretRightOutlined, SelectOutlined } from "@ant-design/icons";
-import { IconModal, IconModalInstanceProp } from "../components";
+import { SelectOutlined } from "@ant-design/icons";
+import {
+  CustomCollapse,
+  IconModal,
+  IconModalInstanceProp,
+} from "../components";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 
 export default () => {
@@ -97,17 +100,9 @@ export default () => {
         form={form}
         onValuesChange={onValuesChange}
       >
-        <Collapse
-          defaultActiveKey={["输入框属性"]}
-          className="site-collapse-custom-collapse"
-          expandIcon={({ isActive }) => (
-            <CaretRightOutlined rotate={isActive ? 90 : 0} />
-          )}
-        >
-          <Collapse.Panel
+        <CustomCollapse defaultActiveKey={["输入框属性"]}>
+          <CustomCollapse.Panel
             header="输入框属性"
-            key="输入框属性"
-            className="site-collapse-custom-panel"
           >
             <Form.Item label="默认值" name="defaultValue">
               <Input />
@@ -190,8 +185,8 @@ export default () => {
                 <Tooltip title="是否禁用状态，默认为 false">禁用</Tooltip>
               </Checkbox>
             </Form.Item>
-          </Collapse.Panel>
-        </Collapse>
+          </CustomCollapse.Panel>
+        </CustomCollapse>
       </Form>
     </>
   );
