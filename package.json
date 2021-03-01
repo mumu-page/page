@@ -5,7 +5,7 @@
   "homepage": "https://resonances.gitee.io/react-visual-editor/",
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "node scripts/build.js --max_old_space_size=4096",
+    "build": "node --max_old_space_size=4096 scripts/build.js",
     "test": "node scripts/test.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
