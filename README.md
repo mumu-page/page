@@ -3,7 +3,7 @@
     <p>基于Ant Design的表单可视化编辑器</p>
 </div>
 
-[在线设计](https://resonances.gitee.io/react-visual-editor)
+[PRD](https://www.yuque.com/resonance/rwaxct/ny150b)｜[点击开始在线设计](https://resonances.gitee.io/react-visual-editor)
 
 ## 特性
 - 通过简单的拖拽即可实现页面布局(所见即所得)
