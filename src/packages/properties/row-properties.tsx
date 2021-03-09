@@ -1,22 +1,28 @@
-import React, { useContext, useEffect } from "react";
-import { Form, Select, InputNumber } from "antd";
-import { Context } from "../stores/context";
+import React, { useContext, useEffect } from 'react'
+import { Form, Select, InputNumber } from 'antd'
+import { Context } from '../stores/context'
 import {
   SET_CURRENT_DRAG_COMPONENT,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-} from "../stores/action-type";
-import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
-import CheckboxField from "../components/FormFields/CheckboxField";
-import { formatObject } from "../utils/utils";
-import { CustomCollapse } from "../components";
+} from '../stores/action-type'
+import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
+import CheckboxField from '../components/FormFields/CheckboxField'
+import { formatObject } from '../utils/utils'
+import { CustomCollapse } from '../components'
+
+/**
+ * TODO: 布局增加简洁模式和复杂模式
+ * 简洁模式：支持设置 几列布局等 比较傻瓜式，比如：2列  3列  那么界面会自动适配
+ * 复杂模式：支持精准设置多种属性，适用于专业人员。
+ */
 
 export default function () {
-  const [form] = Form.useForm();
-  const { currentDragComponent, commonDispatch } = useContext(Context);
-  const { id, colProps = {}, rowProps = {} } = currentDragComponent || {};
+  const [form] = Form.useForm()
+  const { currentDragComponent, commonDispatch } = useContext(Context)
+  const { id, colProps = {}, rowProps = {} } = currentDragComponent || {}
 
   const onValuesChange = (changedValues: any, allValues: any) => {
-    const newAllValues = formatObject(allValues, ["all", "single"]);
+    const newAllValues = formatObject(allValues, ['all', 'single'])
     commonDispatch({
       type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
       payload: {
@@ -25,7 +31,7 @@ export default function () {
           colProps: newAllValues?.single,
         },
       },
-    });
+    })
     commonDispatch({
       type: SET_CURRENT_DRAG_COMPONENT,
       payload: {
@@ -33,38 +39,39 @@ export default function () {
         colProps: newAllValues?.single,
         rowProps: newAllValues?.all,
       },
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    form.resetFields();
+    form.resetFields()
     form.setFieldsValue({
       ...colProps,
       ...rowProps,
-    });
-  }, []);
+    })
+  }, [])
 
   return (
     <Form
       {...FORM_PROPERTIES_OPTIONS}
       form={form}
       initialValues={{
-        align: "top",
+        align: 'top',
         gutter: 0,
-        justify: "start",
+        justify: 'start',
         wrap: true,
       }}
       onValuesChange={onValuesChange}
     >
-      <CustomCollapse defaultActiveKey={["栅格数"]}>
+      <CustomCollapse defaultActiveKey={['通用布局']}>
         <CustomCollapse.Panel
           header={
             <Form.Item
-              label="全部布局"
+              label="通用布局"
               tooltip="在此设置的内容将应用于全部控件"
               className="mb-0"
             ></Form.Item>
           }
+          key={'通用布局'}
         >
           <Form.Item label="垂直对齐" name="all.align">
             <Select>
@@ -143,7 +150,7 @@ export default function () {
         <CustomCollapse.Panel
           header={
             <Form.Item
-              label="单个布局"
+              label="独立布局"
               tooltip="屏幕 * 响应式栅格"
               labelCol={{ span: 16 }}
               name="single.span"
@@ -198,5 +205,5 @@ export default function () {
         </CustomCollapse.Panel>
       </CustomCollapse>
     </Form>
-  );
+  )
 }

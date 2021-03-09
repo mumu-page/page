@@ -1,21 +1,13 @@
 .sortable-list {
-  padding-top: 5px;
+  padding: 1px;
   .sortable-item-wrap {
-    display: inline-block;
-    &:last-child {
-      padding-bottom: 5px;
-    }
   }
   .component-warp {
     width: 100%;
-    margin: 6px 0 !important;
-    padding: 6px;
-    border-radius: 10px;
     transition: all 0.3s;
     cursor: move !important;
     position: relative;
     &:hover {
-      background-color: #f8f8f8;
       .action-btn {
         display: block;
       }
@@ -28,32 +20,33 @@
       z-index: 99;
     }
   }
+  .component-col-warp {
+    box-sizing: border-box;
+  }
   // drop placeholder的css类名
   .sortable-ghost {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
     position: relative;
+    background-color: #f8f8f8;
+
     &::before {
-      content: "";
+      content: '';
       display: block;
       position: absolute;
-      top: 2px;
+      top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 2px;
       background-color: hsl(207, 100%, 63%);
       z-index: 10;
     }
     .component-warp {
-      border-top-left-radius: 0 !important;
-      border-top-right-radius: 0 !important;
     }
   }
   // 从左侧拖拽过来时的样式
   .ant-col.ant-col-12.left-sidebar-col {
     background-color: #f8f8f8;
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     .ant-btn {
       border: none !important;
       outline: none !important;
@@ -63,44 +56,42 @@
   .ant-col.ant-col-12.editor-area-item-col.sortable-chosen {
     background-color: transparent !important;
   }
-  // 所选项目的类样式
+  // 所选项目的样式
   .sortable-chosen {
-    > .component-warp {
-      border-radius: 10px;
-      background-color: #fbf6d985;
-    }
-    > .component-col-warp {
-      background-color: #fbf6d985;
+    outline: rgb(235, 200, 200) solid 1px;
+  }
+  .editor-area-item-col {
+    padding: 1px;
+    margin-bottom: 1px;
+    &:hover {
+      outline: rgb(235, 200, 200) dashed 1px;
     }
   }
 
-  [data-id="Input"],
-  [data-id="Input.TextArea"],
-  [data-id="Input.Password"],
-  [data-id="Editor"],
-  [data-id="InputNumber"],
-  [data-id="Select"],
-  [data-id="Cascader"],
-  [data-id="Radio"],
-  [data-id="Checkbox"],
-  [data-id="Switch"],
-  [data-id="Slider"],
-  [data-id="TimePicker"],
-  [data-id="TimePicker.RangePicker"],
-  [data-id="DatePicker"],
-  [data-id="DatePicker.RangePicker"],
-  [data-id="Rate"],
-  [data-id="Upload"],
-  [data-id="Button"] {
+  [data-id='Input'],
+  [data-id='Input.TextArea'],
+  [data-id='Input.Password'],
+  [data-id='Editor'],
+  [data-id='InputNumber'],
+  [data-id='Select'],
+  [data-id='Cascader'],
+  [data-id='Radio'],
+  [data-id='Checkbox'],
+  [data-id='Switch'],
+  [data-id='Slider'],
+  [data-id='TimePicker'],
+  [data-id='TimePicker.RangePicker'],
+  [data-id='DatePicker'],
+  [data-id='DatePicker.RangePicker'],
+  [data-id='Rate'],
+  [data-id='Upload'],
+  [data-id='Button'] {
     flex: 0 0 100%;
     max-width: 100%;
   }
 
   .row-wrap {
-    min-height: 130px;
-    border: 1px dashed #ccc;
     .action-btn {
-      // right: 50%;
       left: -5px;
     }
   }

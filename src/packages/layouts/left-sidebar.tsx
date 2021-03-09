@@ -1,23 +1,23 @@
-import React, { forwardRef, useContext, useState } from "react";
-import { Button, Col, Row } from "antd";
-import { IconFont, options } from "../constants";
-import { OptionGroup, OptionItem } from "../typings/option";
-import { ReactSortable } from "react-sortablejs";
-import * as uuid from "uuid";
-import { hasNotPlaceholder, isColComponent, isSelect } from "../utils/utils";
-import { FormComProp } from "../stores/typings";
-import { GLOBAL_STATE } from "../stores/state";
-import { Context } from "../stores/context";
-import { PUT_COMPONENT_LIST } from "../stores/action-type";
-import { cloneDeep } from "lodash";
+import React, { forwardRef, useContext, useState } from 'react'
+import { Button, Col, Row } from 'antd'
+import { IconFont, options } from '../constants'
+import { OptionGroup, OptionItem } from '../typings/option'
+import { ReactSortable } from 'react-sortablejs'
+import * as uuid from 'uuid'
+import { hasNotPlaceholder, isColComponent, isSelect } from '../utils/utils'
+import { FormComProp } from '../stores/typings'
+import { GLOBAL_STATE } from '../stores/state'
+import { Context } from '../stores/context'
+import { PUT_COMPONENT_LIST, SET_CURRENT_DRAG_COMPONENT } from '../stores/action-type'
+import { cloneDeep } from 'lodash'
 
 const getNewOptions = (data: OptionGroup[]) => {
   return data.map((item) => {
     return {
       ...item,
       children: item?.children?.map((cItem) => {
-        const { value, label, icon } = cItem || {};
-        const id = uuid.v4();
+        const { value, label, icon } = cItem || {}
+        const id = uuid.v4()
         const ret: FormComProp & OptionItem = {
           value,
           label,
@@ -41,41 +41,41 @@ const getNewOptions = (data: OptionGroup[]) => {
           },
           rowProps: {},
           componentProps: {},
-        };
+        }
         if (!hasNotPlaceholder(value)) {
           const placeholderEnum: any = {
-            "TimePicker.RangePicker": ["开始时间", "结束时间"],
-            "DatePicker.RangePicker": ["开始日期", "结束日期"],
-          };
+            'TimePicker.RangePicker': ['开始时间', '结束时间'],
+            'DatePicker.RangePicker': ['开始日期', '结束日期'],
+          }
           if (isSelect(value)) {
             ret.componentProps.placeholder =
-              placeholderEnum[value] || "请选择" + label;
+              placeholderEnum[value] || '请选择' + label
           } else {
-            ret.componentProps.placeholder = "请输入" + label;
+            ret.componentProps.placeholder = '请输入' + label
           }
         }
-        return ret;
+        return ret
       }),
-    };
-  });
-};
+    }
+  })
+}
 
 const CustomRow = forwardRef<HTMLDivElement, any>((props, ref) => {
   return (
-    <Row ref={ref} gutter={[6, 6]} style={{ padding: "0 12px 12px 12px" }}>
+    <Row ref={ref} gutter={[6, 6]} style={{ padding: '0 12px 12px 12px' }}>
       {props.children}
     </Row>
-  );
-});
+  )
+})
 
-const initOptions = getNewOptions(options);
+const initOptions = getNewOptions(options)
 export default () => {
-  const [_options, setOptions] = useState(initOptions);
-  const { commonDispatch } = useContext(Context);
+  const [_options, setOptions] = useState(initOptions)
+  const { commonDispatch } = useContext(Context)
 
   const onFocus = (childItem: any) => {
-    GLOBAL_STATE.currentDragComponent = childItem;
-  };
+    GLOBAL_STATE.currentDragComponent = childItem
+  }
 
   const generator = (data: any[]) => {
     return data.map((item) => {
@@ -92,8 +92,8 @@ export default () => {
           </Button>
           <ReactSortable
             group={{
-              name: "editor-area",
-              pull: "clone",
+              name: 'editor-area',
+              pull: 'clone',
               put: false,
               revertClone: true,
             }}
@@ -104,7 +104,7 @@ export default () => {
             animation={200}
             delayOnTouchOnly
             onEnd={() => {
-              setOptions(getNewOptions(_options));
+              setOptions(getNewOptions(_options))
             }}
           >
             {item.children &&
@@ -117,28 +117,32 @@ export default () => {
                   >
                     <Button
                       block
-                      style={{ backgroundColor: "#f8f8f8", fontSize: "12px" }}
+                      style={{ backgroundColor: '#f8f8f8', fontSize: '12px' }}
                       type="default"
                       icon={<IconFont type={childItem.icon} />}
                       onClick={() => {
                         commonDispatch({
                           type: PUT_COMPONENT_LIST,
-                          payload: cloneDeep(childItem),
-                        });
-                        setOptions(getNewOptions(_options));
+                          payload: childItem,
+                        })
+                        commonDispatch({
+                          type: SET_CURRENT_DRAG_COMPONENT,
+                          payload: childItem,
+                        })
+                        setOptions(getNewOptions(_options))
                       }}
                       onFocus={() => onFocus(childItem)}
                     >
                       {childItem.label}
                     </Button>
                   </Col>
-                );
+                )
               })}
           </ReactSortable>
         </div>
-      );
-    });
-  };
+      )
+    })
+  }
 
-  return <>{generator(_options)}</>;
-};
+  return <>{generator(_options)}</>
+}

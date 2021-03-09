@@ -103,11 +103,11 @@ export default memo((prop: FormComProp) => {
     <div
       key={id}
       className={`component-warp ${
-        isRenderFormItem(componentKey) ? "" : "component-col-warp"
+        isRenderFormItem(componentKey) ? '' : 'component-col-warp'
       }`}
     >
-      <div className="action-btn">
-        {/* <Button
+      {/* <div className="action-btn">
+        <Button
           type="primary"
           shape="circle"
           size="small"
@@ -124,33 +124,32 @@ export default memo((prop: FormComProp) => {
               payload: { id },
             })
           }}
-        /> */}
+        />
         <Button
           type="default"
           shape="circle"
           size="small"
-          style={{ marginLeft: "5px" }}
+          style={{ marginLeft: '5px' }}
           danger
           icon={<DeleteOutlined />}
           onMouseLeave={() => {
-            canChosen.set(true);
+            canChosen.set(true)
           }}
           onMouseEnter={() => {
-            canChosen.set(false);
+            canChosen.set(false)
           }}
           onClick={() => {
             commonDispatch({
               type: DEL_COMPONENT_LIST,
               payload: { id },
-            });
+            })
           }}
         />
-      </div>
+      </div> */}
       {isRenderFormItem(componentKey) ? (
         <Form.Item
           {...formItemProps}
-          valuePropName={isCheck(componentKey) ? "checked" : "value"}
-          style={{ marginBottom: 0 }}
+          valuePropName={isCheck(componentKey) ? 'checked' : 'value'}
         >
           {React.cloneElement(getComponent(componentKey) || <></>, {
             ...componentOtherProps,
@@ -167,5 +166,5 @@ export default memo((prop: FormComProp) => {
         })
       )}
     </div>
-  );
+  )
 }, areEqualItem)

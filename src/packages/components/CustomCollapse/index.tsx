@@ -4,7 +4,6 @@ import React from "react";
 import "./index.scss";
 
 export const CustomCollapse = (props: any) => {
-  console.log(props);
   return (
     <Collapse
       {...props}
@@ -15,8 +14,8 @@ export const CustomCollapse = (props: any) => {
     >
       {props.children}
     </Collapse>
-  );
-};
+  )
+}
 CustomCollapse.Panel = (props: any) => {
   return (
     <Collapse.Panel {...props} className="site-collapse-custom-panel">

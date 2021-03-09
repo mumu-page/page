@@ -31,12 +31,12 @@ export const options: OptionGroup[] = [
         value: "InputNumber",
         icon: "icon-number",
       },
-      {
+      /* {
         label: "编辑器",
         key: "Editor",
         value: "Editor",
         icon: "icon-icon-editor",
-      },
+      }, */
     ],
   },
   {
@@ -131,12 +131,12 @@ export const options: OptionGroup[] = [
     value: "layout-group",
     icon: "icon-layout",
     children: [
-      {
+      /* {
         label: "行容器",
         key: "Col",
         value: "Col",
         icon: "icon-hangrongqi",
-      },
+      }, */
       {
         label: "按钮",
         key: "Button",
