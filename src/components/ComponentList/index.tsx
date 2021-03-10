@@ -1,90 +1,92 @@
-import { Col, Form, Row } from "antd";
-import React from "react";
-import { useEffect } from "react";
-import Moveable from "react-moveable";
-import { ComponentItem, ReactiveMoveable } from "..";
+import React from 'react'
+import { Col, Form, Row } from 'antd'
+import { useEffect } from 'react'
+import { ComponentItem } from '..'
 import {
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
-} from "../../stores/action-type";
-import { commonDispatch, FormComProp } from "../../stores/typings";
-import { isDatePicker } from "../../utils/utils";
-import "./index.scss";
+} from '../../stores/action-type'
+import { commonDispatch, FormComProp } from '../../stores/typings'
+import { isDatePicker } from '../../utils/utils'
+import './index.scss'
 
 interface EditorAreaProps extends commonDispatch<object> {
-  componentList: FormComProp[];
-  currentDragComponent: FormComProp;
+  componentList: FormComProp[]
+  currentDragComponent: FormComProp
 }
 
 export default function Container(props: EditorAreaProps) {
-  const { currentDragComponent, componentList, commonDispatch } = props;
-  const [form] = Form.useForm();
+  const { currentDragComponent, componentList, commonDispatch } = props
+  const [form] = Form.useForm()
   const {
     componentProps,
     formItemProps,
     formProps = {},
-  } = currentDragComponent;
+    frame = {},
+  } = currentDragComponent
 
   const findTarget = (
     id = currentDragComponent.id,
-    selectors = ".editor-area-item-col",
+    selectors = '.editor-area-item-col',
     list = componentList
   ) => {
-    const divList = [].slice.call(document.querySelectorAll(selectors)) as any;
-    const target = {} as any;
+    const divList = [].slice.call(document.querySelectorAll(selectors)) as any
+    const target = {} as any
     list?.forEach((item, index) => {
       if (item.id === id) {
-        target.item = item;
-        target.index = index;
+        target.item = item
+        target.index = index
       }
-    });
+    })
     return {
       divList,
       target,
-    };
-  };
+    }
+  }
 
   const setTargetData = (id?: string | number | undefined) => {
-    const { divList, target } = findTarget(id);
+    const { divList, target } = findTarget(id)
     commonDispatch({
       type: SET_MOVEABLE_OPTIONS,
       payload: {
-        translate: [0, 0],
+        frame: {
+          translate: frame.translate || [0, 0],
+        },
         elementGuidelines: divList,
         target: divList[target?.index],
       },
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    setTargetData();
-  }, []);
+    setTargetData()
+  }, [])
 
   useEffect(() => {
     form.setFieldsValue({
       [formItemProps.name]: componentProps?.defaultValue,
-    });
-  }, [currentDragComponent, form]);
+    })
+  }, [currentDragComponent, form])
 
   useEffect(() => {
-    const _initialValues = {} as any;
+    const _initialValues = {} as any
     componentList.forEach((item) => {
-      const { componentKey, formItemProps, componentProps } = item;
-      const { name } = formItemProps || {};
-      const { defaultValue } = componentProps || {};
+      const { componentKey, formItemProps, componentProps } = item
+      const { name } = formItemProps || {}
+      const { defaultValue } = componentProps || {}
       if (!isDatePicker(componentKey)) {
-        _initialValues[name] = defaultValue;
+        _initialValues[name] = defaultValue
       }
-    });
-    form.setFieldsValue(_initialValues);
-  }, [componentList, form]);
+    })
+    form.setFieldsValue(_initialValues)
+  }, [componentList, form])
 
   return (
     <Form
       {...formProps}
       style={{
-        height: "100%",
-        position: "relative",
+        height: '100%',
+        position: 'relative',
       }}
       form={form}
     >
@@ -98,19 +100,19 @@ export default function Container(props: EditorAreaProps) {
             componentProps,
             colProps = {},
             rowProps = {},
-          } = item;
+          } = item
 
           return (
             <Col
-              key={item.id}
               {...colProps}
+              key={item.id}
               className="editor-area-item-col"
               onClick={() => {
                 commonDispatch({
                   type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
                   payload: { id },
-                });
-                setTargetData(item.id);
+                })
+                setTargetData(item.id)
               }}
             >
               <ComponentItem
@@ -125,9 +127,9 @@ export default function Container(props: EditorAreaProps) {
                 componentKey={componentKey}
               />
             </Col>
-          );
+          )
         })}
       </Row>
     </Form>
-  );
+  )
 }
