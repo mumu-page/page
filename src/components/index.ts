@@ -1,9 +1,6 @@
 import Preview from "./Preview";
 import CodeEditor from "./CodeEditor";
 import IconModal from "./IconModal";
-import RowSortable from "./RowSortable";
-import SortableList from "./SortableList";
-import SortableItem from "./SortableItem";
 import CustomCollapse from "./CustomCollapse";
 import ComponentList from "./ComponentList";
 import ComponentItem from "./ComponentItem";
@@ -18,9 +15,6 @@ export {
   Preview,
   CodeEditor,
   IconModal,
-  RowSortable,
-  SortableList,
-  SortableItem,
   Title,
   CustomCollapse,
   ComponentList,
