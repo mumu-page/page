@@ -16,7 +16,7 @@ import {
   DateRangePickerProperties,
   RateProperties,
   UploadProperties,
-  RowProperties,
+  // RowProperties,
   ButtonProperties,
 } from "../properties";
 import {
@@ -34,7 +34,6 @@ import {
   Upload,
   Button,
 } from "antd";
-import RowSortable from "../components/RowSortable";
 import { ComponentKeys } from "../stores/typings";
 
 export const key2Component = {
@@ -107,8 +106,8 @@ export const key2Component = {
     component: <Upload />,
   },
   Col: {
-    properties: <RowProperties />,
-    component: <RowSortable />,
+    properties: <></>, //<RowProperties />,
+    component: <></>, //<RowSortable />,
   },
   Button: {
     properties: <ButtonProperties />,
