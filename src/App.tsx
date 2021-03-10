@@ -1,14 +1,3 @@
-import React from "react";
-import { VisualEditor } from "./packages";
-// import { CodeEditor } from "./packages/components";
+import VisualEditor from './visual-editor'
 
-function App() {
-  return (
-    <div className="App">
-      <VisualEditor />
-      {/* <CodeEditor /> */}
-    </div>
-  );
-}
-
-export default App;
+export default VisualEditor;
