@@ -2,7 +2,6 @@ import React, { forwardRef, useContext, useState } from "react";
 import { Button, Col, Row } from "antd";
 import { IconFont, options } from "../constants";
 import { OptionGroup, OptionItem } from "../typings/option";
-import { ReactSortable } from "react-sortablejs";
 import * as uuid from "uuid";
 import { hasNotPlaceholder, isColComponent, isSelect } from "../utils/utils";
 import { FormComProp } from "../stores/typings";
