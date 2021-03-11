@@ -5,6 +5,9 @@
 
 [PRD](https://www.yuque.com/resonance/rwaxct/ny150b)｜[点击开始在线设计](https://resonances.gitee.io/react-visual-editor)
 
+## 历史
+1. 对整体项目进行重构，代码更简洁，更好看了。 2021/3/11
+
 ## 特性
 - 通过简单的拖拽即可实现页面布局(所见即所得)
 - 支持控件80%的配置功能
