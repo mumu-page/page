@@ -1,11 +1,6 @@
-import Header from "./header";
 import LeftSidebar from "./left-sidebar";
 import RightSidebar from "./right-sidebar";
 import EditorArea from "./EditorArea";
+import Container from "./Container";
 
-export {
-    Header,
-    LeftSidebar,
-    RightSidebar,
-    EditorArea,
-}
+export { LeftSidebar, RightSidebar, EditorArea, Container };

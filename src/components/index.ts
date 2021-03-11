@@ -5,6 +5,8 @@ import CustomCollapse from "./CustomCollapse";
 import ComponentList from "./ComponentList";
 import ComponentItem from "./ComponentItem";
 import ReactiveMoveable from "./ReactiveMoveable";
+import InfiniteViewer from "./InfiniteViewer";
+import Logo from "./Logo";
 import Title from "./Title";
 
 import { IconModalInstanceProp, IconModalProp } from "./IconModal/typings";
@@ -20,6 +22,8 @@ export {
   ComponentList,
   ComponentItem,
   ReactiveMoveable,
+  InfiniteViewer,
+  Logo,
 };
 
 export type {

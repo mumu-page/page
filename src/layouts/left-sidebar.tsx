@@ -1,17 +1,15 @@
-import React, { forwardRef, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Col, Row } from "antd";
 import { IconFont, options } from "../constants";
 import { OptionGroup, OptionItem } from "../typings/option";
 import * as uuid from "uuid";
 import { hasNotPlaceholder, isColComponent, isSelect } from "../utils/utils";
 import { FormComProp } from "../stores/typings";
-import { GLOBAL_STATE } from "../stores/state";
 import { Context } from "../stores/context";
 import {
   PUT_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
 } from "../stores/action-type";
-import { cloneDeep } from "lodash";
 
 const getNewOptions = (data: OptionGroup[]) => {
   return data.map((item) => {
@@ -43,6 +41,9 @@ const getNewOptions = (data: OptionGroup[]) => {
           },
           rowProps: {},
           componentProps: {},
+          layout: {
+            frame: { translate: [0, 0] },
+          },
         };
         if (!hasNotPlaceholder(value)) {
           const placeholderEnum: any = {
@@ -95,7 +96,6 @@ export default () => {
                       type="default"
                       icon={<IconFont type={childItem.icon} />}
                       onClick={() => {
-                        GLOBAL_STATE.currentDragComponent = childItem;
                         commonDispatch({
                           type: PUT_COMPONENT_LIST,
                           payload: childItem,

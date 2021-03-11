@@ -1,0 +1,24 @@
+.logo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  
+  .title {
+    box-shadow: inset 1px 1px 2px #00afff, inset -1px -1px 2px #00afff;
+    transform: rotate(90deg) translateX(-64px);
+    transform-origin: center;
+    width: 219px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 7px;
+    font-style: italic;
+    color: #00afff;
+  }
+  a {
+    z-index: 99;
+    margin-bottom: 10px;
+  }
+}

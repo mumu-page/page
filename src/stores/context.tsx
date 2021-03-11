@@ -3,14 +3,16 @@ import { CommonState } from './typings'
 
 export const INITAL_STATE: CommonState = {
   currentDragComponent: {
-    id: '',
-    componentKey: '',
+    id: "",
+    componentKey: "",
     formProps: {},
     formItemProps: {},
     componentProps: {},
     colProps: {},
     rowProps: {},
-    frame: { translate: [0, 0] },
+    layout: {
+      frame: { translate: [0, 0] },
+    },
   },
   componentList: [],
   moveableOptions: {
@@ -20,9 +22,9 @@ export const INITAL_STATE: CommonState = {
     type,
     payload,
   }: {
-    type: string
-    payload?: unknown
+    type: string;
+    payload?: unknown;
   }) => {},
-}
+};
 
 export const Context = React.createContext(INITAL_STATE)

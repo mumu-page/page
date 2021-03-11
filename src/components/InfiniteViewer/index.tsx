@@ -1,34 +1,28 @@
-import * as React from "react";
+import React, { useEffect, useRef } from "react";
 import InfiniteViewer from "react-infinite-viewer";
-import Ruler from "./components/InfiniteViewer/Ruler";
-import "./test.css";
+import Ruler from "./Ruler";
+import "./index.scss";
 
-export default function App() {
+/**
+ * 让他能够滚动
+ */
+export default (props: any) => {
+  const horizontalGuides = useRef();
+  const verticalGuides = useRef();
+  const viewerRef = useRef(null);
 
-  const horizontalGuides = React.useRef();
-  const verticalGuides = React.useRef();
-  const viewerRef = React.useRef<InfiniteViewer>(null);
-  const targetRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    viewerRef.current!.scrollCenter();
+  useEffect(() => {
+    (viewerRef.current as any)?.scrollCenter();
   }, []);
 
   return (
-    <div className="container">
-      <button
+    <div className="infinite-viewer-container">
+      <div
+        className="reset"
         onClick={() => {
-          viewerRef.current!.scrollCenter();
+          (viewerRef.current as any)?.scrollCenter();
         }}
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          zIndex: 1,
-        }}
-      >
-        Scroll Center
-      </button>
+      ></div>
       <Ruler
         className="guides horizontal"
         ref={horizontalGuides}
@@ -68,19 +62,8 @@ export default function App() {
           (viewerRef.current as any).zoom = zoom;
         }}
       >
-        <div
-          className="viewport"
-          style={{
-            width: "400px",
-            height: "400px",
-            border: "1px solid #ccc",
-          }}
-        >
-          <div className="target" ref={targetRef}>
-            Target
-          </div>
-        </div>
+        <div className="viewport">{props.children}</div>
       </InfiniteViewer>
     </div>
   );
-}
+};

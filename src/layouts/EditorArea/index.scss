@@ -1,7 +1,5 @@
 .sortable-list {
   padding: 1px;
-  .sortable-item-wrap {
-  }
   .component-warp {
     width: 100%;
     transition: all 0.3s;
@@ -23,25 +21,6 @@
   .component-col-warp {
     box-sizing: border-box;
   }
-  // drop placeholder的css类名
-  .sortable-ghost {
-    position: relative;
-    background-color: #f8f8f8;
-
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background-color: hsl(207, 100%, 63%);
-      z-index: 10;
-    }
-    .component-warp {
-    }
-  }
   // 从左侧拖拽过来时的样式
   .ant-col.ant-col-12.left-sidebar-col {
     background-color: #f8f8f8;
@@ -53,13 +32,6 @@
       box-shadow: none !important;
     }
   }
-  .ant-col.ant-col-12.editor-area-item-col.sortable-chosen {
-    background-color: transparent !important;
-  }
-  // 所选项目的样式
-  .sortable-chosen {
-    outline: rgb(235, 200, 200) solid 1px;
-  }
   .editor-area-item-col {
     padding: 1px;
     margin-bottom: 1px;
@@ -68,24 +40,24 @@
     }
   }
 
-  [data-id='Input'],
-  [data-id='Input.TextArea'],
-  [data-id='Input.Password'],
-  [data-id='Editor'],
-  [data-id='InputNumber'],
-  [data-id='Select'],
-  [data-id='Cascader'],
-  [data-id='Radio'],
-  [data-id='Checkbox'],
-  [data-id='Switch'],
-  [data-id='Slider'],
-  [data-id='TimePicker'],
-  [data-id='TimePicker.RangePicker'],
-  [data-id='DatePicker'],
-  [data-id='DatePicker.RangePicker'],
-  [data-id='Rate'],
-  [data-id='Upload'],
-  [data-id='Button'] {
+  [data-id="Input"],
+  [data-id="Input.TextArea"],
+  [data-id="Input.Password"],
+  [data-id="Editor"],
+  [data-id="InputNumber"],
+  [data-id="Select"],
+  [data-id="Cascader"],
+  [data-id="Radio"],
+  [data-id="Checkbox"],
+  [data-id="Switch"],
+  [data-id="Slider"],
+  [data-id="TimePicker"],
+  [data-id="TimePicker.RangePicker"],
+  [data-id="DatePicker"],
+  [data-id="DatePicker.RangePicker"],
+  [data-id="Rate"],
+  [data-id="Upload"],
+  [data-id="Button"] {
     flex: 0 0 100%;
     max-width: 100%;
   }
@@ -95,4 +67,20 @@
       left: -5px;
     }
   }
+}
+
+.not-found-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: lighter;
+  color: #40a9ff;
+  user-select: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  letter-spacing: 4px;
 }

@@ -44,7 +44,6 @@ export default function () {
   };
 
   useEffect(() => {
-    console.log(currentDragComponent);
     form.resetFields();
     form.setFieldsValue({
       ...colProps,
