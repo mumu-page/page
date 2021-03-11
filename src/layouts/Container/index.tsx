@@ -1,33 +1,33 @@
-import React, { useState } from "react";
-import { LeftSidebar, RightSidebar } from "..";
-import LeftAction from "./LeftAction";
-import RightAction from "./RightAction";
-import "./index.scss";
-import { Logo } from "../../components";
+import React, { useState } from 'react'
+import { LeftSidebar, RightSidebar } from '..'
+import LeftAction from './LeftAction'
+import RightAction from './RightAction'
+import './index.scss'
+import { Logo } from '../../components'
 
 export type BtnTypes =
-  | "coms"
-  | ""
-  | "run"
-  | "clean"
-  | "copy"
-  | "download"
-  | "setting"
-  | "preview"
-  | "center";
+  | 'coms'
+  | ''
+  | 'run'
+  | 'clean'
+  | 'copy'
+  | 'download'
+  | 'setting'
+  | 'preview'
+  | 'center'
 /**
  * 双飞翼
  */
 export default (props: any) => {
-  const [type, setType] = useState<BtnTypes>("");
+  const [type, setType] = useState<BtnTypes>('')
 
   const handleType = (val: BtnTypes) => {
     if (type === val) {
-      setType("");
+      setType('')
     } else {
-      setType(val);
+      setType(val)
     }
-  };
+  }
 
   return (
     <div className="container">
@@ -35,13 +35,13 @@ export default (props: any) => {
         <LeftAction type={type} handleType={handleType} />
         <Logo></Logo>
       </div>
-      {type === "coms" && (
+      {type === 'coms' && (
         <div className="coms">
           <LeftSidebar />
         </div>
       )}
       <div className="content">{props.children}</div>
-      {type === "setting" && (
+      {type === 'setting' && (
         <div className="setting">
           <RightSidebar />
         </div>
@@ -50,5 +50,5 @@ export default (props: any) => {
         <RightAction type={type} handleType={handleType} />
       </div>
     </div>
-  );
-};
+  )
+}
