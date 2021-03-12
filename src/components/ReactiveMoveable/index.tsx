@@ -39,10 +39,10 @@ export default () => {
           left: Number(left) - leftVal - 50,
           right: Number(right) - rightVal - 52,
           top,
-          bottom,
+          bottom: Number(bottom) - 2,
         },
       },
-    })
+    });
   }, [])
 
   useEffect(() => {

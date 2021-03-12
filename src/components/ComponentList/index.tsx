@@ -30,13 +30,18 @@ export default function Container(props: EditorAreaProps) {
     selectors = `.${Target_ClassName}`,
     list = componentList
   ) => {
-    const divList = [].slice.call(document.querySelectorAll(selectors) as any);
+    let divList = [].slice.call(document.querySelectorAll(selectors) as any);
     const target = divList.filter((item: any) => {
       return item?.getAttribute?.("data-id") === id;
     })?.[0];
     const frame = list?.filter((item) => {
       return item.id === id;
     })?.[0]?.layout?.frame;
+
+    // 将当前元素从divList中移除, 当前元素不再作为参考辅助线
+    divList = divList.filter((item: any) => {
+      return item?.getAttribute?.("data-id") !== id;
+    });
     return {
       divList,
       target,

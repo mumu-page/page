@@ -4,16 +4,16 @@ import React, {
   useImperativeHandle,
   useCallback,
   useContext,
-} from 'react'
-import Guides from '@scena/react-guides'
-import { Context } from '../../stores/context'
-import { SET_MOVEABLE_OPTIONS } from '../../stores/action-type'
+} from "react";
+import Guides from "@scena/react-guides";
+import { Context } from "../../stores/context";
+import { SET_MOVEABLE_OPTIONS } from "../../stores/action-type";
 
-let observer: MutationObserver | null = null
+let observer: MutationObserver | null = null;
 export default forwardRef((props: GuidesOptions, ref) => {
-  const { type } = props
-  const guides: any = React.useRef()
-  const { commonDispatch } = useContext(Context)
+  const { type } = props;
+  const guides: any = React.useRef();
+  const { commonDispatch } = useContext(Context);
 
   useImperativeHandle(
     ref,
@@ -21,95 +21,99 @@ export default forwardRef((props: GuidesOptions, ref) => {
       guides,
     }),
     []
-  )
+  );
 
   const onResize = useCallback(() => {
-    guides.current?.resize?.()
-  }, [])
+    guides.current?.resize?.();
+  }, []);
 
   const onWheel = useCallback((e) => {
-    let scrollX = 0
-    let scrollY = 0
-    scrollX += e.deltaX
-    scrollY += e.deltaY
-    guides?.scrollGuides?.(scrollY)
-    guides?.scroll?.(scrollX)
-  }, [])
+    let scrollX = 0;
+    let scrollY = 0;
+    scrollX += e.deltaX;
+    scrollY += e.deltaY;
+    guides?.scrollGuides?.(scrollY);
+    guides?.scroll?.(scrollX);
+  }, []);
 
   useEffect(() => {
-    guides.current?.resize?.()
-    const element = document.querySelector('.container')
+    guides.current?.resize?.();
+    const element = document.querySelector(".container");
     observer = new MutationObserver((mutationList) => {
-      onResize()
-    })
+      onResize();
+    });
     observer?.observe?.(element as any, {
       attributes: true,
       childList: true,
       characterData: true,
-    })
-    window.addEventListener('wheel', onWheel)
-    window.addEventListener('resize', onResize)
+    });
+    window.addEventListener("wheel", onWheel);
+    window.addEventListener("resize", onResize);
     return () => {
-      observer?.disconnect?.()
-      observer = null
-      window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('resize', onResize)
-    }
-  }, [])
+      observer?.disconnect?.();
+      observer = null;
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
   return (
     <Guides
       {...props}
       ref={guides}
       onChangeGuides={({ guides }) => {
-        if (type === 'horizontal') {
+        // 去除误差
+        let _guides = guides.map((item) => {
+          return Number(item) + 30.5;
+        });
+        if (type === "horizontal") {
           commonDispatch({
             type: SET_MOVEABLE_OPTIONS,
             payload: {
-              horizontalGuidelines: guides,
+              horizontalGuidelines: _guides,
             },
-          })
+          });
         }
-        if (type === 'vertical') {
+        if (type === "vertical") {
           commonDispatch({
             type: SET_MOVEABLE_OPTIONS,
             payload: {
-              verticalGuidelines: guides,
+              verticalGuidelines: _guides,
             },
-          })
+          });
         }
       }}
     />
-  )
-})
+  );
+});
 
 export interface RulerProps {
-  type?: 'horizontal' | 'vertical'
-  width?: number
-  height?: number
-  unit?: number
-  zoom?: number
-  direction?: 'start' | 'end'
-  style?: any
-  backgroundColor?: string
-  lineColor?: string
-  textColor?: string
+  type?: "horizontal" | "vertical";
+  width?: number;
+  height?: number;
+  unit?: number;
+  zoom?: number;
+  direction?: "start" | "end";
+  style?: any;
+  backgroundColor?: string;
+  lineColor?: string;
+  textColor?: string;
 }
 
 export interface GuidesOptions extends RulerProps {
-  className?: string
-  setGuides?: (guides: number[]) => any
-  rulerStyle?: any
-  snapThreshold?: number
-  snaps?: number[]
-  displayDragPos?: boolean
-  dragPosFormat?: (value: number) => string | number
+  className?: string;
+  setGuides?: (guides: number[]) => any;
+  rulerStyle?: any;
+  snapThreshold?: number;
+  snaps?: number[];
+  displayDragPos?: boolean;
+  dragPosFormat?: (value: number) => string | number;
 }
 
 export interface GuidesInterface {
-  getGuides(): number[]
-  scroll(pos: number): void
-  scrollGuides(pos: number): void
-  loadGuides(guides: number[]): void
-  resize(): void
+  getGuides(): number[];
+  scroll(pos: number): void;
+  scrollGuides(pos: number): void;
+  loadGuides(guides: number[]): void;
+  resize(): void;
 }
