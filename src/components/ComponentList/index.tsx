@@ -87,67 +87,61 @@ export default function Container(props: EditorAreaProps) {
       }}
       form={form}
     >
-      <div>
-        {componentList.map((item: any) => {
-          const {
-            id,
-            children,
-            componentKey,
-            formItemProps,
-            componentProps,
-            colProps = {},
-            rowProps = {},
-            layout = {},
-          } = item;
+      {componentList.map((item: any) => {
+        const {
+          id,
+          children,
+          componentKey,
+          formItemProps,
+          componentProps,
+          colProps = {},
+          rowProps = {},
+          layout = {},
+        } = item;
 
-          const {
-            frame = { translate: [0, 0, 0] },
-            height,
-            width,
-          } = layout;
-          const { translate } = frame;
-          const style = {
-            transform: `translate(${translate[0]}px, ${translate[1]}px)`,
-          } as any;
-          
-          if (width) {
-            style.width = `${width}px`;
-          }
-          if (height) {
-            style.height = `${height}px`;
-          }
+        const { frame = { translate: [0, 0, 0] }, height, width } = layout;
+        const { translate } = frame;
+        const style = {
+          transform: `translate(${translate[0]}px, ${translate[1]}px)`,
+        } as any;
 
-          return (
-            <div
-              {...colProps}
-              key={item.id}
-              className="editor-area-item-col"
-              style={style}
-              data-id={item.id}
-              onClick={() => {
-                commonDispatch({
-                  type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
-                  payload: { id },
-                });
-                // 无论dom元素如何变，componentList没有变
-                setMoveableOption(item.id);
-              }}
-            >
-              <ComponentItem
-                id={id}
-                key={id}
-                form={form}
-                children={children}
-                colProps={colProps}
-                rowProps={rowProps}
-                formItemProps={formItemProps}
-                componentProps={componentProps}
-                componentKey={componentKey}
-              />
-            </div>
-          );
-        })}
-      </div>
+        if (width) {
+          style.width = `${width}px`;
+        }
+        if (height) {
+          style.height = `${height}px`;
+        }
+
+        return (
+          <div
+            {...colProps}
+            key={item.id}
+            className="editor-area-item-col"
+            style={style}
+            data-id={item.id}
+            onClick={() => {
+              commonDispatch({
+                type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
+                payload: { id },
+              });
+              // 无论dom元素如何变，componentList没有变
+              setMoveableOption(item.id);
+            }}
+          >
+            <ComponentItem
+              id={id}
+              key={id}
+              form={form}
+              children={children}
+              colProps={colProps}
+              rowProps={rowProps}
+              formItemProps={formItemProps}
+              componentProps={componentProps}
+              componentKey={componentKey}
+            />
+          </div>
+        );
+      })}
     </Form>
   );
 }
