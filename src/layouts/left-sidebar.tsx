@@ -99,10 +99,10 @@ export default () => {
                           type: PUT_COMPONENT_LIST,
                           payload: childItem,
                         });
-                        commonDispatch({
-                          type: SET_CURRENT_DRAG_COMPONENT,
-                          payload: childItem,
-                        });
+                        // commonDispatch({
+                        //   type: SET_CURRENT_DRAG_COMPONENT,
+                        //   payload: childItem,
+                        // });
                         setOptions(getNewOptions(_options));
                       }}
                     >
