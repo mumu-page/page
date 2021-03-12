@@ -23,7 +23,7 @@
 
 .guides.vertical {
   top: 30px;
-  height: calc(100% - 30px);
+  height: calc(100% - 30px)!important;
   width: 30px !important;
 }
 .reset {

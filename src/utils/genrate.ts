@@ -176,7 +176,7 @@ function generateImport(componentList: FormComProp[]) {
   parentImport.push("Col");
 
   const importReact = `import React from "react"\n`;
-  const importAntd = `import {${[parentImport]}} from 'antd'\n\n`;
+  const importAntd = `import {${[parentImport]}} from 'antd'\n`;
   let importAntdChild = "";
   Object.keys(childImport).forEach((key) => {
     const item = childImport[key];
@@ -184,7 +184,10 @@ function generateImport(componentList: FormComProp[]) {
       importAntdChild += `const {${item}} = ${key}\n`;
     }
   });
-  return importReact + importAntd + importAntdChild;
+  if (importAntdChild) {
+    return importReact + importAntd + "\n" + importAntdChild;
+  }
+  return importReact + importAntd;
 }
 
 export { generate, generateImport };

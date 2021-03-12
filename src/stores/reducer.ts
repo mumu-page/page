@@ -63,61 +63,25 @@ export const commonReducer = produce(
         for (let i = 0; i < draft.componentList?.length; i++) {
           const item = draft.componentList[i]
           if (item.id === action.payload?.id) {
-            return
+            return;
           }
-          item.chosen = false
         }
         draft.componentList?.push(action.payload)
       },
       /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
       [SET_COMPONENT_LIST]: () => {
-        let newState = cloneDeep(action.payload?.newState)
-        newState = newState?.map(
-          (item: { id: any; chosen: boolean; children: any[] }) => {
-            if (
-              item?.id ===
-              (action.payload?.currentId || draft.currentDragComponent?.id)
-            ) {
-              item.chosen = true
-            } else {
-              item.chosen = false
-            }
-            if (item?.children) {
-              item?.children?.forEach((cItem, cIndex) => {
-                cItem.chosen = false
-              })
-            }
-            return item
-          }
-        )
+        let newState = cloneDeep(action.payload?.newState);
         draft.componentList = newState
       },
       // 更新容器中的列表组件
       [UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN]: () => {
         const { id, children = [] } = action.payload || {}
-        let _children = cloneDeep(children)
-        _children = _children?.map((item: { id: any; chosen: boolean }) => {
-          if (
-            item?.id ===
-            (action.payload?.currentId || draft.currentDragComponent?.id)
-          ) {
-            item.chosen = true
-          } else {
-            item.chosen = false
-          }
-          return item
-        })
+        let _children = cloneDeep(children);
         draft?.componentList?.forEach((item, index) => {
-          item.chosen = false
-          if (item?.children) {
-            item.children?.forEach((cItem) => {
-              cItem.chosen = false
-            })
-          }
           if (item.id === id) {
-            item.children = _children
+            item.children = _children;
           }
-        })
+        });
       },
       [DEL_COMPONENT_LIST]: () => {
         const findDelItem = (data: FormComProp[]) => {
@@ -135,24 +99,21 @@ export const commonReducer = produce(
       },
       [COPY_COMPONENT_LIST]: () => {
         let newItem = {} as FormComProp
-        const newId = uuid.v4()
+        const { id, newId = uuid.v4() } = action?.payload || {};
         const findCopyItem = (data: FormComProp[]) => {
           data?.forEach((item, index) => {
-            data[index].chosen = false
             if (item?.children) {
-              findCopyItem(item?.children)
+              findCopyItem(item?.children);
             }
-            if (item.id === action.payload?.id) {
-              newItem = {
-                ...item,
-                id: newId,
-                key: newId,
-                chosen: true,
-              }
-              data.push(newItem)
-              draft.currentDragComponent = newItem
+            if (item.id === id) {
+              newItem = cloneDeep(item);
+              newItem.id = newId;
+              newItem.key = newId;
+              newItem.formItemProps.name = newId;
+              data.push(newItem);
+              draft.currentDragComponent = newItem;;
             }
-          })
+          });
         }
         findCopyItem(draft?.componentList)
       },
@@ -204,7 +165,7 @@ export const commonReducer = produce(
       //   [action.type]: strategy[action.type](),
       //   payload: action.payload,
       // });
-      strategy[action.type]()
+      strategy[action.type]();
     }
   },
   INITAL_STATE

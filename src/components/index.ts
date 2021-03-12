@@ -6,6 +6,7 @@ import ComponentList from "./ComponentList";
 import ComponentItem from "./ComponentItem";
 import ReactiveMoveable from "./ReactiveMoveable";
 import InfiniteViewer from "./InfiniteViewer";
+import ContextMenu from "./ContextMenu";
 import Logo from "./Logo";
 import Title from "./Title";
 
@@ -24,6 +25,7 @@ export {
   ReactiveMoveable,
   InfiniteViewer,
   Logo,
+  ContextMenu,
 };
 
 export type {

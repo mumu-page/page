@@ -1,24 +1,61 @@
-import React from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Col, Form, Row } from "antd";
 import { useEffect } from "react";
-import { ComponentItem } from "..";
+import { ComponentItem, ContextMenu } from "..";
 import {
+  COPY_COMPONENT_LIST,
+  DEL_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
 } from "../../stores/action-type";
 import { commonDispatch, FormComProp } from "../../stores/typings";
 import { isDatePicker } from "../../utils/utils";
-import "./index.scss";
 import { Target_ClassName } from "../../constants/constants";
+import Menu from "../ContextMenu/Menu";
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import "./index.scss";
+import eventBus from "../../utils/eventBus";
+import { SHOW_SETTING_PANL } from "../../constants/events";
+import * as uuid from "uuid";
 
 interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
   currentDragComponent: FormComProp;
 }
 
+enum HANDLE_TYPE {
+  copy = "复制这个",
+  setting = "设置属性",
+  del = "删除这个",
+}
+
+const options = [
+  {
+    key: "copy",
+    icon: <CopyOutlined />,
+    label: HANDLE_TYPE.copy,
+  },
+  {
+    key: "setting",
+    icon: <SettingOutlined />,
+    label: HANDLE_TYPE.setting,
+  },
+  {
+    key: "del",
+    icon: <DeleteOutlined />,
+    label: HANDLE_TYPE.del,
+    type: "del",
+  },
+];
+
 export default function Container(props: EditorAreaProps) {
   const { currentDragComponent, componentList, commonDispatch } = props;
   const [form] = Form.useForm();
+  const contenxtMenu = useRef(null);
   const {
     componentProps,
     formItemProps,
@@ -59,6 +96,39 @@ export default function Container(props: EditorAreaProps) {
         target,
       },
     });
+  };
+
+  const handleContextMenuClick = (key: string, label: string) => {
+    if (label === HANDLE_TYPE.del) {
+      commonDispatch({
+        type: DEL_COMPONENT_LIST,
+        payload: {
+          id: currentDragComponent.id,
+        },
+      });
+      commonDispatch({
+        type: SET_MOVEABLE_OPTIONS,
+        payload: {
+          target: null,
+        },
+      });
+    }
+    if (label === HANDLE_TYPE.setting) {
+      eventBus.emit(SHOW_SETTING_PANL);
+    }
+    if (label === HANDLE_TYPE.copy) {
+      const newId = uuid.v4();
+      commonDispatch({
+        type: COPY_COMPONENT_LIST,
+        payload: {
+          id: currentDragComponent.id,
+          newId,
+        },
+      });
+      requestAnimationFrame(() => {
+        setMoveableOption(newId);
+      });
+    }
   };
 
   useEffect(() => {
@@ -121,17 +191,28 @@ export default function Container(props: EditorAreaProps) {
         return (
           <div
             {...colProps}
-            key={item.id}
+            key={id}
             style={style}
             className={Target_ClassName}
-            data-id={item.id}
-            onClick={() => {
+            data-id={id}
+            onClick={(e) => {
+              e.stopPropagation()
               commonDispatch({
                 type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
                 payload: { id },
               });
               // 无论dom元素如何变，componentList没有变
-              setMoveableOption(item.id);
+              setMoveableOption(id);
+            }}
+            onContextMenu={(e) => {
+              e.preventDefault();
+              commonDispatch({
+                type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
+                payload: { id },
+              });
+              // 无论dom元素如何变，componentList没有变
+              setMoveableOption(id);
+              (contenxtMenu.current as any)?.show?.(e);
             }}
           >
             <ComponentItem
@@ -148,6 +229,9 @@ export default function Container(props: EditorAreaProps) {
           </div>
         );
       })}
+      <ContextMenu ref={contenxtMenu}>
+        <Menu options={options} onClick={handleContextMenuClick} />
+      </ContextMenu>
     </Form>
   );
 }

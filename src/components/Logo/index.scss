@@ -5,7 +5,7 @@
   justify-content: center;
   
   .title {
-    box-shadow: inset 1px 1px 2px #00afff, inset -1px -1px 2px #00afff;
+    box-shadow: inset 1px 1px 2px var(--main-color), inset -1px -1px 2px var(--main-color);
     transform: rotate(90deg) translateX(-64px);
     transform-origin: center;
     width: 219px;
@@ -15,7 +15,7 @@
     font-weight: bold;
     padding-left: 7px;
     font-style: italic;
-    color: #00afff;
+    color: var(--main-color);
   }
   a {
     z-index: 99;

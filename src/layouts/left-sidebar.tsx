@@ -24,7 +24,6 @@ const getNewOptions = (data: OptionGroup[]) => {
           icon,
           id,
           key: id,
-          chosen: true,
           componentKey: value,
           formItemProps: {
             name: id,

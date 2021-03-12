@@ -1,5 +1,4 @@
 import {
-  CopyOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
   EyeOutlined,
@@ -9,14 +8,16 @@ import {
   VerticalAlignBottomOutlined,
 } from "@ant-design/icons";
 import { Button, message, Modal } from "antd";
-import React, { useContext, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef } from "react";
 import { BtnTypes } from ".";
 import { Preview, PreviewInstanceProps } from "../../components";
+import { SCROLL_CENTER, SHOW_SETTING_PANL } from "../../constants/events";
 import {
   DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG,
   SET_MOVEABLE_OPTIONS,
 } from "../../stores/action-type";
 import { Context } from "../../stores/context";
+import eventBus from "../../utils/eventBus";
 import { generate, generateImport } from "../../utils/genrate";
 
 interface RightActionType {
@@ -72,9 +73,20 @@ export default (props: RightActionType) => {
 
   const download = () => {};
 
-  const copy = () => {};
+  const center = () => {
+    eventBus.emit(SCROLL_CENTER);
+  };
 
-  const center = () => {};
+  const handelShowSettingPanl = useCallback(() => {
+    handleType("setting");
+  }, []);
+
+  useEffect(() => {
+    eventBus.addListener(SHOW_SETTING_PANL, handelShowSettingPanl);
+    return () => {
+      eventBus.removeListener(SHOW_SETTING_PANL, handelShowSettingPanl);
+    };
+  }, []);
 
   return (
     <>
@@ -90,7 +102,6 @@ export default (props: RightActionType) => {
         icon={<PicCenterOutlined style={handleColor("center")} />}
         type={type === "center" ? "primary" : "text"}
         onClick={() => {
-          handleType("center");
           center();
         }}
       />
@@ -110,14 +121,6 @@ export default (props: RightActionType) => {
         onClick={() => {
           handleType("download");
           download();
-        }}
-      />
-      <Button
-        icon={<CopyOutlined style={handleColor("copy")} />}
-        type={type === "copy" ? "primary" : "text"}
-        size="middle"
-        onClick={() => {
-          handleType("copy");
         }}
       />
       <Button

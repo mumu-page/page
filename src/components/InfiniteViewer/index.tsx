@@ -1,26 +1,36 @@
-import React, { useContext, useEffect, useRef } from 'react'
-import InfiniteViewer from 'react-infinite-viewer'
-import Ruler from './Ruler'
-import './index.scss'
+import React, { useCallback, useContext, useEffect, useRef } from "react";
+import InfiniteViewer from "react-infinite-viewer";
+import Ruler from "./Ruler";
+import "./index.scss";
+import eventBus from "../../utils/eventBus";
+import { SCROLL_CENTER } from "../../constants/events";
 
 /**
  * 让他能够滚动
  */
 export default (props: any) => {
-  const horizontalGuides = useRef()
-  const verticalGuides = useRef()
-  const viewerRef = useRef(null)
+  const horizontalGuides = useRef();
+  const verticalGuides = useRef();
+  const viewerRef = useRef(null);
+
+  const scrollCenter = useCallback(() => {
+    (viewerRef.current as any)?.scrollCenter();
+  }, []);
 
   useEffect(() => {
-    ;(viewerRef.current as any)?.scrollCenter()
-  }, [])
+    scrollCenter();
+    eventBus.addListener(SCROLL_CENTER, scrollCenter);
+    return () => {
+      eventBus.removeListener(SCROLL_CENTER, scrollCenter);
+    };
+  }, []);
 
   return (
     <div className="infinite-viewer-container">
       <div
         className="reset"
         onClick={() => {
-          ;(viewerRef.current as any)?.scrollCenter()
+          (viewerRef.current as any)?.scrollCenter();
         }}
       ></div>
       <Ruler
@@ -42,41 +52,35 @@ export default (props: any) => {
         onScroll={(e) => {
           // console.log("onScroll", horizontalGuides, verticalGuides);
           const _horizontalGuides = (horizontalGuides.current as any)?.guides
-            ?.current
+            ?.current;
           const _verticalGuides = (verticalGuides.current as any)?.guides
-            ?.current
-          _horizontalGuides?.scroll?.(e.scrollLeft)
-          _horizontalGuides?.scrollGuides?.(e.scrollTop)
+            ?.current;
+          _horizontalGuides?.scroll?.(e.scrollLeft);
+          _horizontalGuides?.scrollGuides?.(e.scrollTop);
 
-          _verticalGuides?.scroll?.(e.scrollTop)
-          _verticalGuides?.scrollGuides?.(e.scrollLeft)
+          _verticalGuides?.scroll?.(e.scrollTop);
+          _verticalGuides?.scrollGuides?.(e.scrollLeft);
         }}
         onPinch={(e) => {
-          const zoom = Math.max(0.1, e.zoom)
+          const zoom = Math.max(0.1, e.zoom);
           const _horizontalGuides = (horizontalGuides.current as any)?.guides
-            ?.current
+            ?.current;
           const _verticalGuides = (verticalGuides.current as any)?.guides
-            ?.current
-          _horizontalGuides.zoom = zoom
-          _verticalGuides.zoom = zoom
-          ;(viewerRef.current as any).zoom = zoom
+            ?.current;
+          _horizontalGuides.zoom = zoom;
+          _verticalGuides.zoom = zoom;
+          (viewerRef.current as any).zoom = zoom;
         }}
       >
-        <div className="viewport">{props.children}</div>
+        <div
+          className="viewport"
+          onContextMenu={(e) => {
+            e.preventDefault();
+          }}
+        >
+          {props.children}
+        </div>
       </InfiniteViewer>
     </div>
-  )
-}
-function commonDispatch(arg0: {
-  type: any
-  payload: {
-    bounds: {
-      left: number | undefined
-      right: number | undefined
-      top: number | undefined
-      bottom: number | undefined
-    }
-  }
-}) {
-  throw new Error('Function not implemented.')
-}
+  );
+};

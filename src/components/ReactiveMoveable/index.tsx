@@ -84,25 +84,25 @@ export default () => {
       throttleDragRotate={0}
       // ------------------ 拖拽结束 ------------------
       zoom={1}
-      origin={true}
+      origin={false}
       padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
       // ------------------ 调整大小开始 ------------------
       resizable={true}
       keepRatio={false}
       throttleResize={0}
       edge={false}
-      renderDirections={['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']}
+      renderDirections={["nw", "n", "ne", "w", "e", "sw", "s", "se"]}
       // ------------------ 调整大小结束 ------------------
       onDragStart={(e) => {
-        e.set(frame.translate)
+        e.set(frame.translate);
       }}
       onDrag={(e) => {
-        layout.frame.translate = e.beforeTranslate
-        e.target.style.transform = `translate(${e.beforeTranslate[0]}px, ${e.beforeTranslate[1]}px)`
+        layout.frame.translate = e.beforeTranslate;
+        e.target.style.transform = `translate(${e.beforeTranslate[0]}px, ${e.beforeTranslate[1]}px)`;
       }}
       onDragEnd={({ target, isDrag, clientX, clientY }) => {
         // console.log('onDragEnd', target, isDrag, clientX, clientY)
-        const { frame } = layout
+        const { frame } = layout;
         commonDispatch({
           type: SET_CURRENT_DRAG_COMPONENT,
           payload: {
@@ -112,7 +112,7 @@ export default () => {
               clientY,
             },
           },
-        })
+        });
         commonDispatch({
           type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
           payload: {
@@ -124,25 +124,25 @@ export default () => {
               },
             },
           },
-        })
+        });
       }}
       onResizeStart={(e) => {
-        e.setOrigin(['%', '%'])
-        e.dragStart && e.dragStart.set(frame.translate)
+        e.setOrigin(["%", "%"]);
+        e.dragStart && e.dragStart.set(frame.translate);
       }}
       onResize={({ target, width, height, drag }) => {
-        const beforeTranslate = drag.beforeTranslate
-        layout.width = width
-        layout.height = height
-        layout.frame.translate = drag.beforeTranslate
-        target.style.width = `${width}px`
-        target.style.height = `${height}px`
-        target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`
+        const beforeTranslate = drag.beforeTranslate;
+        layout.width = width;
+        layout.height = height;
+        layout.frame.translate = drag.beforeTranslate;
+        target.style.width = `${width}px`;
+        target.style.height = `${height}px`;
+        target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
       }}
       onResizeEnd={({ lastEvent }) => {
         // console.log("lastEvent", lastEvent);
         if (lastEvent) {
-          const { frame, width, height } = layout
+          const { frame, width, height } = layout;
           commonDispatch({
             type: SET_CURRENT_DRAG_COMPONENT,
             payload: {
@@ -152,7 +152,7 @@ export default () => {
                 height,
               },
             },
-          })
+          });
           commonDispatch({
             type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
             payload: {
@@ -164,9 +164,9 @@ export default () => {
                 },
               },
             },
-          })
+          });
         }
       }}
     />
-  )
+  );
 }
