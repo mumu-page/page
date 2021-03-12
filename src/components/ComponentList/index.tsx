@@ -9,6 +9,7 @@ import {
 import { commonDispatch, FormComProp } from "../../stores/typings";
 import { isDatePicker } from "../../utils/utils";
 import "./index.scss";
+import { Target_ClassName } from "../../constants/constants";
 
 interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
@@ -26,7 +27,7 @@ export default function Container(props: EditorAreaProps) {
 
   const findTarget = (
     id = currentDragComponent.id,
-    selectors = ".editor-area-item-col",
+    selectors = `.${Target_ClassName}`,
     list = componentList
   ) => {
     const divList = [].slice.call(document.querySelectorAll(selectors) as any);
@@ -116,8 +117,8 @@ export default function Container(props: EditorAreaProps) {
           <div
             {...colProps}
             key={item.id}
-            className="editor-area-item-col"
             style={style}
+            className={Target_ClassName}
             data-id={item.id}
             onClick={() => {
               commonDispatch({

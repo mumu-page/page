@@ -75,7 +75,27 @@ function createCol(data: FormComProp[] | undefined, result = "") {
 }
 
 function createFormItem(item: FormComProp): string {
-  const { formItemProps, componentProps, componentKey, colProps } = item;
+  const {
+    formItemProps,
+    componentProps,
+    componentKey,
+    colProps,
+    layout = {},
+  } = item;
+  /**样式开始 */
+  const { frame = { translate: [0, 0, 0] }, height, width } = layout;
+  const { translate } = frame;
+  const style = {
+    transform: `translate(${translate[0]}px, ${translate[1]}px)`,
+  } as any;
+
+  if (width) {
+    style.width = `${width}px`;
+  }
+  if (height) {
+    style.height = `${height}px`;
+  }
+  /**样式结束 */
   const colPropsStr = generateProps(colProps);
   const formItemPropsStr = generateProps(formItemProps);
   const componentPropsStr = generateComProps(componentProps, componentKey);
@@ -85,7 +105,7 @@ function createFormItem(item: FormComProp): string {
       ? `<Row>
         ${createCol(item?.children)}  
       </Row>`
-      : `<Form.Item${formItemPropsStr}>
+      : `<Form.Item${formItemPropsStr} style={${JSON.stringify(style)}}>
         <${componentKey?.replace(/^.*\./, "")}${componentPropsStr} />
     </Form.Item>`
   }

@@ -21,6 +21,7 @@ export default memo((prop: FormComProp) => {
     componentProps = {},
     rowProps = {},
     form,
+    style,
   } = prop;
   const { commonDispatch } = useContext(Context);
 
@@ -98,6 +99,7 @@ export default memo((prop: FormComProp) => {
   return isRenderFormItem(componentKey) ? (
     <Form.Item
       {...formItemProps}
+      style={style}
       valuePropName={isCheck(componentKey) ? "checked" : "value"}
     >
       {React.cloneElement(getComponent(componentKey) || <></>, {

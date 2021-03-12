@@ -52,3 +52,6 @@ export const FORM_PROPERTIES_OPTIONS: {
   wrapperCol: { span: 24 },
   colon: false,
 };
+
+// 可拖拽元素的类名
+export const Target_ClassName = "drag-target";
