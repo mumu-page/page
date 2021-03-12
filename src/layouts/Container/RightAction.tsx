@@ -60,9 +60,7 @@ export default (props: RightActionType) => {
     preview.current?.setTsxCode(`
       ${generateImport(componentList)}
       export default () => {
-        /* 主要代码开始 */
-        return ${xmlCode}
-        /* 主要代码结束 */
+       return ${xmlCode}
       }
     `);
     preview.current?.open();
@@ -74,11 +72,9 @@ export default (props: RightActionType) => {
 
   const download = () => {};
 
-  const copy = () => { };
-  
-  const center = () => {
-    
-  }
+  const copy = () => {};
+
+  const center = () => {};
 
   return (
     <>

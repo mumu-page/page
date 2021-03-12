@@ -31,7 +31,7 @@ export default function Container(props: EditorAreaProps) {
   ) => {
     const divList = [].slice.call(document.querySelectorAll(selectors) as any);
     const target = divList.filter((item: any) => {
-      return item?.getAttribute("data-id") === id;
+      return item?.getAttribute?.("data-id") === id;
     })?.[0];
     const frame = list?.filter((item) => {
       return item.id === id;
@@ -97,13 +97,32 @@ export default function Container(props: EditorAreaProps) {
             componentProps,
             colProps = {},
             rowProps = {},
+            layout = {},
           } = item;
+
+          const {
+            frame = { translate: [0, 0, 0] },
+            height,
+            width,
+          } = layout;
+          const { translate } = frame;
+          const style = {
+            transform: `translate(${translate[0]}px, ${translate[1]}px)`,
+          } as any;
+          
+          if (width) {
+            style.width = `${width}px`;
+          }
+          if (height) {
+            style.height = `${height}px`;
+          }
 
           return (
             <div
               {...colProps}
               key={item.id}
               className="editor-area-item-col"
+              style={style}
               data-id={item.id}
               onClick={() => {
                 commonDispatch({

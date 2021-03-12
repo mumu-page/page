@@ -54,7 +54,7 @@ export default forwardRef(function (
       .catch((info) => {
         message.error(info);
       });
-  };;
+  };
 
   const onTsxChangCode = useCallback((newCode) => {
     setTsxCode(newCode);
@@ -65,13 +65,10 @@ export default forwardRef(function (
   }, []);
 
   const refresh = () => {
-    const _xmlCode = tsxCode
-      .substring(
-        tsxCode.indexOf("/* 主要代码开始 */"),
-        tsxCode.indexOf("/* 主要代码结束 */")
-      )
-      .replace("/* 主要代码开始 */", "")
-      .replace("return", "");
+    const _xmlCode =
+      tsxCode
+        .substring(tsxCode.indexOf("return <Form>"), tsxCode.indexOf("</Form>"))
+        .replace("return", "") + "</Form>";
     string2Component(_xmlCode)
       .then((newComponent) => {
         setComponent(newComponent);

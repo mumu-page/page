@@ -134,29 +134,37 @@ function getAllComponentKey(
  * TODO: 生成ICON引用代码
  */
 function generateImport(componentList: FormComProp[]) {
-  const keys = getAllComponentKey(componentList);
-  // 引用
-  let comImport = Array.from(
-    new Set(keys.filter((item) => item.indexOf(".") === -1))
+  const keys = getAllComponentKey(componentList, []);
+  const childImport = {} as any;
+  const parentImport = Array.from(
+    new Set(
+      keys.map((item) => {
+        const [parent, child] = item.split(".");
+
+        if (child) {
+          if (childImport[parent]) {
+            childImport[parent].push(child);
+          } else {
+            childImport[parent] = [child];
+          }
+        }
+        return parent;
+      })
+    )
   );
-  comImport.push("Row");
-  comImport.push("Col");
-  // 嵌套引用
-  const childImport = keys?.filter((item) => item.indexOf(".") !== -1);
-  const uniqueChildKeys = new Set(childImport);
-  const childImportList = [] as string[];
-  uniqueChildKeys.forEach((item) => {
-    const [parent, child] = item?.split(".") || [];
-    childImportList.push(`const {${child}} = ${parent};\n`);
+  parentImport.push("Row");
+  parentImport.push("Col");
+
+  const importReact = `import React from "react"\n`;
+  const importAntd = `import {${[parentImport]}} from 'antd'\n\n`;
+  let importAntdChild = "";
+  Object.keys(childImport).forEach((key) => {
+    const item = childImport[key];
+    if (item.length) {
+      importAntdChild += `const {${item}} = ${key}\n`;
+    }
   });
-  const importReact = `import React from "react";\n`;
-  const importAntd = `import {${[comImport]}} from 'antd';\n`;
-  return (
-    importReact +
-    importAntd +
-    "\n" +
-    childImportList?.toString()?.replace(",", "")
-  );
+  return importReact + importAntd + importAntdChild;
 }
 
 export { generate, generateImport };
