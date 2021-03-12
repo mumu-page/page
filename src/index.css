@@ -1,13 +1,14 @@
 @import '~antd/dist/antd.css';
 body {
-  margin: 0
+  margin: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
-:root{
+:root {
   --main-color: #00afff;
   --main-bg: rgb(255 255 255);
   --menu-item-bg: rgb(244 244 244);
