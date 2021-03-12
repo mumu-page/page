@@ -11,7 +11,8 @@ import {
   UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
   PUT_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
-} from './action-type'
+  DELETE_CURRENT_DRAG_COMPONENT,
+} from "./action-type";
 import { CommonState, FormComProp } from './typings'
 import { merge, cloneDeep } from 'lodash'
 import produce from 'immer'
@@ -30,52 +31,55 @@ export const commonReducer = produce(
         draft.currentDragComponent = merge(
           cloneDeep(draft.currentDragComponent),
           cloneDeep(action.payload)
-        )
+        );
+      },
+      [DELETE_CURRENT_DRAG_COMPONENT]: () => {
+        draft.currentDragComponent = INITAL_STATE.currentDragComponent;
       },
       [SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST]: () => {
         const findSelectedItem = (data: FormComProp[]) => {
           for (var i = 0; i < data.length; i++) {
-            const item = data[i]
+            const item = data[i];
             if (item?.children?.length) {
-              findSelectedItem(item?.children)
+              findSelectedItem(item?.children);
             }
             if (item?.id === action.payload?.id) {
-              draft.currentDragComponent = item
-              break
+              draft.currentDragComponent = item;
+              break;
             }
           }
-        }
-        findSelectedItem(draft.componentList)
+        };
+        findSelectedItem(draft.componentList);
       },
       // 清空控件列表和当前拖拽控件数据
       [DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG]: () => {
-        draft.componentList = []
+        draft.componentList = [];
         draft.currentDragComponent = {
-          id: '',
-          componentKey: '',
+          id: "",
+          componentKey: "",
           formItemProps: {},
           componentProps: {},
           colProps: {},
           rowProps: {},
-        }
+        };
       },
       [PUT_COMPONENT_LIST]: () => {
         for (let i = 0; i < draft.componentList?.length; i++) {
-          const item = draft.componentList[i]
+          const item = draft.componentList[i];
           if (item.id === action.payload?.id) {
             return;
           }
         }
-        draft.componentList?.push(action.payload)
+        draft.componentList?.push(action.payload);
       },
       /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
       [SET_COMPONENT_LIST]: () => {
         let newState = cloneDeep(action.payload?.newState);
-        draft.componentList = newState
+        draft.componentList = newState;
       },
       // 更新容器中的列表组件
       [UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN]: () => {
-        const { id, children = [] } = action.payload || {}
+        const { id, children = [] } = action.payload || {};
         let _children = cloneDeep(children);
         draft?.componentList?.forEach((item, index) => {
           if (item.id === id) {
@@ -87,18 +91,18 @@ export const commonReducer = produce(
         const findDelItem = (data: FormComProp[]) => {
           for (let i = 0; i < data?.length; i++) {
             if (data[i]?.children) {
-              findDelItem(draft.componentList[i].children as FormComProp[])
+              findDelItem(draft.componentList[i].children as FormComProp[]);
             }
             if (data[i].id === action.payload?.id) {
-              data.splice(i, 1)
-              break
+              data.splice(i, 1);
+              break;
             }
           }
-        }
-        findDelItem(draft?.componentList)
+        };
+        findDelItem(draft?.componentList);
       },
       [COPY_COMPONENT_LIST]: () => {
-        let newItem = {} as FormComProp
+        let newItem = {} as FormComProp;
         const { id, newId = uuid.v4() } = action?.payload || {};
         const findCopyItem = (data: FormComProp[]) => {
           data?.forEach((item, index) => {
@@ -111,54 +115,54 @@ export const commonReducer = produce(
               newItem.key = newId;
               newItem.formItemProps.name = newId;
               data.push(newItem);
-              draft.currentDragComponent = newItem;;
+              draft.currentDragComponent = newItem;
             }
           });
-        }
-        findCopyItem(draft?.componentList)
+        };
+        findCopyItem(draft?.componentList);
       },
       [INSERT_COMPONENT_LIST]: () => {
-        const { index, data } = action.payload
-        draft.componentList.splice(index, 0, data)
+        const { index, data } = action.payload;
+        draft.componentList.splice(index, 0, data);
       },
       [UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG]: () => {
-        const { data = {} } = action.payload || {}
+        const { data = {} } = action.payload || {};
         const findCurrent = (coms: FormComProp[]) => {
           coms?.forEach((item, index) => {
             if (item.id === draft.currentDragComponent?.id) {
-              item = merge(item, data)
+              item = merge(item, data);
             }
             if (item?.children) {
-              findCurrent(item.children)
+              findCurrent(item.children);
             }
-          })
-        }
-        findCurrent(draft?.componentList)
+          });
+        };
+        findCurrent(draft?.componentList);
       },
       // 同时更新当前选中控件和设计区控件列表
       [UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG]: () => {
-        const { componentKey, newComponentProps } = action.payload || {}
+        const { componentKey, newComponentProps } = action.payload || {};
         const componentList = draft?.componentList?.map((item) => {
           if (item.id === draft.currentDragComponent?.id) {
-            item.componentKey = componentKey
+            item.componentKey = componentKey;
             item.componentProps = {
               ...item.componentProps,
               ...newComponentProps,
-            }
+            };
           }
-          return item
-        })
-        draft.currentDragComponent.componentKey = componentKey
-        draft.currentDragComponent.componentProps = newComponentProps
-        draft.componentList = componentList
+          return item;
+        });
+        draft.currentDragComponent.componentKey = componentKey;
+        draft.currentDragComponent.componentProps = newComponentProps;
+        draft.componentList = componentList;
       },
       [SET_MOVEABLE_OPTIONS]: () => {
         draft.moveableOptions = merge(
           draft.moveableOptions,
           cloneDeep(action.payload)
-        )
+        );
       },
-    }
+    };
 
     if (typeof strategy[action.type] === 'function') {
       // console.table({

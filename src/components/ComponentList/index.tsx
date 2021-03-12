@@ -4,7 +4,9 @@ import { useEffect } from "react";
 import { ComponentItem, ContextMenu } from "..";
 import {
   COPY_COMPONENT_LIST,
+  DELETE_CURRENT_DRAG_COMPONENT,
   DEL_COMPONENT_LIST,
+  SET_CURRENT_DRAG_COMPONENT,
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
 } from "../../stores/action-type";
@@ -105,6 +107,9 @@ export default function Container(props: EditorAreaProps) {
         payload: {
           id: currentDragComponent.id,
         },
+      });
+      commonDispatch({
+        type: DELETE_CURRENT_DRAG_COMPONENT,
       });
       commonDispatch({
         type: SET_MOVEABLE_OPTIONS,
