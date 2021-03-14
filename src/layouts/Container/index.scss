@@ -1,6 +1,6 @@
 .container {
-  width: 100vw;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
   display: flex;
 
   .left,
@@ -33,4 +33,7 @@
     border-left: 1px solid #f8f8f8;
     box-shadow: -2px 0 2px #f8f8f8;
   }
+}
+.ant-drawer {
+    z-index: 9999999;
 }

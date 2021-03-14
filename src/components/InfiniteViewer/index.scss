@@ -12,7 +12,7 @@
   position: absolute !important;
   top: 0;
   left: 0;
-  transform: translateZ(1px);
+  //   transform: translateZ(1px);
 }
 
 .guides.horizontal {
@@ -23,7 +23,7 @@
 
 .guides.vertical {
   top: 30px;
-  height: calc(100% - 30px)!important;
+  height: calc(100% - 30px) !important;
   width: 30px !important;
 }
 .reset {

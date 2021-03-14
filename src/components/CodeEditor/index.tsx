@@ -124,7 +124,7 @@ const CodeEditor = forwardRef(
     }, [])
 
     return (
-      <div className="container">
+      <div className="code-editor-container">
         {/* 当编辑器插件还没没有加载完成，是没有dom样式的，所以不能直接包裹它 */}
         <Spin spinning={spinning} className="code-spinning" />
         <div className="code-editor" ref={element}></div>
