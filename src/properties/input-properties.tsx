@@ -168,9 +168,9 @@ export default () => {
               name="size"
             >
               <Radio.Group>
-                <Radio.Button value="large">较大</Radio.Button>
-                <Radio.Button value="middle">中等</Radio.Button>
-                <Radio.Button value="small">迷你</Radio.Button>
+                <Radio.Button value="large">大</Radio.Button>
+                <Radio.Button value="middle">中</Radio.Button>
+                <Radio.Button value="small">小</Radio.Button>
               </Radio.Group>
             </Form.Item>
             <Form.Item label="" valuePropName="checked" name="allowClear">

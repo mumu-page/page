@@ -52,9 +52,7 @@ export default function () {
       onValuesChange={onValuesChange}
     >
       <CustomCollapse defaultActiveKey={["表单"]}>
-        <CustomCollapse.Panel
-          header="表单"
-        >
+        <CustomCollapse.Panel header="表单">
           <Form.Item label="表单名" name="form.name">
             <Input />
           </Form.Item>
@@ -63,9 +61,9 @@ export default function () {
           </Form.Item>
           <Form.Item label="表单尺寸" name="form.size">
             <Radio.Group>
-              <Radio.Button value="large">中等</Radio.Button>
-              <Radio.Button value="default">较小</Radio.Button>
-              <Radio.Button value="small">迷你</Radio.Button>
+              <Radio.Button value="large">大</Radio.Button>
+              <Radio.Button value="middle">中</Radio.Button>
+              <Radio.Button value="small">小</Radio.Button>
             </Radio.Group>
           </Form.Item>
           <Form.Item label="标签对齐" name="form.labelAlign">
@@ -87,9 +85,7 @@ export default function () {
             <CheckboxField tooltipTitle="显示未选中组件边框" text="显示边框" />
           </Form.Item>
         </CustomCollapse.Panel>
-        <CustomCollapse.Panel
-          header="表单项"
-        >
+        <CustomCollapse.Panel header="表单项">
           <Form.Item label="字段名" name="formItem.name">
             <Input onPressEnter={(e) => {}} />
           </Form.Item>

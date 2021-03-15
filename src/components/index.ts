@@ -7,6 +7,7 @@ import ComponentItem from "./ComponentItem";
 import ReactiveMoveable from "./ReactiveMoveable";
 import InfiniteViewer from "./InfiniteViewer";
 import ContextMenu from "./ContextMenu";
+import SelectModal, { IRefType } from "./SelectModal";
 import Logo from "./Logo";
 import Title from "./Title";
 
@@ -26,6 +27,7 @@ export {
   InfiniteViewer,
   Logo,
   ContextMenu,
+  SelectModal,
 };
 
 export type {
@@ -35,4 +37,5 @@ export type {
   CodeEditorProps,
   IconModalInstanceProp,
   IconModalProp,
+  IRefType,
 };
