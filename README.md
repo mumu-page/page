@@ -3,7 +3,9 @@
     <p>基于Ant Design的表单可视化编辑器</p>
 </div>
 
-[PRD](https://www.yuque.com/resonance/rwaxct/ny150b)｜[点击开始在线设计](https://resonances.gitee.io/react-visual-editor)
+[开始设计](https://resonances.gitee.io/react-visual-editor)
+
+[提升开发与设计表单类页面时的效率](https://www.yuque.com/docs/share/74964a3f-2290-4958-b9a4-26fb137fd6f3)
 
 ## 历史
 1. 对整体项目进行重构，代码更简洁，更好看了。 2021/3/11
@@ -20,7 +22,6 @@
 - [ ] 控件属性设置完善
 - [ ] 代码文件下载功能
 - [ ] 代码复制功能
-- [x] 拖拽栅格布局(行容器)
 - [ ] 下拉列表选项配置
 
 
