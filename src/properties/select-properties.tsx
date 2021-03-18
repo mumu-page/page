@@ -15,7 +15,9 @@ export default function () {
     modalRef.current?.showModal();
   };
 
-  const onValuesChange = (_: any, allValues: any) => {};
+  const onValuesChange = (_: any, allValues: any) => {
+    console.log(allValues);
+  };
 
   return (
     <Form

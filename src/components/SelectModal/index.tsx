@@ -18,68 +18,21 @@ export interface IRefType {
 
 const _treeData: Option[] = [
   {
-    label: "parent 1",
-    key: "0-0",
-    value: "0-0",
-    children: [
-      {
-        label: "parent 1-0",
-        key: "0-0-0",
-        value: "0-0-0",
-        disabled: true,
-        children: [
-          {
-            label: "leaf",
-            key: "0-0-0-0",
-            value: "0-0-0-0",
-          },
-        ],
-      },
-      {
-        label: "parent 1-1",
-        key: "0-0-1",
-        value: "0-0-1",
-        children: [
-          {
-            label: <span style={{ color: "#1890ff" }}>sss</span>,
-            key: "0-0-1-0",
-            value: "0-0-1-0",
-          },
-        ],
-      },
-    ],
+    key: "key1",
+    label: "选项1",
+    value: "值1",
   },
   {
-    label: "parent 2",
-    key: "1-0",
-    value: "1-0",
+    label: "分组1",
     children: [
       {
-        label: "parent 1-0",
-        key: "1-0-0",
-        value: "1-0-0",
-        disabled: true,
-        children: [
-          {
-            label: "leaf",
-            key: "1-0-0-0",
-            value: "1-0-0-0",
-          },
-        ],
-      },
-      {
-        label: "parent 1-1",
-        key: "1-0-1",
-        value: "1-0-1",
-        children: [
-          {
-            label: <span style={{ color: "#1890ff" }}>sss</span>,
-            key: "1-0-1-0",
-            value: "1-0-1-0",
-          },
-        ],
+        key: "key3",
+        label: "分组下的选项2",
+        value: "值2",
       },
     ],
+    key: "key2",
+    value: "key2",
   },
 ];
 

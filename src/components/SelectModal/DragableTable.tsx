@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Tree, Typography } from "antd";
+import { Button, Tree } from "antd";
 import { cloneDeep } from "lodash";
 import { MinusSquareOutlined, PlusSquareOutlined } from "@ant-design/icons";
 import EditableCell from "./EditableCell";
