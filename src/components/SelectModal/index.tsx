@@ -4,53 +4,11 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { MenuOutlined } from "@ant-design/icons";
-import { Button, Modal, Radio, Table } from "antd";
+import { Button, Divider, Modal, Radio, Space, Typography } from "antd";
 import Draggable from "react-draggable";
-import {
-  SortableContainer,
-  SortableElement,
-  SortableHandle,
-} from "react-sortable-hoc";
-import arrayMove from "array-move";
-import "./index.scss";
 import { cloneDeep, uniqueId } from "lodash";
-
-const DragHandle = SortableHandle(() => <div className="drag-handle-icon" />);
-
-const SortableItem = SortableElement(
-  (
-    props: JSX.IntrinsicAttributes &
-      React.ClassAttributes<HTMLTableRowElement> &
-      React.HTMLAttributes<HTMLTableRowElement>
-  ) => <tr {...props} />
-);
-
-const SortableContainer2 = SortableContainer(
-  (
-    props: JSX.IntrinsicAttributes &
-      React.ClassAttributes<HTMLTableSectionElement> &
-      React.HTMLAttributes<HTMLTableSectionElement>
-  ) => <tbody {...props} />
-);
-
-const data = [
-  {
-    label: "John Brown",
-    value: uniqueId(),
-    index: uniqueId(),
-  },
-  {
-    label: "Jim Green",
-    value: uniqueId(),
-    index: uniqueId(),
-  },
-  {
-    label: "Joe Black",
-    value: uniqueId(),
-    index: uniqueId(),
-  },
-];
+import DragableTable, { find, Option } from "./DragableTable";
+import "./index.scss";
 
 export interface IRefType {
   showModal: () => void;
@@ -58,6 +16,74 @@ export interface IRefType {
   setdataSource: (dataSource: any) => void;
 }
 
+const _treeData: Option[] = [
+  {
+    label: "parent 1",
+    key: "0-0",
+    value: "0-0",
+    children: [
+      {
+        label: "parent 1-0",
+        key: "0-0-0",
+        value: "0-0-0",
+        disabled: true,
+        children: [
+          {
+            label: "leaf",
+            key: "0-0-0-0",
+            value: "0-0-0-0",
+          },
+        ],
+      },
+      {
+        label: "parent 1-1",
+        key: "0-0-1",
+        value: "0-0-1",
+        children: [
+          {
+            label: <span style={{ color: "#1890ff" }}>sss</span>,
+            key: "0-0-1-0",
+            value: "0-0-1-0",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    label: "parent 2",
+    key: "1-0",
+    value: "1-0",
+    children: [
+      {
+        label: "parent 1-0",
+        key: "1-0-0",
+        value: "1-0-0",
+        disabled: true,
+        children: [
+          {
+            label: "leaf",
+            key: "1-0-0-0",
+            value: "1-0-0-0",
+          },
+        ],
+      },
+      {
+        label: "parent 1-1",
+        key: "1-0-1",
+        value: "1-0-1",
+        children: [
+          {
+            label: <span style={{ color: "#1890ff" }}>sss</span>,
+            key: "1-0-1-0",
+            value: "1-0-1-0",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+let selectedKeys: number | string = "";
 export default forwardRef(
   (
     props: any,
@@ -72,50 +98,8 @@ export default forwardRef(
       bottom: 0,
       right: 0,
     });
-    const [dataSource, setdataSource] = useState(data);
+    const [dataSource, setdataSource] = useState<Option[]>(_treeData);
     const draggleRef = useRef(null);
-
-    const columns = [
-      {
-        title: "选项内容",
-        className: "drag-handle",
-        dataIndex: "label",
-        width: 200,
-        render: (text: any) => (
-          <>
-            <DragHandle />
-            {text}
-          </>
-        ),
-      },
-      {
-        title: "选项值",
-        width: 200,
-        dataIndex: "value",
-      },
-      {
-        title: "操作",
-        width: 50,
-        dataIndex: "action",
-        render(_: any, text: any, index: number) {
-          return (
-            <>
-              <a
-                onClick={() => {
-                  setdataSource((state) => {
-                    const _state = cloneDeep(state);
-                    _state.splice(index, 1);
-                    return _state;
-                  });
-                }}
-              >
-                删除
-              </a>
-            </>
-          );
-        },
-      },
-    ];
 
     const showModal = () => {
       setIsModalVisible(true);
@@ -143,45 +127,6 @@ export default forwardRef(
         top: -top + uiData?.y,
         bottom: clientHeight - (bottom - uiData?.y),
       });
-    };
-
-    const onSortEnd = ({ oldIndex, newIndex }: any) => {
-      if (oldIndex !== newIndex) {
-        const newData = arrayMove(
-          [].concat(dataSource as any),
-          oldIndex,
-          newIndex
-        ).filter((el) => !!el);
-        setdataSource(newData);
-      }
-    };
-
-    const DraggableContainer = (props: any) => (
-      <SortableContainer2
-        useDragHandle
-        disableAutoscroll
-        helperClass="row-dragging"
-        onSortEnd={onSortEnd}
-        lockAxis="y"
-        {...props}
-      />
-    );
-
-    const DraggableBodyRow = (
-      { className, style, ...restProps }: any,
-      collection: string | number | undefined
-    ) => {
-      const dataRowKey = restProps["data-row-key"];
-      // function findIndex base on Table rowKey props and should always be a right array index
-      const index = dataSource.findIndex((x) => x.index === dataRowKey);
-      return (
-        <SortableItem
-          index={index}
-          {...restProps}
-          collection={collection}
-          onMouseOut={() => setDisabled(true)}
-        />
-      );
     };
 
     useImperativeHandle(
@@ -226,6 +171,7 @@ export default forwardRef(
             </Radio.Group>
           </div>
         }
+        onCancel={hideModal}
         visible={isModalVisible}
         okText="确定"
         modalRender={(modal) => (
@@ -243,38 +189,56 @@ export default forwardRef(
           </Button>
         }
       >
-        <Table
-          pagination={false}
-          dataSource={dataSource}
-          columns={columns}
-          rowKey="index"
-          size="small"
-          components={{
-            body: {
-              wrapper: DraggableContainer,
-              row: DraggableBodyRow,
-            },
-          }}
-        />
-        <Button
-          style={{
-            marginTop: 10,
-          }}
-          type="link"
-          onClick={() => {
-            setdataSource((state) => {
-              const _state = cloneDeep(state);
-              _state.push({
-                label: "12141",
-                value: uniqueId(),
-                index: uniqueId(),
-              });
-              return _state;
-            });
+        <div
+          onMouseEnter={() => {
+            setDisabled(true);
           }}
         >
-          添加一项
-        </Button>
+          <DragableTable
+            dataSource={dataSource}
+            onChange={(val, _selectedKeys) => {
+              setdataSource(val);
+              selectedKeys = _selectedKeys?.[0];
+            }}
+          />
+          <Space
+            style={{
+              marginTop: 10,
+            }}
+            split={<Divider type="vertical" />}
+          >
+            <Typography.Link
+              onClick={() => {
+                if (!selectedKeys) {
+                  setdataSource((state) => {
+                    state.push({
+                      label: "12141",
+                      value: uniqueId(),
+                      key: uniqueId(),
+                    });
+                    return cloneDeep(state);
+                  });
+                  return;
+                }
+                const newData = find(
+                  selectedKeys,
+                  cloneDeep(dataSource),
+                  (item, i, target) => {
+                    (item.children || (item.children = [])).push({
+                      label: "12141",
+                      value: uniqueId(),
+                      key: uniqueId(),
+                    });
+                  }
+                );
+                setdataSource(newData);
+              }}
+            >
+              添加一项
+            </Typography.Link>
+            {/* <Typography.Link onClick={() => {}}>添加分组</Typography.Link> */}
+          </Space>
+        </div>
       </Modal>
     );
   }

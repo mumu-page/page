@@ -1,41 +1,78 @@
-.row-dragging {
-  z-index: 9999;
-  background: #fafafa;
-  border: 1px solid #ccc;
+.draggable-tree {
+  border-top: 1px solid var(--main-border-color);
+  .draggable-tree-node {
+    height: 30px;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--main-border-color);
+    .ant-tree-switcher {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    // 覆盖选中样式
+    .ant-tree-node-selected {
+      background-color: var(--main-secord-bg);
+      // .ant-tree-title,
+      // .ant-btn {
+      //   color: white;
+      // }
+    }
+  }
+}
+
+.tree-header,
+.ant-tree-title {
+  height: 30px;
+  padding: 5px 0;
   display: flex;
   align-items: center;
-  td {
-    padding: 16px;
-    width: 100%;
+  justify-content: space-between;
+  border-top: 1px solid var(--main-border-color);
+  .tree-header-item,
+  .draggable-tree-node-item {
+    flex: 0.4;
+    // text-align: center;
+    flex-shrink: 0;
   }
-}
-
-.row-dragging .drag-visible {
-  visibility: visible;
-}
-tr {
-  .drag-handle {
+  .tree-header-item:first-child {
+    align-items: flex-start;
+    padding-left: 33px;
+  }
+  .draggable-tree-node-item:last-child,
+  .tree-header-item:last-child {
+    align-items: center;
+    flex: 0.2;
+  }
+  .tree-header-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    span:first-child {
+      line-height: 18px;
+    }
+    span:last-child {
+      font-size: 12px;
+      line-height: 12px;
+      color: #999;
+    }
+  }
+  .draggable-tree-node-item-action {
+    display: flex;
+    align-items: center;
+    text-align: right;
     position: relative;
-    padding-left: 20px !important;
-    .ant-table-row-expand-icon.ant-table-row-expand-icon-expanded,
-    .ant-table-row-expand-icon.ant-table-row-expand-icon-collapsed {
-      margin-left: 10px !important;
-    }
-    .drag-handle-icon {
-      opacity: 0;
-      width: 20px;
-      height: 20px;
-      cursor: grab;
+    .btn {
       position: absolute;
-      left: 0;
-      background-size: cover;
-      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg opacity='.85' fill-rule='nonzero' fill='%23000'%3E%3Cpath d='M10.125 1.75v1.125H9V1.75h1.125zm0 2.844v1.125H9V4.594h1.125zm0 5.687v1.125H9v-1.125h1.125zm0 2.844v1.125H9v-1.125h1.125zm0-5.688v1.125H9V7.438h1.125zM6.125 1.75v1.125H5V1.75h1.125zm0 2.844v1.125H5V4.594h1.125zm0 5.687v1.125H5v-1.125h1.125zm0 2.844v1.125H5v-1.125h1.125zm0-5.688v1.125H5V7.437h1.125z'/%3E%3C/g%3E%3C/svg%3E");
+      right: 18px;
     }
   }
+}
+.ant-tree-title {
+  border: none;
+}
 
-  &:hover {
-    .drag-handle-icon {
-      opacity: 1;
-    }
-  }
+.tree-header {
+  height: 40px;
 }

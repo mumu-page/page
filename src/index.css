@@ -15,4 +15,6 @@ body {
   --main-bg: rgb(255 255 255);
   --menu-item-bg: rgb(244 244 244);
   --menu-danger-color: red;
+  --main-border-color: #f8f8f8;
+  --main-secord-bg: rgba(0,0,0,.1);
 }

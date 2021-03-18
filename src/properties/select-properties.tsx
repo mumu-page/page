@@ -1,32 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Button, Form, Radio } from "antd";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { CustomCollapse, IRefType, SelectModal } from "../components";
-import {
-  SortableContainer,
-  SortableElement,
-  SortableHandle,
-} from "react-sortable-hoc";
-import { MenuOutlined } from "@ant-design/icons";
-
-const DragHandle = SortableHandle(() => (
-  <MenuOutlined style={{ cursor: "pointer", color: "#999" }} />
-));
-
-const SortableItem = SortableElement(
-  (
-    props: JSX.IntrinsicAttributes &
-      React.ClassAttributes<HTMLTableRowElement> &
-      React.HTMLAttributes<HTMLTableRowElement>
-  ) => <tr {...props} />
-);
-const SortableContainer2 = SortableContainer(
-  (
-    props: JSX.IntrinsicAttributes &
-      React.ClassAttributes<HTMLTableSectionElement> &
-      React.HTMLAttributes<HTMLTableSectionElement>
-  ) => <tbody {...props} />
-);
 
 export default function () {
   const modalRef = useRef<IRefType>(null);
