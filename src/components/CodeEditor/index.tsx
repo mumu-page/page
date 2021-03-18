@@ -14,7 +14,9 @@ import { Spin } from "antd";
 import { isEqual } from "lodash";
 import "./index.scss";
 
-// 禁用了语法错误，但无法获得语法高亮支持 tsx
+/**
+ * 编辑器不支持TSX，以下为了禁用语法错误的提示
+ */
 monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   target: monaco.languages.typescript.ScriptTarget.Latest,
   allowNonTsExtensions: true,
@@ -31,9 +33,11 @@ monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
   noSemanticValidation: false,
   noSyntaxValidation: false,
 });
+
 const defaultOptions = {
   theme: "vs-dark",
   language: "typescript",
+  tabSize: 2,
 };
 const CodeEditor = forwardRef(
   (
