@@ -119,7 +119,7 @@ export default (props: RightActionType) => {
         type={type === "download" ? "primary" : "text"}
         size="middle"
         onClick={() => {
-          handleType("download");
+          // handleType("download");
           download();
         }}
       />
@@ -128,7 +128,7 @@ export default (props: RightActionType) => {
         type={type === "clean" ? "primary" : "text"}
         danger
         onClick={() => {
-          handleType("clean");
+          // handleType("clean");
           clean();
         }}
       />

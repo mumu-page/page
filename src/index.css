@@ -16,5 +16,6 @@ body {
   --menu-item-bg: rgb(244 244 244);
   --menu-danger-color: red;
   --main-border-color: #f8f8f8;
+  --main-border-color2:rgba(0,0,0,.1);
   --main-secord-bg: rgba(0,0,0,.1);
 }

@@ -39,6 +39,6 @@
 }
 .viewport {
   width: 800px;
-  height: 600px;
-  border: 1px solid #ccc;
+  height: 1000px;
+  border: 1px dashed var(--main-border-color2);
 }
