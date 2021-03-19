@@ -1,22 +1,22 @@
-import React, { useCallback, useContext, useEffect } from 'react'
-import Moveable from 'react-moveable'
+import React, { useCallback, useContext, useEffect } from "react";
+import Moveable from "react-moveable";
 import {
   SET_CURRENT_DRAG_COMPONENT,
   SET_MOVEABLE_OPTIONS,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-} from '../../stores/action-type'
-import { Context } from '../../stores/context'
+} from "../../stores/action-type";
+import { Context } from "../../stores/context";
 
 const layout = {
   frame: { translate: [0, 0] },
-} as any
+} as any;
 export default () => {
   const {
     currentDragComponent,
     moveableOptions = {},
     commonDispatch,
-  } = useContext(Context)
-  
+  } = useContext(Context);
+
   const {
     target,
     elementGuidelines,
@@ -24,12 +24,12 @@ export default () => {
     bounds,
     verticalGuidelines,
     horizontalGuidelines,
-  } = moveableOptions as any
+  } = moveableOptions as any;
 
   const onWinResize = useCallback((leftVal = 0, rightVal = 0) => {
-    const parentEl = document.querySelector('.viewport')
+    const parentEl = document.querySelector(".viewport");
     const { left, right, top, bottom } =
-      parentEl?.getBoundingClientRect?.() || {}
+      parentEl?.getBoundingClientRect?.() || {};
     // Moveable的bounds是基于整个窗口的
     // 而getBoundingClientRect是基于当前元素，因此存在误差
     commonDispatch({
@@ -43,19 +43,23 @@ export default () => {
         },
       },
     });
-  }, [])
+  }, []);
 
   useEffect(() => {
-    onWinResize()
-  }, [])
+    onWinResize();
+  }, []);
 
   useEffect(() => {
-    const { layout = {} } = currentDragComponent
+    console.log(moveableOptions);
+  }, [moveableOptions]);
+
+  useEffect(() => {
+    const { layout = {} } = currentDragComponent;
     commonDispatch({
       type: SET_MOVEABLE_OPTIONS,
       payload: layout,
-    })
-  }, [currentDragComponent])
+    });
+  }, [currentDragComponent]);
 
   return (
     <Moveable
@@ -169,4 +173,4 @@ export default () => {
       }}
     />
   );
-}
+};

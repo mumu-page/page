@@ -10,7 +10,7 @@ import { options } from "../constants";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { ComponentKeys } from "../stores/typings";
 import CheckboxField from "../components/FormFields/CheckboxField";
-import { CustomCollapse } from "../components";
+import { CustomCollapse, Title } from "../components";
 import { debounce } from "lodash";
 
 const { Option, OptGroup } = Select;
@@ -31,8 +31,8 @@ export default memo(function () {
   const { currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {} } = currentDragComponent || {};
 
-  const onValuesChange = debounce(
-    useCallback(
+  const onValuesChange = useCallback(
+    debounce(
       (
         { componentWidth: cw, placeholder: p, placeholder1, placeholder2 }: any,
         allValues: FormData
@@ -74,9 +74,9 @@ export default memo(function () {
           },
         });
       },
-      []
+      500
     ),
-    500
+    []
   );
 
   useEffect(() => {
@@ -106,6 +106,7 @@ export default memo(function () {
         form={form}
         onValuesChange={onValuesChange}
       >
+        <Title text="通用" />
         <CustomCollapse defaultActiveKey={["控件类型"]}>
           <CustomCollapse.Panel header="控件类型" key="控件类型">
             <Form.Item label="" name="componentKey">

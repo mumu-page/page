@@ -1,16 +1,16 @@
-import React, { memo, useContext } from "react";
+import React from "react";
 import { Form } from "antd";
 import { FormComProp } from "../../stores/typings";
-import { debounce } from "lodash";
-import {
-  SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-} from "../../stores/action-type";
 import { isCheck, isDatePicker, isRenderFormItem } from "../../utils/utils";
 import { ICONS, getComponent } from "../../constants";
 import * as moment from "moment";
-import { Context } from "../../stores/context";
-import { areEqualItem } from "../../layouts/EditorArea/utils";
+
+// 控件设计时默认不能交互
+const disableCom = {
+  readOnly: true,
+  popupVisible: false,
+  open: false,
+};
 
 export default (prop: FormComProp) => {
   const {
@@ -60,9 +60,7 @@ export default (prop: FormComProp) => {
     >
       {React.cloneElement(getComponent(componentKey) || <></>, {
         disabled: componentKey === "Rate",
-        readOnly: true,
-        popupVisible: false,
-        open: false,
+        ...disableCom,
         ...componentOtherProps,
       })}
     </Form.Item>

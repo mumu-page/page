@@ -1,17 +1,16 @@
-import React, { useCallback, useRef, useState } from "react";
-import { Col, Form, Row } from "antd";
+import React, { useCallback, useRef } from "react";
+import { Form } from "antd";
 import { useEffect } from "react";
 import { ComponentItem, ContextMenu } from "..";
 import {
   COPY_COMPONENT_LIST,
   DELETE_CURRENT_DRAG_COMPONENT,
   DEL_COMPONENT_LIST,
-  SET_CURRENT_DRAG_COMPONENT,
   SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
 } from "../../stores/action-type";
 import { commonDispatch, FormComProp } from "../../stores/typings";
-import { isDatePicker } from "../../utils/utils";
+import { findTarget, isDatePicker } from "../../utils/utils";
 import { Target_ClassName } from "../../constants/constants";
 import Menu from "../ContextMenu/Menu";
 import {
@@ -62,39 +61,17 @@ export default function Container(props: EditorAreaProps) {
     componentProps,
     formItemProps,
     formProps = {},
+    colProps = {},
+    rowProps = {},
   } = currentDragComponent;
 
-  const findTarget = (
-    id = currentDragComponent.id,
-    selectors = `.${Target_ClassName}`,
-    list = componentList
-  ) => {
-    let divList = [].slice.call(document.querySelectorAll(selectors) as any);
-    const target = divList.filter((item: any) => {
-      return item?.getAttribute?.("data-id") === id;
-    })?.[0];
-    const frame = list?.filter((item) => {
-      return item.id === id;
-    })?.[0]?.layout?.frame;
-
-    // 将当前元素从divList中移除, 当前元素不再作为参考辅助线
-    divList = divList.filter((item: any) => {
-      return item?.getAttribute?.("data-id") !== id;
-    });
-    return {
-      divList,
-      target,
-      frame,
-    };
-  };
-
-  const setMoveableOption = (id?: string | number | undefined) => {
-    const { divList, target, frame } = findTarget(id);
+  const setMoveableOption = (id: string | number) => {
+    const { elementGuidelines, target, frame } = findTarget(id, componentList);
     commonDispatch({
       type: SET_MOVEABLE_OPTIONS,
       payload: {
         frame,
-        elementGuidelines: divList,
+        elementGuidelines,
         target,
       },
     });
@@ -137,7 +114,7 @@ export default function Container(props: EditorAreaProps) {
   };
 
   useEffect(() => {
-    setMoveableOption();
+    setMoveableOption(currentDragComponent.id);
   }, []);
 
   useEffect(() => {
@@ -168,72 +145,79 @@ export default function Container(props: EditorAreaProps) {
       }}
       form={form}
     >
-      {componentList.map((item: any) => {
-        const {
-          id,
-          children,
-          componentKey,
-          formItemProps,
-          componentProps,
-          colProps = {},
-          rowProps = {},
-          layout = {},
-        } = item;
+      {/* Row Col 和 ReactiveMoveable 有冲突  */}
+      <div>
+        {componentList.map((item: any) => {
+          const {
+            id,
+            children,
+            componentKey,
+            formItemProps,
+            componentProps,
+            colProps: selfColProps = {},
+            layout = {},
+          } = item;
 
-        const { frame = { translate: [0, 0, 0] }, height, width } = layout;
-        const { translate } = frame;
-        const style = {
-          transform: `translate(${translate[0]}px, ${translate[1]}px)`,
-        } as any;
+          const { frame = { translate: [0, 0, 0] }, height, width } = layout;
+          const { translate } = frame;
+          const style = {
+            display: "inline-block",
+            transform: `translate(${translate[0]}px, ${translate[1]}px)`,
+          } as any;
 
-        if (width) {
-          style.width = `${width}px`;
-        }
-        if (height) {
-          style.height = `${height}px`;
-        }
+          const colNum = rowProps.colNum;
+          if (width) {
+            style.width = `${width}px`;
+          } else if (colNum) {
+            style.width = `calc(100% / ${colNum})`;
+          } else {
+            style.width = `100%`;
+          }
+          if (height) {
+            style.height = `${height}px`;
+          }
 
-        return (
-          <div
-            {...colProps}
-            key={id}
-            style={style}
-            className={Target_ClassName}
-            data-id={id}
-            onClick={(e) => {
-              e.stopPropagation()
-              commonDispatch({
-                type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
-                payload: { id },
-              });
-              // 无论dom元素如何变，componentList没有变
-              setMoveableOption(id);
-            }}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              commonDispatch({
-                type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
-                payload: { id },
-              });
-              // 无论dom元素如何变，componentList没有变
-              setMoveableOption(id);
-              (contenxtMenu.current as any)?.show?.(e);
-            }}
-          >
-            <ComponentItem
-              id={id}
+          return (
+            <div
               key={id}
-              form={form}
-              children={children}
-              colProps={colProps}
-              rowProps={rowProps}
-              formItemProps={formItemProps}
-              componentProps={componentProps}
-              componentKey={componentKey}
-            />
-          </div>
-        );
-      })}
+              style={style}
+              className={Target_ClassName}
+              data-id={id}
+              onClick={(e) => {
+                e.stopPropagation();
+                commonDispatch({
+                  type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
+                  payload: { id },
+                });
+                // 无论dom元素如何变，componentList没有变
+                setMoveableOption(id);
+              }}
+              onContextMenu={(e) => {
+                e.preventDefault();
+                commonDispatch({
+                  type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
+                  payload: { id },
+                });
+                // 无论dom元素如何变，componentList没有变
+                setMoveableOption(id);
+                (contenxtMenu.current as any)?.show?.(e);
+              }}
+            >
+              <ComponentItem
+                id={id}
+                key={id}
+                form={form}
+                children={children}
+                colProps={colProps}
+                rowProps={rowProps}
+                formItemProps={formItemProps}
+                componentProps={componentProps}
+                componentKey={componentKey}
+              />
+            </div>
+          );
+        })}
+      </div>
       <ContextMenu ref={contenxtMenu}>
         <Menu options={options} onClick={handleContextMenuClick} />
       </ContextMenu>

@@ -8,8 +8,8 @@ import {
 import { Context } from '../stores/context'
 import { CaretRightOutlined } from '@ant-design/icons'
 import CheckboxField from '../components/FormFields/CheckboxField'
-import { formatObject } from '../utils/utils'
-import { CustomCollapse } from '../components'
+import { decodeKey } from '../utils/utils'
+import { CustomCollapse, Title } from '../components'
 
 export default function () {
   const { currentDragComponent, commonDispatch } = useContext(Context)
@@ -17,7 +17,7 @@ export default function () {
   const { id, formProps, formItemProps = {} } = currentDragComponent || {}
 
   const onValuesChange = (changedValues: any, allValues: any) => {
-    const newAllValues = formatObject(allValues, ['form', 'formItem'])
+    const newAllValues = decodeKey(allValues, ['form', 'formItem'])
     commonDispatch({
       type: SET_CURRENT_DRAG_COMPONENT,
       payload: {
@@ -51,6 +51,7 @@ export default function () {
       form={form}
       onValuesChange={onValuesChange}
     >
+      <Title text="表单" />
       <CustomCollapse defaultActiveKey={["表单"]}>
         <CustomCollapse.Panel header="表单">
           <Form.Item label="表单名" name="form.name">

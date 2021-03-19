@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Form,
   Input,
@@ -20,6 +26,7 @@ import {
   IconModalInstanceProp,
 } from "../components";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
+import { debounce } from "lodash";
 
 export default () => {
   const [form] = Form.useForm();
@@ -28,26 +35,28 @@ export default () => {
   const { id, componentProps = {} } = currentDragComponent || {};
   const [iconType, setIconType] = useState<"prefix" | "suffix">("prefix");
 
-  const onValuesChange = (changedValues: any, allValues: any) => {
-    commonDispatch({
-      type: SET_CURRENT_DRAG_COMPONENT,
-      payload: {
-        id,
-        componentProps: {
-          defaultValue: allValues?.defaultValue,
-        },
-      },
-    });
-    commonDispatch({
-      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-      payload: {
-        id,
-        data: {
+  const onValuesChange = useCallback(
+    debounce((changedValues: any, allValues: any) => {
+      console.log(allValues);
+      commonDispatch({
+        type: SET_CURRENT_DRAG_COMPONENT,
+        payload: {
+          id,
           componentProps: allValues,
         },
-      },
-    });
-  };
+      });
+      commonDispatch({
+        type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+        payload: {
+          id,
+          data: {
+            componentProps: allValues,
+          },
+        },
+      });
+    }, 500),
+    []
+  );
 
   const setPrefix = () => {
     iconModal.current?.show();
@@ -85,7 +94,7 @@ export default () => {
   useEffect(() => {
     form.resetFields();
     form.setFieldsValue(componentProps);
-  }, []);
+  }, [componentProps]);
 
   return (
     <>
@@ -127,15 +136,9 @@ export default () => {
               <Input
                 readOnly
                 addonAfter={
-                  <Button
-                    onClick={setPrefix}
-                    size="small"
-                    type="link"
-                    style={{ fontSize: 12, height: 20 }}
-                    icon={<SelectOutlined />}
-                  >
-                    选择
-                  </Button>
+                  <a onClick={setPrefix}>
+                    <SelectOutlined />
+                  </a>
                 }
               />
             </Form.Item>
@@ -147,15 +150,9 @@ export default () => {
               <Input
                 readOnly
                 addonAfter={
-                  <Button
-                    onClick={setSuffix}
-                    size="small"
-                    type="link"
-                    style={{ fontSize: 12, height: 20 }}
-                    icon={<SelectOutlined />}
-                  >
-                    选择
-                  </Button>
+                  <a onClick={setSuffix}>
+                    <SelectOutlined />
+                  </a>
                 }
               />
             </Form.Item>

@@ -12,12 +12,13 @@ import {
   PUT_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
   DELETE_CURRENT_DRAG_COMPONENT,
+  RESET_COMPONENT_LAYOUT,
 } from "./action-type";
-import { CommonState, FormComProp } from './typings'
-import { merge, cloneDeep } from 'lodash'
-import produce from 'immer'
-import * as uuid from 'uuid'
-import { INITAL_STATE } from './context'
+import { CommonState, FormComProp } from "./typings";
+import { merge, cloneDeep } from "lodash";
+import produce from "immer";
+import * as uuid from "uuid";
+import { INITAL_STATE } from "./context";
 
 /**
  * 公共
@@ -44,6 +45,7 @@ export const commonReducer = produce(
               findSelectedItem(item?.children);
             }
             if (item?.id === action.payload?.id) {
+              item.rowProps = draft.currentDragComponent?.rowProps;
               draft.currentDragComponent = item;
               break;
             }
@@ -162,9 +164,17 @@ export const commonReducer = produce(
           cloneDeep(action.payload)
         );
       },
+      // 清除控件原有layout属性
+      [RESET_COMPONENT_LAYOUT]: () => {
+        draft.componentList.forEach((item) => {
+          item.layout = {
+            frame: { translate: [0, 0] },
+          };
+        });
+      },
     };
 
-    if (typeof strategy[action.type] === 'function') {
+    if (typeof strategy[action.type] === "function") {
       // console.table({
       //   [action.type]: strategy[action.type](),
       //   payload: action.payload,
@@ -173,4 +183,4 @@ export const commonReducer = produce(
     }
   },
   INITAL_STATE
-)
+);

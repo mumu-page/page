@@ -1,54 +1,142 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Form, Select, InputNumber, Typography, Switch } from "antd";
 import { Context } from "../stores/context";
 import {
+  RESET_COMPONENT_LAYOUT,
+  SET_COMPONENT_LIST,
   SET_CURRENT_DRAG_COMPONENT,
+  SET_MOVEABLE_OPTIONS,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
 } from "../stores/action-type";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import CheckboxField from "../components/FormFields/CheckboxField";
-import { formatObject } from "../utils/utils";
+import { decodeKey, encodeKey, findTarget } from "../utils/utils";
 import { CustomCollapse, Title } from "../components";
+import { debounce, merge } from "lodash";
+
+// 默认布局
+function genLayout(colNum: 1 | 2 | 3 | 4, row = 24) {
+  const col = Math.floor(Number(row / colNum));
+
+  return {
+    xs: col,
+    sm: col,
+    md: col,
+    lg: col,
+    xl: col,
+    xxl: col,
+    span: col,
+  };
+}
+
+/**
+ * 是否是局部更新
+ */
+function isLocal(changedValues: { [key: string]: any }) {
+  const en = [
+    "single.colNum",
+    "single.xs",
+    "single.md",
+    "single.lg",
+    "single.xl",
+    "single.xxl",
+  ];
+  for (let i = 0; i < en.length; i++) {
+    if (en[i] in changedValues) {
+      return true;
+    }
+  }
+  return false;
+}
 
 /**
  * 布局增加简洁模式和复杂模式
  * 简洁模式：支持设置 几列布局等 比较傻瓜式，比如：2列  3列  那么界面会自动适配
  * 专业模式：支持精准设置多种属性，适用于专业人员。
  */
-
 export default function () {
   const [form] = Form.useForm();
-  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const {
+    currentDragComponent,
+    componentList,
+    commonDispatch,
+  } = useContext(Context);
   const { id, colProps = {}, rowProps = {} } = currentDragComponent || {};
   const [mode, setMode] = useState<"专业模式" | "简洁模式">("简洁模式");
 
-  const onValuesChange = (changedValues: any, allValues: any) => {
-    const newAllValues = formatObject(allValues, ["all", "single"]);
-    commonDispatch({
-      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-      payload: {
-        id,
-        data: {
+  const onValuesChange = useCallback(
+    debounce((changedValues: any, allValues: any) => {
+      const newAllValues = decodeKey(allValues, ["all", "single"]);
+      if (changedValues["all.colNum"] && mode === "简洁模式") {
+        newAllValues.all = merge(
+          newAllValues.all,
+          genLayout(changedValues["all.colNum"])
+        );
+        // 清除控件原有layout属性
+        commonDispatch({
+          type: RESET_COMPONENT_LAYOUT,
+        });
+      }
+      // 更新局部组件
+      if (isLocal(changedValues)) {
+        commonDispatch({
+          type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+          payload: {
+            id,
+            data: {
+              colProps: newAllValues?.single,
+            },
+          },
+        });
+      }
+      // 更新当前组件
+      commonDispatch({
+        type: SET_CURRENT_DRAG_COMPONENT,
+        payload: {
+          id,
           colProps: newAllValues?.single,
+          rowProps: newAllValues?.all,
         },
-      },
-    });
-    commonDispatch({
-      type: SET_CURRENT_DRAG_COMPONENT,
-      payload: {
-        id,
-        colProps: newAllValues?.single,
-        rowProps: newAllValues?.all,
-      },
-    });
-  };
+      });
+      // 重新获取当前选中元素
+
+      requestAnimationFrame(() => {
+        const { elementGuidelines, target, frame } = findTarget(
+          currentDragComponent.id,
+          componentList
+        );
+        commonDispatch({
+          type: SET_MOVEABLE_OPTIONS,
+          payload: {
+            target: null,  // immner会认为targer是同一个元素，所以不更新
+          },
+        });
+        commonDispatch({
+          type: SET_MOVEABLE_OPTIONS,
+          payload: {
+            elementGuidelines,
+            target,
+            frame,
+          },
+        });
+      });
+    }, 500),
+    []
+  );
 
   useEffect(() => {
+    const values = encodeKey(
+      {
+        key: "all",
+        data: rowProps,
+      },
+      {
+        key: "single",
+        data: colProps,
+      }
+    );
     form.resetFields();
-    form.setFieldsValue({
-      ...colProps,
-      ...rowProps,
-    });
+    form.setFieldsValue(values);
   }, [currentDragComponent]);
 
   return (
@@ -79,16 +167,16 @@ export default function () {
           </Typography.Link>
         }
       />
-      <CustomCollapse defaultActiveKey={["整体布局"]}>
+      <CustomCollapse defaultActiveKey={["全局布局"]}>
         <CustomCollapse.Panel
           header={
             <Form.Item
-              label="整体布局"
+              label="全局布局"
               tooltip="在此设置的内容将应用于全部控件"
               className="mb-0"
             ></Form.Item>
           }
-          key={"整体布局"}
+          key={"全局布局"}
         >
           <Form.Item label="垂直对齐" name="all.align">
             <Select>
@@ -184,7 +272,7 @@ export default function () {
           header={
             mode === "专业模式" ? (
               <Form.Item
-                label="专属布局"
+                label="局部布局"
                 tooltip="屏幕 * 响应式栅格"
                 labelCol={{ span: 16 }}
                 name="single.span"
@@ -193,7 +281,7 @@ export default function () {
                 <InputNumber className="w-100" min={0} max={24} />
               </Form.Item>
             ) : (
-              "专属布局"
+              "局部布局"
             )
           }
         >

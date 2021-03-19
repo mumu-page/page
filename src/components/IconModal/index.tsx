@@ -58,7 +58,7 @@ export default forwardRef(
         width="80%"
         title={
           <div className="modal-title">
-            <span>选择图标</span>
+            <span>Ant Design Icon 图标</span>
             <Input
               className="search"
               onInput={onSearch}
