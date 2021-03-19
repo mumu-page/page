@@ -56,11 +56,9 @@ function isLocal(changedValues: { [key: string]: any }) {
  */
 export default function () {
   const [form] = Form.useForm();
-  const {
-    currentDragComponent,
-    componentList,
-    commonDispatch,
-  } = useContext(Context);
+  const { currentDragComponent, componentList, commonDispatch } = useContext(
+    Context
+  );
   const { id, colProps = {}, rowProps = {} } = currentDragComponent || {};
   const [mode, setMode] = useState<"专业模式" | "简洁模式">("简洁模式");
 
@@ -72,9 +70,13 @@ export default function () {
           newAllValues.all,
           genLayout(changedValues["all.colNum"])
         );
-        // 清除控件原有layout属性
+        // 重置layout属性
         commonDispatch({
           type: RESET_COMPONENT_LAYOUT,
+          payload: {
+            colNum: newAllValues?.all?.colNum,
+            gutter: newAllValues?.all?.gutter,
+          },
         });
       }
       // 更新局部组件
@@ -99,7 +101,6 @@ export default function () {
         },
       });
       // 重新获取当前选中元素
-
       requestAnimationFrame(() => {
         const { elementGuidelines, target, frame } = findTarget(
           currentDragComponent.id,
@@ -108,7 +109,7 @@ export default function () {
         commonDispatch({
           type: SET_MOVEABLE_OPTIONS,
           payload: {
-            target: null,  // immner会认为targer是同一个元素，所以不更新
+            target: null, // immner会认为targer是同一个元素，所以不更新
           },
         });
         commonDispatch({

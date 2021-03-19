@@ -50,10 +50,6 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    console.log(moveableOptions);
-  }, [moveableOptions]);
-
-  useEffect(() => {
     const { layout = {} } = currentDragComponent;
     commonDispatch({
       type: SET_MOVEABLE_OPTIONS,

@@ -164,12 +164,34 @@ export const commonReducer = produce(
           cloneDeep(action.payload)
         );
       },
-      // 清除控件原有layout属性
+      // 重置layout属性 TODO: 更多列数兼容
       [RESET_COMPONENT_LAYOUT]: () => {
-        draft.componentList.forEach((item) => {
-          item.layout = {
-            frame: { translate: [0, 0] },
-          };
+        const { colNum, gutter } = action.payload || {};
+        draft.componentList.forEach((item, index) => {
+          const layout = {
+            frame: { translate: [0, 0, 0] },
+          } as any;
+          if (colNum > 1) {
+            layout.width = `calc(100% / ${colNum})`;
+            // 兼容gutter
+            if (gutter > 0) {
+              const margin = ((colNum - 1) * gutter) / colNum;
+              layout.width = `calc(100%/${colNum} - ${margin}px)`;
+              // 调整偶数位置
+              if (index !== 0 && (index + 1) % 2 === 0) {
+                layout.frame.translate[0] = layout.frame.translate[0] + gutter;
+              }
+              // 如果数量和列数相等
+              if (
+                draft.componentList.length === Number(colNum) &&
+                index === colNum - 1
+              ) {
+                layout.frame.translate[0] =
+                  layout.frame.translate[0] + gutter * (colNum - 1);
+              }
+            }
+          }
+          item.layout = layout;
         });
       },
     };

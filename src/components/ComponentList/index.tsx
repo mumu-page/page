@@ -22,6 +22,7 @@ import "./index.scss";
 import eventBus from "../../utils/eventBus";
 import { SHOW_SETTING_PANL } from "../../constants/events";
 import * as uuid from "uuid";
+import { type } from "os";
 
 interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
@@ -147,7 +148,7 @@ export default function Container(props: EditorAreaProps) {
     >
       {/* Row Col 和 ReactiveMoveable 有冲突  */}
       <div>
-        {componentList.map((item: any) => {
+        {componentList.map((item: FormComProp, index: number) => {
           const {
             id,
             children,
@@ -165,16 +166,30 @@ export default function Container(props: EditorAreaProps) {
             transform: `translate(${translate[0]}px, ${translate[1]}px)`,
           } as any;
 
-          const colNum = rowProps.colNum;
-          if (width) {
+          if (typeof width === "number") {
             style.width = `${width}px`;
-          } else if (colNum) {
-            style.width = `calc(100% / ${colNum})`;
+          } else if (typeof width === "string") {
+            style.width = width;
           } else {
             style.width = `100%`;
           }
           if (height) {
             style.height = `${height}px`;
+          }
+
+          const colNum = rowProps.colNum;
+          if (!layout?.frame?.translate && colNum) {
+            style.width = `calc(100% / ${colNum})`;
+            // 兼容gutter
+            if (rowProps.gutter) {
+              style.width = `calc(100%/${colNum} - ${rowProps.gutter / 2}px)`;
+              // 如果是偶数则调整位置
+              if (index % 2) {
+                style.transform = `translate(${
+                  translate[0] + rowProps.gutter
+                }px, ${translate[1]}px)`;
+              }
+            }
           }
 
           return (
