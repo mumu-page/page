@@ -4,9 +4,9 @@ import React, {
   useImperativeHandle,
   useState,
   useCallback,
-} from "react";
-import { Button, Tabs, Drawer, message } from "antd";
-import { PreviewInstanceProps, PreviewProps } from "./typings";
+} from 'react'
+import { Button, Tabs, Drawer, message } from 'antd'
+import { PreviewInstanceProps, PreviewProps } from './typings'
 import {
   SyncOutlined,
   // VerticalAlignBottomOutlined,
@@ -16,19 +16,19 @@ import {
   EditOutlined,
   RightOutlined,
   LeftOutlined,
-} from "@ant-design/icons";
-import CodeEditor from "../CodeEditor";
-import { CodeEditorInstanceProps } from "../CodeEditor/typings";
-import { string2Component } from "../../utils/utils";
-import "./index.scss";
+} from '@ant-design/icons'
+import CodeEditor from '../CodeEditor'
+import { CodeEditorInstanceProps } from '../CodeEditor/typings'
+import { string2Component } from '../../utils/utils'
+import './index.scss'
 
-const { TabPane } = Tabs;
+const { TabPane } = Tabs
 const SelectedIcon = () => (
-  <EditOutlined style={{ color: "#f1fa8c", marginRight: "5px" }} />
-);
+  <EditOutlined style={{ color: '#f1fa8c', marginRight: '5px' }} />
+)
 const UnSelectedIcon = () => (
-  <FileTextOutlined style={{ color: "#a95812", marginRight: "5px" }} />
-);
+  <FileTextOutlined style={{ color: '#a95812', marginRight: '5px' }} />
+)
 export default forwardRef(function (
   props: PreviewProps,
   ref:
@@ -36,61 +36,63 @@ export default forwardRef(function (
     | React.MutableRefObject<unknown>
     | null
 ) {
-  const [folded, setFolded] = useState(false);
-  const [tsxCode, setTsxCode] = useState<string>("");
-  const [scssCode, setScssCode] = useState<string>("");
-  const [visible, setVisible] = useState(false);
-  const [activeKey, setActiveKey] = useState("tsx");
-  const [component, setComponent] = useState(<></>);
-  const xmlEditor = useRef<CodeEditorInstanceProps>(null);
-  const tsxEditor = useRef<CodeEditorInstanceProps>(null);
-  const scssEditor = useRef<CodeEditorInstanceProps>(null);
+  const [folded, setFolded] = useState(false)
+  const [tsxCode, setTsxCode] = useState<string>('')
+  const [scssCode, setScssCode] = useState<string>('')
+  const [visible, setVisible] = useState(false)
+  const [activeKey, setActiveKey] = useState('tsx')
+  const [component, setComponent] = useState(<></>)
+  const xmlEditor = useRef<CodeEditorInstanceProps>(null)
+  const tsxEditor = useRef<CodeEditorInstanceProps>(null)
+  const scssEditor = useRef<CodeEditorInstanceProps>(null)
 
   const parseXml = (newCode: string) => {
     string2Component(newCode)
       .then((newComponent) => {
-        setComponent(newComponent);
+        setComponent(newComponent)
       })
       .catch((info) => {
-        message.error(info);
-      });
-  };
+        message.error(info)
+      })
+  }
 
   const onTsxChangCode = useCallback((newCode) => {
-    setTsxCode(newCode);
-  }, []);
+    setTsxCode(newCode)
+    refresh(newCode)
+  }, [])
 
   const onScssChangCode = useCallback((newCode) => {
-    setScssCode(newCode);
-  }, []);
+    setScssCode(newCode)
+    refresh(newCode)
+  }, [])
 
-  const refresh = () => {
+  const refresh = (code = tsxCode) => {
     const _xmlCode =
-      tsxCode
-        .substring(tsxCode.indexOf("return <Form>"), tsxCode.indexOf("</Form>"))
-        .replace("return", "") + "</Form>";
+      code
+        .substring(code.indexOf('return <Form>'), code.indexOf('</Form>'))
+        .replace('return', '') + '</Form>'
     string2Component(_xmlCode)
       .then((newComponent) => {
-        setComponent(newComponent);
+        setComponent(newComponent)
       })
       .catch((info) => {
-        message.error(info);
-      });
-  };
+        message.error(info)
+      })
+  }
 
-  const copy = () => {};
+  const copy = () => {}
 
   // const download = () => {};
 
   const close = () => {
-    setActiveKey("tsx");
-    setVisible(false);
-    setFolded(false);
-  };
+    setActiveKey('tsx')
+    setVisible(false)
+    setFolded(false)
+  }
 
   const onTabChange = (activeKey: string) => {
-    setActiveKey(activeKey);
-  };
+    setActiveKey(activeKey)
+  }
 
   useImperativeHandle(
     ref,
@@ -99,23 +101,23 @@ export default forwardRef(function (
       tsEditor: tsxEditor.current,
       scssEditor: scssEditor.current,
       setXmlCode: (newCode: string) => {
-        parseXml(newCode);
+        parseXml(newCode)
       },
       setTsxCode: (newCode: string) => {
-        setTsxCode(newCode);
+        setTsxCode(newCode)
       },
       setScssCode: (newCode: string) => {
-        setScssCode(newCode);
+        setScssCode(newCode)
       },
       open() {
-        setVisible(true);
+        setVisible(true)
       },
       close() {
-        setVisible(false);
+        setVisible(false)
       },
     }),
     []
-  );
+  )
 
   return (
     <Drawer
@@ -124,23 +126,23 @@ export default forwardRef(function (
       closable={false}
       destroyOnClose
       onClose={() => {
-        setFolded(false);
-        setVisible(false);
+        setFolded(false)
+        setVisible(false)
       }}
     >
       <div className="preview">
         <Tabs
           tabBarGutter={5}
           activeKey={activeKey}
-          className={`code-container ${folded ? "code-folded" : ""}`}
+          className={`code-container ${folded ? 'code-folded' : ''}`}
           onChange={onTabChange}
-          tabBarStyle={{ height: "35px" }}
+          tabBarStyle={{ height: '35px' }}
           type="card"
         >
           <TabPane
             tab={
               <div>
-                {activeKey === "tsx" ? <SelectedIcon /> : <UnSelectedIcon />}
+                {activeKey === 'tsx' ? <SelectedIcon /> : <UnSelectedIcon />}
                 <span>tsx</span>
               </div>
             }
@@ -149,14 +151,14 @@ export default forwardRef(function (
             <CodeEditor
               ref={tsxEditor}
               code={tsxCode}
-              options={{ language: "typescript" }}
+              options={{ language: 'typescript' }}
               onChangeCode={onTsxChangCode}
             />
           </TabPane>
           <TabPane
             tab={
               <div>
-                {activeKey === "scss" ? <SelectedIcon /> : <UnSelectedIcon />}
+                {activeKey === 'scss' ? <SelectedIcon /> : <UnSelectedIcon />}
                 <span>scss</span>
               </div>
             }
@@ -165,18 +167,18 @@ export default forwardRef(function (
             <CodeEditor
               ref={scssEditor}
               code={scssCode}
-              options={{ language: "scss" }}
+              options={{ language: 'scss' }}
               onChangeCode={onScssChangCode}
             />
           </TabPane>
         </Tabs>
-        <div className={`form ${folded ? "form-open" : ""}`}>
+        <div className={`form ${folded ? 'form-open' : ''}`}>
           <div className="head">
             <Button
               icon={<SyncOutlined />}
               type="link"
               size="middle"
-              onClick={refresh}
+              onClick={() => refresh()}
             >
               刷新
             </Button>
@@ -210,13 +212,13 @@ export default forwardRef(function (
         </div>
         <Button
           shape="circle"
-          className={`affix ${folded ? "affix-folded" : ""}`}
+          className={`affix ${folded ? 'affix-folded' : ''}`}
           icon={folded ? <RightOutlined /> : <LeftOutlined />}
           onClick={() => {
-            setFolded(!folded);
+            setFolded(!folded)
           }}
         ></Button>
       </div>
     </Drawer>
-  );
-});
+  )
+})

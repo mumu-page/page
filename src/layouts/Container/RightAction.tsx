@@ -27,7 +27,7 @@ interface RightActionType {
 export default (props: RightActionType) => {
   const { type, handleType } = props;
   const preview = useRef<PreviewInstanceProps>(null);
-  const { componentList, commonDispatch } = useContext(Context);
+  const { currentDragComponent ,componentList, commonDispatch } = useContext(Context);
 
   const handleColor = (val: BtnTypes) => {
     return {
@@ -56,7 +56,7 @@ export default (props: RightActionType) => {
   };
 
   const run = () => {
-    const xmlCode = generate(componentList);
+    const xmlCode = generate(componentList, currentDragComponent)
     preview.current?.setXmlCode(xmlCode);
     preview.current?.setTsxCode(`
       ${generateImport(componentList)}

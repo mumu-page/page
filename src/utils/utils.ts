@@ -117,7 +117,7 @@ export async function string2Component(input?: string) {
     );
     return func(context);
   } catch (e) {
-    // console.log("e", e);
+    console.log("e", e);
     // eslint-disable-next-line no-throw-literal
     throw "代码运行错误";
   }
