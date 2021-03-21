@@ -178,7 +178,7 @@ export const commonReducer = produce(
               const margin = ((colNum - 1) * gutter) / colNum
               layout.width = `calc(100%/${colNum} - ${margin}px)`
               // 调整除每行第一个的位置
-              if (index !== 0 && (index + 1) % colNum !== 1) {
+              if (index !== 0 && (index % colNum !== 0)) {
                 // 当前所在列数(从0开始)
                 const tarColNum = index % colNum
                 layout.frame.translate[0] =
