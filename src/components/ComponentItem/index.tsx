@@ -17,12 +17,15 @@ export default (prop: FormComProp) => {
     id,
     children,
     componentKey,
+    formProps = {},
     formItemProps = {},
     componentProps = {},
     rowProps = {},
     form,
     style,
   } = prop;
+
+  const { labelCol, wrapperCol } = formProps;
 
   // 1.如果是日期类控件，但值不是moment类型，清除值
   // 2.如果是级联控件，清除值
@@ -56,6 +59,8 @@ export default (prop: FormComProp) => {
     <Form.Item
       {...formItemProps}
       style={style}
+      wrapperCol={wrapperCol}
+      labelCol={labelCol}
       valuePropName={isCheck(componentKey) ? "checked" : "value"}
     >
       {React.cloneElement(getComponent(componentKey) || <></>, {

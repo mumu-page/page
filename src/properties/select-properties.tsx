@@ -1,29 +1,31 @@
-import React, { useRef } from "react";
-import { Button, Form, Radio } from "antd";
+import React, { useContext, useRef } from "react";
+import { Button, Form, Radio, Select } from "antd";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { CustomCollapse, IRefType, SelectModal } from "../components";
+import {
+  SET_CURRENT_DRAG_COMPONENT,
+  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+} from "../stores/action-type";
+import { Context } from "../stores/context";
 
 export default function () {
+  const { currentDragComponent, commonDispatch } = useContext(Context);
   const modalRef = useRef<IRefType>(null);
   const [form] = Form.useForm();
+  const { id } = currentDragComponent || {};
 
   const showModal = () => {
     const options = form.getFieldValue("options");
-    if (form.getFieldValue('options')) {
+    if (form.getFieldValue("options")) {
       modalRef.current?.setdataSource(options);
     }
     modalRef.current?.showModal();
-  };
-
-  const onValuesChange = (_: any, allValues: any) => {
-    console.log(allValues);
   };
 
   return (
     <Form
       {...FORM_PROPERTIES_OPTIONS}
       form={form}
-      onValuesChange={onValuesChange}
       initialValues={{
         size: "middle",
       }}
@@ -36,30 +38,6 @@ export default function () {
             </Button>
           </Form.Item>
         </CustomCollapse.Panel>
-        <CustomCollapse.Panel header="选择框" key="选择框">
-          <Form.Item label="大小" name="size">
-            <Radio.Group style={{ width: "100%" }}>
-              <Radio.Button
-                value="large"
-                style={{ width: "33.3%", textAlign: "center" }}
-              >
-                大
-              </Radio.Button>
-              <Radio.Button
-                value="middle"
-                style={{ width: "33.3%", textAlign: "center" }}
-              >
-                中
-              </Radio.Button>
-              <Radio.Button
-                value="small"
-                style={{ width: "33.3%", textAlign: "center" }}
-              >
-                小
-              </Radio.Button>
-            </Radio.Group>
-          </Form.Item>
-        </CustomCollapse.Panel>
       </CustomCollapse>
 
       <SelectModal
@@ -67,6 +45,22 @@ export default function () {
         onOk={(options: any) => {
           form.setFieldsValue({
             options,
+          });
+          commonDispatch({
+            type: SET_CURRENT_DRAG_COMPONENT,
+            payload: {
+              id,
+              componentProps: { options },
+            },
+          });
+          commonDispatch({
+            type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+            payload: {
+              id,
+              data: {
+                componentProps: { options },
+              },
+            },
           });
         }}
       />

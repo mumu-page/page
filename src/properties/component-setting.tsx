@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { getProperties } from "../constants";
 import { Context } from "../stores/context";
-import { CommonProperties, RowProperties, FormProperties } from ".";
+import { ColProperties, CommonProperties, FormItemProperties } from ".";
 import { Title } from "../components";
+import { Empty } from "antd";
 
 export default function () {
   const { componentList, currentDragComponent } = useContext(Context);
@@ -18,11 +19,14 @@ export default function () {
     </>
   );
 
-  return (
+  return has() ? (
     <>
-      {has() && TargetProperties}
-      {has() && <FormProperties />}
+      {TargetProperties}
+      <ColProperties />
+      <FormItemProperties />
       <CommonProperties />
     </>
+  ) : (
+    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="未选中控件" />
   );
 }

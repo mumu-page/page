@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useRef } from "react";
 import { Form } from "antd";
 import { useEffect } from "react";
 import { ComponentItem, ContextMenu } from "..";
@@ -18,11 +18,10 @@ import {
   DeleteOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import "./index.scss";
 import eventBus from "../../utils/eventBus";
 import { SHOW_SETTING_PANL } from "../../constants/events";
 import * as uuid from "uuid";
-import { type } from "os";
+import "./index.scss";
 
 interface EditorAreaProps extends commonDispatch<object> {
   componentList: FormComProp[];
@@ -177,21 +176,6 @@ export default function Container(props: EditorAreaProps) {
             style.height = `${height}px`;
           }
 
-          const colNum = rowProps.colNum;
-          if (!layout?.frame?.translate && colNum) {
-            style.width = `calc(100% / ${colNum})`;
-            // 兼容gutter
-            if (rowProps.gutter) {
-              style.width = `calc(100%/${colNum} - ${rowProps.gutter / 2}px)`;
-              // 如果是偶数则调整位置
-              if (index % 2) {
-                style.transform = `translate(${
-                  translate[0] + rowProps.gutter
-                }px, ${translate[1]}px)`;
-              }
-            }
-          }
-
           return (
             <div
               key={id}
@@ -225,6 +209,7 @@ export default function Container(props: EditorAreaProps) {
                 children={children}
                 colProps={colProps}
                 rowProps={rowProps}
+                formProps={formProps}
                 formItemProps={formItemProps}
                 componentProps={componentProps}
                 componentKey={componentKey}

@@ -1,4 +1,5 @@
 import { ComponentKeys, FormComProp } from "../stores/typings";
+import { isSelect } from "./utils";
 
 function parseProp(key: string, value: any, result = "") {
   if (!value) return "";
@@ -78,8 +79,16 @@ function createFormItem(
     colProps = {},
     layout = {},
   } = item;
-  const { rowProps = {} } = currentDragComponent;
-  const { colNum, gutter, align, justify, wrap, ...otherGlobalProps } = rowProps;
+  const { rowProps = {}, formProps = {} } = currentDragComponent;
+  const {
+    colNum,
+    gutter,
+    align,
+    justify,
+    wrap,
+    ...otherGlobalProps
+  } = rowProps;
+  const { labelCol, wrapperCol } = formProps;
   const { colNum: _colNum, ...otherColProps } = colProps;
   /**样式开始 */
   const { frame = { translate: [0, 0, 0] }, height, width } = layout;
@@ -105,11 +114,16 @@ function createFormItem(
   }
   /**样式结束 */
   const colPropsStr = generateProps({ ...otherColProps, ...otherGlobalProps });
-  const formItemPropsStr = generateProps(formItemProps);
+  const formItemPropsStr = generateProps({
+    ...formItemProps,
+    labelCol,
+    wrapperCol,
+  });
   const componentPropsStr = generateComProps(componentProps, componentKey);
+  const componentName = componentKey?.replace(/^.*\./, "");
   return `<Col${colPropsStr}>
            <Form.Item${formItemPropsStr} style={${JSON.stringify(style)}}>
-                <${componentKey?.replace(/^.*\./, "")}${componentPropsStr} />
+                <${componentName}${componentPropsStr}></${componentName}>
             </Form.Item>
         </Col>\n`;
 }

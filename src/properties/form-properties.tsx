@@ -1,49 +1,72 @@
-import React, { useContext, useEffect } from 'react'
-import { Collapse, Form, Input, InputNumber, Radio } from 'antd'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
+import React, { useCallback, useContext, useEffect } from "react";
+import { Collapse, Form, Input, InputNumber, Radio } from "antd";
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import {
   SET_CURRENT_DRAG_COMPONENT,
   UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-} from '../stores/action-type'
-import { Context } from '../stores/context'
-import { CaretRightOutlined } from '@ant-design/icons'
-import CheckboxField from '../components/FormFields/CheckboxField'
-import { decodeKey } from '../utils/utils'
-import { CustomCollapse, Title } from '../components'
+} from "../stores/action-type";
+import { Context } from "../stores/context";
+import CheckboxField from "../components/FormFields/CheckboxField";
+import { decodeKey, encodeKey } from "../utils/utils";
+import { CustomCollapse, Title } from "../components";
+import { debounce } from "lodash";
 
 export default function () {
-  const { currentDragComponent, commonDispatch } = useContext(Context)
-  const [form] = Form.useForm()
-  const { id, formProps, formItemProps = {} } = currentDragComponent || {}
+  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const [form] = Form.useForm();
+  const { id, formProps = {}, formItemProps = {} } = currentDragComponent || {};
 
-  const onValuesChange = (changedValues: any, allValues: any) => {
-    const newAllValues = decodeKey(allValues, ['form', 'formItem'])
-    commonDispatch({
-      type: SET_CURRENT_DRAG_COMPONENT,
-      payload: {
-        id,
-        formProps: newAllValues?.form,
-        formItemProps: newAllValues?.formItem,
-      },
-    })
-    commonDispatch({
-      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-      payload: {
-        id,
-        data: {
-          formItemProps: newAllValues?.formItem,
+  const onValuesChange = useCallback(
+    debounce((changedValues: any, allValues: any) => {
+      const newAllValues = decodeKey(allValues, ["form", "formItem"]);
+      const { wrapperCol, labelCol } = newAllValues.form;
+      if (typeof wrapperCol === "number") {
+        newAllValues.form.wrapperCol = { span: wrapperCol };
+      }
+      if (typeof labelCol === "number") {
+        newAllValues.form.labelCol = { span: labelCol };
+      }
+      commonDispatch({
+        type: SET_CURRENT_DRAG_COMPONENT,
+        payload: {
+          id,
+          formProps: newAllValues.form,
+          formItemProps: newAllValues.formItem,
         },
-      },
-    })
-  }
+      });
+      commonDispatch({
+        type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+        payload: {
+          id,
+          data: {
+            formItemProps: newAllValues.formItem,
+          },
+        },
+      });
+    }, 500),
+    []
+  );
 
   useEffect(() => {
-    form.resetFields()
-    form.setFieldsValue({
-      ...formProps,
-      ...formItemProps,
-    })
-  }, [])
+    const values = encodeKey(
+      {
+        key: "form",
+        data: formProps,
+      },
+      {
+        key: "formItem",
+        data: formItemProps,
+      }
+    );
+    if (typeof values['form.labelCol'] === 'object') {
+      values["form.labelCol"] = values["form.labelCol"].span
+    }
+    if (typeof values["form.wrapperCol"] === "object") {
+      values["form.wrapperCol"] = values["form.wrapperCol"].span;
+    }
+    form.resetFields();
+    form.setFieldsValue(values);
+  }, [currentDragComponent]);
 
   return (
     <Form
@@ -53,9 +76,23 @@ export default function () {
     >
       <Title text="表单" />
       <CustomCollapse defaultActiveKey={["表单"]}>
-        <CustomCollapse.Panel header="表单">
+        <CustomCollapse.Panel header="表单" key="表单">
           <Form.Item label="表单名" name="form.name">
             <Input />
+          </Form.Item>
+          <Form.Item
+            label="标签布局"
+            tooltip="label 标签布局，同 <Col> 组件"
+            name="form.labelCol"
+          >
+            <InputNumber min={0} max={24} style={{ width: "100%" }} />
+          </Form.Item>
+          <Form.Item
+            label="控件布局"
+            tooltip="需要为输入控件设置布局样式时，使用该属性，用法同 标签布局。"
+            name="form.wrapperCol"
+          >
+            <InputNumber min={0} max={24} style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item label="表单模型" name="form.initialValues">
             <Input />
@@ -84,34 +121,6 @@ export default function () {
           </Form.Item>
           <Form.Item label="" name="form.bordered" valuePropName="checked">
             <CheckboxField tooltipTitle="显示未选中组件边框" text="显示边框" />
-          </Form.Item>
-        </CustomCollapse.Panel>
-        <CustomCollapse.Panel header="表单项">
-          <Form.Item label="字段名" name="formItem.name">
-            <Input onPressEnter={(e) => {}} />
-          </Form.Item>
-          <Form.Item label="标题" name="formItem.label">
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="控件布局"
-            tooltip="需要为输入控件设置布局样式时，使用该属性，用法同 标签布局。"
-            name="formItem.wrapperCol"
-          >
-            <InputNumber min={0} max={24} style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item
-            label="标签布局"
-            tooltip="label 标签布局，同 <Col> 组件"
-            name="formItem.labelCol"
-          >
-            <InputNumber min={0} max={24} style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item label="标签对齐" name="formItem.labelAlign">
-            <Radio.Group>
-              <Radio.Button value="left">左对齐</Radio.Button>
-              <Radio.Button value="right">右对齐</Radio.Button>
-            </Radio.Group>
           </Form.Item>
         </CustomCollapse.Panel>
       </CustomCollapse>

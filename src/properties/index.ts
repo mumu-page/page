@@ -1,4 +1,5 @@
 import FormProperties from './form-properties'
+import FormItemProperties from './form-item-properties'
 import CommonProperties from './common-properties'
 import InputProperties from './input-properties'
 import TextAreaProperties from './textarea-properties'
@@ -18,6 +19,7 @@ import DateRangePickerProperties from "./date-range-picker-properties";
 import RateProperties from "./rate-properties";
 import UploadProperties from "./upload-properties";
 import RowProperties from "./row-properties";
+import ColProperties from "./col-properties";
 import ButtonProperties from "./button-properties";
 import PageProperties from "./page-properties";
 import ComponentSetting from "./component-setting";
@@ -26,6 +28,7 @@ import PageSetting from "./page-setting";
 
 export {
   FormProperties,
+  FormItemProperties,
   CommonProperties,
   InputProperties,
   TextAreaProperties,
@@ -45,6 +48,7 @@ export {
   RateProperties,
   UploadProperties,
   RowProperties,
+  ColProperties,
   ButtonProperties,
   PageProperties,
   ComponentSetting,

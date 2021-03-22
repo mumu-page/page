@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, memo, useCallback } from "react";
-import { Form, Input, InputNumber, Select } from "antd";
+import { Form, Input, InputNumber, Radio, Select } from "antd";
 import { Context } from "../stores/context";
 import {
   SET_CURRENT_DRAG_COMPONENT,
@@ -103,6 +103,9 @@ export default memo(function () {
     <>
       <Form
         {...FORM_PROPERTIES_OPTIONS}
+        initialValues={{
+          size: "middle",
+        }}
         form={form}
         onValuesChange={onValuesChange}
       >
@@ -159,6 +162,30 @@ export default memo(function () {
                 <Input />
               </Form.Item>
             )}
+          </CustomCollapse.Panel>
+          <CustomCollapse.Panel header="大小" key="大小">
+            <Form.Item label="大小" name="size">
+              <Radio.Group style={{ width: "100%" }}>
+                <Radio.Button
+                  value="large"
+                  style={{ width: "33.3%", textAlign: "center" }}
+                >
+                  大
+                </Radio.Button>
+                <Radio.Button
+                  value="middle"
+                  style={{ width: "33.3%", textAlign: "center" }}
+                >
+                  中
+                </Radio.Button>
+                <Radio.Button
+                  value="small"
+                  style={{ width: "33.3%", textAlign: "center" }}
+                >
+                  小
+                </Radio.Button>
+              </Radio.Group>
+            </Form.Item>
           </CustomCollapse.Panel>
         </CustomCollapse>
       </Form>

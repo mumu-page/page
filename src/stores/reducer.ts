@@ -46,6 +46,7 @@ export const commonReducer = produce(
             }
             if (item?.id === action.payload?.id) {
               item.rowProps = draft.currentDragComponent?.rowProps
+              item.formProps = draft.currentDragComponent?.formProps;
               draft.currentDragComponent = item
               break
             }

@@ -1,10 +1,11 @@
 import React, {  } from "react";
-import {  RowProperties } from ".";
+import {  FormProperties, RowProperties } from ".";
 
 export default function () {
   return (
     <>
       <RowProperties />
+      <FormProperties />
     </>
   );
 }
