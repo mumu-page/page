@@ -1,70 +1,70 @@
-import { ComponentKeys, FormComProp } from '../stores/typings'
+import { ComponentKeys, FormComProp } from "../stores/typings";
 
-function parseProp(key: string, value: any, result = '') {
-  if (!value) return ''
+function parseProp(key: string, value: any, result = "") {
+  if (!value) return "";
   try {
-    result = JSON.parse(value)
-    if (result !== null && ['object', 'number'].includes(typeof result)) {
-      result = ` ${key}={${value}}`
-    } else if (typeof result === 'boolean') {
+    result = JSON.parse(value);
+    if (result !== null && ["object", "number"].includes(typeof result)) {
+      result = ` ${key}={${value}}`;
+    } else if (typeof result === "boolean") {
       if (result === true) {
-        result = ` ${key}`
+        result = ` ${key}`;
       } else {
-        result = ` ${key}={${value}}`
+        result = ` ${key}={${value}}`;
       }
-    } else if (typeof result === 'string') {
-      result = ` ${key}=${value}`
+    } else if (typeof result === "string") {
+      result = ` ${key}=${value}`;
     }
   } catch (e) {
-    if (value?.indexOf('<') !== -1) {
-      result = ` ${key}={${value}}`
+    if (value?.indexOf("<") !== -1) {
+      result = ` ${key}={${value}}`;
     } else {
-      result = ''
+      result = "";
     }
   }
-  return result
+  return result;
 }
 
-function generateProps(props: { [key: string]: any }, result = '') {
+function generateProps(props: { [key: string]: any }, result = "") {
   Object.keys(props).forEach((key) => {
-    const value = JSON.stringify(props[key])
-    if (typeof value !== 'undefined') {
-      result += `${parseProp(key, value)}`
+    const value = JSON.stringify(props[key]);
+    if (typeof value != "undefined" && !["null", "undefined"].includes(value)) {
+      result += `${parseProp(key, value)}`;
     }
-  })
-  return result
+  });
+  return result;
 }
 
 function generateComProps(
   componentProps: { [key: string]: any },
   componentKey: ComponentKeys,
-  result = ''
+  result = ""
 ) {
-  const { defaultValue, ...componentOtherProps } = componentProps
-  const componentPropsKey = Object.keys(componentOtherProps)
+  const { defaultValue, ...componentOtherProps } = componentProps;
+  const componentPropsKey = Object.keys(componentOtherProps);
   // 处理输入框前后置图标
-  if (['Input'].includes(componentKey)) {
-    if (componentPropsKey.includes('prefix')) {
-      const IconComponent = componentOtherProps['prefix'] || 'React.Fragment'
-      componentOtherProps['prefix'] = `<${IconComponent} />`
+  if (["Input"].includes(componentKey)) {
+    if (componentPropsKey.includes("prefix")) {
+      const IconComponent = componentOtherProps["prefix"] || "React.Fragment";
+      componentOtherProps["prefix"] = `<${IconComponent} />`;
     }
-    if (componentPropsKey.includes('suffix')) {
-      const IconComponent = componentOtherProps['suffix'] || 'React.Fragment'
-      componentOtherProps['suffix'] = `<${IconComponent} />`
+    if (componentPropsKey.includes("suffix")) {
+      const IconComponent = componentOtherProps["suffix"] || "React.Fragment";
+      componentOtherProps["suffix"] = `<${IconComponent} />`;
     }
   }
   // 控件参数
   componentPropsKey.forEach((key) => {
-    let value = JSON.stringify(componentOtherProps[key])
+    let value = JSON.stringify(componentOtherProps[key]);
     // 处理输入框前后缀标签
-    if (['prefix', 'suffix'].includes(key)) {
-      value = value?.replace(/"/g, '')
+    if (["prefix", "suffix"].includes(key)) {
+      value = value?.replace(/"/g, "");
     }
-    if (typeof value !== 'undefined') {
-      result += `${parseProp(key, value)}`
+    if (typeof value !== "undefined") {
+      result += `${parseProp(key, value)}`;
     }
-  })
-  return result
+  });
+  return result;
 }
 
 function createFormItem(
@@ -75,65 +75,69 @@ function createFormItem(
     formItemProps,
     componentProps,
     componentKey,
-    colProps,
+    colProps = {},
     layout = {},
-  } = item
-  const { rowProps = {} } = currentDragComponent
+  } = item;
+  const { rowProps = {} } = currentDragComponent;
+  const { colNum, gutter, align, justify, wrap, ...otherGlobalProps } = rowProps;
+  const { colNum: _colNum, ...otherColProps } = colProps;
   /**样式开始 */
-  const { frame = { translate: [0, 0, 0] }, height, width } = layout
-  const { translate } = frame
-  const style = {} as any
+  const { frame = { translate: [0, 0, 0] }, height, width } = layout;
+  const { translate } = frame;
+  const style = {} as any;
   // 排除不需要添加transform的样式
   if (
     translate[0] !== rowProps.gutter &&
-    (translate[0] !== 0 && translate[1] !== 0)
+    translate[0] !== 0 &&
+    translate[1] !== 0
   ) {
-    let translateX = translate[0]
+    let translateX = translate[0];
     if (rowProps.gutter > 0 && translate[0] !== 0) {
-      translateX = translate[0] - rowProps.gutter
+      translateX = translate[0] - rowProps.gutter;
     }
-    style.transform = `translate(${translateX}px, ${translate[1]}px)`
+    style.transform = `translate(${translateX}px, ${translate[1]}px)`;
   }
   if (width) {
-    style.width = `${width}px`
+    style.width = `${width}px`;
   }
   if (height) {
-    style.height = `${height}px`
+    style.height = `${height}px`;
   }
   /**样式结束 */
-  const colPropsStr = generateProps({ ...colProps, ...rowProps })
-  const formItemPropsStr = generateProps(formItemProps)
-  const componentPropsStr = generateComProps(componentProps, componentKey)
+  const colPropsStr = generateProps({ ...otherColProps, ...otherGlobalProps });
+  const formItemPropsStr = generateProps(formItemProps);
+  const componentPropsStr = generateComProps(componentProps, componentKey);
   return `<Col${colPropsStr}>
            <Form.Item${formItemPropsStr} style={${JSON.stringify(style)}}>
-                <${componentKey?.replace(/^.*\./, '')}${componentPropsStr} />
+                <${componentKey?.replace(/^.*\./, "")}${componentPropsStr} />
             </Form.Item>
-        </Col>\n`
+        </Col>\n`;
 }
 
 function generate(
   componentList: FormComProp[],
   currentDragComponent: FormComProp
 ) {
-  let ret = ''
-  const initialValues = {} as any
+  let ret = "";
+  const initialValues = {} as any;
   componentList.forEach((item) => {
-    ret += createFormItem(item, currentDragComponent)
+    ret += createFormItem(item, currentDragComponent);
     if (item.componentProps?.defaultValue && item.formItemProps?.name) {
-      initialValues[item.formItemProps.name] = item.componentProps?.defaultValue
+      initialValues[item.formItemProps.name] =
+        item.componentProps?.defaultValue;
     }
-  })
-  const { rowProps = {} } = currentDragComponent
-  const { gutter, wrap } = rowProps
-  const rowPropsStr = generateProps({ gutter, wrap })
+  });
+  const { rowProps = {} } = currentDragComponent;
+  const { gutter, align, justify, wrap } = rowProps;
+  const rowPropsStr = generateProps({ gutter, align, justify, wrap });
   const initialValuesStr = Object.keys(initialValues).length
     ? ` initialValues={${JSON.stringify(initialValues)}}`
-    : ''
+    : "";
   return `<Form${initialValuesStr}>
         <Row${rowPropsStr}>
           ${ret}
         </Row>
-    </Form>`
+    </Form>`;
 }
 
 /**
@@ -144,13 +148,13 @@ function getAllComponentKey(
   keys = [] as string[]
 ) {
   componentList?.forEach((item) => {
-    keys.push(item.componentKey)
+    keys.push(item.componentKey);
     if (item?.children) {
-      getAllComponentKey(item?.children, keys)
+      getAllComponentKey(item?.children, keys);
     }
-  })
-  keys.push('Form')
-  return keys
+  });
+  keys.push("Form");
+  return keys;
 }
 
 /**
@@ -158,40 +162,40 @@ function getAllComponentKey(
  * TODO: 生成ICON引用代码
  */
 function generateImport(componentList: FormComProp[]) {
-  const keys = getAllComponentKey(componentList, [])
-  const childImport = {} as any
+  const keys = getAllComponentKey(componentList, []);
+  const childImport = {} as any;
   const parentImport = Array.from(
     new Set(
       keys.map((item) => {
-        const [parent, child] = item.split('.')
+        const [parent, child] = item.split(".");
 
         if (child) {
           if (childImport[parent]) {
-            childImport[parent].push(child)
+            childImport[parent].push(child);
           } else {
-            childImport[parent] = [child]
+            childImport[parent] = [child];
           }
         }
-        return parent
+        return parent;
       })
     )
-  )
-  parentImport.push('Row')
-  parentImport.push('Col')
+  );
+  parentImport.push("Row");
+  parentImport.push("Col");
 
-  const importReact = `import React from "react"\n`
-  const importAntd = `import {${[parentImport]}} from 'antd'\n`
-  let importAntdChild = ''
+  const importReact = `import React from "react"\n`;
+  const importAntd = `import {${[parentImport]}} from 'antd'\n`;
+  let importAntdChild = "";
   Object.keys(childImport).forEach((key) => {
-    const item = childImport[key]
+    const item = childImport[key];
     if (item.length) {
-      importAntdChild += `const {${item}} = ${key}\n`
+      importAntdChild += `const {${item}} = ${key}\n`;
     }
-  })
+  });
   if (importAntdChild) {
-    return importReact + importAntd + '\n' + importAntdChild
+    return importReact + importAntd + "\n" + importAntdChild;
   }
-  return importReact + importAntd
+  return importReact + importAntd;
 }
 
-export { generate, generateImport }
+export { generate, generateImport };

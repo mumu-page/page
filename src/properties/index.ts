@@ -19,7 +19,9 @@ import RateProperties from "./rate-properties";
 import UploadProperties from "./upload-properties";
 import RowProperties from "./row-properties";
 import ButtonProperties from "./button-properties";
-import Properties from "./properties";
+import ComponentSetting from "./component-setting";
+import LayoutSetting from "./layout-setting";
+import PageSetting from "./page-setting";
 
 export {
   FormProperties,
@@ -43,5 +45,7 @@ export {
   UploadProperties,
   RowProperties,
   ButtonProperties,
-  Properties,
+  ComponentSetting,
+  LayoutSetting,
+  PageSetting,
 };

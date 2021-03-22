@@ -21,7 +21,6 @@ export default function () {
   return (
     <>
       {has() && TargetProperties}
-      <RowProperties />
       {has() && <FormProperties />}
       <CommonProperties />
     </>

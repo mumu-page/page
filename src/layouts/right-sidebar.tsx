@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs } from "antd";
-import { Properties } from "../properties";
+import { ComponentSetting, LayoutSetting, PageSetting } from "../properties";
 
 const { TabPane } = Tabs;
 export default function () {
@@ -8,7 +8,17 @@ export default function () {
     <Tabs defaultActiveKey="1" centered>
       <TabPane tab="属性设置" key="1">
         <div className="form-properties">
-          <Properties />
+          <ComponentSetting />
+        </div>
+      </TabPane>
+      <TabPane tab="布局设置" key="2">
+        <div className="form-properties">
+          <LayoutSetting />
+        </div>
+      </TabPane>
+      <TabPane tab="页面设置" key="3">
+        <div className="form-properties">
+          <PageSetting />
         </div>
       </TabPane>
     </Tabs>
