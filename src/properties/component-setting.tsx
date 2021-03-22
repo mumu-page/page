@@ -8,7 +8,7 @@ export default function () {
   const { componentList, currentDragComponent } = useContext(Context);
 
   const has = () => {
-    return componentList.length && currentDragComponent?.id;
+    return componentList.length > 0 && currentDragComponent?.id;
   };
 
   const TargetProperties = (
