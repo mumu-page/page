@@ -1,10 +1,10 @@
 import React from "react";
-import { RowProperties } from ".";
+import { PageProperties } from ".";
 
 export default function () {
   return (
     <>
-      <RowProperties />
+      <PageProperties />
     </>
   );
 }

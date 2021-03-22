@@ -94,7 +94,7 @@ export default (props: RightActionType) => {
         icon={<PlayCircleOutlined style={handleColor("run")} />}
         type={type === "run" ? "primary" : "text"}
         onClick={() => {
-          handleType("run");
+          // handleType("run");
           run();
         }}
       />
