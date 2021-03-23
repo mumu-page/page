@@ -9,7 +9,7 @@ import {
 } from "../stores/action-type";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import CheckboxField from "../components/FormFields/CheckboxField";
-import { decodeKey, encodeKey, findTarget } from "../utils/utils";
+import { decodeKey, encodeKey, findTarget, refreshTarget } from "../utils/utils";
 import { CustomCollapse, Title } from "../components";
 import { debounce, merge } from "lodash";
 
@@ -99,20 +99,7 @@ export default function () {
         },
       });
       // 重新获取当前选中元素
-      requestAnimationFrame(() => {
-        commonDispatch({
-          type: SET_MOVEABLE_OPTIONS,
-          payload: {
-            target: null, // immner会认为targer是同一个元素，所以不更新
-          },
-        });
-        commonDispatch({
-          type: SET_MOVEABLE_OPTIONS,
-          payload: {
-            target,
-          },
-        });
-      });
+      refreshTarget(target, commonDispatch);
     }, 500),
     [currentDragComponent.id, mode]
   );
