@@ -25,7 +25,7 @@ import "./index.scss";
 
 interface EditorAreaProps extends ICommonDispatch<object> {
   componentList: IFormComProp[];
-  currentDragComponent: IFormComProp;
+  target: IFormComProp;
 }
 
 enum HANDLE_TYPE {
@@ -54,7 +54,7 @@ const options = [
 ];
 
 export default function Container(props: EditorAreaProps) {
-  const { currentDragComponent, componentList, commonDispatch } = props;
+  const { target, componentList, commonDispatch } = props;
   const [form] = Form.useForm();
   const contenxtMenu = useRef(null);
   const {
@@ -63,7 +63,7 @@ export default function Container(props: EditorAreaProps) {
     formProps = {},
     colProps = {},
     rowProps = {},
-  } = currentDragComponent;
+  } = target;
 
   const setMoveableOption = (id: string | number) => {
     const { elementGuidelines, target, frame } = findTarget(id, componentList);
@@ -82,7 +82,7 @@ export default function Container(props: EditorAreaProps) {
       commonDispatch({
         type: DEL_COMPONENT_LIST,
         payload: {
-          id: currentDragComponent.id,
+          id: target.id,
         },
       });
       commonDispatch({
@@ -103,7 +103,7 @@ export default function Container(props: EditorAreaProps) {
       commonDispatch({
         type: COPY_COMPONENT_LIST,
         payload: {
-          id: currentDragComponent.id,
+          id: target.id,
           newId,
         },
       });
@@ -114,14 +114,14 @@ export default function Container(props: EditorAreaProps) {
   };
 
   useEffect(() => {
-    setMoveableOption(currentDragComponent.id);
+    setMoveableOption(target.id);
   }, []);
 
   useEffect(() => {
     form.setFieldsValue({
       [formItemProps.name]: componentProps?.defaultValue,
     });
-  }, [currentDragComponent, form]);
+  }, [target, form]);
 
   useEffect(() => {
     const _initialValues = {} as any;
