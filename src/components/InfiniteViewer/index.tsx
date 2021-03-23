@@ -4,6 +4,7 @@ import Ruler from "./Ruler";
 import "./index.scss";
 import eventBus from "../../utils/eventBus";
 import { SCROLL_CENTER } from "../../constants/events";
+import { VIEWPORT_LAYOUT } from "../../constants/constants";
 
 /**
  * 让他能够滚动
@@ -74,6 +75,7 @@ export default (props: any) => {
       >
         <div
           className="viewport"
+          style={VIEWPORT_LAYOUT}
           onContextMenu={(e) => {
             e.preventDefault();
           }}

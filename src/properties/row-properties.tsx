@@ -61,16 +61,21 @@ function hasKey(changedValues: { [key: string]: any }, keys: string[]) {
  */
 export default function () {
   const [form] = Form.useForm();
-  const { currentDragComponent, componentList, commonDispatch } = useContext(
-    Context
-  );
+  const {
+    currentDragComponent,
+    moveableOptions,
+    commonDispatch,
+  } = useContext(Context);
   const { id, colProps = {}, rowProps = {} } = currentDragComponent || {};
+  const { target } = moveableOptions || {};
   const [mode, setMode] = useState<"专业模式" | "简洁模式">("简洁模式");
 
   const onValuesChange = useCallback(
     debounce((changedValues: any, allValues: any) => {
       const newAllValues = decodeKey(allValues, ["all", "single"]);
       if (hasKey(changedValues, global) && mode === "简洁模式") {
+        console.log("enter");
+
         newAllValues.all = merge(
           newAllValues.all,
           genLayout(newAllValues.all?.colNum)
@@ -95,10 +100,6 @@ export default function () {
       });
       // 重新获取当前选中元素
       requestAnimationFrame(() => {
-        const { elementGuidelines, target, frame } = findTarget(
-          currentDragComponent.id,
-          componentList
-        );
         commonDispatch({
           type: SET_MOVEABLE_OPTIONS,
           payload: {
@@ -108,14 +109,12 @@ export default function () {
         commonDispatch({
           type: SET_MOVEABLE_OPTIONS,
           payload: {
-            elementGuidelines,
             target,
-            frame,
           },
         });
       });
     }, 500),
-    [currentDragComponent.id]
+    [currentDragComponent.id, mode]
   );
 
   useEffect(() => {

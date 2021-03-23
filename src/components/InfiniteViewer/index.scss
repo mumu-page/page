@@ -38,7 +38,7 @@
   cursor: pointer;
 }
 .viewport {
-  width: 800px;
-  height: 1000px;
-  border: 1px dashed var(--main-border-color2);
+  border-width: 1px;
+  border-color: var(--main-border-color2);
+  border-style: solid solid dashed;
 }
