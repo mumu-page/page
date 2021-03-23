@@ -13,7 +13,7 @@ import { BtnTypes } from ".";
 import { Preview, PreviewInstanceProps } from "../../components";
 import { SCROLL_CENTER, SHOW_SETTING_PANL } from "../../constants/events";
 import {
-  DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG,
+  DELETE_ALL_COMPONENT_LIST_AND_TARGET,
   SET_MOVEABLE_OPTIONS,
 } from "../../stores/action-type";
 import { Context } from "../../stores/context";
@@ -27,7 +27,7 @@ interface RightActionType {
 export default (props: RightActionType) => {
   const { type, handleType } = props;
   const preview = useRef<PreviewInstanceProps>(null);
-  const { currentDragComponent ,componentList, commonDispatch } = useContext(Context);
+  const { target: currentDragComponent ,componentList, commonDispatch } = useContext(Context);
 
   const handleColor = (val: BtnTypes) => {
     return {
@@ -44,7 +44,7 @@ export default (props: RightActionType) => {
       okText: "确定",
       cancelText: "取消",
       onOk() {
-        commonDispatch({ type: DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG });
+        commonDispatch({ type: DELETE_ALL_COMPONENT_LIST_AND_TARGET });
         commonDispatch({
           type: SET_MOVEABLE_OPTIONS,
           payload: {

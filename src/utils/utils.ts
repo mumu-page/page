@@ -19,7 +19,7 @@ import {
   Form,
 } from "antd";
 import { ICONS } from "../constants";
-import { FormComProp } from "../stores/typings";
+import { IFormComProp } from "../stores/typings";
 import { Target_ClassName } from "../constants/constants";
 import { SET_MOVEABLE_OPTIONS } from "../stores/action-type";
 
@@ -190,7 +190,7 @@ export function encodeKey(
  */
 export function findTarget(
   id: string | number | undefined,
-  list: FormComProp[],
+  list: IFormComProp[],
   selectors = `.${Target_ClassName}`
 ) {
   let elementGuidelines = [].slice.call(

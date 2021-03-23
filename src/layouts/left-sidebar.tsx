@@ -3,7 +3,7 @@ import { Button, Col, Row } from "antd";
 import { IconFont, options } from "../constants";
 import { OptionGroup, OptionItem } from "../typings/option";
 import { hasNotPlaceholder, isColComponent, isSelect } from "../utils/utils";
-import { FormComProp } from "../stores/typings";
+import { IFormComProp } from "../stores/typings";
 import { Context } from "../stores/context";
 import {
   PUT_COMPONENT_LIST,
@@ -17,7 +17,7 @@ const getNewOptions = (data: OptionGroup[]) => {
       children: item?.children?.map((cItem) => {
         const { value, label, icon } = cItem || {};
         const id = shortid();
-        const ret: FormComProp & OptionItem = {
+        const ret: IFormComProp & OptionItem = {
           value,
           label,
           icon,

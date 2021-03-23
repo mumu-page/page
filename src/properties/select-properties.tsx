@@ -3,13 +3,13 @@ import { Button, Form, Radio, Select } from "antd";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { CustomCollapse, IRefType, SelectModal } from "../components";
 import {
-  SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  SET_TARGET,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
 } from "../stores/action-type";
 import { Context } from "../stores/context";
 
 export default function () {
-  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { target: currentDragComponent, commonDispatch } = useContext(Context);
   const modalRef = useRef<IRefType>(null);
   const [form] = Form.useForm();
   const { id } = currentDragComponent || {};
@@ -47,14 +47,14 @@ export default function () {
             options,
           });
           commonDispatch({
-            type: SET_CURRENT_DRAG_COMPONENT,
+            type: SET_TARGET,
             payload: {
               id,
               componentProps: { options },
             },
           });
           commonDispatch({
-            type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+            type: UPDATE_COMPONENT_LIST_BY_TARGET,
             payload: {
               id,
               data: {

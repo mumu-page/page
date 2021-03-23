@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import Moveable from "react-moveable";
 import {
-  SET_CURRENT_DRAG_COMPONENT,
+  SET_TARGET,
   SET_MOVEABLE_OPTIONS,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
 } from "../../stores/action-type";
 import { Context } from "../../stores/context";
 
@@ -12,7 +12,7 @@ const layout = {
 } as any;
 export default () => {
   const {
-    currentDragComponent,
+    target: currentDragComponent,
     moveableOptions = {},
     commonDispatch,
   } = useContext(Context);
@@ -104,7 +104,7 @@ export default () => {
         // console.log('onDragEnd', target, isDrag, clientX, clientY)
         const { frame } = layout;
         commonDispatch({
-          type: SET_CURRENT_DRAG_COMPONENT,
+          type: SET_TARGET,
           payload: {
             layout: {
               frame,
@@ -114,7 +114,7 @@ export default () => {
           },
         });
         commonDispatch({
-          type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+          type: UPDATE_COMPONENT_LIST_BY_TARGET,
           payload: {
             data: {
               layout: {
@@ -144,7 +144,7 @@ export default () => {
         if (lastEvent) {
           const { frame, width, height } = layout;
           commonDispatch({
-            type: SET_CURRENT_DRAG_COMPONENT,
+            type: SET_TARGET,
             payload: {
               layout: {
                 frame,
@@ -154,7 +154,7 @@ export default () => {
             },
           });
           commonDispatch({
-            type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+            type: UPDATE_COMPONENT_LIST_BY_TARGET,
             payload: {
               data: {
                 layout: {

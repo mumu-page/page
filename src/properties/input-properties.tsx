@@ -16,8 +16,8 @@ import {
 } from "antd";
 import { Context } from "../stores/context";
 import {
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-  SET_CURRENT_DRAG_COMPONENT,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  SET_TARGET,
 } from "../stores/action-type";
 import { SelectOutlined } from "@ant-design/icons";
 import {
@@ -31,7 +31,7 @@ import { debounce } from "lodash";
 export default () => {
   const [form] = Form.useForm();
   const iconModal = useRef<IconModalInstanceProp>(null);
-  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { target: currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {} } = currentDragComponent || {};
   const [iconType, setIconType] = useState<"prefix" | "suffix">("prefix");
 
@@ -39,14 +39,14 @@ export default () => {
     debounce((changedValues: any, allValues: any) => {
       console.log(allValues);
       commonDispatch({
-        type: SET_CURRENT_DRAG_COMPONENT,
+        type: SET_TARGET,
         payload: {
           id,
           componentProps: allValues,
         },
       });
       commonDispatch({
-        type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+        type: UPDATE_COMPONENT_LIST_BY_TARGET,
         payload: {
           id,
           data: {
@@ -70,7 +70,7 @@ export default () => {
 
   const onOk = (iconKey: string, Icon: React.ReactElement) => {
     commonDispatch({
-      type: SET_CURRENT_DRAG_COMPONENT,
+      type: SET_TARGET,
       payload: {
         id,
         componentProps: {
@@ -79,7 +79,7 @@ export default () => {
       },
     });
     commonDispatch({
-      type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+      type: UPDATE_COMPONENT_LIST_BY_TARGET,
       payload: {
         id,
         data: {

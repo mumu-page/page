@@ -2,8 +2,8 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { Form, Input, InputNumber, Radio } from "antd";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import {
-  SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  SET_TARGET,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
 } from "../stores/action-type";
 import { Context } from "../stores/context";
 import { decodeKey, encodeKey } from "../utils/utils";
@@ -11,7 +11,7 @@ import { CustomCollapse, Title } from "../components";
 import { debounce } from "lodash";
 
 export default function () {
-  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { target: currentDragComponent, commonDispatch } = useContext(Context);
   const [form] = Form.useForm();
   const { id, formProps = {}, formItemProps = {} } = currentDragComponent || {};
 
@@ -19,7 +19,7 @@ export default function () {
     debounce((_changedValues: any, allValues: any) => {
       const newAllValues = decodeKey(allValues, ["form", "formItem"]);
       commonDispatch({
-        type: SET_CURRENT_DRAG_COMPONENT,
+        type: SET_TARGET,
         payload: {
           id,
           formProps: newAllValues?.form,
@@ -27,7 +27,7 @@ export default function () {
         },
       });
       commonDispatch({
-        type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+        type: UPDATE_COMPONENT_LIST_BY_TARGET,
         payload: {
           id,
           data: {

@@ -1,24 +1,24 @@
 import {
-  SET_CURRENT_DRAG_COMPONENT,
+  SET_TARGET,
   SET_COMPONENT_LIST,
   DEL_COMPONENT_LIST,
   COPY_COMPONENT_LIST,
   INSERT_COMPONENT_LIST,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
-  UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG,
-  SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
-  DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  UPDATE_COMPONENT_LIST_AND_TARGET,
+  SET_TARGET_BY_COMPONENT_LIST,
+  DELETE_ALL_COMPONENT_LIST_AND_TARGET,
   UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
   PUT_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
-  DELETE_CURRENT_DRAG_COMPONENT,
+  DELETE_TARGET,
   RESET_COMPONENT_LAYOUT,
-} from './action-type'
-import { CommonState, FormComProp } from './typings'
+} from '../action-type'
+import { ICommonState, IFormComProp } from '../typings'
 import { merge, cloneDeep } from 'lodash'
 import produce from 'immer'
 import * as uuid from 'uuid'
-import { INITAL_STATE } from './context'
+import { INITAL_STATE } from '../context'
 
 /**
  * 公共
@@ -26,28 +26,28 @@ import { INITAL_STATE } from './context'
  * @param action
  */
 export const commonReducer = produce(
-  (draft: CommonState, action: { type: string; payload?: any }) => {
+  (draft: ICommonState, action: { type: string; payload?: any }) => {
     const strategy: { [key: string]: () => void } = {
-      [SET_CURRENT_DRAG_COMPONENT]: () => {
-        draft.currentDragComponent = merge(
-          cloneDeep(draft.currentDragComponent),
+      [SET_TARGET]: () => {
+        draft.target = merge(
+          cloneDeep(draft.target),
           cloneDeep(action.payload)
         )
       },
-      [DELETE_CURRENT_DRAG_COMPONENT]: () => {
-        draft.currentDragComponent = INITAL_STATE.currentDragComponent
+      [DELETE_TARGET]: () => {
+        draft.target = INITAL_STATE.target
       },
-      [SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST]: () => {
-        const findSelectedItem = (data: FormComProp[]) => {
+      [SET_TARGET_BY_COMPONENT_LIST]: () => {
+        const findSelectedItem = (data: IFormComProp[]) => {
           for (var i = 0; i < data.length; i++) {
             const item = data[i]
             if (item?.children?.length) {
               findSelectedItem(item?.children)
             }
             if (item?.id === action.payload?.id) {
-              item.rowProps = draft.currentDragComponent?.rowProps
-              item.formProps = draft.currentDragComponent?.formProps;
-              draft.currentDragComponent = item
+              item.rowProps = draft.target?.rowProps
+              item.formProps = draft.target?.formProps;
+              draft.target = item
               break
             }
           }
@@ -55,9 +55,9 @@ export const commonReducer = produce(
         findSelectedItem(draft.componentList)
       },
       // 清空控件列表和当前拖拽控件数据
-      [DELETE_ALL_COMPONENT_LIST_AND_CURRENT_DRAG]: () => {
+      [DELETE_ALL_COMPONENT_LIST_AND_TARGET]: () => {
         draft.componentList = []
-        draft.currentDragComponent = {
+        draft.target = {
           id: '',
           componentKey: '',
           formItemProps: {},
@@ -91,10 +91,10 @@ export const commonReducer = produce(
         })
       },
       [DEL_COMPONENT_LIST]: () => {
-        const findDelItem = (data: FormComProp[]) => {
+        const findDelItem = (data: IFormComProp[]) => {
           for (let i = 0; i < data?.length; i++) {
             if (data[i]?.children) {
-              findDelItem(draft.componentList[i].children as FormComProp[])
+              findDelItem(draft.componentList[i].children as IFormComProp[])
             }
             if (data[i].id === action.payload?.id) {
               data.splice(i, 1)
@@ -105,9 +105,9 @@ export const commonReducer = produce(
         findDelItem(draft?.componentList)
       },
       [COPY_COMPONENT_LIST]: () => {
-        let newItem = {} as FormComProp
+        let newItem = {} as IFormComProp
         const { id, newId = uuid.v4() } = action?.payload || {}
-        const findCopyItem = (data: FormComProp[]) => {
+        const findCopyItem = (data: IFormComProp[]) => {
           data?.forEach((item, index) => {
             if (item?.children) {
               findCopyItem(item?.children)
@@ -118,7 +118,7 @@ export const commonReducer = produce(
               newItem.key = newId
               newItem.formItemProps.name = newId
               data.push(newItem)
-              draft.currentDragComponent = newItem
+              draft.target = newItem
             }
           })
         }
@@ -128,11 +128,11 @@ export const commonReducer = produce(
         const { index, data } = action.payload
         draft.componentList.splice(index, 0, data)
       },
-      [UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG]: () => {
+      [UPDATE_COMPONENT_LIST_BY_TARGET]: () => {
         const { data = {} } = action.payload || {}
-        const findCurrent = (coms: FormComProp[]) => {
+        const findCurrent = (coms: IFormComProp[]) => {
           coms?.forEach((item, index) => {
-            if (item.id === draft.currentDragComponent?.id) {
+            if (item.id === draft.target?.id) {
               item = merge(item, data)
             }
             if (item?.children) {
@@ -143,10 +143,10 @@ export const commonReducer = produce(
         findCurrent(draft?.componentList)
       },
       // 同时更新当前选中控件和设计区控件列表
-      [UPDATE_COMPONENT_LIST_AND_CURRENT_DRAG]: () => {
+      [UPDATE_COMPONENT_LIST_AND_TARGET]: () => {
         const { componentKey, newComponentProps } = action.payload || {}
         const componentList = draft?.componentList?.map((item) => {
-          if (item.id === draft.currentDragComponent?.id) {
+          if (item.id === draft.target?.id) {
             item.componentKey = componentKey
             item.componentProps = {
               ...item.componentProps,
@@ -155,8 +155,8 @@ export const commonReducer = produce(
           }
           return item
         })
-        draft.currentDragComponent.componentKey = componentKey
-        draft.currentDragComponent.componentProps = newComponentProps
+        draft.target.componentKey = componentKey
+        draft.target.componentProps = newComponentProps
         draft.componentList = componentList
       },
       [SET_MOVEABLE_OPTIONS]: () => {
@@ -200,5 +200,4 @@ export const commonReducer = produce(
       strategy[action.type]()
     }
   },
-  INITAL_STATE
 )

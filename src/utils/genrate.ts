@@ -1,4 +1,4 @@
-import { ComponentKeys, FormComProp } from "../stores/typings";
+import { IComponentKeys, IFormComProp } from "../stores/typings";
 import { isSelect } from "./utils";
 
 function parseProp(key: string, value: any, result = "") {
@@ -38,7 +38,7 @@ function generateProps(props: { [key: string]: any }, result = "") {
 
 function generateComProps(
   componentProps: { [key: string]: any },
-  componentKey: ComponentKeys,
+  componentKey: IComponentKeys,
   result = ""
 ) {
   const { defaultValue, ...componentOtherProps } = componentProps;
@@ -69,8 +69,8 @@ function generateComProps(
 }
 
 function createFormItem(
-  item: FormComProp,
-  currentDragComponent: FormComProp
+  item: IFormComProp,
+  currentDragComponent: IFormComProp
 ): string {
   const {
     formItemProps,
@@ -129,8 +129,8 @@ function createFormItem(
 }
 
 function generate(
-  componentList: FormComProp[],
-  currentDragComponent: FormComProp
+  componentList: IFormComProp[],
+  currentDragComponent: IFormComProp
 ) {
   let ret = "";
   const initialValues = {} as any;
@@ -158,7 +158,7 @@ function generate(
  * 寻找所有使用到的组件Key
  */
 function getAllComponentKey(
-  componentList: FormComProp[],
+  componentList: IFormComProp[],
   keys = [] as string[]
 ) {
   componentList?.forEach((item) => {
@@ -175,7 +175,7 @@ function getAllComponentKey(
  * 生成引用代码
  * TODO: 生成ICON引用代码
  */
-function generateImport(componentList: FormComProp[]) {
+function generateImport(componentList: IFormComProp[]) {
   const keys = getAllComponentKey(componentList, []);
   const childImport = {} as any;
   const parentImport = Array.from(

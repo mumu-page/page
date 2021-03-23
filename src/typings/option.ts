@@ -1,4 +1,4 @@
-import { ComponentKeys } from "../stores/typings";
+import { IComponentKeys } from "../stores/typings";
 
 export interface OptionGroup {
     label: string;
@@ -11,6 +11,6 @@ export interface OptionGroup {
 export interface OptionItem {
     label: string;
     key: string;
-    value: ComponentKeys;
+    value: IComponentKeys;
     icon: string;
 }

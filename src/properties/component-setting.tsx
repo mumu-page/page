@@ -6,7 +6,7 @@ import { Title } from "../components";
 import { Empty } from "antd";
 
 export default function () {
-  const { componentList, currentDragComponent } = useContext(Context);
+  const { componentList, target: currentDragComponent } = useContext(Context);
 
   const has = () => {
     return componentList.length > 0 && currentDragComponent?.id;

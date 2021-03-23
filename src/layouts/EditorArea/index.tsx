@@ -4,7 +4,7 @@ import { ComponentList } from "../../components";
 import "./index.scss";
 
 export default () => {
-  const { currentDragComponent, componentList, commonDispatch } = useContext(
+  const { target: currentDragComponent, componentList, commonDispatch } = useContext(
     Context
   );
   return (

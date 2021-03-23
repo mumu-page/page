@@ -2,13 +2,13 @@ import React, { useEffect, useContext, memo, useCallback } from "react";
 import { Form, Input, InputNumber, Radio, Select } from "antd";
 import { Context } from "../stores/context";
 import {
-  SET_CURRENT_DRAG_COMPONENT,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  SET_TARGET,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
 } from "../stores/action-type";
 import { isDatePickerRange } from "../utils/utils";
 import { options } from "../constants";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
-import { ComponentKeys } from "../stores/typings";
+import { IComponentKeys } from "../stores/typings";
 import CheckboxField from "../components/FormFields/CheckboxField";
 import { CustomCollapse, Title } from "../components";
 import { debounce } from "lodash";
@@ -16,7 +16,7 @@ import { debounce } from "lodash";
 const { Option, OptGroup } = Select;
 
 interface FormData {
-  componentKey: ComponentKeys;
+  componentKey: IComponentKeys;
   componentWidth: string;
   bordered: boolean;
   placeholder: string | string[];
@@ -28,7 +28,7 @@ interface FormData {
  */
 export default memo(function () {
   const [form] = Form.useForm<FormData>();
-  const { currentDragComponent, commonDispatch } = useContext(Context);
+  const { target: currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {} } = currentDragComponent || {};
 
   const onValuesChange = useCallback(
@@ -50,7 +50,7 @@ export default memo(function () {
           width: componentWidth + "%",
         };
         commonDispatch({
-          type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+          type: UPDATE_COMPONENT_LIST_BY_TARGET,
           payload: {
             data: {
               componentKey,
@@ -63,7 +63,7 @@ export default memo(function () {
           },
         });
         commonDispatch({
-          type: SET_CURRENT_DRAG_COMPONENT,
+          type: SET_TARGET,
           payload: {
             id,
             componentProps: {

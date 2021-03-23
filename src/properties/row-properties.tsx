@@ -3,9 +3,9 @@ import { Form, Select, InputNumber, Typography, Switch } from "antd";
 import { Context } from "../stores/context";
 import {
   RESET_COMPONENT_LAYOUT,
-  SET_CURRENT_DRAG_COMPONENT,
+  SET_TARGET,
   SET_MOVEABLE_OPTIONS,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
 } from "../stores/action-type";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import CheckboxField from "../components/FormFields/CheckboxField";
@@ -62,7 +62,7 @@ function hasKey(changedValues: { [key: string]: any }, keys: string[]) {
 export default function () {
   const [form] = Form.useForm();
   const {
-    currentDragComponent,
+    target: currentDragComponent,
     moveableOptions,
     commonDispatch,
   } = useContext(Context);
@@ -91,7 +91,7 @@ export default function () {
       }
       // 更新当前组件
       commonDispatch({
-        type: SET_CURRENT_DRAG_COMPONENT,
+        type: SET_TARGET,
         payload: {
           id,
           colProps: newAllValues.single,

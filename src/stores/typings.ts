@@ -1,11 +1,11 @@
-export interface commonDispatch<T = boolean> {
+export interface ICommonDispatch<T = boolean> {
   commonDispatch: React.Dispatch<{
     type: string;
     payload?: T;
   }>;
 }
 
-export type ComponentKeys =
+export type IComponentKeys =
   | "Input"
   | "Input.TextArea"
   | "Input.Password"
@@ -27,8 +27,8 @@ export type ComponentKeys =
   | "Button"
   | "";
 
-export interface FormComProp {
-  componentKey: ComponentKeys; // 当前拖拽的控件key
+export interface IFormComProp {
+  componentKey: IComponentKeys; // 当前拖拽的控件key
   componentProps: { [key: string]: any }; // 当前拖拽的控件属性设置
   formProps?: { [key: string]: any }; // 当前Form属性设置
   formItemProps: { [key: string]: any }; // 当前FormItem属性设置
@@ -36,11 +36,16 @@ export interface FormComProp {
   rowProps?: { [key: string]: any }; // 当前Row属性设置
   layout?: { [key: string]: any }; //布局属性
   [key: string]: any;
-  children?: FormComProp[];
+  children?: IFormComProp[];
 }
 
-export interface CommonState extends commonDispatch<object> {
-  currentDragComponent: FormComProp; // 当前拖拽的表单控件
-  componentList: FormComProp[]; // 当前编辑区的组件列表
-  moveableOptions: { [key: string]: any }; // Moveable props
+export interface IMoveableOptions {
+  elClassName: string | null;
+  [key: string]: any;
+}
+
+export interface ICommonState extends ICommonDispatch<object> {
+  target: IFormComProp; // 当前拖拽的表单控件
+  componentList: IFormComProp[]; // 当前编辑区的组件列表
+  moveableOptions: IMoveableOptions; // Moveable props
 }

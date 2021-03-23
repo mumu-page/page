@@ -2,9 +2,9 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { Collapse, Form, Input, InputNumber, Radio } from "antd";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import {
-  SET_CURRENT_DRAG_COMPONENT,
+  SET_TARGET,
   SET_MOVEABLE_OPTIONS,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
 } from "../stores/action-type";
 import { Context } from "../stores/context";
 import CheckboxField from "../components/FormFields/CheckboxField";
@@ -13,7 +13,7 @@ import { CustomCollapse, Title } from "../components";
 import { debounce } from "lodash";
 
 export default function () {
-  const { currentDragComponent, moveableOptions, commonDispatch } = useContext(
+  const { target: currentDragComponent, moveableOptions, commonDispatch } = useContext(
     Context
   );
   const [form] = Form.useForm();
@@ -31,7 +31,7 @@ export default function () {
         newAllValues.form.labelCol = { span: labelCol };
       }
       commonDispatch({
-        type: SET_CURRENT_DRAG_COMPONENT,
+        type: SET_TARGET,
         payload: {
           id,
           formProps: newAllValues.form,
@@ -39,7 +39,7 @@ export default function () {
         },
       });
       commonDispatch({
-        type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+        type: UPDATE_COMPONENT_LIST_BY_TARGET,
         payload: {
           id,
           data: {

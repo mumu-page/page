@@ -2,9 +2,9 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Form, Select, InputNumber, Typography, Switch } from "antd";
 import { Context } from "../stores/context";
 import {
-  SET_CURRENT_DRAG_COMPONENT,
+  SET_TARGET,
   SET_MOVEABLE_OPTIONS,
-  UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
 } from "../stores/action-type";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
 import { decodeKey, encodeKey, findTarget, refreshTarget } from "../utils/utils";
@@ -39,7 +39,7 @@ function hasKey(changedValues: { [key: string]: any }, keys: string[]) {
  */
 export default function () {
   const [form] = Form.useForm();
-  const { currentDragComponent, moveableOptions, commonDispatch } = useContext(
+  const { target: currentDragComponent, moveableOptions, commonDispatch } = useContext(
     Context
   );
   const { id, colProps = {}, rowProps = {} } = currentDragComponent || {};
@@ -52,7 +52,7 @@ export default function () {
       // 更新局部组件
       if (hasKey(changedValues, localKey)) {
         commonDispatch({
-          type: UPDATE_COMPONENT_LIST_BY_CURRENT_DRAG,
+          type: UPDATE_COMPONENT_LIST_BY_TARGET,
           payload: {
             id,
             data: {
@@ -63,7 +63,7 @@ export default function () {
       }
       // 更新当前组件
       commonDispatch({
-        type: SET_CURRENT_DRAG_COMPONENT,
+        type: SET_TARGET,
         payload: {
           id,
           colProps: newAllValues.single,

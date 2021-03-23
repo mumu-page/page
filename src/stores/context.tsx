@@ -1,8 +1,8 @@
 import React from 'react'
-import { CommonState } from './typings'
+import { ICommonState } from './typings'
 
-export const INITAL_STATE: CommonState = {
-  currentDragComponent: {
+export const INITAL_STATE: ICommonState = {
+  target: {
     id: "",
     componentKey: "",
     formProps: {},
@@ -16,6 +16,7 @@ export const INITAL_STATE: CommonState = {
   },
   componentList: [],
   moveableOptions: {
+    elClassName: null,
     frame: { translate: [0, 0] },
   },
   commonDispatch: ({

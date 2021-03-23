@@ -34,7 +34,7 @@ import {
   Upload,
   Button,
 } from "antd";
-import { ComponentKeys } from "../stores/typings";
+import { IComponentKeys } from "../stores/typings";
 
 export const key2Component = {
   Input: {
@@ -119,14 +119,14 @@ export const key2Component = {
   },
 };
 
-export function getComponent(componentKey: ComponentKeys) {
+export function getComponent(componentKey: IComponentKeys) {
   if (key2Component[componentKey]) {
     return key2Component[componentKey].component
   }; 
   return <></>
 }
 
-export function getProperties(componentKey: ComponentKeys) {
+export function getProperties(componentKey: IComponentKeys) {
   if (key2Component[componentKey]) {
     return key2Component[componentKey].properties;
   }

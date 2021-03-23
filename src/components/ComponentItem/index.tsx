@@ -1,6 +1,6 @@
 import React from "react";
 import { Form } from "antd";
-import { FormComProp } from "../../stores/typings";
+import { IFormComProp } from "../../stores/typings";
 import { isCheck, isDatePicker, isRenderFormItem } from "../../utils/utils";
 import { ICONS, getComponent } from "../../constants";
 import * as moment from "moment";
@@ -12,7 +12,7 @@ const disableCom = {
   open: false,
 };
 
-export default (prop: FormComProp) => {
+export default (prop: IFormComProp) => {
   const {
     id,
     children,

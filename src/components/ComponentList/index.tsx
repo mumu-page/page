@@ -4,12 +4,12 @@ import { useEffect } from "react";
 import { ComponentItem, ContextMenu } from "..";
 import {
   COPY_COMPONENT_LIST,
-  DELETE_CURRENT_DRAG_COMPONENT,
+  DELETE_TARGET,
   DEL_COMPONENT_LIST,
-  SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
+  SET_TARGET_BY_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
 } from "../../stores/action-type";
-import { commonDispatch, FormComProp } from "../../stores/typings";
+import { ICommonDispatch, IFormComProp } from "../../stores/typings";
 import { findTarget, isDatePicker } from "../../utils/utils";
 import { Target_ClassName } from "../../constants/constants";
 import Menu from "../ContextMenu/Menu";
@@ -23,9 +23,9 @@ import { SHOW_SETTING_PANL } from "../../constants/events";
 import * as uuid from "uuid";
 import "./index.scss";
 
-interface EditorAreaProps extends commonDispatch<object> {
-  componentList: FormComProp[];
-  currentDragComponent: FormComProp;
+interface EditorAreaProps extends ICommonDispatch<object> {
+  componentList: IFormComProp[];
+  currentDragComponent: IFormComProp;
 }
 
 enum HANDLE_TYPE {
@@ -86,7 +86,7 @@ export default function Container(props: EditorAreaProps) {
         },
       });
       commonDispatch({
-        type: DELETE_CURRENT_DRAG_COMPONENT,
+        type: DELETE_TARGET,
       });
       commonDispatch({
         type: SET_MOVEABLE_OPTIONS,
@@ -147,7 +147,7 @@ export default function Container(props: EditorAreaProps) {
     >
       {/* Row Col 和 ReactiveMoveable 有冲突  */}
       <div>
-        {componentList.map((item: FormComProp, index: number) => {
+        {componentList.map((item: IFormComProp, index: number) => {
           const {
             id,
             children,
@@ -185,7 +185,7 @@ export default function Container(props: EditorAreaProps) {
               onClick={(e) => {
                 e.stopPropagation();
                 commonDispatch({
-                  type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
+                  type: SET_TARGET_BY_COMPONENT_LIST,
                   payload: { id },
                 });
                 // 无论dom元素如何变，componentList没有变
@@ -194,7 +194,7 @@ export default function Container(props: EditorAreaProps) {
               onContextMenu={(e) => {
                 e.preventDefault();
                 commonDispatch({
-                  type: SET_CURRENT_DRAG_COMPONENT_BY_COMPONENT_LIST,
+                  type: SET_TARGET_BY_COMPONENT_LIST,
                   payload: { id },
                 });
                 // 无论dom元素如何变，componentList没有变
