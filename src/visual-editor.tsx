@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { EditorArea, Container } from "./layouts";
 import { Context, INITAL_STATE } from "./stores/context";
 import { commonReducer } from "./stores/reducers/reducer";
@@ -18,7 +18,7 @@ export default () => {
   return (
     <Context.Provider
       value={{
-        ...((state as ICommonState) || {}),
+        ...((state as ICommonState) || INITAL_STATE),
         commonDispatch,
       }}
     >

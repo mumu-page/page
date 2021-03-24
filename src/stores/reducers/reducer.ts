@@ -17,8 +17,8 @@ import {
 import { ICommonState, IFormComProp } from '../typings'
 import { merge, cloneDeep } from 'lodash'
 import produce from 'immer'
-import * as uuid from 'uuid'
 import { INITAL_STATE } from '../context'
+import shortid from 'shortid'
 
 /**
  * 公共
@@ -106,7 +106,7 @@ export const commonReducer = produce(
       },
       [COPY_COMPONENT_LIST]: () => {
         let newItem = {} as IFormComProp
-        const { id, newId = uuid.v4() } = action?.payload || {}
+        const { id, newId = shortid() } = action?.payload || {}
         const findCopyItem = (data: IFormComProp[]) => {
           data?.forEach((item, index) => {
             if (item?.children) {

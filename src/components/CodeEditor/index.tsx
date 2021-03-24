@@ -72,27 +72,37 @@ const CodeEditor = forwardRef(
     }, []);
 
     const formatDocument = () => {
-      editor.current?.getAction?.("editor.action.formatDocument")?.run?.();
+      const instance = editor.current;
+      const actionId = "editor.action.formatDocument";
+      const action = instance?.getAction?.(actionId);
+      let timer: number | undefined = setInterval(() => {
+        if (action?.isSupported?.()) {
+          action?.run?.();
+          clearInterval(timer);
+          timer = void 0;
+        }
+      });
+    };
+
+    const onDidChangeModelContent = () => {
+      onChangeCode?.(editor.current?.getValue?.());
     };
 
     const create = useCallback(
-      (el: HTMLElement, value: string, options = {}) => {
+      (el: HTMLElement | null, value: string, options = {}) => {
+        if (!el) return;
+        setSpinning(true);
         const _options = {
           ...defaultOptions,
           ...options,
         };
-        editor.current = monaco.editor.create(el, {
+        const editorInstance = (editor.current = monaco.editor.create(el, {
           value,
           ..._options,
-        });
-        setTimeout(() => {
-          if (editor.current) {
-            formatDocument();
-          }
-        }, 300);
-        editor.current.onDidChangeModelContent(() => {
-          onChangeCode?.(editor.current?.getValue?.());
-        });
+        }));
+        editorInstance.onDidChangeModelContent(onDidChangeModelContent);
+        setSpinning(false);
+        formatDocument();
       },
       [onChangeCode]
     );
@@ -105,10 +115,8 @@ const CodeEditor = forwardRef(
           create(el, code);
         },
         resetMount(code: string) {
-          if (element.current) {
-            editor.current?.dispose();
-            create(element.current, code);
-          }
+          editor.current?.dispose();
+          create(element.current, code);
         },
         setCode(code: string) {
           editor.current?.setValue(code);
@@ -118,11 +126,7 @@ const CodeEditor = forwardRef(
     );
 
     useEffect(() => {
-      setSpinning(true);
-      if (element.current) {
-        create(element.current, code, options);
-        setSpinning(false);
-      }
+      create(element.current, code, options);
       window?.addEventListener("resize", onLayoutChange);
       return () => {
         editor.current?.dispose?.();

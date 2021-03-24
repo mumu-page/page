@@ -20,7 +20,7 @@ import {
 } from "@ant-design/icons";
 import eventBus from "../../utils/eventBus";
 import { SHOW_SETTING_PANL } from "../../constants/events";
-import * as uuid from "uuid";
+import shortid from "shortid";
 import "./index.scss";
 
 interface EditorAreaProps extends ICommonDispatch<object> {
@@ -99,7 +99,7 @@ export default function Container(props: EditorAreaProps) {
       eventBus.emit(SHOW_SETTING_PANL);
     }
     if (label === HANDLE_TYPE.copy) {
-      const newId = uuid.v4();
+      const newId = shortid();
       commonDispatch({
         type: COPY_COMPONENT_LIST,
         payload: {
