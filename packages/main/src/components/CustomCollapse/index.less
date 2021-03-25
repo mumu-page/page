@@ -1,0 +1,49 @@
+/* 重置手风琴样式 */
+.site-collapse-custom-collapse{
+  border-left: 0!important;
+  border-right: 0!important;
+  border-radius: 0!important;
+  border-color: #f2f2f2!important;
+  margin-bottom: 15px!important;
+  .ant-collapse-item,
+  .ant-collapse-header,
+  .ant-collapse-content,
+  .ant-collapse-content-box {
+    border-color: #f2f2f2!important;
+  }
+  .site-collapse-custom-panel:last-child {
+    border-radius: 0!important;
+    border-color: #f2f2f2!important;
+  }
+  .ant-collapse-content-box {
+    padding: 10px!important;
+    .ant-form-item {
+      margin-bottom: 0!important;
+      padding: 8px 0!important;
+      border-bottom: 1px solid #f8f8f8!important;
+    }
+    .ant-form-item:first-child {
+      padding-top: 0!important;
+    }
+    .ant-form-item:last-child {
+      margin-bottom: 0!important;
+      padding-bottom: 0!important;
+      border: 0!important;
+    }
+  }
+}
+[data-theme="compact"]
+  .site-collapse-custom-collapse
+  .site-collapse-custom-panel,
+.site-collapse-custom-collapse .site-collapse-custom-panel {
+  overflow: hidden!important;
+  background: #f7f7f7!important;
+  border-radius: 0!important;
+  .ant-collapse-header {
+    padding: 5px 10px 5px 25px!important;
+    .ant-collapse-arrow {
+      padding: 5px 10px 5px 3px!important;
+      left: 6px!important;
+    }
+  }
+}
