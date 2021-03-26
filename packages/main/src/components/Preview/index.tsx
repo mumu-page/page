@@ -47,13 +47,13 @@ export default forwardRef(function (
   const scssEditor = useRef<CodeEditorInstanceProps>(null)
 
   const parseXml = (newCode: string) => {
-    // string2Component(newCode)
-    //   .then((newComponent) => {
-    //     setComponent(newComponent)
-    //   })
-    //   .catch((info) => {
-    //     message.error(info)
-    //   })
+    string2Component(newCode)
+      .then((newComponent) => {
+        setComponent(newComponent)
+      })
+      .catch((info) => {
+        message.error(info)
+      })
   }
 
   const onTsxChangCode = useCallback((newCode) => {
@@ -67,17 +67,17 @@ export default forwardRef(function (
   }, [])
 
   const refresh = (code = tsxCode) => {
-    // const _xmlCode =
-    //   code
-    //     .substring(code.indexOf('return <Form>'), code.indexOf('</Form>'))
-    //     .replace('return', '') + '</Form>'
-    // string2Component(_xmlCode)
-    //   .then((newComponent) => {
-    //     setComponent(newComponent)
-    //   })
-    //   .catch((info) => {
-    //     message.error(info)
-    //   })
+    const _xmlCode =
+      code
+        .substring(code.indexOf('return <Form>'), code.indexOf('</Form>'))
+        .replace('return', '') + '</Form>'
+    string2Component(_xmlCode)
+      .then((newComponent) => {
+        setComponent(newComponent)
+      })
+      .catch((info) => {
+        message.error(info)
+      })
   }
 
   const copy = () => {}

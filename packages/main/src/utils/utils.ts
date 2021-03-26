@@ -107,7 +107,7 @@ export async function string2Component(input?: string) {
   if (!input) return "";
   try {
     type IW = Window & typeof globalThis & { Babel: any };
-    let output = (window as IW).Babel.transform(`<>${input}</>`, {
+    let output = (window as IW).Babel.transform(`${input}`, {
       presets: ["react", "es2015"],
     }).code;
     output = output?.replace('"use strict";', "").trim();
