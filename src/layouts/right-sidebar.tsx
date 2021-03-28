@@ -16,7 +16,7 @@ export default function () {
           <LayoutSetting />
         </div>
       </TabPane>
-      <TabPane tab="页面设置" key="3">
+      <TabPane tab="画布设置" key="3">
         <div className="form-properties">
           <PageSetting />
         </div>

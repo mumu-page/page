@@ -11,11 +11,7 @@ import { debounce, isNumber } from 'lodash'
 import { refreshTarget } from '../utils/utils'
 
 export default function () {
-  const {
-    moveableOptions,
-    target,
-    commonDispatch,
-  } = useContext(Context)
+  const { moveableOptions, target, commonDispatch } = useContext(Context)
   const [form] = Form.useForm()
   const { id, formItemProps = {} } = target || {}
 
@@ -25,14 +21,18 @@ export default function () {
       if (isNumber(wrapperCol) || isNumber(labelCol)) {
         refreshTarget(moveableOptions?.target, commonDispatch)
       }
-      const wrapperColObj = {
-        span: wrapperCol,
+      if (isNumber(wrapperCol)) {
+        const wrapperColObj = {
+          span: wrapperCol,
+        }
+        other.wrapperCol = wrapperColObj
       }
-      const labelColObj = {
-        span: labelCol,
+      if (isNumber(labelCol)) {
+        const labelColObj = {
+          span: labelCol,
+        }
+        other.labelCol = labelColObj
       }
-      other.wrapperCol = wrapperColObj
-      other.labelCol = labelColObj
       commonDispatch({
         type: SET_TARGET,
         payload: {

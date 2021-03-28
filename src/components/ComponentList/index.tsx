@@ -54,7 +54,7 @@ const options = [
 ]
 
 export default function Container(props: EditorAreaProps) {
-  const { target, componentList, commonDispatch } = props
+  const { target, componentList = [], commonDispatch } = props
   const [form] = Form.useForm()
   const contenxtMenu = useRef(null)
   const {
