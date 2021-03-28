@@ -74,8 +74,6 @@ export default function () {
     debounce((changedValues: any, allValues: any) => {
       const newAllValues = decodeKey(allValues, ["all", "single"]);
       if (hasKey(changedValues, global) && mode === "简洁模式") {
-        console.log("enter");
-
         newAllValues.all = merge(
           newAllValues.all,
           genLayout(newAllValues.all?.colNum)
@@ -100,7 +98,7 @@ export default function () {
       });
       // 重新获取当前选中元素
       refreshTarget(target, commonDispatch);
-    }, 500),
+    }, 200),
     [currentDragComponent.id, mode]
   );
 
@@ -117,7 +115,7 @@ export default function () {
     );
     form.resetFields();
     form.setFieldsValue(values);
-  }, [currentDragComponent]);
+  }, []);
 
   return (
     <Form

@@ -52,10 +52,22 @@ export default (prop: IFormComProp) => {
     componentOtherProps['suffix'] = <Suffix />
   }
 
+  const { labelCol: labelColG, wrapperCol: wrapperColG } = formProps
+  const { labelCol, wrapperCol } = formItemProps
+  const propObj = {
+    ...formItemProps,
+    labelCol: {
+      ...labelColG,
+      ...labelCol,
+    },
+    wrapperCol: {
+      ...wrapperColG,
+      ...wrapperCol,
+    },
+  }
   return isRenderFormItem(componentKey) ? (
     <Form.Item
-      {...formProps}
-      {...formItemProps}
+      {...propObj}
       style={style}
       valuePropName={isCheck(componentKey) ? 'checked' : 'value'}
     >

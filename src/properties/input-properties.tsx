@@ -184,17 +184,6 @@ export default () => {
             <Form.Item label="最大长度" name="maxLength">
               <InputNumber />
             </Form.Item>
-            <Form.Item
-              label="控件大小"
-              tooltip="注：标准表单内的输入框大小限制为 large"
-              name="size"
-            >
-              <Radio.Group>
-                <Radio.Button value="large">大</Radio.Button>
-                <Radio.Button value="middle">中</Radio.Button>
-                <Radio.Button value="small">小</Radio.Button>
-              </Radio.Group>
-            </Form.Item>
             <Form.Item label="" valuePropName="checked" name="allowClear">
               <Checkbox>
                 <Tooltip title="可以点击清除图标删除内容">支持清除</Tooltip>

@@ -15,7 +15,7 @@ import {
   RESET_COMPONENT_LAYOUT,
 } from '../action-type'
 import { ICommonState, IFormComProp } from '../typings'
-import { merge, cloneDeep } from 'lodash'
+import { merge, cloneDeep, isInteger } from 'lodash'
 import produce from 'immer'
 import { INITAL_STATE } from '../context'
 import shortid from 'shortid'
@@ -29,10 +29,7 @@ export const commonReducer = produce(
   (draft: ICommonState, action: { type: string; payload?: any }) => {
     const strategy: { [key: string]: () => void } = {
       [SET_TARGET]: () => {
-        draft.target = merge(
-          cloneDeep(draft.target),
-          cloneDeep(action.payload)
-        )
+        draft.target = merge(cloneDeep(draft.target), cloneDeep(action.payload))
       },
       [DELETE_TARGET]: () => {
         draft.target = INITAL_STATE.target
@@ -46,7 +43,7 @@ export const commonReducer = produce(
             }
             if (item?.id === action.payload?.id) {
               item.rowProps = draft.target?.rowProps
-              item.formProps = draft.target?.formProps;
+              item.formProps = draft.target?.formProps
               draft.target = item
               break
             }
@@ -165,7 +162,7 @@ export const commonReducer = produce(
           cloneDeep(action.payload)
         )
       },
-      // 重置layout属性 TODO: 更多列数兼容
+      // 重置layout属性
       [RESET_COMPONENT_LAYOUT]: () => {
         const { colNum, gutter } = action.payload || {}
         draft.componentList.forEach((item, index) => {
@@ -177,9 +174,11 @@ export const commonReducer = produce(
             // 兼容gutter
             if (gutter > 0) {
               const margin = ((colNum - 1) * gutter) / colNum
-              layout.width = `calc(100%/${colNum} - ${margin}px)`
+              layout.width = `calc(100%/${colNum} - ${
+                isInteger(margin) ? margin : margin.toFixed(2)
+              }px)`
               // 调整除每行第一个的位置
-              if (index !== 0 && (index % colNum !== 0)) {
+              if (index !== 0 && index % colNum !== 0) {
                 // 当前所在列数(从0开始)
                 const tarColNum = index % colNum
                 layout.frame.translate[0] =
@@ -199,5 +198,5 @@ export const commonReducer = produce(
       // });
       strategy[action.type]()
     }
-  },
+  }
 )

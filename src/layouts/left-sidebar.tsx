@@ -1,22 +1,20 @@
-import React, { useContext, useState } from "react";
-import { Button, Col, Row } from "antd";
-import { IconFont, options } from "../constants";
-import { OptionGroup, OptionItem } from "../typings/option";
-import { hasNotPlaceholder, isColComponent, isSelect } from "../utils/utils";
-import { IFormComProp } from "../stores/typings";
-import { Context } from "../stores/context";
-import {
-  PUT_COMPONENT_LIST,
-} from "../stores/action-type";
-import shortid from "shortid";
+import React, { useContext, useState } from 'react'
+import { Button, Col, Row } from 'antd'
+import { IconFont, options } from '../constants'
+import { OptionGroup, OptionItem } from '../typings/option'
+import { hasNotPlaceholder, isSelect } from '../utils/utils'
+import { IFormComProp } from '../stores/typings'
+import { Context } from '../stores/context'
+import { PUT_COMPONENT_LIST } from '../stores/action-type'
+import shortid from 'shortid'
 
 const getNewOptions = (data: OptionGroup[]) => {
   return data.map((item) => {
     return {
       ...item,
       children: item?.children?.map((cItem) => {
-        const { value, label, icon } = cItem || {};
-        const id = shortid();
+        const { value, label, icon } = cItem || {}
+        const id = shortid()
         const ret: IFormComProp & OptionItem = {
           value,
           label,
@@ -27,44 +25,38 @@ const getNewOptions = (data: OptionGroup[]) => {
           formItemProps: {
             name: id,
             label,
-            labelCol: {
-              span: 3,
-            },
-            wrapperCol: {
-              span: 24,
-            },
           },
           colProps: {
-            span: isColComponent(value) ? 12 : 24,
+            span: 24,
           },
           rowProps: {},
           componentProps: {},
           layout: {
             frame: { translate: [0, 0] },
           },
-        };
+        }
         if (!hasNotPlaceholder(value)) {
           const placeholderEnum: any = {
-            "TimePicker.RangePicker": ["开始时间", "结束时间"],
-            "DatePicker.RangePicker": ["开始日期", "结束日期"],
-          };
+            'TimePicker.RangePicker': ['开始时间', '结束时间'],
+            'DatePicker.RangePicker': ['开始日期', '结束日期'],
+          }
           if (isSelect(value)) {
             ret.componentProps.placeholder =
-              placeholderEnum[value] || "请选择" + label;
+              placeholderEnum[value] || '请选择' + label
           } else {
-            ret.componentProps.placeholder = "请输入" + label;
+            ret.componentProps.placeholder = '请输入' + label
           }
         }
-        return ret;
+        return ret
       }),
-    };
-  });
-};
+    }
+  })
+}
 
-const initOptions = getNewOptions(options);
+const initOptions = getNewOptions(options)
 export default () => {
-  const [_options, setOptions] = useState(initOptions);
-  const { commonDispatch } = useContext(Context);
+  const [_options, setOptions] = useState(initOptions)
+  const { commonDispatch } = useContext(Context)
 
   const generator = (data: any[]) => {
     return data.map((item) => {
@@ -79,7 +71,7 @@ export default () => {
           >
             {item.label}
           </Button>
-          <Row gutter={[6, 6]} style={{ padding: "0 12px 12px 12px" }}>
+          <Row gutter={[6, 6]} style={{ padding: '0 12px 12px 12px' }}>
             {item.children &&
               item.children.map((childItem: any) => {
                 return (
@@ -90,31 +82,31 @@ export default () => {
                   >
                     <Button
                       block
-                      style={{ backgroundColor: "#f8f8f8", fontSize: "12px" }}
+                      style={{ backgroundColor: '#f8f8f8', fontSize: '12px' }}
                       type="default"
                       icon={<IconFont type={childItem.icon} />}
                       onClick={() => {
                         commonDispatch({
                           type: PUT_COMPONENT_LIST,
                           payload: childItem,
-                        });
+                        })
                         // commonDispatch({
                         //   type: SET_CURRENT_DRAG_COMPONENT,
                         //   payload: childItem,
                         // });
-                        setOptions(getNewOptions(_options));
+                        setOptions(getNewOptions(_options))
                       }}
                     >
                       {childItem.label}
                     </Button>
                   </Col>
-                );
+                )
               })}
           </Row>
         </div>
-      );
-    });
-  };
+      )
+    })
+  }
 
-  return <>{generator(_options)}</>;
-};
+  return <>{generator(_options)}</>
+}

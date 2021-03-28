@@ -1,3 +1,4 @@
+import { isNumber } from 'lodash'
 import React from 'react'
 import { ICONS } from '../constants'
 import { IComponentKeys, IFormComProp } from '../stores/typings'
@@ -5,7 +6,7 @@ import { IComponentKeys, IFormComProp } from '../stores/typings'
 function parseProp(key: string, value: any, result = '') {
   if (!value) return ''
   if (typeof value === 'undefined') return ''
-  if (value==='{}') return ''
+  if (value === '{}') return ''
   try {
     result = JSON.parse(value)
     if (result !== null && ['object', 'number'].includes(typeof result)) {
@@ -90,7 +91,8 @@ function createFormItem(
   } = item
   const { rowProps = {}, formProps = {} } = currentDragComponent
   const { colNum, gutter, align, justify, wrap, ...otherGlobalProps } = rowProps
-  const { labelCol, wrapperCol } = formProps
+  const { labelCol: labelColG, wrapperCol: wrapperColG } = formProps
+  const { labelCol, wrapperCol } = formItemProps
   const { colNum: _colNum, ...otherColProps } = colProps
   /**样式开始 */
   const { frame = { translate: [0, 0, 0] }, height, width } = layout
@@ -108,7 +110,7 @@ function createFormItem(
     }
     style.transform = `translate(${translateX}px, ${translate[1]}px)`
   }
-  if (width) {
+  if (isNumber(width)) {
     style.width = `${width}px`
   }
   if (height) {
@@ -117,10 +119,16 @@ function createFormItem(
   /**样式结束 */
   const colPropsStr = generateProps({ ...otherGlobalProps, ...otherColProps })
   const formItemPropsStr = generateProps({
-    ...formItemProps,
-    labelCol,
-    wrapperCol,
     style,
+    ...formItemProps,
+    labelCol: {
+      ...labelColG,
+      ...labelCol,
+    },
+    wrapperCol: {
+      ...wrapperColG,
+      ...wrapperCol,
+    },
   })
   const componentPropsStr = generateComProps(componentProps, componentKey)
   const componentName = componentKey?.replace(/^.*\./, '')
