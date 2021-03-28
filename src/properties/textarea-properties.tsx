@@ -14,14 +14,12 @@ interface FormData {
   [key: string]: any;
 }
 
-let shouldUpdate = true;
 export default function () {
   const [form] = Form.useForm<FormData>();
   const { target: currentDragComponent, commonDispatch } = useContext(Context);
   const { id, componentProps = {} } = currentDragComponent || {};
 
   const onValuesChange = (changedValues: any, allValues: any) => {
-    shouldUpdate = false;
     commonDispatch({
       type: SET_TARGET,
       payload: {
@@ -43,10 +41,9 @@ export default function () {
   };
 
   useEffect(() => {
-    if (!shouldUpdate) return;
     form.resetFields();
     form.setFieldsValue(componentProps);
-  }, [componentProps, currentDragComponent, form]);
+  }, [currentDragComponent?.id]);
 
   return (
     <>
@@ -58,10 +55,7 @@ export default function () {
         <CustomCollapse defaultActiveKey={["基本"]}>
           <CustomCollapse.Panel header="基本">
             <Form.Item label="默认值" name="defaultValue">
-              <Input
-                onBlur={() => (shouldUpdate = true)}
-                onPressEnter={() => (shouldUpdate = true)}
-              />
+              <Input />
             </Form.Item>
             <Form.Item label="最大长度" name="maxLength">
               <InputNumber />

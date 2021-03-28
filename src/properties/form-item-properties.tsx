@@ -13,11 +13,11 @@ import { refreshTarget } from '../utils/utils'
 export default function () {
   const {
     moveableOptions,
-    target: currentDragComponent,
+    target,
     commonDispatch,
   } = useContext(Context)
   const [form] = Form.useForm()
-  const { id, formItemProps = {} } = currentDragComponent || {}
+  const { id, formItemProps = {} } = target || {}
 
   const onValuesChange = useCallback(
     debounce((_changedValues: any, allValues: any) => {
@@ -50,7 +50,7 @@ export default function () {
         },
       })
     }, 100),
-    [currentDragComponent.id]
+    [target?.id]
   )
 
   const updateFormValues = () => {
@@ -65,7 +65,7 @@ export default function () {
 
   useEffect(() => {
     updateFormValues()
-  }, [])
+  }, [target.id])
 
   return (
     <Form

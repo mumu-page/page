@@ -87,7 +87,7 @@ export default function () {
     );
     form.resetFields();
     form.setFieldsValue(values);
-  }, []);
+  }, [currentDragComponent?.id]);
 
   return (
     <Form

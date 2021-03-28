@@ -99,7 +99,7 @@ export default () => {
   useEffect(() => {
     form.resetFields()
     form.setFieldsValue(componentProps)
-  }, [])
+  }, [currentDragComponent?.id])
 
   return (
     <>

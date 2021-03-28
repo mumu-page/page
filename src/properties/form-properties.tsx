@@ -54,7 +54,7 @@ export default function () {
 
   useEffect(() => {
     updateFormValues()
-  }, [])
+  }, [currentDragComponent.id])
 
   return (
     <Form

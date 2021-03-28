@@ -101,7 +101,7 @@ export default memo(function () {
 
   useEffect(() => {
     updateFormVal()
-  }, []);
+  }, [currentDragComponent?.id]);
 
   return (
     <>

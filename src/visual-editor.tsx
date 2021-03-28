@@ -1,7 +1,7 @@
 import React from 'react'
 import { EditorArea, Container } from './layouts'
 import { Context, INITAL_STATE } from './stores/context'
-import { commonReducer } from './stores/reducers/reducer'
+import { commonReducer } from './stores/reducers'
 import { useLocallyPersistedReducer } from './hooks'
 import { ICommonState } from './stores/typings'
 import { LOCAL_STORE_KEY } from './constants'
