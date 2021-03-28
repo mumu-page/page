@@ -72,14 +72,14 @@ const CodeEditor = forwardRef(
     }, [])
 
     const formatDocument = () => {
-      const instance = editor.current
-      const actionId = 'editor.action.formatDocument'
-      const action = instance?.getAction?.(actionId)
-      let timer: number | undefined = setInterval(() => {
+      let timer: any = setInterval(() => {
+        const instance = editor.current
+        const actionId = 'editor.action.formatDocument'
+        const action = instance?.getAction?.(actionId)
         if (action?.isSupported?.()) {
-          action?.run?.()
           clearInterval(timer)
           timer = void 0
+          action?.run?.()
         }
       })
     }
@@ -130,7 +130,7 @@ const CodeEditor = forwardRef(
       window?.addEventListener('resize', onLayoutChange)
       return () => {
         editor.current?.dispose?.()
-        editor.current = undefined
+        editor.current = void 0
         window?.removeEventListener('resize', onLayoutChange)
       }
     }, [])
