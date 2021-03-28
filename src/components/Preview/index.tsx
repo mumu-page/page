@@ -8,14 +8,11 @@ import React, {
 import { Button, Tabs, Drawer, message } from 'antd'
 import { PreviewInstanceProps, PreviewProps } from './typings'
 import {
-  SyncOutlined,
-  // VerticalAlignBottomOutlined,
-  CopyOutlined,
-  CloseCircleOutlined,
   FileTextOutlined,
   EditOutlined,
   RightOutlined,
   LeftOutlined,
+  CloseOutlined,
 } from '@ant-design/icons'
 import CodeEditor from '../CodeEditor'
 import { CodeEditorInstanceProps } from '../CodeEditor/typings'
@@ -36,7 +33,7 @@ export default forwardRef(function (
     | React.MutableRefObject<unknown>
     | null
 ) {
-  const [folded, setFolded] = useState(false)
+  const [folded, setFolded] = useState(true)
   const [tsxCode, setTsxCode] = useState<string>('')
   const [scssCode, setScssCode] = useState<string>('')
   const [visible, setVisible] = useState(false)
@@ -123,10 +120,10 @@ export default forwardRef(function (
     <Drawer
       width="100%"
       visible={visible}
-      closable={false}
       destroyOnClose
+      closeIcon={<CloseOutlined style={{ color: folded ? '#999' : 'white' }} />}
       onClose={() => {
-        setFolded(false)
+        setFolded(true)
         setVisible(false)
       }}
     >
@@ -134,7 +131,7 @@ export default forwardRef(function (
         <Tabs
           tabBarGutter={5}
           activeKey={activeKey}
-          className={`code-container ${folded ? 'code-folded' : ''}`}
+          className={`code-container ${folded ? 'code-folded' : 'code-open'}`}
           onChange={onTabChange}
           tabBarStyle={{ height: '35px' }}
           type="card"
@@ -172,47 +169,12 @@ export default forwardRef(function (
             />
           </TabPane>
         </Tabs>
-        <div className={`form ${folded ? 'form-open' : ''}`}>
-          <div className="head">
-            <Button
-              icon={<SyncOutlined />}
-              type="link"
-              size="middle"
-              onClick={() => refresh()}
-            >
-              刷新
-            </Button>
-            {/* <Button
-              icon={<VerticalAlignBottomOutlined />}
-              type="link"
-              size="middle"
-              onClick={download}
-            >
-              导出TSX文件
-            </Button> */}
-            <Button
-              icon={<CopyOutlined />}
-              type="link"
-              size="middle"
-              onClick={copy}
-            >
-              复制代码
-            </Button>
-            <Button
-              icon={<CloseCircleOutlined />}
-              type="link"
-              size="middle"
-              danger
-              onClick={close}
-            >
-              关闭
-            </Button>
-          </div>
+        <div className={`form ${folded ? 'form-open' : 'form-folded'}`}>
           <div className="body">{component}</div>
         </div>
         <Button
           shape="circle"
-          className={`affix ${folded ? 'affix-folded' : ''}`}
+          className={`affix ${folded ? 'affix-left' : 'affix-right'}`}
           icon={folded ? <RightOutlined /> : <LeftOutlined />}
           onClick={() => {
             setFolded(!folded)

@@ -8,7 +8,7 @@
   height: 100%;
   position: relative;
   .code-container {
-    flex: 0.5;
+    flex: 0;
     transition: flex 0.3s;
     width: 100%;
     height: 100%;
@@ -38,39 +38,37 @@
     }
   }
   .form {
-    flex: 0.5;
+    flex: 1;
     align-items: center;
-    transition: flex .3s;
-    .head {
-      height: 35px;
-      background-color: #f2fafb;
-      .ant-btn {
-        padding-right: 0 !important;
-      }
-    }
+    transition: flex 0.3s;
     .body {
       padding: 12px;
       height: calc(100% - 35px);
-      overflow-y: auto;
     }
-  }
-  .form-open {
-    flex: 1;
   }
 
   .affix {
     position: absolute;
-    left: 50%;
     top: 50vh;
-    margin-left: -15px;
     transition: left 0.3s;
   }
-  .affix-folded {
-    left: 10px;
+  .affix-left {
+    left: -5px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
-  .code-folded {
+  .affix-right {
+    left: calc(100% - 26px);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .code-folded,
+  .form-folded {
     flex: 0;
+    overflow: hidden;
+  }
+  .code-open,
+  .form-open {
+    flex: 1;
   }
 }
