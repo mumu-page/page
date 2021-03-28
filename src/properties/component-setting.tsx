@@ -22,8 +22,8 @@ export default function () {
   return has() ? (
     <>
       {TargetProperties}
-      <ColProperties />
       <FormItemProperties />
+      <ColProperties />
       <CommonProperties />
     </>
   ) : (

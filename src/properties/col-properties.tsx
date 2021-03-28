@@ -50,17 +50,15 @@ export default function () {
     debounce((changedValues: any, allValues: any) => {
       const newAllValues = decodeKey(allValues, ["all", "single"]);
       // 更新局部组件
-      if (hasKey(changedValues, localKey)) {
-        commonDispatch({
-          type: UPDATE_COMPONENT_LIST_BY_TARGET,
-          payload: {
-            id,
-            data: {
-              colProps: newAllValues.single,
-            },
+      commonDispatch({
+        type: UPDATE_COMPONENT_LIST_BY_TARGET,
+        payload: {
+          id,
+          data: {
+            colProps: newAllValues.single,
           },
-        });
-      }
+        },
+      });
       // 更新当前组件
       commonDispatch({
         type: SET_TARGET,
@@ -89,7 +87,7 @@ export default function () {
     );
     form.resetFields();
     form.setFieldsValue(values);
-  }, [currentDragComponent]);
+  }, []);
 
   return (
     <Form

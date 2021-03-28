@@ -1,5 +1,6 @@
 import React from 'react'
-import { Typography } from "antd";
+import { Typography } from 'antd'
+import shortid from 'shortid'
 
 export default (props: any) => {
   const { onClick = () => {}, options = [] } = props
@@ -10,7 +11,7 @@ export default (props: any) => {
         const { icon, key, label, type, className } = item
 
         return (
-          <>
+          <React.Fragment key={shortid()}>
             <div className="menu-item">
               <Typography.Link
                 onClick={() => {
@@ -25,7 +26,7 @@ export default (props: any) => {
               </Typography.Link>
             </div>
             {index !== options.length - 1 && <hr></hr>}
-          </>
+          </React.Fragment>
         )
       })}
     </div>

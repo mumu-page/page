@@ -74,12 +74,12 @@ export default memo(function () {
           },
         });
       },
-      500
+      100
     ),
-    []
+    [currentDragComponent]
   );
 
-  useEffect(() => {
+  const updateFormVal = () => {
     const { style = {}, placeholder, ...other } = componentProps || {};
     const width = style?.width?.replace("%", "")?.replace(/null|undefined/, "");
     let placeholder1;
@@ -97,7 +97,11 @@ export default memo(function () {
       placeholder1,
       placeholder2,
     });
-  }, [currentDragComponent]);
+  }
+
+  useEffect(() => {
+    updateFormVal()
+  }, []);
 
   return (
     <>
@@ -105,6 +109,7 @@ export default memo(function () {
         {...FORM_PROPERTIES_OPTIONS}
         initialValues={{
           size: "middle",
+          checked: true
         }}
         form={form}
         onValuesChange={onValuesChange}

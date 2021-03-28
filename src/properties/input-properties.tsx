@@ -20,21 +20,22 @@ import {
   UPDATE_COMPONENT_LIST_BY_TARGET,
   SET_TARGET,
 } from '../stores/action-type'
-import { SelectOutlined } from '@ant-design/icons'
+import { SelectOutlined, DeleteOutlined } from '@ant-design/icons'
 import { CustomCollapse, IconModal, IconModalInstanceProp } from '../components'
 import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
 import { debounce } from 'lodash'
+
+type IIconType = 'prefix' | 'suffix'
 
 export default () => {
   const [form] = Form.useForm()
   const iconModal = useRef<IconModalInstanceProp>(null)
   const { target: currentDragComponent, commonDispatch } = useContext(Context)
   const { id, componentProps = {} } = currentDragComponent || {}
-  const [iconType, setIconType] = useState<'prefix' | 'suffix'>('prefix')
+  const [iconType, setIconType] = useState<IIconType>('prefix')
 
   const onValuesChange = useCallback(
     debounce((changedValues: any, allValues: any) => {
-      console.log(allValues)
       commonDispatch({
         type: SET_TARGET,
         payload: {
@@ -51,8 +52,8 @@ export default () => {
           },
         },
       })
-    }, 500),
-    []
+    }, 100),
+    [currentDragComponent]
   )
 
   const setPrefix = () => {
@@ -65,7 +66,7 @@ export default () => {
     setIconType('suffix')
   }
 
-  const onOk = (iconKey: string, Icon: React.ReactElement) => {
+  const updateIcon = (iconKey: string | null) => {
     commonDispatch({
       type: SET_TARGET,
       payload: {
@@ -86,12 +87,19 @@ export default () => {
         },
       },
     })
+    form.setFieldsValue({
+      [iconType]: iconKey,
+    })
+  }
+
+  const onOk = (iconKey: string) => {
+    updateIcon(iconKey)
   }
 
   useEffect(() => {
     form.resetFields()
     form.setFieldsValue(componentProps)
-  }, [componentProps])
+  }, [])
 
   return (
     <>
@@ -132,9 +140,19 @@ export default () => {
             >
               <Input
                 readOnly
-                addonAfter={
+                addonBefore={
                   <Typography.Link onClick={setPrefix}>
                     <SelectOutlined />
+                  </Typography.Link>
+                }
+                addonAfter={
+                  <Typography.Link
+                    onClick={() => {
+                      setIconType('prefix')
+                      updateIcon(null)
+                    }}
+                  >
+                    <DeleteOutlined style={{ color: 'red' }} />
                   </Typography.Link>
                 }
               />
@@ -146,9 +164,19 @@ export default () => {
             >
               <Input
                 readOnly
-                addonAfter={
+                addonBefore={
                   <Typography.Link onClick={setSuffix}>
                     <SelectOutlined />
+                  </Typography.Link>
+                }
+                addonAfter={
+                  <Typography.Link
+                    onClick={() => {
+                      setIconType('suffix')
+                      updateIcon(null)
+                    }}
+                  >
+                    <DeleteOutlined style={{ color: 'red' }} />
                   </Typography.Link>
                 }
               />

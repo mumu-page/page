@@ -69,7 +69,7 @@ export default forwardRef(function (
   const refresh = (code = tsxCode) => {
     const _xmlCode =
       code
-        .substring(code.indexOf('return <Form>'), code.indexOf('</Form>'))
+        .substring(code.indexOf('return <Form'), code.indexOf('</Form>'))
         .replace('return', '') + '</Form>'
     string2Component(_xmlCode)
       .then((newComponent) => {
