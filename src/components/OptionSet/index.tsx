@@ -166,39 +166,52 @@ export default forwardRef(
         }
       >
         {isRequest && (
-          <Form
-            initialValues={{
-              reqMethod: 'POST',
-            }}
-          >
-            <Form.Item
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 19 }}
-              label="请求地址"
-              name="reqUrl"
+          <>
+            <Form
+              initialValues={{
+                reqMethod: 'POST',
+              }}
             >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 19 }}
-              label="请求方法"
-              name="reqMethod"
-            >
-              <Select>
-                <Select.Option value="POST">POST</Select.Option>
-                <Select.Option value="GET">GET</Select.Option>
-              </Select>
-            </Form.Item>
-            <Form.Item
-              labelCol={{ span: 4 }}
-              wrapperCol={{ span: 19 }}
-              label="数据格式"
-              name="resFormat"
-            >
-              <Input />
-            </Form.Item>
-          </Form>
+              <Form.Item
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 19 }}
+                label="请求地址"
+                name="reqUrl"
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 19 }}
+                label="请求方法"
+                name="reqMethod"
+              >
+                <Select>
+                  <Select.Option value="POST">POST</Select.Option>
+                  <Select.Option value="GET">GET</Select.Option>
+                </Select>
+              </Form.Item>
+              <Form.Item
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 19 }}
+                label="数据格式"
+                name="resFormat"
+              >
+                <Input />
+              </Form.Item>
+            </Form>
+            <CodeEditor
+              options={{ language: 'typescript' }}
+              style={{
+                width: '100%',
+                height: 300,
+              }}
+              code={'function getData(){let result = []; return result}'}
+            //   onChangeCode={(val) => {
+            //     val && setdataSource(JSON.parse(val))
+            //   }}
+            />
+          </>
         )}
         {!isRequest &&
           (mode === '可视化配置' ? (
