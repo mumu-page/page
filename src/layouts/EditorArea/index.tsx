@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Context } from '../../stores/context'
-import { ComponentList } from '../../components'
+import ComponentList from './ComponentList'
 import './index.less'
 
 export default () => {

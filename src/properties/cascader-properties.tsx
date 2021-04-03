@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Button, Form, Radio } from "antd";
 import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
-import { CustomCollapse, IRefType, SelectModal } from "../components";
+import { CustomCollapse, IRefType, OptionSet } from "../components";
 
 export default function () {
   const modalRef = useRef<IRefType>(null);
@@ -60,7 +60,7 @@ export default function () {
         </CustomCollapse.Panel>
       </CustomCollapse>
 
-      <SelectModal
+      <OptionSet
         ref={modalRef}
         onOk={(options: any) => {
           form.setFieldsValue({

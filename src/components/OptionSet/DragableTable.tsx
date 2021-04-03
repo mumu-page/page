@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Tree } from 'antd'
+import { Button, Divider, Space, Tree, Typography } from 'antd'
 import { cloneDeep } from 'lodash'
 import { MinusSquareOutlined, PlusSquareOutlined } from '@ant-design/icons'
 import EditableCell from './EditableCell'
+import shortid from 'shortid'
 import './index.less'
 
 export interface Option {
@@ -17,30 +18,62 @@ export interface Option {
 
 export function find(
   key: string | number,
-  target: Option[] = [],
-  callback?: (item: Option, i: number, target: Option[]) => void
+  data: Option[] = [],
+  onSuccess?: (
+    item: Option,
+    i: number,
+    target: Option[],
+    data: Option[]
+  ) => void,
+  onFail?: () => void // 没有找到
 ) {
-  for (let i = 0; i < target.length; i++) {
-    const item = target[i]
-    if (item.key === key) {
-      callback?.(item, i, target)
-      return target
+  let flag = false
+  function next(_key: string | number, _target: Option[] = []) {
+    for (let i = 0; i < _target.length; i++) {
+      const item = _target[i]
+      if (item.key === _key) {
+        flag = true
+        onSuccess?.(item, i, _target, data)
+        return _target
+      }
+      if (Array.isArray(item.children)) {
+        next(_key, item.children)
+      }
     }
-    if (Array.isArray(item.children)) {
-      find(key, item.children, callback)
-    }
+    return _target
   }
-  return target
+  const result = next(key, data)
+  if (!flag) {
+    onFail?.()
+  }
+  return result
+}
+
+function asyncFind(
+  key: string | number,
+  target: Option[] = []
+): Promise<{ item: Option; i: number; target: Option[]; data: Option[] }> {
+  return new Promise((resolve, reject) => {
+    find(
+      key,
+      target,
+      (item, i, target, data) => resolve({ item, i, target, data }),
+      reject
+    )
+  })
 }
 
 export interface IDragableTable {
   dataSource: Option[] | undefined
-  onChange?: (values: Option[], selectedKeys: (string | number)[]) => void
+  onChange?: (
+    values: Option[],
+    updateValue: React.Dispatch<React.SetStateAction<Option[]>>
+  ) => void
 }
 
 export default (props: IDragableTable) => {
   const { dataSource = [], onChange } = props
-  const [treeData, setTreeData] = useState<Option[]>(dataSource)
+  const [treeData, setTreeData] = useState<Option[]>([])
   const [selectedKeys, setSelectedKeys] = useState<(string | number)[]>([])
 
   const onDragEnter = (info: any) => {
@@ -110,6 +143,25 @@ export default (props: IDragableTable) => {
     }
 
     setTreeData(data)
+  }
+
+  const add = (newItem: Option) => {
+    if (!selectedKeys?.length) {
+      const _data = cloneDeep(treeData)
+      _data?.push(newItem)
+      setTreeData(_data)
+    } else {
+      asyncFind(selectedKeys[0], cloneDeep(treeData))
+        .then(({ item, i, target, data }) => {
+          ;(item.children || (item.children = [])).push(newItem)
+          setTreeData(cloneDeep(data))
+        })
+        .catch((e) => {
+          const _data = cloneDeep(treeData)
+          _data?.push(newItem)
+          setTreeData(cloneDeep(_data))
+        })
+    }
   }
 
   const del = (key: string | number) => {
@@ -199,11 +251,11 @@ export default (props: IDragableTable) => {
 
   useEffect(() => {
     setTreeData(dataSource)
-  }, [dataSource])
+  }, [])
 
   useEffect(() => {
-    onChange?.(treeData, selectedKeys)
-  }, [treeData, selectedKeys])
+    onChange?.(cloneDeep(treeData), setTreeData)
+  }, [treeData])
 
   return (
     <>
@@ -220,11 +272,31 @@ export default (props: IDragableTable) => {
         onDragEnter={onDragEnter}
         onDrop={onDrop}
         onSelect={(selectedKeys) => {
-          /* if (selectedKeys.length)  */ setSelectedKeys(selectedKeys)
+          setSelectedKeys(selectedKeys)
         }}
       >
         {renderTreeNodes(treeData)}
       </Tree>
+      <Space
+        style={{
+          marginTop: 10,
+        }}
+        split={<Divider type="vertical" />}
+      >
+        <Typography.Link
+          onClick={() => {
+            const newId = shortid()
+            add({
+              label: '新的选项',
+              value: newId,
+              key: newId,
+            })
+          }}
+        >
+          添加一项
+        </Typography.Link>
+        {/* <Typography.Link onClick={() => {}}>添加分组</Typography.Link> */}
+      </Space>
     </>
   )
 }

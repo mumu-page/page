@@ -1,10 +1,10 @@
 import React from 'react'
 import { Form } from 'antd'
-import { IFormComProp } from '../../stores/typings'
-import { isCheck, isDatePicker, isRenderFormItem } from '../../utils/utils'
-import { getComponent } from '../../constants'
+import { IFormComProp } from '../../../stores/typings'
+import { isCheck, isDatePicker, isRenderFormItem } from '../../../utils/utils'
+import { getComponent } from '../../../constants'
 import * as moment from 'moment'
-import { getIcon } from '../../utils/genrate'
+import { getIcon } from '../../../utils/genrate'
 
 // 控件设计时默认不能交互
 const disableCom = {
@@ -23,6 +23,7 @@ export default (prop: IFormComProp) => {
     componentProps = {},
     rowProps = {},
     form,
+    className,
     style,
   } = prop
 
@@ -70,6 +71,7 @@ export default (prop: IFormComProp) => {
     <Form.Item
       {...propObj}
       style={style}
+      className={className}
       valuePropName={isCheck(componentKey) ? 'checked' : 'value'}
     >
       {React.cloneElement(getComponent(componentKey) || <></>, {

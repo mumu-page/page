@@ -1,10 +1,16 @@
-import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react'
-import { Button, Divider, Modal, Radio, Space, Typography } from 'antd'
+import React, {
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+} from 'react'
+import { Button, Form, Input, Modal, Radio, Select } from 'antd'
 import Draggable from 'react-draggable'
-import { cloneDeep, uniqueId } from 'lodash'
-import DragableTable, { find, Option } from './DragableTable'
-import './index.less'
+import DragableTable, { Option } from './DragableTable'
 import { CodeEditor } from '..'
+import { cloneDeep } from 'lodash'
+import './index.less'
 
 export interface IRefType {
   showModal: () => void
@@ -31,8 +37,6 @@ const _treeData: Option[] = [
     value: 'key2',
   },
 ]
-
-let selectedKeys: number | string = ''
 export default forwardRef(
   (
     props: any,
@@ -41,6 +45,7 @@ export default forwardRef(
     const { onOk } = props
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [disabled, setDisabled] = useState(false)
+    const [isRequest, setIsRequest] = useState(false)
     const [mode, setMode] = useState<'可视化配置' | '代码配置'>('可视化配置')
     const [bounds, setBounds] = useState({
       left: 0,
@@ -62,7 +67,7 @@ export default forwardRef(
     const handleOk = () => {
       setIsModalVisible(false)
       if (typeof onOk === 'function') {
-        onOk(dataSource)
+        onOk(cloneDeep(dataSource))
       }
     }
 
@@ -114,16 +119,32 @@ export default forwardRef(
             onBlur={() => {}}
             // end
           >
-            <span>配置数据</span>
-            <Radio.Group
-              value={mode}
-              onChange={(e) => {
-                setMode(e.target.value)
-              }}
-            >
-              <Radio.Button value="可视化配置">可视化配置</Radio.Button>
-              <Radio.Button value="代码配置">代码配置</Radio.Button>
-            </Radio.Group>
+            <span>
+              配置数据
+              <Button
+                type="link"
+                onClick={() => {
+                  setIsRequest(!isRequest)
+                }}
+              >
+                {isRequest ? '切换固定配置' : '切换动态配置'}
+              </Button>
+            </span>
+            {!isRequest && (
+              <Radio.Group
+                size="small"
+                style={{
+                  lineHeight: 0,
+                }}
+                value={mode}
+                onChange={(e) => {
+                  setMode(e.target.value)
+                }}
+              >
+                <Radio.Button value="可视化配置">可视化配置</Radio.Button>
+                <Radio.Button value="代码配置">代码配置</Radio.Button>
+              </Radio.Group>
+            )}
           </div>
         }
         onCancel={hideModal}
@@ -144,71 +165,69 @@ export default forwardRef(
           </Button>
         }
       >
-        {mode === '可视化配置' ? (
-          <div
-            style={{ display: mode === '可视化配置' ? 'block' : 'none' }}
-            onMouseEnter={() => {
-              setDisabled(true)
+        {isRequest && (
+          <Form
+            initialValues={{
+              reqMethod: 'POST',
             }}
           >
-            <DragableTable
-              dataSource={dataSource}
-              onChange={(val, _selectedKeys) => {
-                setdataSource(val)
-                selectedKeys = _selectedKeys?.[0]
+            <Form.Item
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 19 }}
+              label="请求地址"
+              name="reqUrl"
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 19 }}
+              label="请求方法"
+              name="reqMethod"
+            >
+              <Select>
+                <Select.Option value="POST">POST</Select.Option>
+                <Select.Option value="GET">GET</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              labelCol={{ span: 4 }}
+              wrapperCol={{ span: 19 }}
+              label="数据格式"
+              name="resFormat"
+            >
+              <Input />
+            </Form.Item>
+          </Form>
+        )}
+        {!isRequest &&
+          (mode === '可视化配置' ? (
+            <div
+              style={{ display: mode === '可视化配置' ? 'block' : 'none' }}
+              onMouseEnter={() => {
+                setDisabled(true)
+              }}
+            >
+              <DragableTable
+                dataSource={dataSource}
+                onChange={(val) => {
+                  setdataSource(val)
+                }}
+              />
+            </div>
+          ) : (
+            <CodeEditor
+              options={{ language: 'json' }}
+              style={{
+                width: '100%',
+                height: 300,
+              }}
+              code={JSON.stringify(dataSource)}
+              onChangeCode={(val) => {
+                val && setdataSource(JSON.parse(val))
               }}
             />
-            <Space
-              style={{
-                marginTop: 10,
-              }}
-              split={<Divider type="vertical" />}
-            >
-              <Typography.Link
-                onClick={() => {
-                  if (!selectedKeys) {
-                    setdataSource((state) => {
-                      state.push({
-                        label: '12141',
-                        value: uniqueId(),
-                        key: uniqueId(),
-                      })
-                      return cloneDeep(state)
-                    })
-                    return
-                  }
-                  const newData = find(
-                    selectedKeys,
-                    cloneDeep(dataSource),
-                    (item, i, target) => {
-                      ;(item.children || (item.children = [])).push({
-                        label: '12141',
-                        value: uniqueId(),
-                        key: uniqueId(),
-                      })
-                    }
-                  )
-                  setdataSource(newData)
-                }}
-              >
-                添加一项
-              </Typography.Link>
-              {/* <Typography.Link onClick={() => {}}>添加分组</Typography.Link> */}
-            </Space>
-          </div>
-        ) : (
-          <CodeEditor
-            options={{ language: 'json' }}
-            style={{
-              width: '100%',
-              height: 300,
-            }}
-            code={JSON.stringify(dataSource)}
-            onChangeCode={(val) => {
-              val && setdataSource(JSON.parse(val))
-            }}
-          />
-        )}
+          ))}
       </Modal>
     )
   }
