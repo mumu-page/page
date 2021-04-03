@@ -22,9 +22,6 @@ export default (
   draft: ICommonState,
   action: { type: string; payload?: any }
 ) => ({
-  [SET_TARGET]: () => {
-    draft.target = merge(cloneDeep(draft.target), cloneDeep(action.payload))
-  },
   [DELETE_TARGET]: () => {
     draft.target = INITAL_STATE.target
   },
@@ -124,6 +121,9 @@ export default (
     const findCurrent = (coms: IFormComProp[]) => {
       coms?.forEach((item, index) => {
         if (item.id === draft.target?.id) {
+          if (item?.componentProps?.options) {
+            item.componentProps.options = []
+          }
           item = merge(item, data)
         }
         if (item?.children) {

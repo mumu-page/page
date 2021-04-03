@@ -8,7 +8,11 @@ export default (
   action: { type: string; payload?: any }
 ) => ({
   [SET_TARGET]: () => {
-    draft.target = merge(cloneDeep(draft.target), cloneDeep(action.payload))
+    if (draft.target?.componentProps?.options) {
+      draft.target.componentProps.options = []
+    }
+    const newData = merge(cloneDeep(draft.target), cloneDeep(action.payload))
+    draft.target = newData
   },
   [DELETE_TARGET]: () => {
     draft.target = INITAL_STATE.target
