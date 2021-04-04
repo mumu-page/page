@@ -24,6 +24,8 @@ export default () => {
     bounds,
     verticalGuidelines,
     horizontalGuidelines,
+    draggable = true,
+    resizable = true,
   } = moveableOptions as any;
 
   const onWinResize = useCallback((leftVal = 0, rightVal = 0) => {
@@ -78,7 +80,7 @@ export default () => {
       bounds={bounds}
       // ------------------ 限制范围结束 ------------------
       // ------------------ 拖拽开始 ------------------
-      draggable={true}
+      draggable={draggable}
       throttleDrag={0}
       startDragRotate={0}
       throttleDragRotate={0}
@@ -87,7 +89,7 @@ export default () => {
       origin={false}
       padding={{ left: 0, top: 0, right: 0, bottom: 0 }}
       // ------------------ 调整大小开始 ------------------
-      resizable={true}
+      resizable={resizable}
       keepRatio={false}
       throttleResize={0}
       edge={false}

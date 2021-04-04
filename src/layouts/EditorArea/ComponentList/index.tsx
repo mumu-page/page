@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Form } from 'antd'
+import { Col, Form, Row } from 'antd'
 import { useEffect } from 'react'
 import ComponentItem from '../ComponentItem'
 import { ContextMenu } from '../../../components'
@@ -74,6 +74,12 @@ export default function Container(props: EditorAreaProps) {
         frame,
         elementGuidelines,
         target,
+        /**
+         * 禁用调整大小和拖动
+         * 原因：Row Col 和 ReactiveMoveable 有冲突
+         */
+        draggable: false,
+        resizable: false,
       },
     })
   }
@@ -146,8 +152,7 @@ export default function Container(props: EditorAreaProps) {
       }}
       form={form}
     >
-      {/* Row Col 和 ReactiveMoveable 有冲突  */}
-      <div>
+      <Row>
         {componentList.map((item: IFormComProp, index: number) => {
           const {
             id,
@@ -176,7 +181,7 @@ export default function Container(props: EditorAreaProps) {
           }
 
           return (
-            <div
+            <Col
               key={id}
               style={style}
               className={Target_ClassName}
@@ -213,10 +218,10 @@ export default function Container(props: EditorAreaProps) {
                 componentProps={componentProps}
                 componentKey={componentKey}
               />
-            </div>
+            </Col>
           )
         })}
-      </div>
+      </Row>
       <ContextMenu ref={contenxtMenu}>
         <Menu options={options} onClick={handleContextMenuClick} />
       </ContextMenu>
