@@ -1,47 +1,23 @@
 import { cloneDeep, isInteger, merge } from 'lodash'
 import shortid from 'shortid'
 import {
-  DELETE_TARGET,
-  SET_TARGET,
   SET_COMPONENT_LIST,
   DEL_COMPONENT_LIST,
   COPY_COMPONENT_LIST,
   INSERT_COMPONENT_LIST,
   UPDATE_COMPONENT_LIST_BY_TARGET,
   UPDATE_COMPONENT_LIST_AND_TARGET,
-  SET_TARGET_BY_COMPONENT_LIST,
   DELETE_ALL_COMPONENT_LIST_AND_TARGET,
   UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
   PUT_COMPONENT_LIST,
   RESET_COMPONENT_LAYOUT,
 } from '../action-type'
-import { INITAL_STATE } from '../context'
 import { ICommonState, IFormComProp } from '../typings'
 
 export default (
   draft: ICommonState,
   action: { type: string; payload?: any }
 ) => ({
-  [DELETE_TARGET]: () => {
-    draft.target = INITAL_STATE.target
-  },
-  [SET_TARGET_BY_COMPONENT_LIST]: () => {
-    const findSelectedItem = (data: IFormComProp[]) => {
-      for (var i = 0; i < data.length; i++) {
-        const item = data[i]
-        if (item?.children?.length) {
-          findSelectedItem(item?.children)
-        }
-        if (item?.id === action.payload?.id) {
-          item.rowProps = draft.target?.rowProps
-          item.formProps = draft.target?.formProps
-          draft.target = item
-          break
-        }
-      }
-    }
-    findSelectedItem(draft.componentList)
-  },
   // 清空控件列表和当前拖拽控件数据
   [DELETE_ALL_COMPONENT_LIST_AND_TARGET]: () => {
     draft.componentList = []
@@ -121,7 +97,7 @@ export default (
     const findCurrent = (coms: IFormComProp[]) => {
       coms?.forEach((item, index) => {
         if (item.id === draft.target?.id) {
-          if (item?.componentProps?.options) {
+          if (data.componentProps?.options && item?.componentProps?.options) {
             item.componentProps.options = []
           }
           item = merge(item, data)

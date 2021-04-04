@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-  useEffect,
-} from 'react'
+import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react'
 import { Button, Form, Input, Modal, Radio, Select } from 'antd'
 import Draggable from 'react-draggable'
 import DragableTable, { Option } from './DragableTable'
@@ -16,6 +10,25 @@ export interface IRefType {
   showModal: () => void
   hideModal: () => void
   setdataSource: (dataSource: any) => void
+}
+
+function getFunction(reqUrl: any, reqMethod: any) {
+  return `
+/**
+ * 请不要修改方法体以外的内容
+ */
+function getData(){
+    return fetch('${reqUrl}', {method: ${reqMethod}}).then(res => {
+    return res.json()
+}).then(res => {
+    return res
+    // TODO 自定义返回数据
+})}`
+}
+
+const initialValues = {
+  reqUrl: '/react-visual-editor/options.mock.json',
+  reqMethod: 'GET',
 }
 
 const _treeData: Option[] = [
@@ -45,6 +58,9 @@ export default forwardRef(
     const { onOk } = props
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [disabled, setDisabled] = useState(false)
+    const [fnCode, setFnCode] = useState(
+      getFunction(initialValues.reqUrl, initialValues.reqMethod)
+    )
     const [isRequest, setIsRequest] = useState(false)
     const [mode, setMode] = useState<'可视化配置' | '代码配置'>('可视化配置')
     const [bounds, setBounds] = useState({
@@ -55,6 +71,7 @@ export default forwardRef(
     })
     const [dataSource, setdataSource] = useState<Option[]>(_treeData)
     const draggleRef = useRef(null)
+    const [form] = Form.useForm()
 
     const showModal = () => {
       setIsModalVisible(true)
@@ -66,8 +83,14 @@ export default forwardRef(
 
     const handleOk = () => {
       setIsModalVisible(false)
-      if (typeof onOk === 'function') {
-        onOk(cloneDeep(dataSource))
+      if (isRequest) {
+        if (typeof onOk === 'function') {
+          onOk([])
+        }
+      } else {
+        if (typeof onOk === 'function') {
+          onOk(cloneDeep(dataSource))
+        }
       }
     }
 
@@ -82,6 +105,11 @@ export default forwardRef(
         top: -top + uiData?.y,
         bottom: clientHeight - (bottom - uiData?.y),
       })
+    }
+
+    const onValuesChange = (_: any, allValues: any) => {
+      const { reqUrl, reqMethod } = allValues
+      setFnCode(getFunction(reqUrl, reqMethod))
     }
 
     useImperativeHandle(
@@ -168,9 +196,9 @@ export default forwardRef(
         {isRequest && (
           <>
             <Form
-              initialValues={{
-                reqMethod: 'POST',
-              }}
+              form={form}
+              onValuesChange={onValuesChange}
+              initialValues={initialValues}
             >
               <Form.Item
                 labelCol={{ span: 4 }}
@@ -191,25 +219,17 @@ export default forwardRef(
                   <Select.Option value="GET">GET</Select.Option>
                 </Select>
               </Form.Item>
-              <Form.Item
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 19 }}
-                label="数据格式"
-                name="resFormat"
-              >
-                <Input />
-              </Form.Item>
             </Form>
             <CodeEditor
-              options={{ language: 'typescript' }}
+              options={{ language: 'javascript' }}
               style={{
                 width: '100%',
                 height: 300,
               }}
-              code={'function getData(){let result = []; return result}'}
-            //   onChangeCode={(val) => {
-            //     val && setdataSource(JSON.parse(val))
-            //   }}
+              code={fnCode}
+              onChangeCode={(val) => {
+                val && setFnCode(val)
+              }}
             />
           </>
         )}
