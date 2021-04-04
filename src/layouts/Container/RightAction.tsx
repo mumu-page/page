@@ -91,7 +91,7 @@ export default (props: RightActionType) => {
   return (
     <>
       <Button
-        icon={<PlayCircleOutlined style={handleColor("run")} />}
+        icon={<EyeOutlined style={handleColor("run")} />}
         type={type === "run" ? "primary" : "text"}
         onClick={() => {
           // handleType("run");
@@ -105,7 +105,7 @@ export default (props: RightActionType) => {
           center();
         }}
       />
-      <Button
+      {/* <Button
         icon={<EyeOutlined style={handleColor("preview")} />}
         type={type === "preview" ? "primary" : "text"}
         size="middle"
@@ -113,7 +113,7 @@ export default (props: RightActionType) => {
           handleType("preview");
           handlePreview();
         }}
-      />
+      /> */}
       <Button
         icon={<VerticalAlignBottomOutlined style={handleColor("download")} />}
         type={type === "download" ? "primary" : "text"}

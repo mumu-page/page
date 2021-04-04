@@ -26,9 +26,7 @@ const getNewOptions = (data: OptionGroup[]) => {
             name: id,
             label,
           },
-          colProps: {
-            span: 24,
-          },
+          colProps: {},
           rowProps: {},
           componentProps: {},
           layout: {

@@ -4,6 +4,7 @@ import React, {
   useImperativeHandle,
   useState,
   useCallback,
+  useEffect,
 } from 'react'
 import { Button, Tabs, Drawer, message } from 'antd'
 import { PreviewInstanceProps, PreviewProps } from './typings'
@@ -123,8 +124,10 @@ export default forwardRef(function (
       destroyOnClose
       closeIcon={<CloseOutlined style={{ color: folded ? '#999' : 'white' }} />}
       onClose={() => {
-        setFolded(true)
-        setVisible(false)
+        setTimeout(() => {
+          setFolded(true)
+          setVisible(false)
+        })
       }}
     >
       <div className="preview">

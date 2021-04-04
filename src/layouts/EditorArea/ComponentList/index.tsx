@@ -170,8 +170,6 @@ export default function Container(props: EditorAreaProps) {
             style.width = `${width}px`
           } else if (typeof width === 'string') {
             style.width = width
-          } else {
-            style.width = `100%`
           }
           if (height) {
             style.height = `${height}px`
