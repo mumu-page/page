@@ -1,24 +1,19 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { Form, Select, InputNumber, Typography, Switch } from "antd";
-import { Context } from "../stores/context";
-import {
-  RESET_COMPONENT_LAYOUT,
-  SET_TARGET,
-  SET_MOVEABLE_OPTIONS,
-  UPDATE_COMPONENT_LIST_BY_TARGET,
-} from "../stores/action-type";
-import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
-import CheckboxField from "../components/FormFields/CheckboxField";
-import { decodeKey, encodeKey, findTarget, refreshTarget } from "../utils/utils";
-import { CustomCollapse, Title } from "../components";
-import { debounce, merge } from "lodash";
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { Form, Select, InputNumber, Typography, Switch } from 'antd'
+import { Context } from '../stores/context'
+import { RESET_COMPONENT_LAYOUT, SET_TARGET } from '../stores/action-type'
+import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
+import CheckboxField from '../components/FormFields/CheckboxField'
+import { refreshTarget } from '../utils/utils'
+import { CustomCollapse, Title } from '../components'
+import { debounce, merge } from 'lodash'
 
 // 默认全局布局
 function genLayout(colNum: 1 | 2 | 3 | 4, row = 24) {
   if (isNaN(Number(colNum))) {
-    colNum = 1;
+    colNum = 1
   }
-  const col = Math.floor(Number(row / colNum));
+  const col = Math.floor(Number(row / colNum))
   return {
     xs: col,
     sm: col,
@@ -26,32 +21,7 @@ function genLayout(colNum: 1 | 2 | 3 | 4, row = 24) {
     lg: col,
     xl: col,
     xxl: col,
-  };
-}
-
-const global = [
-  "all.align",
-  "all.justify",
-  "all.colNum",
-  "all.gutter",
-  "all.span",
-  "all.xs",
-  "all.md",
-  "all.lg",
-  "all.xl",
-  "all.xxl",
-  "all.wrap",
-];
-/**
- * 是否是局部/全局布局
- */
-function hasKey(changedValues: { [key: string]: any }, keys: string[]) {
-  for (let i = 0; i < keys.length; i++) {
-    if (keys[i] in changedValues) {
-      return true;
-    }
   }
-  return false;
 }
 
 /**
@@ -60,72 +30,54 @@ function hasKey(changedValues: { [key: string]: any }, keys: string[]) {
  * 专业模式：支持精准设置多种属性，适用于专业人员。
  */
 export default function () {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const {
     target: currentDragComponent,
     moveableOptions,
     commonDispatch,
-  } = useContext(Context);
-  const { id, colProps = {}, rowProps = {} } = currentDragComponent || {};
-  const { target } = moveableOptions || {};
-  const [mode, setMode] = useState<"专业模式" | "简洁模式">("简洁模式");
+  } = useContext(Context)
+  const { id, rowProps = {} } = currentDragComponent || {}
+  const { target } = moveableOptions || {}
+  const [mode, setMode] = useState<'专业模式' | '简洁模式'>('简洁模式')
 
   const onValuesChange = useCallback(
     debounce((changedValues: any, allValues: any) => {
-      const newAllValues = decodeKey(allValues, ["all", "single"]);
-      if (hasKey(changedValues, global) && mode === "简洁模式") {
-        newAllValues.all = merge(
-          newAllValues.all,
-          genLayout(newAllValues.all?.colNum)
-        );
+      let newAllValues = allValues
+      if (mode === '简洁模式') {
+        newAllValues = merge(allValues, genLayout(allValues.colNum))
         // 重置layout属性
         commonDispatch({
           type: RESET_COMPONENT_LAYOUT,
-          payload: {
-            colNum: newAllValues.all?.colNum,
-            gutter: newAllValues.all?.gutter,
-          },
-        });
+        })
       }
       // 更新当前组件
       commonDispatch({
         type: SET_TARGET,
         payload: {
           id,
-          colProps: newAllValues.single,
-          rowProps: newAllValues.all,
+          rowProps: newAllValues,
         },
-      });
+      })
       // 重新获取当前选中元素
-      refreshTarget(target, commonDispatch);
+      refreshTarget(target, commonDispatch)
     }, 200),
     [currentDragComponent.id, mode]
-  );
+  )
 
   useEffect(() => {
-    const values = encodeKey(
-      {
-        key: "all",
-        data: rowProps,
-      },
-      {
-        key: "single",
-        data: colProps,
-      }
-    );
-    form.resetFields();
-    form.setFieldsValue(values);
-  }, [currentDragComponent?.id]);
+    form.resetFields()
+    form.setFieldsValue(rowProps)
+  }, [currentDragComponent?.id])
 
   return (
     <Form
       {...FORM_PROPERTIES_OPTIONS}
       form={form}
       initialValues={{
-        "all.align": "top",
-        "all.gutter": 0,
-        "all.justify": "start",
-        "all.wrap": true,
+        align: 'top',
+        gutter: 0,
+        justify: 'start',
+        wrap: true,
       }}
       onValuesChange={onValuesChange}
     >
@@ -134,18 +86,18 @@ export default function () {
         extra={
           <Typography.Link
             onClick={() => {
-              setMode(mode === "简洁模式" ? "专业模式" : "简洁模式");
+              setMode(mode === '简洁模式' ? '专业模式' : '简洁模式')
             }}
           >
             <Switch
               checkedChildren="专业模式"
               unCheckedChildren="简洁模式"
-              checked={mode === "专业模式"}
+              checked={mode === '专业模式'}
             />
           </Typography.Link>
         }
       />
-      <CustomCollapse defaultActiveKey={["全局布局"]}>
+      <CustomCollapse defaultActiveKey={['全局布局']}>
         <CustomCollapse.Panel
           header={
             <Form.Item
@@ -154,16 +106,16 @@ export default function () {
               className="mb-0"
             ></Form.Item>
           }
-          key={"全局布局"}
+          key={'全局布局'}
         >
-          <Form.Item label="垂直对齐" name="all.align">
+          <Form.Item label="垂直对齐" name="align">
             <Select>
               <Select.Option value="top">靠上</Select.Option>
               <Select.Option value="middle">居中</Select.Option>
               <Select.Option value="bottom">靠下</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label="水平排列" name="all.justify">
+          <Form.Item label="水平排列" name="justify">
             <Select>
               <Select.Option value="start">水平靠左分布</Select.Option>
               <Select.Option value="middle">水平靠右分布</Select.Option>
@@ -174,9 +126,9 @@ export default function () {
               </Select.Option>
             </Select>
           </Form.Item>
-          {mode === "简洁模式" && (
+          {mode === '简洁模式' && (
             <>
-              <Form.Item label="列数" name="all.colNum">
+              <Form.Item label="列数" name="colNum">
                 <Select>
                   <Select.Option value="1">一列</Select.Option>
                   <Select.Option value="2">二列</Select.Option>
@@ -186,52 +138,52 @@ export default function () {
               </Form.Item>
             </>
           )}
-          {mode === "专业模式" && (
+          {mode === '专业模式' && (
             <>
               <Form.Item
                 label="屏幕 * 响应式栅格"
                 labelCol={{ span: 17 }}
-                name="all.span"
+                name="span"
               >
                 <InputNumber className="w-100" min={0} max={24} />
               </Form.Item>
               <Form.Item
-                name="all.xs"
+                name="xs"
                 label="屏幕 < 576px 响应式栅格"
                 labelCol={{ span: 17 }}
               >
                 <InputNumber className="w-100" min={0} max={24} />
               </Form.Item>
               <Form.Item
-                name="all.sm"
+                name="sm"
                 label="屏幕 ≥ 576px 响应式栅格"
                 labelCol={{ span: 17 }}
               >
                 <InputNumber className="w-100" min={0} max={24} />
               </Form.Item>
               <Form.Item
-                name="all.md"
+                name="md"
                 label="屏幕 ≥ 768px 响应式栅格"
                 labelCol={{ span: 17 }}
               >
                 <InputNumber className="w-100" min={0} max={24} />
               </Form.Item>
               <Form.Item
-                name="all.lg"
+                name="lg"
                 label="屏幕 ≥ 992px 响应式栅格"
                 labelCol={{ span: 17 }}
               >
                 <InputNumber className="w-100" min={0} max={24} />
               </Form.Item>
               <Form.Item
-                name="all.xl"
+                name="xl"
                 label="屏幕 ≥ 1200px 响应式栅格"
                 labelCol={{ span: 17 }}
               >
                 <InputNumber className="w-100" min={0} max={24} />
               </Form.Item>
               <Form.Item
-                name="all.xxl"
+                name="xxl"
                 label="屏幕 ≥ 1600px 响应式栅格"
                 labelCol={{ span: 17 }}
               >
@@ -239,14 +191,14 @@ export default function () {
               </Form.Item>
             </>
           )}
-          <Form.Item label="栅格间隔" name="all.gutter" labelCol={{ span: 17 }}>
+          <Form.Item label="栅格间隔" name="gutter" labelCol={{ span: 17 }}>
             <InputNumber className="w-100" min={0} max={100} />
           </Form.Item>
-          <Form.Item label="" name="all.wrap" valuePropName="checked">
+          <Form.Item label="" name="wrap" valuePropName="checked">
             <CheckboxField tooltipTitle="是否自动换行" text="自动换行" />
           </Form.Item>
         </CustomCollapse.Panel>
       </CustomCollapse>
     </Form>
-  );
+  )
 }

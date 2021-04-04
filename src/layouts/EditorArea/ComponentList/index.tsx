@@ -8,6 +8,8 @@ import {
   CopyOutlined,
   SettingOutlined,
   DeleteOutlined,
+  VerticalAlignTopOutlined,
+  VerticalAlignBottomOutlined
 } from '@ant-design/icons'
 import { ICommonDispatch, IFormComProp } from '../../../stores/typings'
 import { findTarget, isDatePicker } from '../../../utils/utils'
@@ -33,6 +35,8 @@ enum HANDLE_TYPE {
   copy = '复制这个',
   setting = '设置属性',
   del = '删除这个',
+  toTop = '上移',
+  topBottom = '下移',
 }
 
 const options = [
@@ -51,6 +55,18 @@ const options = [
     icon: <DeleteOutlined />,
     label: HANDLE_TYPE.del,
     type: 'del',
+  },
+  {
+    key: 'toTop',
+    icon: <VerticalAlignTopOutlined />,
+    label: HANDLE_TYPE.toTop,
+    type: 'toTop',
+  },
+  {
+    key: 'topBottom',
+    icon: <VerticalAlignBottomOutlined />,
+    label: HANDLE_TYPE.topBottom,
+    type: 'topBottom',
   },
 ]
 
@@ -152,7 +168,7 @@ export default function Container(props: EditorAreaProps) {
       }}
       form={form}
     >
-      <Row>
+      <Row {...rowProps}>
         {componentList.map((item: IFormComProp, index: number) => {
           const {
             id,
@@ -183,17 +199,10 @@ export default function Container(props: EditorAreaProps) {
           return (
             <Col
               key={id}
-              style={style}
-              className={Target_ClassName}
-              data-id={id}
-              onClick={(e) => {
-                e.stopPropagation()
-                commonDispatch({
-                  type: SET_TARGET_BY_COMPONENT_LIST,
-                  payload: { id },
-                })
-                // 无论dom元素如何变，componentList没有变
-                setMoveableOption(id)
+              //   style={style}
+              {...{
+                ...rowProps,
+                ...selfColProps,
               }}
               onContextMenu={(e) => {
                 e.preventDefault()
@@ -206,18 +215,32 @@ export default function Container(props: EditorAreaProps) {
                 ;(contenxtMenu.current as any)?.show?.(e)
               }}
             >
-              <ComponentItem
-                id={id}
-                key={id}
-                form={form}
-                children={children}
-                colProps={colProps}
-                rowProps={rowProps}
-                formProps={formProps}
-                formItemProps={formItemProps}
-                componentProps={componentProps}
-                componentKey={componentKey}
-              />
+              <div
+                data-id={id}
+                className={Target_ClassName}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  commonDispatch({
+                    type: SET_TARGET_BY_COMPONENT_LIST,
+                    payload: { id },
+                  })
+                  // 无论dom元素如何变，componentList没有变
+                  setMoveableOption(id)
+                }}
+              >
+                <ComponentItem
+                  id={id}
+                  key={id}
+                  form={form}
+                  children={children}
+                  colProps={colProps}
+                  rowProps={rowProps}
+                  formProps={formProps}
+                  formItemProps={formItemProps}
+                  componentProps={componentProps}
+                  componentKey={componentKey}
+                />
+              </div>
             </Col>
           )
         })}

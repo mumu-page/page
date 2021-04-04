@@ -22,7 +22,7 @@ export default function () {
     moveableOptions,
     commonDispatch,
   } = useContext(Context)
-  const { id, colProps = {}, rowProps = {} } = currentDragComponent || {}
+  const { id, colProps = {}, } = currentDragComponent || {}
   const { target } = moveableOptions || {}
   const [mode, setMode] = useState<'专业模式' | '精简模式'>('精简模式')
 

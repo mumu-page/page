@@ -87,7 +87,7 @@ function createFormItem(
     componentProps,
     componentKey,
     colProps = {},
-    layout = {},
+    // layout = {},
   } = item
   const { rowProps = {}, formProps = {} } = currentDragComponent
   const { colNum, gutter, align, justify, wrap, ...otherGlobalProps } = rowProps
@@ -95,7 +95,7 @@ function createFormItem(
   const { labelCol, wrapperCol } = formItemProps
   const { colNum: _colNum, ...otherColProps } = colProps
   /**样式开始 */
-  const { frame = { translate: [0, 0, 0] }, height, width } = layout
+  /*   const { frame = { translate: [0, 0, 0] }, height, width } = layout
   const { translate } = frame
   const style = {} as any
   // 排除不需要添加transform的样式
@@ -115,11 +115,11 @@ function createFormItem(
   }
   if (height) {
     style.height = `${height}px`
-  }
+  } */
   /**样式结束 */
   const colPropsStr = generateProps({ ...otherGlobalProps, ...otherColProps })
   const formItemPropsStr = generateProps({
-    style,
+    // style,
     ...formItemProps,
     labelCol: {
       ...labelColG,

@@ -11,6 +11,7 @@ import {
   UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN,
   PUT_COMPONENT_LIST,
   RESET_COMPONENT_LAYOUT,
+  SET_COMPONENT_LAYOUT,
 } from '../action-type'
 import { ICommonState, IFormComProp } from '../typings'
 
@@ -128,6 +129,12 @@ export default (
   },
   // 重置layout属性
   [RESET_COMPONENT_LAYOUT]: () => {
+    draft.componentList.forEach((item, index) => {
+      item.layout = {}
+    })
+  },
+  // 根据列数重新计算layout属性
+  [SET_COMPONENT_LAYOUT]: () => {
     const { colNum, gutter } = action.payload || {}
     draft.componentList.forEach((item, index) => {
       const layout = {
