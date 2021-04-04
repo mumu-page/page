@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { Col, Form, Row } from 'antd'
 import { useEffect } from 'react'
 import ComponentItem from '../ComponentItem'
@@ -9,7 +9,7 @@ import {
   SettingOutlined,
   DeleteOutlined,
   VerticalAlignTopOutlined,
-  VerticalAlignBottomOutlined
+  VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
 import { ICommonDispatch, IFormComProp } from '../../../stores/typings'
 import { findTarget, isDatePicker } from '../../../utils/utils'
@@ -22,9 +22,12 @@ import {
   SET_TARGET_BY_COMPONENT_LIST,
 } from '../../../stores/action-type'
 import Menu from '../../../components/ContextMenu/Menu'
-import './index.less'
-import { SHOW_SETTING_PANL } from '../../../constants/events'
+import {
+  INFINITEVIEWER_SCROLL,
+  SHOW_SETTING_PANL,
+} from '../../../constants/events'
 import eventBus from '../../../utils/eventBus'
+import './index.less'
 
 interface EditorAreaProps extends ICommonDispatch<object> {
   componentList: IFormComProp[]
@@ -136,8 +139,16 @@ export default function Container(props: EditorAreaProps) {
     }
   }
 
+  const onScroll = useCallback(() => {
+    ;(contenxtMenu.current as any)?.hide?.()
+  }, [])
+
   useEffect(() => {
     setMoveableOption(target.id)
+    eventBus.addListener(INFINITEVIEWER_SCROLL, onScroll)
+    return () => {
+      eventBus.removeListener(INFINITEVIEWER_SCROLL, onScroll)
+    }
   }, [])
 
   useEffect(() => {

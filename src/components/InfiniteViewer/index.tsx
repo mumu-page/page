@@ -3,7 +3,7 @@ import InfiniteViewer from 'react-infinite-viewer'
 import Ruler from './Ruler'
 import './index.less'
 import eventBus from '../../utils/eventBus'
-import { SCROLL_CENTER } from '../../constants/events'
+import { INFINITEVIEWER_SCROLL, SCROLL_CENTER } from '../../constants/events'
 import { VIEWPORT_LAYOUT } from '../../constants/constants'
 
 /**
@@ -51,6 +51,7 @@ export default (props: any) => {
         ref={viewerRef}
         useForceWheel
         onScroll={(e) => {
+          eventBus.emit(INFINITEVIEWER_SCROLL)
           // console.log("onScroll", horizontalGuides, verticalGuides);
           const _horizontalGuides = (horizontalGuides.current as any)?.guides
             ?.current
