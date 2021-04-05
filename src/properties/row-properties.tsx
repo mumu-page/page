@@ -25,8 +25,8 @@ function genLayout(colNum: 1 | 2 | 3 | 4, row = 24) {
 }
 
 /**
- * 布局增加简洁模式和复杂模式
- * 简洁模式：支持设置 几列布局等 比如：2列  3列  那么界面会自动适配
+ * 布局增加精简模式和复杂模式
+ * 精简模式：支持设置 几列布局等 比如：2列  3列  那么界面会自动适配
  * 专业模式：支持精准设置多种属性，适用于专业人员。
  */
 export default function () {
@@ -38,12 +38,12 @@ export default function () {
   } = useContext(Context)
   const { id, rowProps = {} } = currentDragComponent || {}
   const { target } = moveableOptions || {}
-  const [mode, setMode] = useState<'专业模式' | '简洁模式'>('简洁模式')
+  const [mode, setMode] = useState<'专业模式' | '精简模式'>('精简模式')
 
   const onValuesChange = useCallback(
     debounce((changedValues: any, allValues: any) => {
       let newAllValues = allValues
-      if (mode === '简洁模式') {
+      if (mode === '精简模式') {
         newAllValues = merge(allValues, genLayout(allValues.colNum))
         // 重置layout属性
         commonDispatch({
@@ -86,12 +86,12 @@ export default function () {
         extra={
           <Typography.Link
             onClick={() => {
-              setMode(mode === '简洁模式' ? '专业模式' : '简洁模式')
+              setMode(mode === '精简模式' ? '专业模式' : '精简模式')
             }}
           >
             <Switch
               checkedChildren="专业模式"
-              unCheckedChildren="简洁模式"
+              unCheckedChildren="精简模式"
               checked={mode === '专业模式'}
             />
           </Typography.Link>
@@ -126,7 +126,7 @@ export default function () {
               </Select.Option>
             </Select>
           </Form.Item>
-          {mode === '简洁模式' && (
+          {mode === '精简模式' && (
             <>
               <Form.Item label="列数" name="colNum">
                 <Select>

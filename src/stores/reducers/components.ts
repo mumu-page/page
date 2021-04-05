@@ -101,6 +101,13 @@ export default (
           if (data.componentProps?.options && item?.componentProps?.options) {
             item.componentProps.options = []
           }
+          if (
+            data.componentProps?.style?.width === null &&
+            item?.componentProps?.style
+          ) {
+            data.componentProps.style = null
+            item.componentProps.style = null
+          }
           item = merge(item, data)
         }
         if (item?.children) {

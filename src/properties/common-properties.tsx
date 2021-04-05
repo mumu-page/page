@@ -36,59 +36,57 @@ export default memo(function () {
   } = useContext(Context)
   const { id, componentProps = {} } = currentDragComponent || {}
 
-  const onValuesChange = useCallback(
-    debounce(
-      (
-        { componentWidth: cw, placeholder: p, placeholder1, placeholder2 }: any,
-        allValues: FormData
-      ) => {
-        const { componentKey } = allValues
-        // 如果是日期范围类控件，设置placeholder为数组
-        if (isDatePickerRange(currentDragComponent?.componentKey)) {
-          allValues.placeholder = [
-            allValues.placeholder1,
-            allValues.placeholder2,
-          ]
-        }
-        const { placeholder, componentWidth, bordered } = allValues
-        const style = {} as any
-        if (typeof componentWidth === 'number') {
-          style.width = componentWidth + '%'
-        }
-        commonDispatch({
-          type: UPDATE_COMPONENT_LIST_BY_TARGET,
-          payload: {
-            data: {
-              componentKey,
-              value: componentKey,
-              componentProps: {
-                placeholder,
-                style,
-                bordered,
-              },
-            },
+  const onValuesChange = (
+    { componentWidth: cw, placeholder: p, placeholder1, placeholder2 }: any,
+    allValues: FormData
+  ) => {
+    const {
+      componentKey,
+      placeholder: originalPlaceholder,
+      componentWidth,
+      size,
+      bordered,
+    } = allValues
+    let placeholder = originalPlaceholder
+    // 如果是日期范围类控件，设置placeholder为数组
+    if (isDatePickerRange(currentDragComponent?.componentKey)) {
+      placeholder = [allValues.placeholder1, allValues.placeholder2]
+    }
+    let style = { width: componentWidth }
+    if (typeof componentWidth === 'number') {
+      style.width += '%'
+    }
+    commonDispatch({
+      type: UPDATE_COMPONENT_LIST_BY_TARGET,
+      payload: {
+        data: {
+          componentKey,
+          value: componentKey,
+          componentProps: {
+            placeholder,
+            style,
+            size,
+            bordered,
           },
-        })
-        commonDispatch({
-          type: SET_TARGET,
-          payload: {
-            id,
-            componentKey,
-            value: componentKey,
-            componentProps: {
-              componentKey,
-              placeholder,
-              style,
-              bordered,
-            },
-          },
-        })
-        refreshTarget(moveableOptions?.target, commonDispatch)
+        },
       },
-      100
-    ),
-    [currentDragComponent]
-  )
+    })
+    commonDispatch({
+      type: SET_TARGET,
+      payload: {
+        id,
+        componentKey,
+        value: componentKey,
+        componentProps: {
+          placeholder,
+          style,
+          size,
+          bordered,
+        },
+      },
+    })
+    refreshTarget(moveableOptions?.target, commonDispatch)
+  }
 
   const updateFormVal = () => {
     const { style = {}, placeholder, ...other } = componentProps || {}
@@ -120,7 +118,7 @@ export default memo(function () {
         {...FORM_PROPERTIES_OPTIONS}
         initialValues={{
           size: 'middle',
-          checked: true,
+          bordered: true,
         }}
         form={form}
         onValuesChange={onValuesChange}

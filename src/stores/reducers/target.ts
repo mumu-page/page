@@ -1,5 +1,10 @@
 import { cloneDeep, merge } from 'lodash'
-import { DELETE_TARGET, SET_MOVEABLE_OPTIONS, SET_TARGET, SET_TARGET_BY_COMPONENT_LIST } from '../action-type'
+import {
+  DELETE_TARGET,
+  SET_MOVEABLE_OPTIONS,
+  SET_TARGET,
+  SET_TARGET_BY_COMPONENT_LIST,
+} from '../action-type'
 import { INITAL_STATE } from '../context'
 import { ICommonState, IFormComProp } from '../typings'
 
@@ -34,11 +39,24 @@ export default (
     ) {
       draft.target.componentProps.options = []
     }
+    if (
+      action.payload?.componentProps?.style?.width === null &&
+      draft.target?.componentProps?.style
+    ) {
+      action.payload.componentProps.style = null
+      draft.target.componentProps.style = null
+    }
     const newData = merge(cloneDeep(draft.target), cloneDeep(action.payload))
     draft.target = newData
   },
   [DELETE_TARGET]: () => {
-    draft.target = INITAL_STATE.target
+    Object.keys(draft.target).forEach((key) => {
+      if (!['rowProps', 'formProps'].includes(key)) {
+        draft.target[key] = null
+      }
+    })
+    draft.target.id = null
+    draft.target.componentKey = ''
   },
   [SET_MOVEABLE_OPTIONS]: () => {
     draft.moveableOptions = merge(

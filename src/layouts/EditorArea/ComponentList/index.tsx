@@ -152,10 +152,12 @@ export default function Container(props: EditorAreaProps) {
   }, [])
 
   useEffect(() => {
-    form.setFieldsValue({
-      [formItemProps.name]: componentProps?.defaultValue,
-    })
-  }, [target, form])
+    if (formItemProps?.name) {
+      form.setFieldsValue({
+        [formItemProps.name]: componentProps?.defaultValue,
+      })
+    }
+  }, [target.id])
 
   useEffect(() => {
     const _initialValues = {} as any
