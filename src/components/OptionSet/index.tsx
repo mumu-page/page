@@ -2,7 +2,7 @@ import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react'
 import { Button, Form, Input, Modal, Radio, Select } from 'antd'
 import Draggable from 'react-draggable'
 import DragableTable, { Option } from './DragableTable'
-import { CodeEditor } from '..'
+import { CodeEditor, CodeEditorInstanceProps } from '..'
 import { cloneDeep } from 'lodash'
 import './index.less'
 
@@ -58,7 +58,7 @@ export default forwardRef(
     const { onOk } = props
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [disabled, setDisabled] = useState(false)
-    const [fnCode, setFnCode] = useState(
+    const [fnCode] = useState(
       getFunction(initialValues.reqUrl, initialValues.reqMethod)
     )
     const [isRequest, setIsRequest] = useState(false)
@@ -72,6 +72,7 @@ export default forwardRef(
     const [dataSource, setdataSource] = useState<Option[]>(_treeData)
     const draggleRef = useRef(null)
     const [form] = Form.useForm()
+    const fnEditor = useRef<CodeEditorInstanceProps>(null)
 
     const showModal = () => {
       setIsModalVisible(true)
@@ -109,7 +110,7 @@ export default forwardRef(
 
     const onValuesChange = (_: any, allValues: any) => {
       const { reqUrl, reqMethod } = allValues
-      setFnCode(getFunction(reqUrl, reqMethod))
+      fnEditor.current?.setCode(getFunction(reqUrl, reqMethod))
     }
 
     useImperativeHandle(
@@ -226,10 +227,11 @@ export default forwardRef(
                 width: '100%',
                 height: 300,
               }}
+              ref={fnEditor}
               code={fnCode}
-              onChangeCode={(val) => {
-                val && setFnCode(val)
-              }}
+            //   onChangeCode={(val) => {
+            //     val && fnEditor.current?.setCode(val)
+            //   }}
             />
           </>
         )}

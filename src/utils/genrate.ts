@@ -200,17 +200,21 @@ function generateImport(componentList: IFormComProp[]) {
   const componentkeys = getAllComponentKey(componentList)
   const iconKeys = getAllIcon(componentList)
   const childImport = {} as any
-  const parentImport = componentkeys.map((item) => {
-    const [parent, child] = item.split('.')
-    if (child) {
-      if (childImport[parent]) {
-        childImport[parent].push(child)
-      } else {
-        childImport[parent] = [child]
-      }
-    }
-    return parent
-  })
+  const parentImport = Array.from(
+    new Set(
+      componentkeys.map((item) => {
+        const [parent, child] = item.split('.')
+        if (child) {
+          if (childImport[parent]) {
+            childImport[parent].push(child)
+          } else {
+            childImport[parent] = [child]
+          }
+        }
+        return parent
+      })
+    )
+  )
   const importReact = `import React from "react"\n`
   const importAntd = `import {${parentImport}} from 'antd'\n`
   let importAntdChild = ''

@@ -56,7 +56,7 @@ export default forwardRef(function (
 
   const onTsxChangCode = useCallback((newCode) => {
     setTsxCode(newCode)
-    refresh(newCode)
+    // refresh(newCode)
   }, [])
 
   const onScssChangCode = useCallback((newCode) => {
@@ -67,8 +67,8 @@ export default forwardRef(function (
   const refresh = (code = tsxCode) => {
     const _xmlCode =
       code
-        .substring(code.indexOf('return <Form'), code.indexOf('</Form>'))
-        .replace('return', '') + '</Form>'
+        .substring(code.indexOf('export default'), code.indexOf('</Form>'))
+        .replace('export default', '') + '</Form>}'
     string2Component(_xmlCode)
       .then((newComponent) => {
         setComponent(newComponent)
@@ -181,6 +181,7 @@ export default forwardRef(function (
           icon={folded ? <RightOutlined /> : <LeftOutlined />}
           onClick={() => {
             setFolded(!folded)
+            if(!folded) refresh(tsxCode)
           }}
         ></Button>
       </div>
