@@ -222,7 +222,7 @@ function generateImport(componentList: IFormComProp[]) {
   })
   const importIcons = `import {${iconKeys}} from "@ant-design/icons";\n`
   let result = importReact + importAntd
-  if (iconKeys) {
+  if (iconKeys.length) {
     result += importIcons
   }
   if (importAntdChild) {
