@@ -20,10 +20,8 @@ export default function () {
         (document.querySelector('.viewport') as HTMLElement) || {}
       viewport.style.width = width + 'px'
       viewport.style.height = height + 'px'
-      requestAnimationFrame(() => {
-        // 重新获取当前选中元素
-        refreshTarget(moveableOptions?.target, commonDispatch)
-      })
+      // 重新获取当前选中元素
+      refreshTarget(moveableOptions?.target, commonDispatch)
     }, 500),
     []
   )

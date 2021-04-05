@@ -1,4 +1,3 @@
-import { isNumber } from 'lodash'
 import React from 'react'
 import { ICONS } from '../constants'
 import { IComponentKeys, IFormComProp } from '../stores/typings'
@@ -169,16 +168,28 @@ function generate(
  */
 function getAllComponentKey(
   componentList: IFormComProp[],
-  keys = [] as string[]
+  keys = new Set<string>()
 ) {
-  componentList?.forEach((item) => {
-    keys.push(item.componentKey)
-    if (item?.children) {
-      getAllComponentKey(item?.children, keys)
-    }
+  componentList.forEach((item) => {
+    keys.add(item.componentKey)
   })
-  keys.push('Form')
-  return keys
+  keys.add('Form')
+  keys.add('Row')
+  keys.add('Col')
+  return Array.from(keys)
+}
+
+/**
+ * 寻找所有使用到的ICON
+ */
+function getAllIcon(componentList: IFormComProp[], keys = new Set<string>()) {
+  componentList.forEach((item) => {
+    const { componentProps = {} } = item
+    const { prefix, suffix } = componentProps
+    prefix && keys.add(prefix)
+    suffix && keys.add(suffix)
+  })
+  return Array.from(keys)
 }
 
 /**
@@ -186,29 +197,22 @@ function getAllComponentKey(
  * TODO: 生成ICON引用代码
  */
 function generateImport(componentList: IFormComProp[]) {
-  const keys = getAllComponentKey(componentList, [])
+  const componentkeys = getAllComponentKey(componentList)
+  const iconKeys = getAllIcon(componentList)
   const childImport = {} as any
-  const parentImport = Array.from(
-    new Set(
-      keys.map((item) => {
-        const [parent, child] = item.split('.')
-
-        if (child) {
-          if (childImport[parent]) {
-            childImport[parent].push(child)
-          } else {
-            childImport[parent] = [child]
-          }
-        }
-        return parent
-      })
-    )
-  )
-  parentImport.push('Row')
-  parentImport.push('Col')
-
+  const parentImport = componentkeys.map((item) => {
+    const [parent, child] = item.split('.')
+    if (child) {
+      if (childImport[parent]) {
+        childImport[parent].push(child)
+      } else {
+        childImport[parent] = [child]
+      }
+    }
+    return parent
+  })
   const importReact = `import React from "react"\n`
-  const importAntd = `import {${[parentImport]}} from 'antd'\n`
+  const importAntd = `import {${parentImport}} from 'antd'\n`
   let importAntdChild = ''
   Object.keys(childImport).forEach((key) => {
     const item = childImport[key]
@@ -216,10 +220,15 @@ function generateImport(componentList: IFormComProp[]) {
       importAntdChild += `const {${item}} = ${key}\n`
     }
   })
-  if (importAntdChild) {
-    return importReact + importAntd + '\n' + importAntdChild
+  const importIcons = `import {${iconKeys}} from "@ant-design/icons";\n`
+  let result = importReact + importAntd
+  if (iconKeys) {
+    result += importIcons
   }
-  return importReact + importAntd
+  if (importAntdChild) {
+    result += '\n' + importAntdChild
+  }
+  return result
 }
 
 export { generate, generateImport }

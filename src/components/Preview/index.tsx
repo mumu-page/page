@@ -74,7 +74,7 @@ export default forwardRef(function (
         setComponent(newComponent)
       })
       .catch((info) => {
-        message.error(info)
+        message.error(info?.message)
       })
   }
 
