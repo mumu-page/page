@@ -258,7 +258,7 @@ export default forwardRef(
                 height: 300,
               }}
               code={JSON.stringify(dataSource)}
-              onChangeCode={(val) => {
+              onChange={(val) => {
                 val && setdataSource(JSON.parse(val))
               }}
             />

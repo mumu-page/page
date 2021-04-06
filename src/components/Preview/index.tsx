@@ -5,18 +5,18 @@ import React, {
   useState,
   useCallback,
 } from "react";
-import { Button, Tabs, Drawer, message } from "antd";
+import { Tabs, Drawer, message, Button, Affix } from "antd";
 import { PreviewInstanceProps, PreviewProps } from "./typings";
 import {
   FileTextOutlined,
   EditOutlined,
-  RightOutlined,
-  LeftOutlined,
   CloseOutlined,
+  PlayCircleOutlined,
 } from "@ant-design/icons";
 import CodeEditor from "../CodeEditor";
 import { CodeEditorInstanceProps } from "../CodeEditor/typings";
 import { string2Component } from "../../utils/utils";
+import SplitPane from "react-split-pane";
 import "./index.less";
 
 const { TabPane } = Tabs;
@@ -26,6 +26,7 @@ const SelectedIcon = () => (
 const UnSelectedIcon = () => (
   <FileTextOutlined style={{ color: "#a95812", marginRight: "5px" }} />
 );
+const defaultSize = window.screen.width * 0.3;
 export default forwardRef(function (
   props: PreviewProps,
   ref:
@@ -33,7 +34,6 @@ export default forwardRef(function (
     | React.MutableRefObject<unknown>
     | null
 ) {
-  const [folded, setFolded] = useState(true);
   const [tsxCode, setTsxCode] = useState<string>("");
   const [scssCode, setScssCode] = useState<string>("");
   const [visible, setVisible] = useState(false);
@@ -41,6 +41,7 @@ export default forwardRef(function (
   const [component, setComponent] = useState(<></>);
   const tsxEditor = useRef<CodeEditorInstanceProps>(null);
   const scssEditor = useRef<CodeEditorInstanceProps>(null);
+  const [width, setWidth] = useState<number | string>(defaultSize);
 
   const onTsxChangCode = useCallback((newCode) => {
     setTsxCode(newCode);
@@ -49,10 +50,10 @@ export default forwardRef(function (
 
   const onScssChangCode = useCallback((newCode) => {
     setScssCode(newCode);
-    run(newCode);
+    onRun(newCode);
   }, []);
 
-  const run = (code = tsxCode) => {
+  const onRun = (code = tsxCode) => {
     const _xmlCode =
       code
         .substring(code.indexOf("export default"), code.indexOf("</Form>"))
@@ -69,18 +70,20 @@ export default forwardRef(function (
       });
   };
 
-  const copy = () => {};
+  const onCopy = () => {
+    console.log("onCopy");
+  };
 
-  // const download = () => {};
-
-  const close = () => {
-    setActiveKey("tsx");
-    setVisible(false);
-    setFolded(false);
+  const onDragFinished = (newSize: number) => {
+    setWidth(newSize);
   };
 
   const onTabChange = (activeKey: string) => {
     setActiveKey(activeKey);
+  };
+
+  const onClose = () => {
+    setVisible(false);
   };
 
   useImperativeHandle(
@@ -101,8 +104,8 @@ export default forwardRef(function (
         setVisible(false);
       },
       run(newCode: string) {
-        run(newCode)
-      }
+        onRun(newCode);
+      },
     }),
     []
   );
@@ -112,68 +115,85 @@ export default forwardRef(function (
       width="100%"
       visible={visible}
       destroyOnClose
-      closeIcon={<CloseOutlined style={{ color: folded ? "#999" : "white" }} />}
-      onClose={() => {
-        setTimeout(() => {
-          setFolded(true);
-          setVisible(false);
-        });
-      }}
+      closable={false}
+      onClose={onClose}
     >
       <div className="preview">
-        <Tabs
-          tabBarGutter={5}
-          activeKey={activeKey}
-          className={`code-container ${folded ? "code-folded" : "code-open"}`}
-          onChange={onTabChange}
-          tabBarStyle={{ height: "35px" }}
-          type="card"
+        <SplitPane
+          split="vertical"
+          minSize={0}
+          defaultSize={defaultSize}
+          onDragFinished={onDragFinished}
         >
-          <TabPane
-            tab={
-              <div>
-                {activeKey === "tsx" ? <SelectedIcon /> : <UnSelectedIcon />}
-                <span>tsx</span>
-              </div>
+          <Tabs
+            tabBarGutter={5}
+            activeKey={activeKey}
+            className="code-container"
+            onChange={onTabChange}
+            tabBarStyle={{ height: "35px" }}
+            type="card"
+            tabBarExtraContent={
+              <Button
+                icon={<PlayCircleOutlined />}
+                style={{ color: "#999" }}
+                type="link"
+                onClick={() => onRun(tsxCode)}
+              >
+                运行
+              </Button>
             }
-            key="tsx"
           >
-            <CodeEditor
-              ref={tsxEditor}
-              code={tsxCode}
-              options={{ language: "typescript" }}
-              onChangeCode={onTsxChangCode}
-            />
-          </TabPane>
-          <TabPane
-            tab={
-              <div>
-                {activeKey === "scss" ? <SelectedIcon /> : <UnSelectedIcon />}
-                <span>scss</span>
-              </div>
-            }
-            key="scss"
-          >
-            <CodeEditor
-              ref={scssEditor}
-              code={scssCode}
-              options={{ language: "scss" }}
-              onChangeCode={onScssChangCode}
-            />
-          </TabPane>
-        </Tabs>
-        <div className={`form ${folded ? "form-open" : "form-folded"}`}>
-          <div className="body">{component}</div>
-        </div>
-        <Button
-          shape="circle"
-          className={`affix ${folded ? "affix-left" : "affix-right"}`}
-          icon={folded ? <RightOutlined /> : <LeftOutlined />}
-          onClick={() => {
-            setFolded(!folded);
-            if (!folded) run(tsxCode);
-          }}
-        ></Button>
+            <TabPane
+              tab={
+                <div>
+                  {activeKey === "tsx" ? <SelectedIcon /> : <UnSelectedIcon />}
+                  <span>tsx</span>
+                </div>
+              }
+              key="tsx"
+            >
+              <CodeEditor
+                ref={tsxEditor}
+                code={tsxCode}
+                options={{ width, height: "100vmax", language: "typescript" }}
+                onChange={onTsxChangCode}
+                onRun={onRun}
+                onCopy={onCopy}
+              />
+            </TabPane>
+            <TabPane
+              tab={
+                <div>
+                  {activeKey === "scss" ? <SelectedIcon /> : <UnSelectedIcon />}
+                  <span>scss</span>
+                </div>
+              }
+              key="scss"
+            >
+              <CodeEditor
+                ref={scssEditor}
+                code={scssCode}
+                options={{ width, height: "100vmax", language: "scss" }}
+                onChange={onScssChangCode}
+              />
+            </TabPane>
+          </Tabs>
+          <div className="form">
+            <div className="body">{component}</div>
+            <Affix
+              offsetBottom={10}
+              style={{ position: "absolute", bottom: 20, right: 20 }}
+            >
+              <Button
+                icon={<CloseOutlined />}
+                shape="circle"
+                type="text"
+                style={{boxShadow: '0 0 2px #ccc'}}
+                onClick={onClose}
+              ></Button>
+            </Affix>
+          </div>
+        </SplitPane>
       </div>
     </Drawer>
   );
