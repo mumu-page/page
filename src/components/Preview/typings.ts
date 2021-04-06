@@ -5,9 +5,9 @@ export interface PreviewInstanceProps {
   close: () => void;
   tsEditor: CodeEditorInstanceProps;
   scssEditor: CodeEditorInstanceProps;
-  setXmlCode: React.Dispatch<React.SetStateAction<string>>;
   setTsxCode: React.Dispatch<React.SetStateAction<string>>;
   setScssCode: React.Dispatch<React.SetStateAction<string>>;
+  run: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export interface PreviewProps {

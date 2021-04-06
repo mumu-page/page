@@ -27,7 +27,11 @@ interface RightActionType {
 export default (props: RightActionType) => {
   const { type, handleType } = props;
   const preview = useRef<PreviewInstanceProps>(null);
-  const { target: currentDragComponent ,componentList, commonDispatch } = useContext(Context);
+  const {
+    target: currentDragComponent,
+    componentList,
+    commonDispatch,
+  } = useContext(Context);
 
   const handleColor = (val: BtnTypes) => {
     return {
@@ -56,19 +60,15 @@ export default (props: RightActionType) => {
   };
 
   const run = () => {
-    const xmlCode = generate(componentList, currentDragComponent)
-    preview.current?.setXmlCode(xmlCode);
-    preview.current?.setTsxCode(`
-      ${generateImport(componentList)}
-      export default () => {
-       return ${xmlCode}
-      }
-    `);
+    const xmlCode = generate(componentList, currentDragComponent);
+    const TsxCode = `
+${generateImport(componentList)}
+export default () => {
+  return ${xmlCode}
+}`;
+    preview.current?.setTsxCode(TsxCode);
+    preview.current?.run(TsxCode);
     preview.current?.open();
-  };
-
-  const handlePreview = () => {
-    message.info("敬请期待");
   };
 
   const download = () => {};

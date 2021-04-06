@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Input,
   InputNumber,
@@ -47,75 +47,80 @@ export function getContext() {
     Col,
     Button,
     ...ICONS,
-  }
+  };
 }
 
 export function isSelect(componentKey: string) {
   return [
-    'Select',
-    'Cascader',
-    'TimePicker',
-    'TimePicker.RangePicker',
-    'DatePicker',
-    'DatePicker.RangePicker',
-  ].includes(componentKey)
+    "Select",
+    "Cascader",
+    "TimePicker",
+    "TimePicker.RangePicker",
+    "DatePicker",
+    "DatePicker.RangePicker",
+  ].includes(componentKey);
 }
 
 export function hasNotPlaceholder(componentKey: string) {
   return [
-    'Radio',
-    'Checkbox',
-    'Switch',
-    'Slider',
-    'Rate',
-    'Upload',
-    'Row',
-    'Button',
-  ].includes(componentKey)
+    "Radio",
+    "Checkbox",
+    "Switch",
+    "Slider",
+    "Rate",
+    "Upload",
+    "Row",
+    "Button",
+  ].includes(componentKey);
 }
 
 export function isDatePicker(componentKey: string) {
   return [
-    'TimePicker',
-    'TimePicker.RangePicker',
-    'DatePicker',
-    'DatePicker.RangePicker',
-  ].includes(componentKey)
+    "TimePicker",
+    "TimePicker.RangePicker",
+    "DatePicker",
+    "DatePicker.RangePicker",
+  ].includes(componentKey);
 }
 
 export function isRenderFormItem(componentKey: string) {
-  return !['Col', 'Button'].includes(componentKey)
+  return !["Col", "Button"].includes(componentKey);
 }
 
 export function isColComponent(componentKey: string) {
-  return ['Col'].includes(componentKey)
+  return ["Col"].includes(componentKey);
 }
 
 export function isDatePickerRange(componentKey: string) {
-  return ['TimePicker.RangePicker', 'DatePicker.RangePicker'].includes(
+  return ["TimePicker.RangePicker", "DatePicker.RangePicker"].includes(
     componentKey
-  )
+  );
 }
 
+/**
+ * 请传入一个function componet 字符串，将返回一个编译后函数组件
+ * @param input 
+ * @returns 
+ */
 export async function string2Component(input?: string) {
-  if (!input) return ''
+  if (!input) return "";
   try {
-    type IW = Window & typeof globalThis & { Babel: any }
+    type IW = Window & typeof globalThis & { Babel: any };
     let output = (window as IW).Babel.transform(`${input}`, {
-      presets: ['react', 'es2015'],
-    }).code
-    output = output?.replace('"use strict";', '').trim()
+      presets: ["react", "es2015"],
+    }).code;
+    output = output?.replace('"use strict";', "").trim();
     // eslint-disable-next-line no-new-func
-    const func = new Function('context', `with(context){return ${output}}`)
-    return func(getContext())
+    const func = new Function("context", `with(context){return ${output}}`);
+    return () => func(getContext()); // 为了能够在组件中执行Hook，不直接执行函数
   } catch (e) {
     // console.log('e', e)
-    throw new Error(e)
+    throw new Error(e);
   }
 }
 
 export function isCheck(componentKey: string) {
-  return ['Radio', 'Checkbox', 'Switch'].includes(componentKey)
+  return ["Radio", "Checkbox", "Switch"].includes(componentKey);
 }
 
 /**
@@ -130,16 +135,16 @@ export function decodeKey(
   result = {} as any
 ) {
   keys.forEach((key) => {
-    result[key] = {}
-  })
+    result[key] = {};
+  });
   try {
     Object.keys(target).forEach((key) => {
-      const [parentKey, childKey] = key?.split('.')
-      const val = target[key]
-      result[parentKey][childKey] = val
-    })
+      const [parentKey, childKey] = key?.split(".");
+      const val = target[key];
+      result[parentKey][childKey] = val;
+    });
   } finally {
-    return result
+    return result;
   }
 }
 
@@ -151,24 +156,24 @@ export function decodeKey(
  */
 export function encodeKey(
   target1: {
-    key: string
-    data: { [key: string]: any }
+    key: string;
+    data: { [key: string]: any };
   },
   target2: {
-    key: string
-    data: { [key: string]: any }
+    key: string;
+    data: { [key: string]: any };
   },
   result = {} as any
 ) {
   try {
     Object.keys(target1.data).forEach((key) => {
-      result[`${target1.key}.${key}`] = target1.data[key]
-    })
+      result[`${target1.key}.${key}`] = target1.data[key];
+    });
     Object.keys(target2.data).forEach((key) => {
-      result[`${target2.key}.${key}`] = target2.data[key]
-    })
+      result[`${target2.key}.${key}`] = target2.data[key];
+    });
   } finally {
-    return result
+    return result;
   }
 }
 
@@ -185,32 +190,32 @@ export function findTarget(
 ) {
   let elementGuidelines = [].slice.call(
     document.querySelectorAll(selectors) as any
-  )
+  );
   const target = elementGuidelines.filter((item: any) => {
-    return item?.getAttribute?.('data-id') === id
-  })?.[0]
+    return item?.getAttribute?.("data-id") === id;
+  })?.[0];
   const frame = list?.filter((item) => {
-    return item.id === id
-  })?.[0]?.layout?.frame
+    return item.id === id;
+  })?.[0]?.layout?.frame;
 
   // 将当前元素从divList中移除, 当前元素不再作为参考辅助线
   elementGuidelines = elementGuidelines.filter((item: any) => {
-    return item?.getAttribute?.('data-id') !== id
-  })
+    return item?.getAttribute?.("data-id") !== id;
+  });
 
   return {
     elementGuidelines,
     target,
     frame,
-  }
+  };
 }
 
 // 重新获取当前选中元素
 export function refreshTarget(
   target: unknown,
   commonDispatch: React.Dispatch<{
-    type: string
-    payload?: object | undefined
+    type: string;
+    payload?: object | undefined;
   }>
 ) {
   requestAnimationFrame(() => {
@@ -219,12 +224,12 @@ export function refreshTarget(
       payload: {
         target: null, // immner会认为targer是同一个元素，导致不更新
       },
-    })
+    });
     commonDispatch({
       type: SET_MOVEABLE_OPTIONS,
       payload: {
         target,
       },
-    })
-  })
+    });
+  });
 }
