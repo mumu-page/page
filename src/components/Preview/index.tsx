@@ -17,6 +17,7 @@ import CodeEditor from "../CodeEditor";
 import { CodeEditorInstanceProps } from "../CodeEditor/typings";
 import { string2Component } from "../../utils/utils";
 import SplitPane from "react-split-pane";
+import ReactDOM from 'react-dom';
 import "./index.less";
 
 const { TabPane } = Tabs;

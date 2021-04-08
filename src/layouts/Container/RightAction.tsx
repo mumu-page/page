@@ -60,14 +60,9 @@ export default (props: RightActionType) => {
   };
 
   const run = () => {
-    const xmlCode = generate(componentList, currentDragComponent);
-    const TsxCode = `
-${generateImport(componentList)}
-export default () => {
-  return ${xmlCode}
-}`;
-    preview.current?.setTsxCode(TsxCode);
-    preview.current?.run(TsxCode);
+    const tsxCode = `${generateImport(componentList)}${generate(componentList, currentDragComponent)}`;
+    preview.current?.setTsxCode(tsxCode);
+    preview.current?.run(tsxCode);
     preview.current?.open();
   };
 

@@ -93,29 +93,6 @@ function createFormItem(
   const { labelCol: labelColG, wrapperCol: wrapperColG } = formProps
   const { labelCol, wrapperCol } = formItemProps
   const { colNum: _colNum, ...otherColProps } = colProps
-  /**样式开始 */
-  /*   const { frame = { translate: [0, 0, 0] }, height, width } = layout
-  const { translate } = frame
-  const style = {} as any
-  // 排除不需要添加transform的样式
-  if (
-    translate[0] !== rowProps.gutter &&
-    translate[0] !== 0 &&
-    translate[1] !== 0
-  ) {
-    let translateX = translate[0]
-    if (rowProps.gutter > 0 && translate[0] !== 0) {
-      translateX = translate[0] - rowProps.gutter
-    }
-    style.transform = `translate(${translateX}px, ${translate[1]}px)`
-  }
-  if (isNumber(width)) {
-    style.width = `${width}px`
-  }
-  if (height) {
-    style.height = `${height}px`
-  } */
-  /**样式结束 */
   const colPropsStr = generateProps({ ...otherGlobalProps, ...otherColProps })
   const formItemPropsStr = generateProps({
     // style,
@@ -156,11 +133,13 @@ function generate(
   const initialValuesStr = Object.keys(initialValues).length
     ? ` initialValues={${JSON.stringify(initialValues)}}`
     : ''
-  return `<Form${initialValuesStr}>
+  return `export default () => {
+    return <Form${initialValuesStr}>
         <Row${rowPropsStr}>
           ${ret}
         </Row>
-    </Form>`
+    </Form>
+  }`
 }
 
 /**
@@ -230,7 +209,7 @@ function generateImport(componentList: IFormComProp[]) {
     result += importIcons
   }
   if (importAntdChild) {
-    result += '\n' + importAntdChild
+    result += '\n' + importAntdChild + '\n'
   }
   return result
 }
