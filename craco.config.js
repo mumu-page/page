@@ -1,8 +1,8 @@
 const CracoLessPlugin = require("craco-less");
 const MonacoEditorWebpackPlugin = require("monaco-editor-webpack-plugin");
-const path = require('path');
-const APP_DIR = path.resolve(__dirname, './src');
-const MONACO_DIR = path.resolve(__dirname, './node_modules/monaco-editor');
+const path = require("path");
+const APP_DIR = path.resolve(__dirname, "./src");
+const MONACO_DIR = path.resolve(__dirname, "./node_modules/monaco-editor");
 
 module.exports = {
   webpack: {
@@ -31,7 +31,20 @@ module.exports = {
         },
       ],
     },
-    plugins: [new MonacoEditorWebpackPlugin()],
+    plugins: [
+      new MonacoEditorWebpackPlugin({
+        languages: [
+          "json",
+          "javascript",
+          "typescript",
+          "css",
+          "scss",
+          "less",
+          "xml",
+          "html",
+        ],
+      }),
+    ],
   },
   plugins: [
     {

@@ -13,7 +13,6 @@ export default function () {
   const modalRef = useRef<IRefType>(null)
   const [form] = Form.useForm()
   const { id, componentProps = {} } = currentDragComponent || {}
-  const [options, setOptions] = useState([])
 
   const showModal = () => {
     const options = form.getFieldValue('options')
@@ -25,16 +24,17 @@ export default function () {
 
   useEffect(() => {
     form.setFieldsValue({ options: componentProps.options })
-    setOptions(componentProps.options)
+    
   }, [componentProps.id])
 
+  
   return (
     <Form {...FORM_PROPERTIES_OPTIONS} form={form}>
       <CustomCollapse defaultActiveKey={['下拉列表']}>
         <CustomCollapse.Panel header="下拉列表" key="下拉列表">
-          <Form.Item label="列表内选项" name="options">
+          <Form.Item label="列表内选项" name="options" shouldUpdate>
             <Button type="dashed" block onClick={showModal}>
-              {options?.length ? `已配置` : '配置数据'}
+              {form.getFieldValue('options')?.length ? `已配置` : '配置数据'}
             </Button>
           </Form.Item>
         </CustomCollapse.Panel>

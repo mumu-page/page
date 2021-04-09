@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import MonacoEditor, { monaco } from "react-monaco-editor";
 import { CodeEditorInstanceProps, CodeEditorProps } from "./typings";
-import { isEqual } from "lodash";
+import { isEqual, merge } from "lodash";
 import "./index.less";
 
 /**
@@ -90,9 +90,7 @@ const CodeEditor = forwardRef(
   ) => {
     const { code = "", options: optionProp = defaultOptions, onChange, onRun, onCopy } = props;
     const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
-    const options = useMemo(() => ({ ...defaultOptions, ...optionProp }), [
-      optionProp,
-    ]);
+    const options = merge(defaultOptions, optionProp)
 
     useImperativeHandle(
       ref,
@@ -133,7 +131,7 @@ const CodeEditor = forwardRef(
         },
       });
       setTimeout(() => {
-        _editor.getAction("editor.action.formatDocument")?.run();
+        _editor?.getAction("editor.action.formatDocument")?.run();
       }, 300);
     };
 
