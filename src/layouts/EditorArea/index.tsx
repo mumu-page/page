@@ -4,12 +4,13 @@ import ComponentList from './ComponentList'
 import './index.less'
 
 export default () => {
-  const { target, componentList, commonDispatch } = useContext(Context)
+  const { target, moveableOptions, componentList, commonDispatch } = useContext(Context)
   return (
     <>
       <ComponentList
         target={target}
         componentList={componentList}
+        moveableOptions={moveableOptions}
         commonDispatch={commonDispatch}
       />
       {componentList.length === 0 && (

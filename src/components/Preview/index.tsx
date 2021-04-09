@@ -138,6 +138,7 @@ export default forwardRef(function (
                 icon={<PlayCircleOutlined />}
                 style={{ color: "#999" }}
                 type="link"
+                size='small'
                 onClick={() => onRun(tsxCode)}
               >
                 运行

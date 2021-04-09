@@ -11,13 +11,19 @@ import {
   VerticalAlignTopOutlined,
   VerticalAlignBottomOutlined,
 } from "@ant-design/icons";
-import { ICommonDispatch, IFormComProp } from "../../../stores/typings";
-import { findTarget, isDatePicker } from "../../../utils/utils";
+import {
+  ICommonDispatch,
+  IFormComProp,
+  IMoveableOptions,
+} from "../../../stores/typings";
+import { findTarget, isDatePicker, refreshTarget } from "../../../utils/utils";
 import { Target_ClassName } from "../../../constants";
 import {
   COPY_COMPONENT_LIST,
   DELETE_TARGET,
   DEL_COMPONENT_LIST,
+  LEFT_REMOVE_COMPONENTS,
+  RIGHT_REMOVE_COMPONENTS,
   SET_MOVEABLE_OPTIONS,
   SET_TARGET_BY_COMPONENT_LIST,
 } from "../../../stores/action-type";
@@ -32,6 +38,7 @@ import "./index.less";
 interface EditorAreaProps extends ICommonDispatch<object> {
   componentList: IFormComProp[];
   target: IFormComProp;
+  moveableOptions: IMoveableOptions;
 }
 
 enum HANDLE_TYPE {
@@ -74,7 +81,7 @@ const options = [
 ];
 
 export default function Container(props: EditorAreaProps) {
-  const { target, componentList = [], commonDispatch } = props;
+  const { target, moveableOptions, componentList = [], commonDispatch } = props;
   const [form] = Form.useForm();
   const contenxtMenu = useRef(null);
   const {
@@ -85,10 +92,7 @@ export default function Container(props: EditorAreaProps) {
     rowProps = {},
   } = target;
 
-  const {
-    colNum,
-    ...otherRow
-  } = rowProps;
+  const { colNum, ...otherRow } = rowProps;
 
   const setMoveableOption = (id: string | number) => {
     const { elementGuidelines, target, frame } = findTarget(id, componentList);
@@ -141,6 +145,24 @@ export default function Container(props: EditorAreaProps) {
       requestAnimationFrame(() => {
         setMoveableOption(newId);
       });
+    }
+    if (label === HANDLE_TYPE.toLeft) {
+      commonDispatch({
+        type: LEFT_REMOVE_COMPONENTS,
+        payload: {
+          id: target.id,
+        },
+      });
+      refreshTarget(moveableOptions?.target, commonDispatch);
+    }
+    if (label === HANDLE_TYPE.toRight) {
+      commonDispatch({
+        type: RIGHT_REMOVE_COMPONENTS,
+        payload: {
+          id: target.id,
+        },
+      });
+      refreshTarget(moveableOptions?.target, commonDispatch);
     }
   };
 
@@ -214,16 +236,10 @@ export default function Container(props: EditorAreaProps) {
             style.height = `${height}px`;
           }
 
-          const {
-            align,
-            gutter,
-            justify,
-            wrap,
-            ...otherRowG
-          } = otherRow;
+          const { align, gutter, justify, wrap, ...otherRowG } = otherRow;
 
-          const {colNum: colNum2, ...otherCol} = selfColProps
-          
+          const { colNum: colNum2, ...otherCol } = selfColProps;
+
           return (
             <Col
               key={id}
