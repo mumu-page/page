@@ -14,6 +14,7 @@
     "lib"
   ],
   "dependencies": {
+    "@monaco-editor/react": "^4.1.1",
     "@scena/react-guides": "^0.14.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -21,11 +22,11 @@
     "antd": "^4.14.0",
     "events": "^3.3.0",
     "lodash": "^4.17.21",
+    "monaco-editor": "0.21.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.3",
     "react-infinite-viewer": "^0.12.0",
-    "react-monaco-editor": "^0.43.0",
     "react-moveable": "^0.26.2",
     "react-split-pane": "^0.1.92",
     "shortid": "^2.2.16",
@@ -42,7 +43,6 @@
     "@types/shortid": "^0.0.29",
     "craco-less": "^1.17.1",
     "gh-pages": "^3.1.0",
-    "monaco-editor-webpack-plugin": "^3.0.0",
     "react-scripts": "4.0.3"
   },
   "scripts": {

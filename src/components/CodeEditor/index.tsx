@@ -1,59 +1,14 @@
-import React, {
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-  useMemo,
-  memo,
-} from "react";
-import MonacoEditor, { monaco } from "react-monaco-editor";
+import React, { useRef, forwardRef, useImperativeHandle, memo } from "react";
+import MonacoEditor, { Monaco } from "@monaco-editor/react";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { CodeEditorInstanceProps, CodeEditorProps } from "./typings";
 import { isEqual, merge } from "lodash";
 import "./index.less";
 
 /**
- * 删除不需要的菜单
- */
-function removeContextMenu() {
-  let menus = require("monaco-editor/esm/vs/platform/actions/common/actions")
-    .MenuRegistry._menuItems;
-  let contextMenuEntry = [...menus].find(
-    (entry) => entry[0]._debugName === "EditorContext"
-  );
-  let contextMenuLinks = contextMenuEntry[1];
-  let removableIds = [
-    "editor.action.goToTypeDefinition",
-    "editor.action.goToReferences",
-    "editor.action.peekDeclaration",
-    "editor.action.peekDefinition",
-    "editor.action.peekImplementation",
-    "editor.action.peekTypeDefinition",
-    "editor.action.quickOutline",
-    "editor.action.quickCommand",
-    "editor.action.changeAll",
-    "editor.action.revealDefinition",
-    "editor.action.referenceSearch.trigger",
-    // "editor.action.formatDocument",
-  ];
-  let removeById = (
-    list: { _first: any; _remove: (arg0: any) => void },
-    ids: string | any[]
-  ) => {
-    let node = list._first;
-    do {
-      let shouldRemove = ids.includes(node.element?.command?.id);
-      if (shouldRemove) {
-        list._remove(node);
-      }
-    } while ((node = node.next));
-  };
-
-  removeById(contextMenuLinks, removableIds);
-}
-removeContextMenu()
-/**
  * 编辑器不支持TSX，以下为了禁用语法错误的提示
  */
-function compatibleTSX() {
+function compatibleTSX(monaco: Monaco) {
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
     target: monaco.languages.typescript.ScriptTarget.Latest,
     allowNonTsExtensions: true,
@@ -71,7 +26,6 @@ function compatibleTSX() {
     noSyntaxValidation: false,
   });
 }
-compatibleTSX();
 
 const defaultOptions = {
   theme: "vs-dark",
@@ -88,50 +42,60 @@ const CodeEditor = forwardRef(
       | React.MutableRefObject<unknown>
       | null
   ) => {
-    const { code = "", options: optionProp = defaultOptions, onChange, onRun, onCopy } = props;
-    const editor = useRef<monaco.editor.IStandaloneCodeEditor>();
-    const options = merge(defaultOptions, optionProp)
+    const {
+      code = "",
+      options: optionProp = defaultOptions,
+      onChange,
+      onRun,
+      onCopy,
+    } = props;
+    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
+    const options = merge(defaultOptions, optionProp);
 
     useImperativeHandle(
       ref,
       () => ({
-        editor: editor.current,
+        editor: editorRef.current,
         setCode(code: string) {
-          editor.current?.setValue(code);
+          editorRef.current?.setValue(code);
         },
       }),
       []
     );
 
-    const editorDidMount = (
-      _editor: monaco.editor.IStandaloneCodeEditor,
-      monaco: any
+    function handleEditorWillMount(monaco: Monaco) {
+      compatibleTSX(monaco);
+    }
+
+    const handleEditorDidMount = (
+      editor: monaco.editor.IStandaloneCodeEditor,
+      monaco: Monaco
     ) => {
       // console.log("editorDidMount", editor);
-      editor.current = _editor;
-      _editor.focus();
-      _editor.addAction({
+      editorRef.current = editor;
+      editor.focus();
+      editor.addAction({
         id: "run",
         label: "运行",
         keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.F10],
         contextMenuGroupId: "run",
         contextMenuOrder: 1,
         run: function (ed) {
-          onRun?.(ed.getValue())
+          onRun?.(ed.getValue());
         },
       });
-      _editor.addAction({
+      editor.addAction({
         id: "copy all",
         label: "复制全部",
         keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.F10],
         contextMenuGroupId: "copy all",
         contextMenuOrder: 2,
         run: function (ed) {
-          onCopy?.(ed.getValue())
+          onCopy?.(ed.getValue());
         },
       });
       setTimeout(() => {
-        _editor?.getAction("editor.action.formatDocument")?.run();
+        editor?.getAction("editor.action.formatDocument")?.run();
       }, 300);
     };
 
@@ -144,7 +108,8 @@ const CodeEditor = forwardRef(
         value={code}
         options={options}
         onChange={onChange}
-        editorDidMount={editorDidMount}
+        beforeMount={handleEditorWillMount}
+        onMount={handleEditorDidMount}
       />
     );
   }
