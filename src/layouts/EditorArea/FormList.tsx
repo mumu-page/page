@@ -1,8 +1,8 @@
 import React, { useCallback, useRef } from "react";
 import { Col, Form, Row } from "antd";
 import { useEffect } from "react";
-import ComponentItem from "../ComponentItem";
-import { ContextMenu } from "../../../components";
+import ComponentItem from "./FormItem";
+import { ContextMenu } from "../../components";
 import shortid from "shortid";
 import {
   CopyOutlined,
@@ -15,9 +15,9 @@ import {
   ICommonDispatch,
   IFormComProp,
   IMoveableOptions,
-} from "../../../stores/typings";
-import { findTarget, isDatePicker, refreshTarget } from "../../../utils/utils";
-import { Target_ClassName } from "../../../constants";
+} from "../../stores/typings";
+import { findTarget, isDatePicker, refreshTarget } from "../../utils/utils";
+import { Target_ClassName } from "../../constants";
 import {
   COPY_COMPONENT_LIST,
   DELETE_TARGET,
@@ -26,13 +26,13 @@ import {
   RIGHT_REMOVE_COMPONENTS,
   SET_MOVEABLE_OPTIONS,
   SET_TARGET_BY_COMPONENT_LIST,
-} from "../../../stores/action-type";
-import Menu from "../../../components/ContextMenu/Menu";
+} from "../../stores/action-type";
+import Menu from "../../components/ContextMenu/Menu";
 import {
   INFINITEVIEWER_SCROLL,
   SHOW_SETTING_PANL,
-} from "../../../constants/events";
-import eventBus from "../../../utils/eventBus";
+} from "../../constants/events";
+import eventBus from "../../utils/eventBus";
 import "./index.less";
 
 interface EditorAreaProps extends ICommonDispatch<object> {
@@ -90,7 +90,7 @@ export default function Container(props: EditorAreaProps) {
     formProps = {},
     colProps = {},
     rowProps = {},
-  } = target;
+  } = target || {};
 
   const { colNum, ...otherRow } = rowProps;
 
