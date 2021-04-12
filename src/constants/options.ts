@@ -117,12 +117,12 @@ export const options: OptionGroup[] = [
       //     key: 'color',
       //     icon: 'icon-yanse',
       // },
-      /* {
+      {
         label: "上传",
         key: "Upload",
         value: "Upload",
         icon: "icon-shangchuan",
-      }, */
+      },
     ],
   },
   /* {

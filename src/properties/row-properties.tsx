@@ -1,19 +1,19 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Form, Select, InputNumber, Typography, Switch } from 'antd'
-import { Context } from '../stores/context'
-import { RESET_COMPONENT_LAYOUT, SET_TARGET } from '../stores/action-type'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
-import CheckboxField from '../components/FormFields/CheckboxField'
-import { refreshTarget } from '../utils/utils'
-import { CustomCollapse, Title } from '../components'
-import { debounce, merge } from 'lodash'
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { Form, Select, InputNumber, Typography, Switch } from "antd";
+import { Context } from "../stores/context";
+import { RESET_COMPONENT_LAYOUT, SET_TARGET } from "../stores/action-type";
+import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
+import CheckboxField from "../components/FormFields/CheckboxField";
+import { refreshTarget } from "../utils/utils";
+import { CustomCollapse, Title } from "../components";
+import { debounce, merge } from "lodash";
 
 // 默认全局布局
 function genLayout(colNum: 1 | 2 | 3 | 4, row = 24) {
   if (isNaN(Number(colNum))) {
-    colNum = 1
+    colNum = 1;
   }
-  const col = Math.floor(Number(row / colNum))
+  const col = Math.floor(Number(row / colNum));
   return {
     xs: col,
     sm: col,
@@ -21,7 +21,7 @@ function genLayout(colNum: 1 | 2 | 3 | 4, row = 24) {
     lg: col,
     xl: col,
     xxl: col,
-  }
+  };
 }
 
 /**
@@ -30,25 +30,25 @@ function genLayout(colNum: 1 | 2 | 3 | 4, row = 24) {
  * 专业模式：支持精准设置多种属性，适用于专业人员。
  */
 export default function () {
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
   const {
     target: currentDragComponent,
     moveableOptions,
     commonDispatch,
-  } = useContext(Context)
-  const { id, rowProps = {} } = currentDragComponent || {}
-  const { target } = moveableOptions || {}
-  const [mode, setMode] = useState<'专业模式' | '精简模式'>('精简模式')
+  } = useContext(Context);
+  const { id, rowProps = {} } = currentDragComponent || {};
+  const { target } = moveableOptions || {};
+  const [mode, setMode] = useState<"专业模式" | "精简模式">("精简模式");
 
   const onValuesChange = useCallback(
     debounce((changedValues: any, allValues: any) => {
-      let newAllValues = allValues
-      if (mode === '精简模式') {
-        newAllValues = merge(allValues, genLayout(allValues.colNum))
+      let newAllValues = allValues;
+      if (mode === "精简模式") {
+        newAllValues = merge(allValues, genLayout(allValues.colNum));
         // 重置layout属性
         commonDispatch({
           type: RESET_COMPONENT_LAYOUT,
-        })
+        });
       }
       // 更新当前组件
       commonDispatch({
@@ -57,26 +57,38 @@ export default function () {
           id,
           rowProps: newAllValues,
         },
-      })
+      });
       // 重新获取当前选中元素
-      refreshTarget(target, commonDispatch)
+      refreshTarget(target, commonDispatch);
+
+      updateLayout()
     }, 200),
     [currentDragComponent.id, mode]
-  )
+  );
+
+  const updateLayout = () => {
+    const viewport = (document.querySelector(".viewport") as HTMLElement) || {};
+    const formRow = (document.querySelector(".form-row") as HTMLElement) || {};
+    const { width, height } = formRow?.getBoundingClientRect?.() || {};
+    console.log(width, height);
+    
+    viewport.style.width = width + "px";
+    viewport.style.height = height + "px";
+  };
 
   useEffect(() => {
-    form.resetFields()
-    form.setFieldsValue(rowProps)
-  }, [currentDragComponent?.id])
+    form.resetFields();
+    form.setFieldsValue(rowProps);
+  }, [currentDragComponent?.id]);
 
   return (
     <Form
       {...FORM_PROPERTIES_OPTIONS}
       form={form}
       initialValues={{
-        align: 'top',
+        align: "top",
         gutter: 0,
-        justify: 'start',
+        justify: "start",
         wrap: true,
       }}
       onValuesChange={onValuesChange}
@@ -86,18 +98,18 @@ export default function () {
         extra={
           <Typography.Link
             onClick={() => {
-              setMode(mode === '精简模式' ? '专业模式' : '精简模式')
+              setMode(mode === "精简模式" ? "专业模式" : "精简模式");
             }}
           >
             <Switch
               checkedChildren="专业模式"
               unCheckedChildren="精简模式"
-              checked={mode === '专业模式'}
+              checked={mode === "专业模式"}
             />
           </Typography.Link>
         }
       />
-      <CustomCollapse defaultActiveKey={['全局布局']}>
+      <CustomCollapse defaultActiveKey={["全局布局"]}>
         <CustomCollapse.Panel
           header={
             <Form.Item
@@ -106,7 +118,7 @@ export default function () {
               className="mb-0"
             ></Form.Item>
           }
-          key={'全局布局'}
+          key={"全局布局"}
         >
           <Form.Item label="垂直对齐" name="align">
             <Select>
@@ -126,7 +138,7 @@ export default function () {
               </Select.Option>
             </Select>
           </Form.Item>
-          {mode === '精简模式' && (
+          {mode === "精简模式" && (
             <>
               <Form.Item label="列数" name="colNum">
                 <Select>
@@ -138,7 +150,7 @@ export default function () {
               </Form.Item>
             </>
           )}
-          {mode === '专业模式' && (
+          {mode === "专业模式" && (
             <>
               <Form.Item
                 label="屏幕 * 响应式栅格"
@@ -200,5 +212,5 @@ export default function () {
         </CustomCollapse.Panel>
       </CustomCollapse>
     </Form>
-  )
+  );
 }

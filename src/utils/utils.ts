@@ -50,6 +50,12 @@ export function getContext() {
   };
 }
 
+export function isChildren(componentKey: string) {
+  return [
+    "Upload",
+  ].includes(componentKey); 
+}
+
 export function isSelect(componentKey: string) {
   return [
     "Select",

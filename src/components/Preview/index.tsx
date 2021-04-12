@@ -16,8 +16,7 @@ import {
 import CodeEditor from "../CodeEditor";
 import { CodeEditorInstanceProps } from "../CodeEditor/typings";
 import { string2Component } from "../../utils/utils";
-import SplitPane from "react-split-pane";
-import ReactDOM from 'react-dom';
+import SplitPane, { Pane } from "react-split-pane";
 import "./index.less";
 
 const { TabPane } = Tabs;
@@ -138,7 +137,7 @@ export default forwardRef(function (
                 icon={<PlayCircleOutlined />}
                 style={{ color: "#999" }}
                 type="link"
-                size='small'
+                size="small"
                 onClick={() => onRun(tsxCode)}
               >
                 运行
@@ -182,20 +181,20 @@ export default forwardRef(function (
           </Tabs>
           <div className="form">
             <div className="body">{component}</div>
-            <Affix
-              offsetBottom={10}
-              style={{ position: "absolute", bottom: 20, right: 20 }}
-            >
-              <Button
-                icon={<CloseOutlined />}
-                shape="circle"
-                type="text"
-                style={{boxShadow: '0 0 2px #ccc'}}
-                onClick={onClose}
-              ></Button>
-            </Affix>
           </div>
         </SplitPane>
+        <Affix
+          offsetBottom={10}
+          style={{ position: "absolute", bottom: 20, right: 20 }}
+        >
+          <Button
+            icon={<CloseOutlined />}
+            shape="circle"
+            type="text"
+            style={{ boxShadow: "0 0 2px #ccc" }}
+            onClick={onClose}
+          ></Button>
+        </Affix>
       </div>
     </Drawer>
   );

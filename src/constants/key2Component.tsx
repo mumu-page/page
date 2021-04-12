@@ -35,6 +35,7 @@ import {
   Button,
 } from "antd";
 import { IComponentKeys } from "../stores/typings";
+import { UploadOutlined } from "@ant-design/icons";
 
 export const key2Component = {
   Input: {
@@ -103,7 +104,9 @@ export const key2Component = {
   },
   Upload: {
     properties: <UploadProperties />,
-    component: <Upload />,
+    component: <Upload>
+      <Button icon={<UploadOutlined />}>Click to Upload</Button>
+    </Upload>,
   },
   Col: {
     properties: <></>, //<RowProperties />,

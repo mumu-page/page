@@ -1,6 +1,7 @@
 import React from 'react'
 import { ICONS } from '../constants'
 import { IComponentKeys, IFormComProp } from '../stores/typings'
+import { isChildren } from './utils'
 
 function parseProp(key: string, value: any, result = '') {
   if (!value) return ''
@@ -108,9 +109,13 @@ function createFormItem(
   })
   const componentPropsStr = generateComProps(componentProps, componentKey)
   const componentName = componentKey?.replace(/^.*\./, '')
+  // TODO render children
+  const Component = isChildren(componentKey) ? `<${componentName}${componentPropsStr}>
+    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+  </${componentName}>` : `<${componentName}${componentPropsStr} />`
   return `<Col${colPropsStr}>
             <Form.Item${formItemPropsStr}>
-              <${componentName}${componentPropsStr}></${componentName}>
+              ${Component}
             </Form.Item>
           </Col>${componentList.length - 1 === index ? '' : '\n'}`
 }

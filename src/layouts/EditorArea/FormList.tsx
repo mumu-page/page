@@ -208,7 +208,7 @@ export default function Container(props: EditorAreaProps) {
       }}
       form={form}
     >
-      <Row {...otherRow}>
+      <Row {...otherRow} className='form-row'>
         {componentList.map((item: IFormComProp, index: number) => {
           const {
             id,
