@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from "./App";
-import InfiniteViewer from "./components/InfiniteViewer";
+import VisualEditor from "./visual-editor";
 
 ReactDOM.render(
   // <React.StrictMode>
-  <App />,
+  <VisualEditor />,
   /* </React.StrictMode> */ document.getElementById("root")
 );
 

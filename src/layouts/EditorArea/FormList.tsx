@@ -264,6 +264,7 @@ export default function Container(props: EditorAreaProps) {
                 className={Target_ClassName}
                 onClick={(e) => {
                   e.stopPropagation();
+                  console.log('onClick', e);
                   commonDispatch({
                     type: SET_TARGET_BY_COMPONENT_LIST,
                     payload: { id },

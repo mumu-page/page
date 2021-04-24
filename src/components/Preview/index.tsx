@@ -4,29 +4,29 @@ import React, {
   useImperativeHandle,
   useState,
   useCallback,
-  useEffect
-} from "react";
-import { Tabs, Drawer, message, Button, Affix } from "antd";
-import { PreviewInstanceProps, PreviewProps } from "./typings";
+  useEffect,
+} from 'react'
+import { Tabs, Drawer, message, Button, Space, Divider } from 'antd'
+import { PreviewInstanceProps, PreviewProps } from './typings'
 import {
   FileTextOutlined,
   EditOutlined,
   CloseOutlined,
   PlayCircleOutlined,
-} from "@ant-design/icons";
-import CodeEditor from "../CodeEditor";
-import { CodeEditorInstanceProps } from "../CodeEditor/typings";
-import { string2Component } from "../../utils/utils";
-import SplitPane, { Pane } from "react-split-pane";
-import "./index.less";
+} from '@ant-design/icons'
+import CodeEditor from '../CodeEditor'
+import { CodeEditorInstanceProps } from '../CodeEditor/typings'
+import { string2Component } from '../../utils/utils'
+import SplitPane /* , { Pane } */ from 'react-split-pane'
+import './index.less'
 
-const { TabPane } = Tabs;
+const { TabPane } = Tabs
 const SelectedIcon = () => (
-  <EditOutlined style={{ color: "#f1fa8c", marginRight: "5px" }} />
-);
+  <EditOutlined style={{ color: '#f1fa8c', marginRight: '5px' }} />
+)
 const UnSelectedIcon = () => (
-  <FileTextOutlined style={{ color: "#a95812", marginRight: "5px" }} />
-);
+  <FileTextOutlined style={{ color: '#a95812', marginRight: '5px' }} />
+)
 
 export default forwardRef(function (
   props: PreviewProps,
@@ -35,57 +35,57 @@ export default forwardRef(function (
     | React.MutableRefObject<unknown>
     | null
 ) {
-  const [tsxCode, setTsxCode] = useState<string>("");
-  const [scssCode, setScssCode] = useState<string>("");
-  const [visible, setVisible] = useState(false);
-  const [activeKey, setActiveKey] = useState("tsx");
-  const [component, setComponent] = useState(<></>);
-  const tsxEditor = useRef<CodeEditorInstanceProps>(null);
-  const scssEditor = useRef<CodeEditorInstanceProps>(null);
-  const [width, setWidth] = useState<number | string>('');
+  const [tsxCode, setTsxCode] = useState<string>('')
+  const [scssCode, setScssCode] = useState<string>('')
+  const [visible, setVisible] = useState(false)
+  const [activeKey, setActiveKey] = useState('tsx')
+  const [component, setComponent] = useState(<></>)
+  const tsxEditor = useRef<CodeEditorInstanceProps>(null)
+  const scssEditor = useRef<CodeEditorInstanceProps>(null)
+  const [width, setWidth] = useState<number | string>('')
 
   const onTsxChangCode = useCallback((newCode) => {
-    setTsxCode(newCode);
+    setTsxCode(newCode)
     // refresh(newCode)
-  }, []);
+  }, [])
 
   const onScssChangCode = useCallback((newCode) => {
-    setScssCode(newCode);
-    onRun(newCode);
-  }, []);
+    setScssCode(newCode)
+    onRun(newCode)
+  }, [])
 
   const onRun = (code = tsxCode) => {
     const _xmlCode =
       code
-        .substring(code.indexOf("export default"), code.indexOf("</Form>"))
-        .replace("export default", "") + "</Form>}";
+        .substring(code.indexOf('export default'), code.indexOf('</Form>'))
+        .replace('export default', '') + '</Form>}'
     string2Component(_xmlCode)
       .then((newComponent) => {
-        if (typeof newComponent === "function") {
-          const Component = newComponent();
-          setComponent(<Component />);
+        if (typeof newComponent === 'function') {
+          const Component = newComponent()
+          setComponent(<Component />)
         }
       })
       .catch((info) => {
-        message.error(info?.message);
-      });
-  };
+        message.error(info?.message)
+      })
+  }
 
   const onCopy = () => {
-    console.log("onCopy");
-  };
+    console.log('onCopy')
+  }
 
   const onDragFinished = (newSize: number) => {
-    setWidth(newSize);
-  };
+    setWidth(newSize)
+  }
 
   const onTabChange = (activeKey: string) => {
-    setActiveKey(activeKey);
-  };
+    setActiveKey(activeKey)
+  }
 
   const onClose = () => {
-    setVisible(false);
-  };
+    setVisible(false)
+  }
 
   useImperativeHandle(
     ref,
@@ -93,26 +93,26 @@ export default forwardRef(function (
       tsEditor: tsxEditor.current,
       scssEditor: scssEditor.current,
       setTsxCode: (newCode: string) => {
-        setTsxCode(newCode);
+        setTsxCode(newCode)
       },
       setScssCode: (newCode: string) => {
-        setScssCode(newCode);
+        setScssCode(newCode)
       },
       open() {
-        setVisible(true);
+        setVisible(true)
       },
       close() {
-        setVisible(false);
+        setVisible(false)
       },
       run(newCode: string) {
-        onRun(newCode);
+        onRun(newCode)
       },
     }),
     []
-  );
+  )
 
   useEffect(() => {
-    const defaultSize = window.screen.width * 0.3;
+    const defaultSize = window.screen.width * 0.3
     setWidth(defaultSize)
   }, [])
 
@@ -136,24 +136,36 @@ export default forwardRef(function (
             activeKey={activeKey}
             className="code-container"
             onChange={onTabChange}
-            tabBarStyle={{ height: "35px" }}
+            tabBarStyle={{ height: '35px' }}
             type="card"
             tabBarExtraContent={
-              <Button
-                icon={<PlayCircleOutlined />}
-                style={{ color: "#999" }}
-                type="link"
-                size="small"
-                onClick={() => onRun(tsxCode)}
-              >
-                运行
-              </Button>
+              <Space split={<Divider />}>
+                <Button
+                  icon={<PlayCircleOutlined />}
+                  type="link"
+                  size="small"
+                  className='extra-action'
+                  onClick={() => onRun(tsxCode)}
+                >
+                  运行
+                </Button>
+                <Button
+                  icon={<CloseOutlined />}
+                  className='extra-action'
+                  type="link"
+                  size="small"
+                  onClick={onClose}
+                >
+                  关闭
+                </Button>
+                <div></div>
+              </Space>
             }
           >
             <TabPane
               tab={
                 <div>
-                  {activeKey === "tsx" ? <SelectedIcon /> : <UnSelectedIcon />}
+                  {activeKey === 'tsx' ? <SelectedIcon /> : <UnSelectedIcon />}
                   <span>tsx</span>
                 </div>
               }
@@ -162,7 +174,7 @@ export default forwardRef(function (
               <CodeEditor
                 ref={tsxEditor}
                 code={tsxCode}
-                options={{ width, height: "100vmax", language: "typescript" }}
+                options={{ width, height: '100vmax', language: 'typescript' }}
                 onChange={onTsxChangCode}
                 onRun={onRun}
                 onCopy={onCopy}
@@ -171,7 +183,7 @@ export default forwardRef(function (
             <TabPane
               tab={
                 <div>
-                  {activeKey === "scss" ? <SelectedIcon /> : <UnSelectedIcon />}
+                  {activeKey === 'scss' ? <SelectedIcon /> : <UnSelectedIcon />}
                   <span>scss</span>
                 </div>
               }
@@ -180,7 +192,7 @@ export default forwardRef(function (
               <CodeEditor
                 ref={scssEditor}
                 code={scssCode}
-                options={{ width, height: "100vmax", language: "scss" }}
+                options={{ width, height: '100vmax', language: 'scss' }}
                 onChange={onScssChangCode}
               />
             </TabPane>
@@ -189,19 +201,7 @@ export default forwardRef(function (
             <div className="body">{component}</div>
           </div>
         </SplitPane>
-        <Affix
-          offsetBottom={10}
-          style={{ position: "absolute", bottom: 20, right: 20 }}
-        >
-          <Button
-            icon={<CloseOutlined />}
-            shape="circle"
-            type="text"
-            style={{ boxShadow: "0 0 2px #ccc" }}
-            onClick={onClose}
-          ></Button>
-        </Affix>
       </div>
     </Drawer>
-  );
-});
+  )
+})

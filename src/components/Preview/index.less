@@ -8,7 +8,7 @@
   .code-container {
     // width: 100%;
     // height: 100%;
-    background-color:rgb(30, 30, 30);
+    background-color: var(--editor-bg-color);
     // .ant-tabs-content {
     //   height: 100%;
     // }
@@ -16,23 +16,41 @@
       margin-bottom: 0 !important;
       // display: block;
       &::before {
-        border: none!important;
+        border: none !important;
       }
     }
     .ant-tabs-nav-wrap {
-      background-color: #100f0f;
+      background-color: var(--editor-main-bg-color);
       &::before {
-        border-color: #100f0f;
+        border-color: var(--editor-tab-bg-color);
       }
       .ant-tabs-tab {
         border: 0 !important;
-        color: #888a8e !important;
-        background-color: #363636;
+        color: var(--editor-text-color) !important;
+        background-color: var(--editor-tab-bg-color);
       }
       .ant-tabs-tab-active {
         background-color: rgb(30, 30, 30);
         .ant-tabs-tab-btn {
           color: #fff !important;
+        }
+      }
+    }
+    .ant-tabs-extra-content {
+      background-color: var(--editor-main-bg-color) !important;
+      .ant-space-item {
+        &:hover {
+          background-color: var(--editor-bg-color) !important;
+        }
+        .extra-action {
+          color: var(--editor-text-color);
+          &:hover {
+            color: var(--main-color);
+          }
+          span:first-child {
+            display: inline-block;
+            vertical-align: middle;
+          }
         }
       }
     }
@@ -47,6 +65,7 @@
 
 .Pane2 {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .Resizer {

@@ -18,4 +18,8 @@ body {
   --main-border-color: #f8f8f8;
   --main-border-color2:rgba(0,0,0,.1);
   --main-secord-bg: rgba(0,0,0,.1);
+  --editor-bg-color: rgb(30, 30, 30);
+  --editor-main-bg-color: #100f0f;
+  --editor-text-color: #888a8e;
+  --editor-tab-bg-color: #363636;
 }
