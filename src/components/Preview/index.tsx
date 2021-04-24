@@ -139,7 +139,7 @@ export default forwardRef(function (
             tabBarStyle={{ height: '35px' }}
             type="card"
             tabBarExtraContent={
-              <Space split={<Divider />}>
+              <Space className='extra-action-container' split={<Divider />}>
                 <Button
                   icon={<PlayCircleOutlined />}
                   type="link"
