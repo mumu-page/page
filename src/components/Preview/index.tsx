@@ -4,6 +4,7 @@ import React, {
   useImperativeHandle,
   useState,
   useCallback,
+  useEffect
 } from "react";
 import { Tabs, Drawer, message, Button, Affix } from "antd";
 import { PreviewInstanceProps, PreviewProps } from "./typings";
@@ -26,7 +27,7 @@ const SelectedIcon = () => (
 const UnSelectedIcon = () => (
   <FileTextOutlined style={{ color: "#a95812", marginRight: "5px" }} />
 );
-const defaultSize = window.screen.width * 0.3;
+
 export default forwardRef(function (
   props: PreviewProps,
   ref:
@@ -41,7 +42,7 @@ export default forwardRef(function (
   const [component, setComponent] = useState(<></>);
   const tsxEditor = useRef<CodeEditorInstanceProps>(null);
   const scssEditor = useRef<CodeEditorInstanceProps>(null);
-  const [width, setWidth] = useState<number | string>(defaultSize);
+  const [width, setWidth] = useState<number | string>('');
 
   const onTsxChangCode = useCallback((newCode) => {
     setTsxCode(newCode);
@@ -110,6 +111,11 @@ export default forwardRef(function (
     []
   );
 
+  useEffect(() => {
+    const defaultSize = window.screen.width * 0.3;
+    setWidth(defaultSize)
+  }, [])
+
   return (
     <Drawer
       width="100%"
@@ -122,7 +128,7 @@ export default forwardRef(function (
         <SplitPane
           split="vertical"
           minSize={0}
-          defaultSize={defaultSize}
+          defaultSize={width}
           onDragFinished={onDragFinished}
         >
           <Tabs

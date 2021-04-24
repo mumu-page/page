@@ -12,7 +12,7 @@ module.exports = {
         new HtmlWebpackExternalsPlugin({
             externals: [
                 {
-                    module: 'Babel',
+                    module: '@babel/standalone',
                     entry: 'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js',
                     global: 'Babel'
                 }

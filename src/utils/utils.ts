@@ -21,7 +21,7 @@ import { ICONS } from '../constants'
 import { IFormComProp } from '../stores/typings'
 import { Target_ClassName } from '../constants/constants'
 import { SET_MOVEABLE_OPTIONS } from '../stores/action-type'
-const Babel = require('Babel')
+import * as Babel from '@babel/standalone'
 
 export function getContext() {
   const { TimePicker: TP, ...OtherDatePickerCom } = DatePicker

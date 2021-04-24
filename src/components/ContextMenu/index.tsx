@@ -11,7 +11,7 @@ import './index.less'
 
 export default forwardRef((props: any, ref) => {
   const { children } = props
-  const [el] = useState(document.body)
+  const [el, setEl] = useState<HTMLElement>()
   const [visiable, setVisiable] = useState(false)
   const conteMenu = useRef(null)
 
@@ -38,15 +38,16 @@ export default forwardRef((props: any, ref) => {
 
   useEffect(() => {
     window.addEventListener('click', hideContextMenu)
+    setEl(document.body)
     return () => {
       window.removeEventListener('click', hideContextMenu)
     }
   }, [])
 
-  return createPortal(
+  return el ? createPortal(
     <div id="context-menu" ref={conteMenu} className={!visiable ? 'hide' : ''}>
       {children}
     </div>,
     el
-  )
+  ) : <></>
 })
