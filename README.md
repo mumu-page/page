@@ -8,6 +8,22 @@
 ## 是什么
 一款可视化编辑器，旨在为提升表单开发的效率
 
+## 使用
+### 1.安装
+```sh
+yarn add react-visual-editor
+```
+### 2.使用组件
+```tsx
+import ReactVisualEditor from 'react-visual-editor'
+import 'react-visual-editor/dist/index.css'
+
+export default function Home() {
+  return <ReactVisualEditor />
+}
+
+```
+
 ## 历史
 1. 对整体项目进行重构。 2021/3/11
 2. 去除拖拽和大小调整(仅表单模式，效率更高)；增加“左移”、“右移”。 2021/4/4
