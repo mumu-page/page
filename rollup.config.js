@@ -61,9 +61,9 @@ export default [
     ],
   },
   // 打包声明文件
-  /* {
-    input: 'src/visual-editor.tsx',
+  {
+    input: 'src/index.d.tsx',
     output: [{ file: 'dist/index.d.ts', format: 'umd' }],
     plugins: [dts()],
-  }, */
+  },
 ]
