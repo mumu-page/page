@@ -1,5 +1,5 @@
 import { cloneDeep, isInteger, merge } from "lodash";
-import shortid from "shortid";
+import { shortid } from '../../utils/utils'
 import {
   SET_COMPONENT_LIST,
   DEL_COMPONENT_LIST,

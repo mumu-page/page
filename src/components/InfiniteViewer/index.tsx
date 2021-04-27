@@ -31,7 +31,7 @@ export default (props: any) => {
       <div
         className="reset"
         onClick={() => {
-          ;(viewerRef.current as any)?.scrollCenter()
+          scrollCenter()
         }}
       ></div>
       <Ruler

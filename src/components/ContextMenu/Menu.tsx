@@ -1,6 +1,6 @@
 import React from 'react'
 import { Typography } from 'antd'
-import shortid from 'shortid'
+import { shortid } from '../../utils/utils'
 
 export default (props: any) => {
   const { onClick = () => {}, options = [] } = props

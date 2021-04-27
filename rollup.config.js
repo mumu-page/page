@@ -45,25 +45,6 @@ export default [
       }),
       production && terser(),
     ],
-    // 第三方模块不会强行打包到输出中
-    // external: (id) =>
-    //   /^(react|antd|@ant-design\/icons)|@babel\/standalone/.test(id),
-    // external: [
-    //   '@babel/standalone',
-    //   'antd',
-    //   'events',
-    //   'lodash',
-    //   'react',
-    //   'react-dom',
-    //   'react-draggable',
-    //   'react-infinite-viewer',
-    //   'react-moveable',
-    //   'react-split-pane',
-    //   'shortid',
-    //   'immer',
-    //   '@monaco-editor/react',
-    //   '@scena/react-guides',
-    // ],
   },
   // 打包声明文件
   {

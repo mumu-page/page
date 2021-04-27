@@ -3,7 +3,7 @@ import { Col, Form, Row } from 'antd'
 import { useEffect } from 'react'
 import ComponentItem from './FormItem'
 import { ContextMenu } from '../../components'
-import shortid from 'shortid'
+import { shortid } from '../../utils/utils'
 import {
   CopyOutlined,
   SettingOutlined,

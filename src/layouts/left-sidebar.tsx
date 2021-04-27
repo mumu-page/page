@@ -6,7 +6,7 @@ import { hasNotPlaceholder, isSelect } from '../utils/utils'
 import { IFormComProp } from '../stores/typings'
 import { Context } from '../stores/context'
 import { PUT_COMPONENT_LIST } from '../stores/action-type'
-import shortid from 'shortid'
+import { shortid } from '../utils/utils'
 
 const getNewOptions = (data: OptionGroup[]) => {
   return data.map((item) => {
