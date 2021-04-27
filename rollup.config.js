@@ -7,6 +7,7 @@ import postcss from 'rollup-plugin-postcss'
 import typescript from 'rollup-plugin-typescript2'
 import dts from 'rollup-plugin-dts'
 import { terser } from 'rollup-plugin-terser'
+import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 
 const production = !process.env.ROLLUP_WATCH
 
@@ -20,6 +21,7 @@ export default [
         format: 'umd',
         sourcemap: false,
         name: 'ReactVisualEditor',
+        // https://unpkg.com/@babel/standalone@7.13.17/babel.min.js
       },
     ],
     plugins: [
@@ -38,27 +40,30 @@ export default [
         plugins: [],
       }),
       typescript(),
+      peerDepsExternal({
+        packageJsonPath: 'package.json'
+      }),
       production && terser(),
     ],
     // 第三方模块不会强行打包到输出中
     // external: (id) =>
     //   /^(react|antd|@ant-design\/icons)|@babel\/standalone/.test(id),
-    external: [
-      '@babel/standalone',
-      'antd',
-      'events',
-      'lodash',
-      'react',
-      'react-dom',
-      'react-draggable',
-      'react-infinite-viewer',
-      'react-moveable',
-      'react-split-pane',
-      'shortid',
-      'immer',
-      '@monaco-editor/react',
-      '@scena/react-guides',
-    ],
+    // external: [
+    //   '@babel/standalone',
+    //   'antd',
+    //   'events',
+    //   'lodash',
+    //   'react',
+    //   'react-dom',
+    //   'react-draggable',
+    //   'react-infinite-viewer',
+    //   'react-moveable',
+    //   'react-split-pane',
+    //   'shortid',
+    //   'immer',
+    //   '@monaco-editor/react',
+    //   '@scena/react-guides',
+    // ],
   },
   // 打包声明文件
   {
