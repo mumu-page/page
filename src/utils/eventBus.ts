@@ -16,6 +16,7 @@ class EventEmitter {
           callbacks: [fn],
         },
       ]
+      return
     }
     let flag = false
     this.callbacks.forEach((item) => {

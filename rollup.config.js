@@ -25,6 +25,9 @@ export default [
       },
     ],
     plugins: [
+      //   peerDepsExternal({
+      //     packageJsonPath: 'package.json',
+      //   }),
       // 支持第三方模块
       resolve({
         preferBuiltins: false,
@@ -40,10 +43,20 @@ export default [
         plugins: [],
       }),
       typescript(),
-      peerDepsExternal({
-        packageJsonPath: 'package.json'
-      }),
       production && terser(),
+    ],
+    external: [
+      'antd',
+      'lodash',
+      'react',
+      'react-dom',
+      'react-draggable',
+      'react-infinite-viewer',
+      'react-moveable',
+      'react-split-pane',
+      'immer',
+      '@monaco-editor/react',
+      '@scena/react-guides',
     ],
   },
   // 打包声明文件

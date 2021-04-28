@@ -21,7 +21,6 @@ import { ICONS } from '../constants'
 import { IFormComProp } from '../stores/typings'
 import { Target_ClassName } from '../constants/constants'
 import { SET_MOVEABLE_OPTIONS } from '../stores/action-type'
-import * as Babel from '@babel/standalone'
 
 export function getContext() {
   const { TimePicker: TP, ...OtherDatePickerCom } = DatePicker
@@ -102,6 +101,37 @@ export function isDatePickerRange(componentKey: string) {
   )
 }
 
+async function loadScript(scriptSrc: string) {
+  const dfd = {} as {
+    promise: Promise<any>
+    resolve: (value: any) => void
+    reject: (reason?: any) => void
+  }
+  dfd.promise = new Promise((resolve, reject) => {
+    dfd.resolve = resolve
+    dfd.reject = reject
+  })
+  const head = document.getElementsByTagName('head')[0]
+  const script = document.createElement('script') as HTMLScriptElement & {
+    onreadystatechange: () => void
+  }
+  script.type = 'text/javascript'
+  script.onload = script.onreadystatechange = function (this: any) {
+    if (
+      !this.readyState ||
+      this.readyState === 'loaded' ||
+      this.readyState === 'complete'
+    ) {
+      dfd.resolve(null)
+      // Handle memory leak in IE
+      script.onload = script.onreadystatechange = () => {}
+    }
+  }
+  script.src = scriptSrc
+  head.appendChild(script)
+  return dfd.promise
+}
+
 /**
  * 请传入一个function componet 字符串，将返回一个编译后函数组件
  * @param input
@@ -110,7 +140,12 @@ export function isDatePickerRange(componentKey: string) {
 export async function string2Component(input?: string) {
   if (!input) return ''
   try {
-    let output = Babel.transform(`${input}`, {
+    if (!(window as any).Babel) {
+      await loadScript(
+        'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js'
+      )
+    }
+    let output = (window as any).Babel.transform(`${input}`, {
       presets: ['react', 'es2015'],
     }).code
     output = output?.replace('"use strict";', '').trim()

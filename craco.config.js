@@ -9,7 +9,7 @@ module.exports = {
       ],
     },
     plugins: [
-        new HtmlWebpackExternalsPlugin({
+        /* new HtmlWebpackExternalsPlugin({
             externals: [
                 {
                     module: '@babel/standalone',
@@ -17,7 +17,7 @@ module.exports = {
                     global: 'Babel'
                 }
             ]
-        }),
+        }), */
         new webpack.BannerPlugin('可视化编辑器')
     ],
   },
