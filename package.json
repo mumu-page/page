@@ -1,11 +1,13 @@
 {
   "name": "react-visual-editor",
-  "version": "1.1.154",
+  "version": "1.1.165",
   "description": "> TODO: description",
   "author": "feline <295755973@qq.com>",
   "homepage": "https://resonances.gitee.io/react-visual-editor/",
   "license": "ISC",
-  "main": "dist/index.js",
+  "main": "./dist/visual-editor.umd.js",
+  "sideEffects": false,
+  "types": "dist/index.d.ts",
   "directories": {
     "dist": "dist",
     "test": "__tests__"
@@ -79,7 +81,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "eject": "react-scripts eject",
-    "rollup-build": "rollup --config rollup.config.js"
+    "rollup-build": "rollup --config rollup.config.js",
+    "prepublish": "npm run rollup-build"
   },
   "eslintConfig": {
     "extends": [
