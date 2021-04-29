@@ -267,7 +267,7 @@ export default function Container(props: EditorAreaProps) {
                 }}
                 onClick={(e: any) => {
                   e.stopPropagation()
-                  console.log('onClick', e)
+                  //  console.log('onClick', e)
                   commonDispatch({
                     type: SET_TARGET_BY_COMPONENT_LIST,
                     payload: { id },
@@ -287,7 +287,7 @@ export default function Container(props: EditorAreaProps) {
                   componentProps={componentProps}
                   componentKey={componentKey}
                   style={{
-                    marginBottom: 0
+                    marginBottom: 0,
                   }}
                 />
               </div>

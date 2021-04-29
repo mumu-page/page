@@ -6,7 +6,7 @@ import { useLocallyPersistedReducer } from './hooks'
 import { ICommonState } from './stores/typings'
 import { LOCAL_STORE_KEY } from './constants'
 import { ReactiveMoveable, InfiniteViewer } from './components'
-import './index.css';
+import './index.css'
 import './visual-editor.less'
 
 export default () => {

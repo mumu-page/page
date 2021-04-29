@@ -1,21 +1,21 @@
-import React, { useCallback, useContext, useEffect } from "react";
-import Moveable from "react-moveable";
+import React, { useCallback, useContext, useEffect } from 'react'
+import Moveable from 'react-moveable'
 import {
   SET_TARGET,
   SET_MOVEABLE_OPTIONS,
   UPDATE_COMPONENT_LIST_BY_TARGET,
-} from "../../stores/action-type";
-import { Context } from "../../stores/context";
+} from '../../stores/action-type'
+import { Context } from '../../stores/context'
 
 const layout = {
   frame: { translate: [0, 0] },
-} as any;
+} as any
 export default () => {
   const {
     target: currentDragComponent,
     moveableOptions = {},
     commonDispatch,
-  } = useContext(Context);
+  } = useContext(Context)
 
   const {
     target,
@@ -26,12 +26,12 @@ export default () => {
     horizontalGuidelines,
     draggable = true,
     resizable = true,
-  } = moveableOptions as any;
+  } = moveableOptions as any
 
   const onWinResize = useCallback((leftVal = 0, rightVal = 0) => {
-    const parentEl = document.querySelector(".viewport");
+    const parentEl = document.querySelector('.viewport')
     const { left, right, top, bottom } =
-      parentEl?.getBoundingClientRect?.() || {};
+      parentEl?.getBoundingClientRect?.() || {}
     // Moveable的bounds是基于整个窗口的
     // 而getBoundingClientRect是基于当前元素，因此存在误差
     commonDispatch({
@@ -44,20 +44,20 @@ export default () => {
           // bottom: Number(bottom) - 2,
         },
       },
-    });
-  }, []);
+    })
+  }, [])
 
   useEffect(() => {
-    onWinResize();
-  }, []);
+    onWinResize()
+  }, [])
 
   useEffect(() => {
-    const { layout = {} } = currentDragComponent;
+    const { layout = {} } = currentDragComponent
     commonDispatch({
       type: SET_MOVEABLE_OPTIONS,
       payload: layout,
-    });
-  }, [currentDragComponent]);
+    })
+  }, [currentDragComponent])
 
   return (
     <Moveable
@@ -93,18 +93,18 @@ export default () => {
       keepRatio={false}
       throttleResize={0}
       edge={false}
-      renderDirections={["nw", "n", "ne", "w", "e", "sw", "s", "se"]}
+      renderDirections={['nw', 'n', 'ne', 'w', 'e', 'sw', 's', 'se']}
       // ------------------ 调整大小结束 ------------------
       onDragStart={(e) => {
-        e.set(frame.translate);
+        e.set(frame.translate)
       }}
       onDrag={(e) => {
-        layout.frame.translate = e.beforeTranslate;
-        e.target.style.transform = `translate(${e.beforeTranslate[0]}px, ${e.beforeTranslate[1]}px)`;
+        layout.frame.translate = e.beforeTranslate
+        e.target.style.transform = `translate(${e.beforeTranslate[0]}px, ${e.beforeTranslate[1]}px)`
       }}
       onDragEnd={({ target, isDrag, clientX, clientY }) => {
         // console.log('onDragEnd', target, isDrag, clientX, clientY)
-        const { frame } = layout;
+        const { frame } = layout
         commonDispatch({
           type: SET_TARGET,
           payload: {
@@ -114,7 +114,7 @@ export default () => {
               clientY,
             },
           },
-        });
+        })
         commonDispatch({
           type: UPDATE_COMPONENT_LIST_BY_TARGET,
           payload: {
@@ -126,25 +126,25 @@ export default () => {
               },
             },
           },
-        });
+        })
       }}
       onResizeStart={(e) => {
-        e.setOrigin(["%", "%"]);
-        e.dragStart && e.dragStart.set(frame.translate);
+        e.setOrigin(['%', '%'])
+        e.dragStart && e.dragStart.set(frame.translate)
       }}
       onResize={({ target, width, height, drag }) => {
-        const beforeTranslate = drag.beforeTranslate;
-        layout.width = width;
-        layout.height = height;
-        layout.frame.translate = drag.beforeTranslate;
-        target.style.width = `${width}px`;
-        target.style.height = `${height}px`;
-        target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
+        const beforeTranslate = drag.beforeTranslate
+        layout.width = width
+        layout.height = height
+        layout.frame.translate = drag.beforeTranslate
+        target.style.width = `${width}px`
+        target.style.height = `${height}px`
+        target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`
       }}
       onResizeEnd={({ lastEvent }) => {
         // console.log("lastEvent", lastEvent);
         if (lastEvent) {
-          const { frame, width, height } = layout;
+          const { frame, width, height } = layout
           commonDispatch({
             type: SET_TARGET,
             payload: {
@@ -154,7 +154,7 @@ export default () => {
                 height,
               },
             },
-          });
+          })
           commonDispatch({
             type: UPDATE_COMPONENT_LIST_BY_TARGET,
             payload: {
@@ -166,9 +166,9 @@ export default () => {
                 },
               },
             },
-          });
+          })
         }
       }}
     />
-  );
-};
+  )
+}
