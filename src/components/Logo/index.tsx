@@ -1,5 +1,5 @@
 import { LayoutTwoTone } from '@ant-design/icons'
-import React from 'react'
+import * as React from 'react'
 import './index.less'
 
 export default () => {

@@ -33,6 +33,7 @@ const defaultOptions = {
   width: 800,
   height: 600,
 }
+
 const CodeEditor = forwardRef(
   (
     props: CodeEditorProps,

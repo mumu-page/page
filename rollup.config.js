@@ -16,21 +16,23 @@ export default [
     input: 'src/visual-editor.tsx',
     output: [
       {
-        file: 'dist/visual-editor.umd.js',
-        format: 'umd',
+        file: 'dist/visual-editor.esm.js',
+        format: 'es',
         sourcemap: true,
-        name: 'VisualEditor'
+      },
+      {
+        file: 'dist/visual-editor.cjs.js',
+        format: 'cjs',
+        sourcemap: true,
       },
     ],
     plugins: [
       //   peerDepsExternal({
       //     packageJsonPath: 'package.json',
       //   }),
-      // 支持第三方模块
       resolve({
         preferBuiltins: false,
       }),
-      // 支持 commonjs 格式
       commonjs(),
       //   babel({
       //     exclude: '**/node_modules/**',
@@ -43,7 +45,6 @@ export default [
       typescript(),
       //   production && terser(),
     ],
-    // 第三方模块不会强行打包到输出中
     external: (id) => {
       const external = [
         'antd',

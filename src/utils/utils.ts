@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {
   Input,
   InputNumber,
@@ -111,6 +111,10 @@ async function loadScript(scriptSrc: string) {
     dfd.resolve = resolve
     dfd.reject = reject
   })
+  if ((window as any)[scriptSrc]) {
+    dfd.resolve(null)
+    return dfd.promise
+  }
   const head = document.getElementsByTagName('head')[0]
   const script = document.createElement('script') as HTMLScriptElement & {
     onreadystatechange: () => void
@@ -122,6 +126,7 @@ async function loadScript(scriptSrc: string) {
       this.readyState === 'loaded' ||
       this.readyState === 'complete'
     ) {
+      ;(window as any)[scriptSrc] = 'success'
       dfd.resolve(null)
       // Handle memory leak in IE
       script.onload = script.onreadystatechange = () => {}
@@ -140,11 +145,9 @@ async function loadScript(scriptSrc: string) {
 export async function string2Component(input?: string) {
   if (!input) return ''
   try {
-    if (!(window as any).Babel) {
-      await loadScript(
-        'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js'
-      )
-    }
+    await loadScript(
+      'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js'
+    )
     let output = (window as any).Babel.transform(`${input}`, {
       presets: ['react', 'es2015'],
     }).code

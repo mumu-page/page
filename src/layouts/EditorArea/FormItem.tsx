@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Form } from 'antd'
 import { IFormComProp } from '../../stores/typings'
 import { isCheck, isDatePicker, isRenderFormItem } from '../../utils/utils'

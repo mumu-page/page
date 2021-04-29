@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react'
-import { Col, Form, Row } from 'antd'
+import { Col, Form, Input, Row } from 'antd'
 import { useEffect } from 'react'
 import ComponentItem from './FormItem'
 import { ContextMenu } from '../../components'
@@ -34,6 +34,7 @@ import {
 } from '../../constants/events'
 import eventBus from '../../utils/eventBus'
 import './index.less'
+import Password from 'antd/lib/input/Password'
 
 interface EditorAreaProps extends ICommonDispatch<object> {
   componentList: IFormComProp[]

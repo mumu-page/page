@@ -1,10 +1,10 @@
-import React from 'react'
+import * as React from 'react'
 import { ICommonState } from './typings'
 
 export const INITAL_STATE: ICommonState = {
   target: {
-    id: "",
-    componentKey: "",
+    id: '',
+    componentKey: '',
     formProps: {},
     formItemProps: {},
     componentProps: {},
@@ -23,9 +23,9 @@ export const INITAL_STATE: ICommonState = {
     type,
     payload,
   }: {
-    type: string;
-    payload?: unknown;
+    type: string
+    payload?: unknown
   }) => {},
-};
+}
 
 export const Context = React.createContext(INITAL_STATE)

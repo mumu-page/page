@@ -1,9 +1,9 @@
-import React from 'react'
+import * as React from 'react'
 
 interface IProps {
-    onFinish?: () => void
+  onFinish?: () => void
 }
 
 export default (props: IProps) => {
-    return <div>hello</div>
+  return <div>hello</div>
 }

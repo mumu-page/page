@@ -5,8 +5,9 @@
   "author": "feline <295755973@qq.com>",
   "homepage": "https://resonances.gitee.io/react-visual-editor/",
   "license": "ISC",
-  "main": "./dist/visual-editor.cjs.js",
-  "module": "./dist/visual-editor.esm.js",
+  "main": "dist/visual-editor.cjs.js",
+  "module": "dist/visual-editor.esm.js",
+  "source": "src/visual-editor.tsx",
   "types": "dist/index.d.ts",
   "directories": {
     "dist": "dist",
@@ -22,8 +23,9 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "eject": "react-scripts eject",
-    "rollup-build": "rollup --config rollup.config.js",
-    "prepublish": "npm run rollup-build"
+    "dist": "rollup --config rollup.config.js",
+    "dev-dist": "rollup --config rollup.config.js -w",
+    "prepublish": "npm run dist"
   },
   "peerDependencies": {
     "@monaco-editor/react": "^4.1.1",

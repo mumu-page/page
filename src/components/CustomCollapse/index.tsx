@@ -1,6 +1,6 @@
 import { CaretRightOutlined } from '@ant-design/icons'
 import Collapse from 'antd/lib/collapse'
-import React from 'react'
+import * as React from 'react'
 import './index.less'
 
 export const CustomCollapse = (props: any) => {
