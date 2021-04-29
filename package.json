@@ -1,13 +1,12 @@
 {
   "name": "react-visual-editor",
-  "version": "1.1.167",
+  "version": "1.1.1671",
   "description": "> TODO: description",
   "author": "feline <295755973@qq.com>",
   "homepage": "https://resonances.gitee.io/react-visual-editor/",
   "license": "ISC",
   "main": "./dist/visual-editor.cjs.js",
   "module": "./dist/visual-editor.esm.js",
-  "sideEffects": false,
   "types": "dist/index.d.ts",
   "directories": {
     "dist": "dist",
@@ -16,6 +15,16 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "eject": "react-scripts eject",
+    "rollup-build": "rollup --config rollup.config.js",
+    "prepublish": "npm run rollup-build"
+  },
   "peerDependencies": {
     "@monaco-editor/react": "^4.1.1",
     "@scena/react-guides": "^0.14.0",
@@ -74,16 +83,6 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "typescript": "^4.1.2"
-  },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "eject": "react-scripts eject",
-    "rollup-build": "rollup --config rollup.config.js",
-    "prepublish": "npm run rollup-build"
   },
   "eslintConfig": {
     "extends": [
