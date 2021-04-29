@@ -43,7 +43,7 @@ export default [
         plugins: [],
       }),
       typescript(),
-      //   production && terser(),
+      production && terser(),
     ],
     external: (id) => {
       const external = [
