@@ -124,8 +124,8 @@ export default memo(function () {
         onValuesChange={onValuesChange}
       >
         <Title text="通用" />
-        <CustomCollapse defaultActiveKey={['控件类型']}>
-          <CustomCollapse.Panel header="控件类型" key="控件类型">
+        <CustomCollapse defaultActiveKey={['通用']}>
+          <CustomCollapse.Panel header="通用" key="通用">
             <Form.Item label="" name="componentKey">
               <Select>
                 {options.map((item) => {
@@ -144,40 +144,28 @@ export default memo(function () {
                 })}
               </Select>
             </Form.Item>
-          </CustomCollapse.Panel>
-          <CustomCollapse.Panel
-            header={
-              <Form.Item
-                label="控件宽度"
-                name="componentWidth"
-                tooltip="请输入百分比"
-                className="mb-0"
-              >
-                <InputNumber min={0} max={100} />
-              </Form.Item>
-            }
-          >
-            <Form.Item label="" valuePropName="checked" name="bordered">
-              <CheckboxField tooltipTitle="是否有边框" text="显示边框" />
+            <Form.Item
+              label="控件宽度"
+              name="componentWidth"
+              tooltip="请输入百分比"
+              className="mb-0"
+            >
+              <InputNumber min={0} max={100} />
             </Form.Item>
-          </CustomCollapse.Panel>
-          <CustomCollapse.Panel header="占位提示" key="占位提示">
             {isDatePickerRange(currentDragComponent?.componentKey) ? (
               <>
-                <Form.Item label="" name="placeholder1">
+                <Form.Item label="占位符1" name="placeholder1">
                   <Input />
                 </Form.Item>
-                <Form.Item label="" name="placeholder2">
+                <Form.Item label="占位符2" name="placeholder2">
                   <Input />
                 </Form.Item>
               </>
             ) : (
-              <Form.Item label="" name="placeholder">
+              <Form.Item label="占位符" name="placeholder">
                 <Input />
               </Form.Item>
             )}
-          </CustomCollapse.Panel>
-          <CustomCollapse.Panel header="大小" key="大小">
             <Form.Item label="大小" name="size">
               <Radio.Group style={{ width: '100%' }}>
                 <Radio.Button
@@ -199,6 +187,12 @@ export default memo(function () {
                   小
                 </Radio.Button>
               </Radio.Group>
+            </Form.Item>
+            <Form.Item label="" valuePropName="checked" name="bordered">
+              <CheckboxField tooltipTitle="是否有边框" text="显示边框" />
+            </Form.Item>
+            <Form.Item label="" valuePropName="checked" name="disabled">
+              <CheckboxField tooltipTitle="是否禁用" text="是否禁用" />
             </Form.Item>
           </CustomCollapse.Panel>
         </CustomCollapse>

@@ -6,7 +6,7 @@ import { isChildren } from './utils'
 function parseProp(key: string, value: any, result = '') {
   if (!value) return ''
   if (typeof value === 'undefined') return ''
-  if (value === '{}') return ''
+  if (['{}', 'null'].includes(value)) return ''
   try {
     result = JSON.parse(value)
     if (result !== null && ['object', 'number'].includes(typeof result)) {
@@ -26,9 +26,8 @@ function parseProp(key: string, value: any, result = '') {
     }
   } catch (e) {
     result = ''
-  } finally {
-    return result
   }
+  return result
 }
 
 function generateProps(props: { [key: string]: any }, result = '') {
