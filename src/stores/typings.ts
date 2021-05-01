@@ -1,3 +1,5 @@
+import { ItemInterface } from "react-sortablejs";
+
 export interface ICommonDispatch<T = boolean> {
   commonDispatch: React.Dispatch<{
     type: string;
@@ -27,7 +29,7 @@ export type IComponentKeys =
   | "Button"
   | "";
 
-export interface IFormComProp {
+export interface IFormComProp extends ItemInterface {
   componentKey: IComponentKeys; // 当前拖拽的控件key
   componentProps: { [key: string]: any }; // 当前拖拽的控件属性设置
   formProps?: { [key: string]: any }; // 当前Form属性设置

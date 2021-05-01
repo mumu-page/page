@@ -17,9 +17,8 @@ import {
   Button,
   Form,
 } from 'antd'
-import { ICONS } from '../constants'
 import { IFormComProp } from '../stores/typings'
-import { Target_ClassName } from '../constants/constants'
+import { Target_ClassName, ICONS } from '../constants/constants'
 import { SET_MOVEABLE_OPTIONS } from '../stores/action-type'
 
 export function getContext() {

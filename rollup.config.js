@@ -24,6 +24,7 @@ export default [
         file: 'dist/visual-editor.cjs.js',
         format: 'cjs',
         sourcemap: true,
+        exports: 'auto',
       },
     ],
     plugins: [
@@ -50,6 +51,7 @@ export default [
         'antd',
         'lodash',
         'moment',
+        'sortablejs',
         '@ant-design/icons',
         'react',
         'react-dom',

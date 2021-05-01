@@ -13,3 +13,28 @@
   bottom: 0;
   letter-spacing: 4px;
 }
+.drag-target-chosen {
+  border: 1px solid var(--main-color);
+}
+// 所选项目的样式
+.sortable-chosen {
+  background-color: #ffffff;
+  .drag-target {
+    border: 1px solid var(--main-color);
+  }
+}
+// 正在拖拽的样式
+.sortable-ghost {
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--main-color);
+    z-index: 10;
+  }
+}

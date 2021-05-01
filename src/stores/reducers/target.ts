@@ -55,7 +55,7 @@ export default (
         draft.target[key] = null
       }
     })
-    draft.target.id = null
+    draft.target.id = 'null'
     draft.target.componentKey = ''
   },
   [SET_MOVEABLE_OPTIONS]: () => {

@@ -9,7 +9,7 @@ export default () => {
   )
   return (
     <div>
-      {componentList.length === 0 ? (
+      {componentList?.length === 0 ? (
         <div className="not-found-info">从左侧点选组件进行表单设计</div>
       ) : (
         <FormList

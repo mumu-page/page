@@ -1,5 +1,5 @@
-import React, { useCallback, useRef } from 'react'
-import { Col, Form, Input, Row } from 'antd'
+import React, { forwardRef, useCallback, useRef } from 'react'
+import { Col, Form, Input, Row, RowProps } from 'antd'
 import { useEffect } from 'react'
 import ComponentItem from './FormItem'
 import { ContextMenu } from '../../components'
@@ -24,6 +24,7 @@ import {
   DEL_COMPONENT_LIST,
   LEFT_REMOVE_COMPONENTS,
   RIGHT_REMOVE_COMPONENTS,
+  SET_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
   SET_TARGET_BY_COMPONENT_LIST,
 } from '../../stores/action-type'
@@ -34,7 +35,7 @@ import {
 } from '../../constants/events'
 import eventBus from '../../utils/eventBus'
 import './index.less'
-import Password from 'antd/lib/input/Password'
+import { ReactSortable } from 'react-sortablejs'
 
 interface EditorAreaProps extends ICommonDispatch<object> {
   componentList: IFormComProp[]
@@ -95,20 +96,31 @@ export default function Container(props: EditorAreaProps) {
 
   const { colNum, ...otherRow } = rowProps
 
-  const setMoveableOption = (id: string | number) => {
-    const { elementGuidelines, target, frame } = findTarget(id, componentList)
+  const setMoveableOption = (
+    id: string | number | undefined,
+    componentList: IFormComProp[]
+  ) => {
+    // const { elementGuidelines, target, frame } = findTarget(id, componentList)
+    // commonDispatch({
+    //   type: SET_MOVEABLE_OPTIONS,
+    //   payload: {
+    //     frame,
+    //     elementGuidelines,
+    //     target,
+    //     /**
+    //      * 禁用调整大小和拖动
+    //      * 原因：Row Col 和 ReactiveMoveable 有冲突
+    //      */
+    //     draggable: false,
+    //     resizable: false,
+    //   },
+    // })
+
     commonDispatch({
-      type: SET_MOVEABLE_OPTIONS,
+      type: SET_COMPONENT_LIST,
       payload: {
-        frame,
-        elementGuidelines,
-        target,
-        /**
-         * 禁用调整大小和拖动
-         * 原因：Row Col 和 ReactiveMoveable 有冲突
-         */
-        draggable: false,
-        resizable: false,
+        newState: componentList,
+        id,
       },
     })
   }
@@ -143,9 +155,9 @@ export default function Container(props: EditorAreaProps) {
           newId,
         },
       })
-      requestAnimationFrame(() => {
-        setMoveableOption(newId)
-      })
+      //   requestAnimationFrame(() => {
+      //     setMoveableOption(newId)
+      //   })
     }
     if (label === HANDLE_TYPE.toLeft) {
       commonDispatch({
@@ -172,7 +184,7 @@ export default function Container(props: EditorAreaProps) {
   }, [])
 
   useEffect(() => {
-    setMoveableOption(target.id)
+    // setMoveableOption(target.id)
     eventBus.addListener(INFINITEVIEWER_SCROLL, onScroll)
     return () => {
       eventBus.removeListener(INFINITEVIEWER_SCROLL, onScroll)
@@ -200,6 +212,10 @@ export default function Container(props: EditorAreaProps) {
     form.setFieldsValue(_initialValues)
   }, [componentList, form])
 
+  //   const CustomComponent = forwardRef<HTMLDivElement, RowProps>((props, ref) => (
+  //     <Row ref={ref} {...props} {...otherRow} />
+  //   ))
+
   return (
     <Form
       {...formProps}
@@ -209,10 +225,38 @@ export default function Container(props: EditorAreaProps) {
       }}
       form={form}
     >
-      <Row {...otherRow}>
-        {componentList.map((item: IFormComProp, index: number) => {
+      <ReactSortable
+        sort
+        animation={150}
+        delay={4}
+        tag={Row}
+        // tag={CustomComponent}
+        list={componentList}
+        ghostClass="sortable-ghost"
+        chosenClass="sortable-chosen"
+        group={{
+          name: 'form-list',
+          put: true,
+        }}
+        setList={(newState) => {
+          commonDispatch({
+            type: SET_COMPONENT_LIST,
+            payload: { newState, id: target?.id },
+          })
+        }}
+        onChoose={(e) => {
+          const id = e.item.dataset.id
+          commonDispatch({
+            type: SET_TARGET_BY_COMPONENT_LIST,
+            payload: { id },
+          })
+          setMoveableOption(id, componentList)
+        }}
+      >
+        {componentList.map((item: IFormComProp) => {
           const {
             id,
+            chosen,
             children,
             componentKey,
             formItemProps,
@@ -256,13 +300,15 @@ export default function Container(props: EditorAreaProps) {
                   payload: { id },
                 })
                 // 无论dom元素如何变，componentList没有变
-                setMoveableOption(id)
+                setMoveableOption(id, componentList)
                 ;(contenxtMenu.current as any)?.show?.(e)
               }}
             >
               <div
                 data-id={id}
-                className={Target_ClassName}
+                className={`${Target_ClassName} ${
+                  chosen ? Target_ClassName + '-chosen' : ''
+                }`}
                 style={{
                   paddingBottom: 24,
                 }}
@@ -273,7 +319,7 @@ export default function Container(props: EditorAreaProps) {
                     type: SET_TARGET_BY_COMPONENT_LIST,
                     payload: { id },
                   })
-                  setMoveableOption(id)
+                  setMoveableOption(id, componentList)
                 }}
               >
                 <ComponentItem
@@ -295,7 +341,7 @@ export default function Container(props: EditorAreaProps) {
             </Col>
           )
         })}
-      </Row>
+      </ReactSortable>
       <ContextMenu ref={contenxtMenu}>
         <Menu options={options} onClick={handleContextMenuClick} />
       </ContextMenu>

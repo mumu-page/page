@@ -6,7 +6,7 @@ import {
   UPDATE_COMPONENT_LIST_BY_TARGET,
 } from '../stores/action-type'
 import { isDatePickerRange } from '../utils/utils'
-import { options } from '../constants'
+import { options } from '../constants/options'
 import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
 import { IComponentKeys } from '../stores/typings'
 import CheckboxField from '../components/FormFields/CheckboxField'

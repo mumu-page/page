@@ -4,7 +4,6 @@ import Ruler from './Ruler'
 import './index.less'
 import eventBus from '../../utils/eventBus'
 import { INFINITEVIEWER_SCROLL, SCROLL_CENTER } from '../../constants/events'
-import { VIEWPORT_LAYOUT } from '../../constants/constants'
 
 /**
  * 让他能够滚动
@@ -18,11 +17,20 @@ export default (props: any) => {
     ;(viewerRef.current as any)?.scrollCenter()
   }, [])
 
+  const resetViewport = () => {
+    const el = document.querySelector('.viewport') as HTMLElement
+    el.style.width = window.outerWidth * 0.8 + 'px'
+    el.style.height = window.outerHeight * 0.8 + 'px'
+  }
+
   useEffect(() => {
+    resetViewport()
     scrollCenter()
+    window.addEventListener('resize', resetViewport)
     eventBus.addListener(SCROLL_CENTER, scrollCenter)
     return () => {
       eventBus.removeListener(SCROLL_CENTER, scrollCenter)
+      window.removeEventListener('resize', resetViewport)
     }
   }, [])
 
@@ -76,7 +84,6 @@ export default (props: any) => {
       >
         <div
           className="viewport"
-          style={VIEWPORT_LAYOUT}
           onContextMenu={(e) => {
             e.preventDefault()
           }}

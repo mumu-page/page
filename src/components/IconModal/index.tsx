@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle } from 'react'
 import { Modal, Row, Col, Input, Button } from 'antd'
-import { ICON_ENTRIES } from '../../constants'
+import { ICON_ENTRIES } from '../../constants/constants'
 import { SearchOutlined } from '@ant-design/icons'
 import { IconModalProp, IconModalInstanceProp } from './typings'
 import './index.less'

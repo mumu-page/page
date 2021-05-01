@@ -55,8 +55,3 @@ export const FORM_PROPERTIES_OPTIONS: {
 
 // 可拖拽元素的类名
 export const Target_ClassName = "drag-target";
-
-export const VIEWPORT_LAYOUT = {
-  width: 800,
-  height: 600,
-};

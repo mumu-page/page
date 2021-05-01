@@ -1,4 +1,4 @@
-import { cloneDeep, isInteger, merge } from "lodash";
+import { cloneDeep, isInteger, merge } from 'lodash'
 import { shortid } from '../../utils/utils'
 import {
   SET_COMPONENT_LIST,
@@ -14,8 +14,8 @@ import {
   SET_COMPONENT_LAYOUT,
   RIGHT_REMOVE_COMPONENTS,
   LEFT_REMOVE_COMPONENTS,
-} from "../action-type";
-import { ICommonState, IFormComProp } from "../typings";
+} from '../action-type'
+import { ICommonState, IFormComProp } from '../typings'
 
 export default (
   draft: ICommonState,
@@ -23,176 +23,187 @@ export default (
 ) => ({
   // 清空控件列表和当前拖拽控件数据
   [DELETE_ALL_COMPONENT_LIST_AND_TARGET]: () => {
-    draft.componentList = [];
+    draft.componentList = []
     draft.target = {
-      id: "",
-      componentKey: "",
+      id: '',
+      componentKey: '',
       formItemProps: {},
       componentProps: {},
       colProps: {},
       rowProps: {},
-    };
+    }
   },
   [PUT_COMPONENT_LIST]: () => {
     for (let i = 0; i < draft.componentList?.length; i++) {
-      const item = draft.componentList[i];
+      const item = draft.componentList[i]
       if (item.id === action.payload?.id) {
-        return;
+        return
       }
     }
-    draft.componentList?.push(action.payload);
+    draft.componentList?.push(action.payload)
   },
   /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
   [SET_COMPONENT_LIST]: () => {
-    let newState = cloneDeep(action.payload?.newState);
-    draft.componentList = newState;
+    let { newState = [], id } = cloneDeep(action.payload) || {}
+    console.log(newState, id)
+    for (var i = 0; i < newState?.length; i++) {
+      const item = newState[i]
+      if (item.id === id) {
+        item.chosen = true
+      } else {
+        item.chosen = false
+      }
+    }
+    draft.componentList = newState
   },
   // 更新容器中的列表组件
   [UPDATE_COMPONENT_LIST_OF_ITEM_CHILDREN]: () => {
-    const { id, children = [] } = action.payload || {};
-    let _children = cloneDeep(children);
+    const { id, children = [] } = action.payload || {}
+    let _children = cloneDeep(children)
     draft?.componentList?.forEach((item, index) => {
       if (item.id === id) {
-        item.children = _children;
+        item.children = _children
       }
-    });
+    })
   },
   [DEL_COMPONENT_LIST]: () => {
     const findDelItem = (data: IFormComProp[]) => {
       for (let i = 0; i < data?.length; i++) {
         if (data[i]?.children) {
-          findDelItem(draft.componentList[i].children as IFormComProp[]);
+          findDelItem(draft.componentList[i].children as IFormComProp[])
         }
         if (data[i].id === action.payload?.id) {
-          data.splice(i, 1);
-          break;
+          data.splice(i, 1)
+          break
         }
       }
-    };
-    findDelItem(draft?.componentList);
+    }
+    findDelItem(draft?.componentList)
   },
   [COPY_COMPONENT_LIST]: () => {
-    let newItem = {} as IFormComProp;
-    const { id, newId = shortid() } = action?.payload || {};
+    let newItem = {} as IFormComProp
+    const { id, newId = shortid() } = action?.payload || {}
     const findCopyItem = (data: IFormComProp[]) => {
       data?.forEach((item, index) => {
         if (item?.children) {
-          findCopyItem(item?.children);
+          findCopyItem(item?.children)
         }
         if (item.id === id) {
-          newItem = cloneDeep(item);
-          newItem.id = newId;
-          newItem.key = newId;
-          newItem.formItemProps.name = newId;
-          data.push(newItem);
-          draft.target = newItem;
+          item.chosen = false
+          newItem = cloneDeep(item)
+          newItem.chosen = true
+          newItem.id = newId
+          newItem.key = newId
+          newItem.formItemProps.name = newId
+          data.push(newItem)
+          draft.target = newItem
         }
-      });
-    };
-    findCopyItem(draft?.componentList);
+      })
+    }
+    findCopyItem(draft?.componentList)
   },
   [INSERT_COMPONENT_LIST]: () => {
-    const { index, data } = action.payload;
-    draft.componentList.splice(index, 0, data);
+    const { index, data } = action.payload
+    draft.componentList.splice(index, 0, data)
   },
   [UPDATE_COMPONENT_LIST_BY_TARGET]: () => {
-    const { data = {} } = action.payload || {};
+    const { data = {} } = action.payload || {}
     const findCurrent = (coms: IFormComProp[]) => {
       coms?.forEach((item, index) => {
         if (item.id === draft.target?.id) {
           if (data.componentProps?.options && item?.componentProps?.options) {
-            item.componentProps.options = [];
+            item.componentProps.options = []
           }
           if (
             data.componentProps?.style?.width === null &&
             item?.componentProps?.style
           ) {
-            data.componentProps.style = null;
-            item.componentProps.style = null;
+            data.componentProps.style = null
+            item.componentProps.style = null
           }
-          item = merge(item, data);
+          item = merge(item, data)
         }
         if (item?.children) {
-          findCurrent(item.children);
+          findCurrent(item.children)
         }
-      });
-    };
-    findCurrent(draft?.componentList);
+      })
+    }
+    findCurrent(draft?.componentList)
   },
   // 同时更新当前选中控件和设计区控件列表
   [UPDATE_COMPONENT_LIST_AND_TARGET]: () => {
-    const { componentKey, newComponentProps } = action.payload || {};
+    const { componentKey, newComponentProps } = action.payload || {}
     const componentList = draft?.componentList?.map((item) => {
       if (item.id === draft.target?.id) {
-        item.componentKey = componentKey;
+        item.componentKey = componentKey
         item.componentProps = {
           ...item.componentProps,
           ...newComponentProps,
-        };
+        }
       }
-      return item;
-    });
-    draft.target.componentKey = componentKey;
-    draft.target.componentProps = newComponentProps;
-    draft.componentList = componentList;
+      return item
+    })
+    draft.target.componentKey = componentKey
+    draft.target.componentProps = newComponentProps
+    draft.componentList = componentList
   },
   // 重置layout属性
   [RESET_COMPONENT_LAYOUT]: () => {
     draft.componentList.forEach((item, index) => {
-      item.layout = {};
-    });
+      item.layout = {}
+    })
   },
   // 根据列数重新计算layout属性
   [SET_COMPONENT_LAYOUT]: () => {
-    const { colNum, gutter } = action.payload || {};
+    const { colNum, gutter } = action.payload || {}
     draft.componentList.forEach((item, index) => {
       const layout = {
         frame: { translate: [0, 0, 0] },
-      } as any;
+      } as any
       if (colNum > 1) {
-        layout.width = `calc(100% / ${colNum})`;
+        layout.width = `calc(100% / ${colNum})`
         // 兼容gutter
         if (gutter > 0) {
-          const margin = ((colNum - 1) * gutter) / colNum;
+          const margin = ((colNum - 1) * gutter) / colNum
           layout.width = `calc(100%/${colNum} - ${
             isInteger(margin) ? margin : margin.toFixed(2)
-          }px)`;
+          }px)`
           // 调整除每行第一个的位置
           if (index !== 0 && index % colNum !== 0) {
             // 当前所在列数(从0开始)
-            const tarColNum = index % colNum;
+            const tarColNum = index % colNum
             layout.frame.translate[0] =
-              layout.frame.translate[0] + gutter * tarColNum;
+              layout.frame.translate[0] + gutter * tarColNum
           }
         }
       }
-      item.layout = layout;
-    });
+      item.layout = layout
+    })
   },
   [LEFT_REMOVE_COMPONENTS]: () => {
-    const { id } = action.payload || {};
+    const { id } = action.payload || {}
     const findIndex = draft.componentList.findIndex((item) => {
-      return item.id === id;
-    });
-    const target = draft.componentList[findIndex];
-    const preIdx = findIndex - 1;
+      return item.id === id
+    })
+    const target = draft.componentList[findIndex]
+    const preIdx = findIndex - 1
     if (preIdx > 0) {
-      const preItem = draft.componentList[preIdx];
-      draft.componentList[preIdx] = target;
-      draft.componentList[findIndex] = preItem;
+      const preItem = draft.componentList[preIdx]
+      draft.componentList[preIdx] = target
+      draft.componentList[findIndex] = preItem
     }
   },
   [RIGHT_REMOVE_COMPONENTS]: () => {
-    const { id } = action.payload || {};
+    const { id } = action.payload || {}
     const findIndex = draft.componentList.findIndex((item) => {
-      return item.id === id;
-    });
-    const target = draft.componentList[findIndex];
-    const nextIdx = findIndex + 1;
+      return item.id === id
+    })
+    const target = draft.componentList[findIndex]
+    const nextIdx = findIndex + 1
     if (nextIdx < draft.componentList.length) {
-      const nextItem = draft.componentList[nextIdx];
-      draft.componentList[nextIdx] = target;
-      draft.componentList[findIndex] = nextItem;
+      const nextItem = draft.componentList[nextIdx]
+      draft.componentList[nextIdx] = target
+      draft.componentList[findIndex] = nextItem
     }
   },
-});
+})

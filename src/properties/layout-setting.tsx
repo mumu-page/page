@@ -1,5 +1,6 @@
-import React, {  } from "react";
-import {  FormProperties, RowProperties } from ".";
+import React from 'react'
+import FormProperties from './form-properties'
+import RowProperties from './row-properties'
 
 export default function () {
   return (
@@ -7,5 +8,5 @@ export default function () {
       <RowProperties />
       <FormProperties />
     </>
-  );
+  )
 }

@@ -1,9 +1,6 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { Form, InputNumber } from 'antd'
-import {
-  FORM_PROPERTIES_OPTIONS,
-  VIEWPORT_LAYOUT,
-} from '../constants/constants'
+import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
 import { CustomCollapse, Title } from '../components'
 import { debounce } from 'lodash'
 import { refreshTarget } from '../utils/utils'
@@ -40,7 +37,6 @@ export default function () {
       {...FORM_PROPERTIES_OPTIONS}
       form={form}
       onValuesChange={onValuesChange}
-      initialValues={VIEWPORT_LAYOUT}
     >
       <Title text="尺寸" />
       <CustomCollapse defaultActiveKey={['视窗大小']}>
