@@ -1,24 +1,31 @@
 const webpack = require('webpack')
-const CracoLessPlugin = require("craco-less");
-const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+const CracoLessPlugin = require('craco-less')
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 
+// const isProruction = process.env.NODE_ENV === 'production'
 module.exports = {
   webpack: {
     module: {
-      rules: [
-      ],
+      rules: [],
     },
     plugins: [
-        /* new HtmlWebpackExternalsPlugin({
-            externals: [
-                {
-                    module: '@babel/standalone',
-                    entry: 'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js',
-                    global: 'Babel'
-                }
-            ]
-        }), */
-        new webpack.BannerPlugin('可视化编辑器')
+      new HtmlWebpackExternalsPlugin({
+        externals: [
+          {
+            module: 'react',
+            entry:
+              'https://cdn.bootcdn.net/ajax/libs/react/17.0.2/umd/react.production.min.js',
+            global: 'React',
+          },
+          {
+            module: 'react-dom',
+            entry:
+              'https://cdn.bootcdn.net/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js',
+            global: 'ReactDOM',
+          },
+        ],
+      }),
+      new webpack.BannerPlugin('可视化编辑器'),
     ],
   },
   plugins: [
@@ -34,4 +41,4 @@ module.exports = {
       },
     },
   ],
-};
+}

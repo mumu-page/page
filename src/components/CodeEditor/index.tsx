@@ -1,5 +1,5 @@
 import React, { useRef, forwardRef, useImperativeHandle, memo } from 'react'
-import MonacoEditor, { Monaco, OnMount } from '@monaco-editor/react'
+import MonacoEditor, { Monaco, OnChange, OnMount } from '@monaco-editor/react'
 import { CodeEditorInstanceProps, CodeEditorProps } from './typings'
 import { isEqual, merge } from 'lodash'
 import './index.less'
@@ -34,14 +34,8 @@ const defaultOptions = {
   height: 600,
 }
 
-const CodeEditor = forwardRef(
-  (
-    props: CodeEditorProps,
-    ref:
-      | ((instance: CodeEditorInstanceProps) => void)
-      | React.MutableRefObject<unknown>
-      | null
-  ) => {
+const CodeEditor = forwardRef<CodeEditorInstanceProps, CodeEditorProps>(
+  (props, ref) => {
     const {
       code = '',
       options: optionProp = defaultOptions,
@@ -77,7 +71,7 @@ const CodeEditor = forwardRef(
         keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.F10],
         contextMenuGroupId: 'run',
         contextMenuOrder: 1,
-        run: function (ed) {
+        run: function (ed: any) {
           onRun?.(ed.getValue())
         },
       })
@@ -87,7 +81,7 @@ const CodeEditor = forwardRef(
         keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.F10],
         contextMenuGroupId: 'copy all',
         contextMenuOrder: 2,
-        run: function (ed) {
+        run: function (ed: any) {
           onCopy?.(ed.getValue())
         },
       })
