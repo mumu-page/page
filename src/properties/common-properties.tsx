@@ -44,8 +44,7 @@ export default memo(function () {
       componentKey,
       placeholder: originalPlaceholder,
       componentWidth,
-      size,
-      bordered,
+      ...otherProp
     } = allValues
     let placeholder = originalPlaceholder
     // 如果是日期范围类控件，设置placeholder为数组
@@ -65,8 +64,7 @@ export default memo(function () {
           componentProps: {
             placeholder,
             style,
-            size,
-            bordered,
+            ...otherProp,
           },
         },
       },
@@ -80,8 +78,7 @@ export default memo(function () {
         componentProps: {
           placeholder,
           style,
-          size,
-          bordered,
+          ...otherProp,
         },
       },
     })

@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useRef } from 'react'
+import React, { forwardRef, useCallback, useContext, useRef } from 'react'
 import { Col, Form, Input, Row, RowProps } from 'antd'
 import { useEffect } from 'react'
 import ComponentItem from './FormItem'
@@ -36,6 +36,7 @@ import {
 import eventBus from '../../utils/eventBus'
 import './index.less'
 import { ReactSortable } from 'react-sortablejs'
+import { Context } from '../../stores/context'
 
 interface EditorAreaProps extends ICommonDispatch<object> {
   componentList: IFormComProp[]
@@ -82,6 +83,13 @@ const options = [
   },
 ]
 
+const CustomComponent = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
+  const { target } = useContext(Context)
+  const { rowProps = {} } = target || {}
+  const { colNum, ...otherRow } = rowProps
+  return <Row {...props} {...otherRow} ref={ref} />
+})
+
 export default function Container(props: EditorAreaProps) {
   const { target, moveableOptions, componentList = [], commonDispatch } = props
   const [form] = Form.useForm()
@@ -96,26 +104,31 @@ export default function Container(props: EditorAreaProps) {
 
   const { colNum, ...otherRow } = rowProps
 
-  const setMoveableOption = (
+  //   const setMoveableOption = (
+  //     id: string | number | undefined,
+  //     componentList: IFormComProp[]
+  //   ) => {
+  //     const { elementGuidelines, target, frame } = findTarget(id, componentList)
+  //     commonDispatch({
+  //       type: SET_MOVEABLE_OPTIONS,
+  //       payload: {
+  //         frame,
+  //         elementGuidelines,
+  //         target,
+  //         /**
+  //          * 禁用调整大小和拖动
+  //          * 原因：Row Col 和 ReactiveMoveable 有冲突
+  //          */
+  //         draggable: false,
+  //         resizable: false,
+  //       },
+  //     })
+  //   }
+
+  const setComponentlist = (
     id: string | number | undefined,
     componentList: IFormComProp[]
   ) => {
-    // const { elementGuidelines, target, frame } = findTarget(id, componentList)
-    // commonDispatch({
-    //   type: SET_MOVEABLE_OPTIONS,
-    //   payload: {
-    //     frame,
-    //     elementGuidelines,
-    //     target,
-    //     /**
-    //      * 禁用调整大小和拖动
-    //      * 原因：Row Col 和 ReactiveMoveable 有冲突
-    //      */
-    //     draggable: false,
-    //     resizable: false,
-    //   },
-    // })
-
     commonDispatch({
       type: SET_COMPONENT_LIST,
       payload: {
@@ -212,10 +225,6 @@ export default function Container(props: EditorAreaProps) {
     form.setFieldsValue(_initialValues)
   }, [componentList, form])
 
-  //   const CustomComponent = forwardRef<HTMLDivElement, RowProps>((props, ref) => (
-  //     <Row ref={ref} {...props} {...otherRow} />
-  //   ))
-
   return (
     <Form
       {...formProps}
@@ -229,8 +238,8 @@ export default function Container(props: EditorAreaProps) {
         sort
         animation={150}
         delay={4}
-        tag={Row}
-        // tag={CustomComponent}
+        // tag={Row}
+        tag={CustomComponent}
         list={componentList}
         ghostClass="sortable-ghost"
         chosenClass="sortable-chosen"
@@ -250,7 +259,7 @@ export default function Container(props: EditorAreaProps) {
             type: SET_TARGET_BY_COMPONENT_LIST,
             payload: { id },
           })
-          setMoveableOption(id, componentList)
+          setComponentlist(id, componentList)
         }}
       >
         {componentList.map((item: IFormComProp) => {
@@ -300,7 +309,7 @@ export default function Container(props: EditorAreaProps) {
                   payload: { id },
                 })
                 // 无论dom元素如何变，componentList没有变
-                setMoveableOption(id, componentList)
+                setComponentlist(id, componentList)
                 ;(contenxtMenu.current as any)?.show?.(e)
               }}
             >
@@ -319,7 +328,7 @@ export default function Container(props: EditorAreaProps) {
                     type: SET_TARGET_BY_COMPONENT_LIST,
                     payload: { id },
                   })
-                  setMoveableOption(id, componentList)
+                  setComponentlist(id, componentList)
                 }}
               >
                 <ComponentItem

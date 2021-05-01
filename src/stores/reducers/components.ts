@@ -45,7 +45,7 @@ export default (
   /* 设置组件列表，并根据当前选中的组件，设置其他组件为未选中 */
   [SET_COMPONENT_LIST]: () => {
     let { newState = [], id } = cloneDeep(action.payload) || {}
-    console.log(newState, id)
+    // console.log(newState, id)
     for (var i = 0; i < newState?.length; i++) {
       const item = newState[i]
       if (item.id === id) {

@@ -54,7 +54,7 @@ export default function () {
   )
 
   const updateFormValues = () => {
-    const { wrapperCol, labelCol, ...other } = formItemProps
+    const { wrapperCol, labelCol, ...other } = formItemProps || {}
     const wrapperColVal = wrapperCol?.span
     const labelColVal = labelCol?.span
     other.wrapperCol = wrapperColVal

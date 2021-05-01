@@ -25,16 +25,18 @@
 }
 // 正在拖拽的样式
 .sortable-ghost {
-  position: relative;
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background-color: var(--main-color);
-    z-index: 10;
+  .drag-target {
+    position: relative;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--main-color);
+      z-index: 10;
+    }
   }
 }
