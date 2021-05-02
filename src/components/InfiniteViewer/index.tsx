@@ -4,6 +4,7 @@ import Ruler from './Ruler'
 import './index.less'
 import eventBus from '../../utils/eventBus'
 import { INFINITEVIEWER_SCROLL, SCROLL_CENTER } from '../../constants/events'
+import { resetViewport } from '../../utils/utils'
 
 /**
  * 让他能够滚动
@@ -16,12 +17,6 @@ export default (props: any) => {
   const scrollCenter = useCallback(() => {
     ;(viewerRef.current as any)?.scrollCenter()
   }, [])
-
-  const resetViewport = () => {
-    const el = document.querySelector('.viewport') as HTMLElement
-    el.style.width = window.outerWidth * 0.8 + 'px'
-    el.style.height = window.outerHeight * 0.8 + 'px'
-  }
 
   useEffect(() => {
     resetViewport()

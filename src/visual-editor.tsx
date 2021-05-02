@@ -10,7 +10,7 @@ import './index.css'
 import './visual-editor.less'
 
 export default () => {
-  const [state, commonDispatch] = useLocallyPersistedReducer(
+  const [state, setGlobal] = useLocallyPersistedReducer(
     commonReducer,
     INITAL_STATE,
     LOCAL_STORE_KEY
@@ -20,7 +20,7 @@ export default () => {
     <Context.Provider
       value={{
         ...((state as ICommonState) || INITAL_STATE),
-        commonDispatch,
+        setGlobal,
       }}
     >
       <Container>

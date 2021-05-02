@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import LeftSidebar from '../left-sidebar'
-import RightSidebar from '../right-sidebar'
+import React, { useEffect, useState } from 'react'
+import LeftSidebar from './left-sidebar'
+import RightSidebar from './right-sidebar'
 import LeftAction from './LeftAction'
 import RightAction from './RightAction'
 import './index.less'
 import { Logo } from '../../components'
+import { resetViewport } from '../../utils/utils'
 
 export type BtnTypes =
   | 'coms'
@@ -29,6 +30,12 @@ export default (props: any) => {
       setType(val)
     }
   }
+
+  useEffect(() => {
+    if (['coms', 'setting'].includes(type)) {
+      resetViewport()
+    }
+  }, [type])
 
   return (
     <div className="container">

@@ -13,7 +13,7 @@ let observer: MutationObserver | null = null;
 export default forwardRef((props: GuidesOptions, ref) => {
   const { type } = props;
   const guides: any = React.useRef();
-  const { commonDispatch } = useContext(Context);
+  const { setGlobal: commonDispatch } = useContext(Context);
 
   useImperativeHandle(
     ref,

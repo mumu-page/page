@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Button, Form, Input } from 'antd'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
-import { CustomCollapse, IRefType, OptionSet } from '../components'
+import { FORM_PROPERTIES_OPTIONS } from '../../constants/constants'
+import { CustomCollapse, IRefType, OptionSet } from '../../components'
 import {
   SET_TARGET,
   UPDATE_COMPONENT_LIST_BY_TARGET,
-} from '../stores/action-type'
-import { Context } from '../stores/context'
+} from '../../stores/action-type'
+import { Context } from '../../stores/context'
 
 export default function () {
-  const { target: currentDragComponent, commonDispatch } = useContext(Context)
+  const { target: currentDragComponent, setGlobal: commonDispatch } = useContext(Context)
   const modalRef = useRef<IRefType>(null)
   const [form] = Form.useForm()
   const { id, componentProps = {} } = currentDragComponent || {}

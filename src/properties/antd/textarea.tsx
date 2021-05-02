@@ -3,12 +3,12 @@ import { Collapse, Form, Input, InputNumber, Switch } from "antd";
 import {
   SET_TARGET,
   UPDATE_COMPONENT_LIST_BY_TARGET,
-} from "../stores/action-type";
-import { Context } from "../stores/context";
-import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
+} from "../../stores/action-type";
+import { Context } from "../../stores/context";
+import { FORM_PROPERTIES_OPTIONS } from "../../constants/constants";
 import { CaretRightOutlined } from "@ant-design/icons";
-import CheckboxField from "../components/FormFields/CheckboxField";
-import { CustomCollapse } from "../components";
+import CheckboxField from "../../components/FormFields/CheckboxField";
+import { CustomCollapse } from "../../components";
 
 interface FormData {
   [key: string]: any;
@@ -16,7 +16,7 @@ interface FormData {
 
 export default function () {
   const [form] = Form.useForm<FormData>();
-  const { target: currentDragComponent, commonDispatch } = useContext(Context);
+  const { target: currentDragComponent, setGlobal: commonDispatch } = useContext(Context);
   const { id, componentProps = {} } = currentDragComponent || {};
 
   const onValuesChange = (changedValues: any, allValues: any) => {

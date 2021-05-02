@@ -18,7 +18,7 @@ import {
   UploadProperties,
   // RowProperties,
   ButtonProperties,
-} from "../properties";
+} from "../properties/antd";
 import {
   Input,
   InputNumber,

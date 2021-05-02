@@ -1,14 +1,14 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { Form, InputNumber } from 'antd'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
-import { CustomCollapse, Title } from '../components'
+import { FORM_PROPERTIES_OPTIONS } from '../../constants/constants'
+import { CustomCollapse, Title } from '../../components'
 import { debounce } from 'lodash'
-import { refreshTarget } from '../utils/utils'
-import { Context } from '../stores/context'
+import { refreshTarget } from '../../utils/utils'
+import { Context } from '../../stores/context'
 
 export default function () {
   const [form] = Form.useForm()
-  const { moveableOptions, commonDispatch } = useContext(Context)
+  const { moveableOptions, setGlobal: commonDispatch } = useContext(Context)
 
   const onValuesChange = useCallback(
     debounce((_: any, allValues: any) => {

@@ -15,14 +15,14 @@ import {
   Tooltip,
   Typography,
 } from 'antd'
-import { Context } from '../stores/context'
+import { Context } from '../../stores/context'
 import {
   UPDATE_COMPONENT_LIST_BY_TARGET,
   SET_TARGET,
-} from '../stores/action-type'
+} from '../../stores/action-type'
 import { SelectOutlined, DeleteOutlined } from '@ant-design/icons'
-import { CustomCollapse, IconModal, IconModalInstanceProp } from '../components'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
+import { CustomCollapse, IconModal, IconModalInstanceProp } from '../../components'
+import { FORM_PROPERTIES_OPTIONS } from '../../constants/constants'
 import { debounce } from 'lodash'
 
 type IIconType = 'prefix' | 'suffix'
@@ -30,7 +30,7 @@ type IIconType = 'prefix' | 'suffix'
 export default () => {
   const [form] = Form.useForm()
   const iconModal = useRef<IconModalInstanceProp>(null)
-  const { target: currentDragComponent, commonDispatch } = useContext(Context)
+  const { target: currentDragComponent, setGlobal: commonDispatch } = useContext(Context)
   const { id, componentProps = {} } = currentDragComponent || {}
   const [iconType, setIconType] = useState<IIconType>('prefix')
 

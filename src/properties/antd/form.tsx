@@ -1,18 +1,18 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { Form, Input, InputNumber, Radio } from 'antd'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
-import { SET_TARGET } from '../stores/action-type'
-import { Context } from '../stores/context'
-import CheckboxField from '../components/FormFields/CheckboxField'
-import { refreshTarget } from '../utils/utils'
-import { CustomCollapse, Title } from '../components'
+import { FORM_PROPERTIES_OPTIONS } from '../../constants/constants'
+import { SET_TARGET } from '../../stores/action-type'
+import { Context } from '../../stores/context'
+import CheckboxField from '../../components/FormFields/CheckboxField'
+import { refreshTarget } from '../../utils/utils'
+import { CustomCollapse, Title } from '../../components'
 import { debounce, isNumber } from 'lodash'
 
 export default function () {
   const {
     target: currentDragComponent,
     moveableOptions,
-    commonDispatch,
+    setGlobal: commonDispatch,
   } = useContext(Context)
   const [form] = Form.useForm()
   const { id, formProps = {} } = currentDragComponent || {}

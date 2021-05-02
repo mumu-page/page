@@ -21,6 +21,19 @@ import { IFormComProp } from '../stores/typings'
 import { Target_ClassName, ICONS } from '../constants/constants'
 import { SET_MOVEABLE_OPTIONS } from '../stores/action-type'
 
+// 重新设置画布大小
+export function resetViewport() {
+  // 左侧按钮栏50 左侧面板250 Y抽标尺60 右侧面板300 右侧按钮栏50 X/Y轴滚动条14
+  const isLeftSide = document.querySelector('.coms')
+  const isRightSide = document.querySelector('.setting')
+  const rWidth =
+    50 + (isLeftSide ? 250 : 0) + 60 + (isRightSide ? 300 : 0) + 50 + 14
+  const rHeight = 60 + 14
+  const el = document.querySelector('.viewport') as HTMLElement
+  el.style.width = (window.outerWidth - rWidth) * 0.95 + 'px'
+  el.style.height = (window.outerHeight - rHeight) * 0.95 + 'px'
+}
+
 export function getContext() {
   const { TimePicker: TP, ...OtherDatePickerCom } = DatePicker
   return {

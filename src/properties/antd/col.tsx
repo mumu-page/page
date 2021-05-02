@@ -1,13 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Form, Select, InputNumber, Typography, Switch } from 'antd'
-import { Context } from '../stores/context'
+import { Context } from '../../stores/context'
 import {
   SET_TARGET,
   UPDATE_COMPONENT_LIST_BY_TARGET,
-} from '../stores/action-type'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
-import { refreshTarget } from '../utils/utils'
-import { CustomCollapse, Title } from '../components'
+} from '../../stores/action-type'
+import { FORM_PROPERTIES_OPTIONS } from '../../constants/constants'
+import { refreshTarget } from '../../utils/utils'
+import { CustomCollapse, Title } from '../../components'
 import { debounce } from 'lodash'
 
 /**
@@ -20,7 +20,7 @@ export default function () {
   const {
     target: currentDragComponent,
     moveableOptions,
-    commonDispatch,
+    setGlobal: commonDispatch,
   } = useContext(Context)
   const { id, colProps = {}, } = currentDragComponent || {}
   const { target } = moveableOptions || {}

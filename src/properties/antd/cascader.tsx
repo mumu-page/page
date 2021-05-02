@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Button, Form, Radio } from "antd";
-import { FORM_PROPERTIES_OPTIONS } from "../constants/constants";
-import { CustomCollapse, IRefType, OptionSet } from "../components";
+import { FORM_PROPERTIES_OPTIONS } from "../../constants/constants";
+import { CustomCollapse, IRefType, OptionSet } from "../../components";
 
 export default function () {
   const modalRef = useRef<IRefType>(null);

@@ -1,7 +1,7 @@
 import { ItemInterface } from "react-sortablejs";
 
-export interface ICommonDispatch<T = boolean> {
-  commonDispatch: React.Dispatch<{
+export interface ISetGlobal<T = boolean> {
+  setGlobal: React.Dispatch<{
     type: string;
     payload?: T;
   }>;
@@ -46,7 +46,7 @@ export interface IMoveableOptions {
   [key: string]: any;
 }
 
-export interface ICommonState extends ICommonDispatch<object> {
+export interface ICommonState extends ISetGlobal<object> {
   target: IFormComProp; // 当前拖拽的表单控件
   componentList: IFormComProp[]; // 当前编辑区的组件列表
   moveableOptions: IMoveableOptions; // Moveable props

@@ -19,7 +19,7 @@ export const INITAL_STATE: ICommonState = {
     elClassName: null,
     frame: { translate: [0, 0] },
   },
-  commonDispatch: ({
+  setGlobal: ({
     type,
     payload,
   }: {

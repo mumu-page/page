@@ -30,7 +30,7 @@ export default (props: RightActionType) => {
   const {
     target: currentDragComponent,
     componentList,
-    commonDispatch,
+    setGlobal: commonDispatch,
   } = useContext(Context);
 
   const handleColor = (val: BtnTypes) => {

@@ -1,17 +1,17 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { Form, Input, InputNumber, Radio } from 'antd'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
+import { FORM_PROPERTIES_OPTIONS } from '../../constants/constants'
 import {
   SET_TARGET,
   UPDATE_COMPONENT_LIST_BY_TARGET,
-} from '../stores/action-type'
-import { Context } from '../stores/context'
-import { CustomCollapse, Title } from '../components'
+} from '../../stores/action-type'
+import { Context } from '../../stores/context'
+import { CustomCollapse, Title } from '../../components'
 import { debounce, isNumber } from 'lodash'
-import { refreshTarget } from '../utils/utils'
+import { refreshTarget } from '../../utils/utils'
 
 export default function () {
-  const { moveableOptions, target, commonDispatch } = useContext(Context)
+  const { moveableOptions, target, setGlobal: commonDispatch } = useContext(Context)
   const [form] = Form.useForm()
   const { id, formItemProps = {} } = target || {}
 

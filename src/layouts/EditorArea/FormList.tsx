@@ -12,7 +12,7 @@ import {
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
 import {
-  ICommonDispatch,
+  ISetGlobal,
   IFormComProp,
   IMoveableOptions,
 } from '../../stores/typings'
@@ -38,7 +38,7 @@ import './index.less'
 import { ReactSortable } from 'react-sortablejs'
 import { Context } from '../../stores/context'
 
-interface EditorAreaProps extends ICommonDispatch<object> {
+interface EditorAreaProps extends ISetGlobal<object> {
   componentList: IFormComProp[]
   target: IFormComProp
   moveableOptions: IMoveableOptions
@@ -91,7 +91,7 @@ const CustomComponent = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
 })
 
 export default function Container(props: EditorAreaProps) {
-  const { target, moveableOptions, componentList = [], commonDispatch } = props
+  const { target, moveableOptions, componentList = [], setGlobal: commonDispatch } = props
   const [form] = Form.useForm()
   const contenxtMenu = useRef(null)
   const {

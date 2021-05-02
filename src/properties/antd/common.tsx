@@ -1,18 +1,18 @@
 import React, { useEffect, useContext, memo, useCallback } from 'react'
 import { Form, Input, InputNumber, Radio, Select } from 'antd'
-import { Context } from '../stores/context'
+import { Context } from '../../stores/context'
 import {
   SET_TARGET,
   UPDATE_COMPONENT_LIST_BY_TARGET,
-} from '../stores/action-type'
-import { isDatePickerRange } from '../utils/utils'
-import { options } from '../constants/options'
-import { FORM_PROPERTIES_OPTIONS } from '../constants/constants'
-import { IComponentKeys } from '../stores/typings'
-import CheckboxField from '../components/FormFields/CheckboxField'
-import { CustomCollapse, Title } from '../components'
+} from '../../stores/action-type'
+import { isDatePickerRange } from '../../utils/utils'
+import { options } from '../../constants/options'
+import { FORM_PROPERTIES_OPTIONS } from '../../constants/constants'
+import { IComponentKeys } from '../../stores/typings'
+import CheckboxField from '../../components/FormFields/CheckboxField'
+import { CustomCollapse, Title } from '../../components'
 import { debounce } from 'lodash'
-import { refreshTarget } from '../utils/utils'
+import { refreshTarget } from '../../utils/utils'
 
 const { Option, OptGroup } = Select
 
@@ -32,7 +32,7 @@ export default memo(function () {
   const {
     target: currentDragComponent,
     moveableOptions,
-    commonDispatch,
+    setGlobal: commonDispatch,
   } = useContext(Context)
   const { id, componentProps = {} } = currentDragComponent || {}
 

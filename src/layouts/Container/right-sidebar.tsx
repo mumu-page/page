@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs } from "antd";
-import { ComponentSetting, LayoutSetting, PageSetting } from "../properties";
+import { ComponentSetting, LayoutSetting, PageSetting } from "../../properties/antd";
 
 const { TabPane } = Tabs;
 export default function () {

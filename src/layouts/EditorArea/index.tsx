@@ -4,7 +4,7 @@ import FormList from './FormList'
 import './index.less'
 
 export default () => {
-  const { target, moveableOptions, componentList, commonDispatch } = useContext(
+  const { target, moveableOptions, componentList, setGlobal: commonDispatch } = useContext(
     Context
   )
   return (
@@ -16,7 +16,7 @@ export default () => {
           target={target}
           componentList={componentList}
           moveableOptions={moveableOptions}
-          commonDispatch={commonDispatch}
+          setGlobal={commonDispatch}
         />
       )}
     </div>

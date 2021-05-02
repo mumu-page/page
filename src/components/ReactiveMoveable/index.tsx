@@ -14,7 +14,7 @@ export default () => {
   const {
     target: currentDragComponent,
     moveableOptions = {},
-    commonDispatch,
+    setGlobal: commonDispatch,
   } = useContext(Context)
 
   const {
