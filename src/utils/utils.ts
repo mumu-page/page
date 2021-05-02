@@ -124,25 +124,19 @@ async function loadScript(scriptSrc: string) {
     dfd.reject = reject
   })
   if ((window as any)[scriptSrc]) {
+    console.log((window as any)[scriptSrc])
     dfd.resolve(null)
     return dfd.promise
   }
-  const head = document.getElementsByTagName('head')[0]
-  const script = document.createElement('script') as HTMLScriptElement & {
-    onreadystatechange: () => void
-  }
+  const head = document.head || document.getElementsByTagName('head')[0]
+  const script = document.createElement('script') as HTMLScriptElement
   script.type = 'text/javascript'
-  script.onload = script.onreadystatechange = function (this: any) {
-    if (
-      !this.readyState ||
-      this.readyState === 'loaded' ||
-      this.readyState === 'complete'
-    ) {
-      ;(window as any)[scriptSrc] = 'success'
-      dfd.resolve(null)
-      // Handle memory leak in IE
-      script.onload = script.onreadystatechange = () => {}
-    }
+  script.onload = function (this: any) {
+    console.log('加载成功: ' + scriptSrc)
+    ;(window as any)[scriptSrc] = 'success'
+    dfd.resolve(null)
+    // Handle memory leak in IE
+    script.onload = () => {}
   }
   script.src = scriptSrc
   head.appendChild(script)
@@ -157,15 +151,20 @@ async function loadScript(scriptSrc: string) {
 export async function string2Component(input?: string) {
   if (!input) return ''
   try {
-    await loadScript(
-      'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js'
-    )
+    do {
+      await loadScript(
+        'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js'
+      )
+    } while (!(window as any).Babel)
     let output = (window as any).Babel.transform(`${input}`, {
       presets: ['react', 'es2015'],
     }).code
     output = output?.replace('"use strict";', '').trim()
+    output = output?.replace('(function', 'return (function')
+    // console.log(output)
     // eslint-disable-next-line no-new-func
-    const func = new Function('context', `with(context){return ${output}}`)
+    const func = new Function('context', `with(context){${output}}`)
+    // console.log(func)
     return () => func(getContext()) // 为了能够在组件中执行Hook，不直接执行函数
   } catch (e) {
     // console.log('e', e)

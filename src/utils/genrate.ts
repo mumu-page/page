@@ -77,9 +77,10 @@ function generateComProps(
 
 function createFormItem(
   item: IFormComProp,
-  currentDragComponent: IFormComProp,
+  target: IFormComProp,
   index: number,
-  componentList: IFormComProp[]
+  componentList: IFormComProp[],
+  colGlobalVariable: string
 ): string {
   const {
     formItemProps,
@@ -88,12 +89,11 @@ function createFormItem(
     colProps = {},
     // layout = {},
   } = item
-  const { rowProps = {}, formProps = {} } = currentDragComponent
-  const { colNum, gutter, align, justify, wrap, ...otherGlobalProps } = rowProps
+  const { formProps = {} } = target
   const { labelCol: labelColG, wrapperCol: wrapperColG } = formProps
   const { labelCol, wrapperCol } = formItemProps
   const { colNum: _colNum, ...otherColProps } = colProps
-  const colPropsStr = generateProps({ ...otherGlobalProps, ...otherColProps })
+  const colPropsStr = generateProps({ ...otherColProps })
   const formItemPropsStr = generateProps({
     // style,
     ...formItemProps,
@@ -114,38 +114,46 @@ function createFormItem(
     <Button icon={<UploadOutlined />}>Click to Upload</Button>
   </${componentName}>`
     : `<${componentName}${componentPropsStr} />`
-  return `<Col${colPropsStr}>
+  return `<Col {...${colGlobalVariable}}${colPropsStr}>
             <Form.Item${formItemPropsStr}>
               ${Component}
             </Form.Item>
           </Col>${componentList.length - 1 === index ? '' : '\n'}`
 }
 
-function generate(
-  componentList: IFormComProp[],
-  currentDragComponent: IFormComProp
-) {
-  let ret = ''
+function generate(componentList: IFormComProp[], target: IFormComProp) {
+  const { rowProps = {} } = target
+  const { colNum, gutter, align, justify, wrap, ...otherGlobalProps } = rowProps
+  const colGlobalVariable = 'colLayout'
+  const rowPropsStr = generateProps({ gutter, align, justify, wrap })
+  let children = ''
   const initialValues = {} as any
   componentList.forEach((item, index) => {
-    ret += createFormItem(item, currentDragComponent, index, componentList)
+    children += createFormItem(
+      item,
+      target,
+      index,
+      componentList,
+      colGlobalVariable
+    )
     if (item.componentProps?.defaultValue && item.formItemProps?.name) {
       initialValues[item.formItemProps.name] = item.componentProps?.defaultValue
     }
   })
-  const { rowProps = {} } = currentDragComponent
-  const { gutter, align, justify, wrap } = rowProps
-  const rowPropsStr = generateProps({ gutter, align, justify, wrap })
   const initialValuesStr = Object.keys(initialValues).length
     ? ` initialValues={${JSON.stringify(initialValues)}}`
     : ''
-  return `export default () => {
+  return `
+  export default () => {
+    const ${colGlobalVariable} = ${JSON.stringify(otherGlobalProps)}
+
     return <Form${initialValuesStr}>
         <Row${rowPropsStr}>
-          ${ret}
+          ${children}
         </Row>
     </Form>
-  }`
+  }
+  `
 }
 
 /**
@@ -215,7 +223,7 @@ function generateImport(componentList: IFormComProp[]) {
     result += importIcons
   }
   if (importAntdChild) {
-    result += '\n' + importAntdChild + '\n'
+    result += '\n' + importAntdChild
   }
   return result
 }
