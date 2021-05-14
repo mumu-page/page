@@ -32,7 +32,7 @@ export default (props: any) => {
   }
 
   useEffect(() => {
-    if (['coms', 'setting'].includes(type)) {
+    if (['coms', 'setting', ''].includes(type)) {
       resetViewport()
     }
   }, [type])
