@@ -30,8 +30,8 @@ export function resetViewport() {
     50 + (isLeftSide ? 250 : 0) + 60 + (isRightSide ? 300 : 0) + 50 + 14
   const rHeight = 60 + 14
   const el = document.querySelector('.viewport') as HTMLElement
-  el.style.width = (window.outerWidth - rWidth) * 0.95 + 'px'
-  el.style.height = (window.outerHeight - rHeight) * 0.95 + 'px'
+  el.style.width = (window.innerWidth - rWidth) * 0.95 + 'px'
+  el.style.height = (window.innerHeight - rHeight) * 0.95 + 'px'
 }
 
 export function getContext() {
@@ -131,15 +131,17 @@ async function loadScript(scriptSrc: string) {
   const head = document.head || document.getElementsByTagName('head')[0]
   const script = document.createElement('script') as HTMLScriptElement
   script.type = 'text/javascript'
+  script.onerror = dfd.reject
   script.onload = function (this: any) {
     console.log('加载成功: ' + scriptSrc)
     ;(window as any)[scriptSrc] = 'success'
     dfd.resolve(null)
     // Handle memory leak in IE
-    script.onload = () => {}
+    // script.onload = () => {}
   }
-  script.src = scriptSrc
   head.appendChild(script)
+  script.src = scriptSrc
+
   return dfd.promise
 }
 
@@ -151,11 +153,9 @@ async function loadScript(scriptSrc: string) {
 export async function string2Component(input?: string) {
   if (!input) return ''
   try {
-    do {
-      await loadScript(
-        'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js'
-      )
-    } while (!(window as any).Babel)
+    await loadScript(
+      'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js'
+    )
     let output = (window as any).Babel.transform(`${input}`, {
       presets: ['react', 'es2015'],
     }).code
