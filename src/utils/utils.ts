@@ -124,7 +124,7 @@ async function loadScript(scriptSrc: string) {
     dfd.reject = reject
   })
   if ((window as any)[scriptSrc]) {
-    console.log((window as any)[scriptSrc])
+    // console.log((window as any)[scriptSrc])
     dfd.resolve(null)
     return dfd.promise
   }
@@ -132,16 +132,15 @@ async function loadScript(scriptSrc: string) {
   const script = document.createElement('script') as HTMLScriptElement
   script.type = 'text/javascript'
   script.onerror = dfd.reject
-  script.onload = function (this: any) {
+  script.onload = function (this: any, ev) {
     console.log('加载成功: ' + scriptSrc)
     ;(window as any)[scriptSrc] = 'success'
     dfd.resolve(null)
     // Handle memory leak in IE
-    // script.onload = () => {}
+    script.onload = null
   }
-  head.appendChild(script)
   script.src = scriptSrc
-
+  head.appendChild(script)
   return dfd.promise
 }
 
@@ -154,8 +153,11 @@ export async function string2Component(input?: string) {
   if (!input) return ''
   try {
     await loadScript(
-      'https://cdn.bootcdn.net/ajax/libs/babel-standalone/6.7.7/babel.min.js'
+      'https://cdn.jsdelivr.net/npm/babel-standalone@6.7.7/babel.min.js'
     )
+    if (!(window as any).Babel) {
+      throw new Error('cdn加载失败，请刷新重试')
+    }
     let output = (window as any).Babel.transform(`${input}`, {
       presets: ['react', 'es2015'],
     }).code
@@ -168,6 +170,7 @@ export async function string2Component(input?: string) {
     return () => func(getContext()) // 为了能够在组件中执行Hook，不直接执行函数
   } catch (e) {
     // console.log('e', e)
+    if (e instanceof Error) throw e
     throw new Error(e)
   }
 }
