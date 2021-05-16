@@ -1,5 +1,5 @@
 import React, { useRef, forwardRef, useImperativeHandle, memo } from 'react'
-import MonacoEditor, { Monaco, OnChange, OnMount } from '@monaco-editor/react'
+import MonacoEditor, { Monaco, OnMount } from '@monaco-editor/react'
 import { CodeEditorInstanceProps, CodeEditorProps } from './typings'
 import { isEqual, merge } from 'lodash'
 import './index.less'
@@ -10,11 +10,11 @@ import './index.less'
 function compatibleTSX(monaco: Monaco) {
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
     target: monaco.languages.typescript.ScriptTarget.Latest,
-    allowNonTsExtensions: true,
+    // allowNonTsExtensions: true, // 禁用TS语法
     moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
     module: monaco.languages.typescript.ModuleKind.CommonJS,
-    noEmit: true,
-    esModuleInterop: true,
+    // noEmit: true,
+    // esModuleInterop: true,
     jsx: monaco.languages.typescript.JsxEmit.React,
     reactNamespace: 'React',
     allowJs: true,

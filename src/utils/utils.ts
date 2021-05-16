@@ -20,6 +20,7 @@ import {
 import { IFormComProp } from '../stores/typings'
 import { Target_ClassName, ICONS } from '../constants/constants'
 import { SET_MOVEABLE_OPTIONS } from '../stores/action-type'
+import List1 from '../properties/antd/widgets/list1'
 
 // 重新设置画布大小
 export function resetViewport() {
@@ -59,6 +60,7 @@ export function getContext() {
     Col,
     Button,
     ...ICONS,
+    List1,
   }
 }
 

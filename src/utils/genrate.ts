@@ -56,12 +56,8 @@ function generateComProps(
   componentKey: IComponentKeys,
   result = ''
 ) {
-  const {
-    defaultValue,
-    prefix,
-    suffix,
-    ...componentOtherProps
-  } = componentProps
+  const { defaultValue, prefix, suffix, ...componentOtherProps } =
+    componentProps
   // 处理输入框前后置图标
   if (['Input'].includes(componentKey)) {
     componentOtherProps['prefix'] = getIcon(prefix)?.replace(/"/g, '')
@@ -80,7 +76,8 @@ function createFormItem(
   target: IFormComProp,
   index: number,
   componentList: IFormComProp[],
-  colGlobalVariable: string
+  colGlobalVariable: string,
+  formItemGlobalVariable: string
 ): string {
   const {
     formItemProps,
@@ -89,22 +86,14 @@ function createFormItem(
     colProps = {},
     // layout = {},
   } = item
-  const { formProps = {} } = target
-  const { labelCol: labelColG, wrapperCol: wrapperColG } = formProps
   const { labelCol, wrapperCol } = formItemProps
   const { colNum: _colNum, ...otherColProps } = colProps
   const colPropsStr = generateProps({ ...otherColProps })
   const formItemPropsStr = generateProps({
     // style,
     ...formItemProps,
-    labelCol: {
-      ...labelColG,
-      ...labelCol,
-    },
-    wrapperCol: {
-      ...wrapperColG,
-      ...wrapperCol,
-    },
+    labelCol,
+    wrapperCol,
   })
   const componentPropsStr = generateComProps(componentProps, componentKey)
   const componentName = componentKey?.replace(/^.*\./, '')
@@ -115,16 +104,18 @@ function createFormItem(
   </${componentName}>`
     : `<${componentName}${componentPropsStr} />`
   return `<Col {...${colGlobalVariable}}${colPropsStr}>
-            <Form.Item${formItemPropsStr}>
+            <Form.Item {...${formItemGlobalVariable}}${formItemPropsStr}>
               ${Component}
             </Form.Item>
           </Col>${componentList.length - 1 === index ? '' : '\n'}`
 }
 
 function generate(componentList: IFormComProp[], target: IFormComProp) {
-  const { rowProps = {} } = target
-  const { colNum, gutter, align, justify, wrap, ...otherGlobalProps } = rowProps
-  const colGlobalVariable = 'colLayout'
+  const { rowProps = {}, formProps = {} } = target
+  const { colNum, gutter, align, justify, wrap, ...otherG1 } = rowProps
+  const { labelAlign, size, ...otherG2 } = formProps
+  const colGlobalVariable = 'colProps'
+  const formItemGlobalVariable = 'formItemProps'
   const rowPropsStr = generateProps({ gutter, align, justify, wrap })
   let children = ''
   const initialValues = {} as any
@@ -134,7 +125,8 @@ function generate(componentList: IFormComProp[], target: IFormComProp) {
       target,
       index,
       componentList,
-      colGlobalVariable
+      colGlobalVariable,
+      formItemGlobalVariable
     )
     if (item.componentProps?.defaultValue && item.formItemProps?.name) {
       initialValues[item.formItemProps.name] = item.componentProps?.defaultValue
@@ -145,7 +137,8 @@ function generate(componentList: IFormComProp[], target: IFormComProp) {
     : ''
   return `
   export default () => {
-    const ${colGlobalVariable} = ${JSON.stringify(otherGlobalProps)}
+    const ${colGlobalVariable} = ${JSON.stringify(otherG1)}
+    const ${formItemGlobalVariable} = ${JSON.stringify(otherG2)}
 
     return <Form${initialValuesStr}>
         <Row${rowPropsStr}>
@@ -159,12 +152,14 @@ function generate(componentList: IFormComProp[], target: IFormComProp) {
 /**
  * 寻找所有使用到的组件Key
  */
-function getAllComponentKey(
+function getAllAntdComponentKey(
   componentList: IFormComProp[],
   keys = new Set<string>()
 ) {
   componentList.forEach((item) => {
-    keys.add(item.componentKey)
+    if (!['List1'].includes(item.componentKey)) {
+      keys.add(item.componentKey)
+    }
   })
   keys.add('Form')
   keys.add('Row')
@@ -190,7 +185,7 @@ function getAllIcon(componentList: IFormComProp[], keys = new Set<string>()) {
  * TODO: 生成ICON引用代码
  */
 function generateImport(componentList: IFormComProp[]) {
-  const componentkeys = getAllComponentKey(componentList)
+  const componentkeys = getAllAntdComponentKey(componentList)
   const iconKeys = getAllIcon(componentList)
   const childImport = {} as any
   const parentImport = Array.from(

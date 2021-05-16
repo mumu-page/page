@@ -19,6 +19,7 @@ import { CodeEditorInstanceProps } from '../CodeEditor/typings'
 import { string2Component } from '../../utils/utils'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
 import './index.less'
+import { getList1 } from './utils'
 
 const { TabPane } = Tabs
 const SelectedIcon = () => (
@@ -36,12 +37,12 @@ export default forwardRef(function (
     | null
 ) {
   const [tsxCode, setTsxCode] = useState<string>('')
-  const [scssCode, setScssCode] = useState<string>('')
+  const [lessCode, setScssCode] = useState<string>('')
   const [visible, setVisible] = useState(false)
   const [activeKey, setActiveKey] = useState('tsx')
   const [component, setComponent] = useState(<></>)
   const tsxEditor = useRef<CodeEditorInstanceProps>(null)
-  const scssEditor = useRef<CodeEditorInstanceProps>(null)
+  const lessEditor = useRef<CodeEditorInstanceProps>(null)
   const [width, setWidth] = useState<number | string>('')
 
   const onTsxChangCode = useCallback((newCode) => {
@@ -91,7 +92,7 @@ export default forwardRef(function (
     ref,
     () => ({
       tsEditor: tsxEditor.current,
-      scssEditor: scssEditor.current,
+      lessEditor: lessEditor.current,
       setTsxCode: (newCode: string) => {
         setTsxCode(newCode)
       },
@@ -139,19 +140,19 @@ export default forwardRef(function (
             tabBarStyle={{ height: '35px' }}
             type="card"
             tabBarExtraContent={
-              <Space className='extra-action-container' split={<Divider />}>
+              <Space className="extra-action-container" split={<Divider />}>
                 <Button
                   icon={<PlayCircleOutlined />}
                   type="link"
                   size="small"
-                  className='extra-action'
+                  className="extra-action"
                   onClick={() => onRun(tsxCode)}
                 >
                   运行
                 </Button>
                 <Button
                   icon={<CloseOutlined />}
-                  className='extra-action'
+                  className="extra-action"
                   type="link"
                   size="small"
                   onClick={onClose}
@@ -166,7 +167,7 @@ export default forwardRef(function (
               tab={
                 <div>
                   {activeKey === 'tsx' ? <SelectedIcon /> : <UnSelectedIcon />}
-                  <span>tsx</span>
+                  <span>index.tsx</span>
                 </div>
               }
               key="tsx"
@@ -183,19 +184,37 @@ export default forwardRef(function (
             <TabPane
               tab={
                 <div>
-                  {activeKey === 'scss' ? <SelectedIcon /> : <UnSelectedIcon />}
-                  <span>scss</span>
+                  {activeKey === 'List1' ? (
+                    <SelectedIcon />
+                  ) : (
+                    <UnSelectedIcon />
+                  )}
+                  <span>List1.tsx</span>
                 </div>
               }
-              key="scss"
+              key="List1"
             >
               <CodeEditor
-                ref={scssEditor}
-                code={scssCode}
-                options={{ width, height: '100vmax', language: 'scss' }}
-                onChange={onScssChangCode}
+                code={getList1()}
+                options={{ width, height: '100vmax', language: 'typescript' }}
               />
             </TabPane>
+            {/* <TabPane
+              tab={
+                <div>
+                  {activeKey === 'less' ? <SelectedIcon /> : <UnSelectedIcon />}
+                  <span>index.less</span>
+                </div>
+              }
+              key="less"
+            >
+              <CodeEditor
+                ref={lessEditor}
+                code={lessCode}
+                options={{ width, height: '100vmax', language: 'less' }}
+                onChange={onScssChangCode}
+              />
+            </TabPane> */}
           </Tabs>
           <div className="form">
             <div className="body">{component}</div>

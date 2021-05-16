@@ -1,3 +1,5 @@
+export const getList1 = () => {
+  return `
 import * as React from 'react'
 import * as Antd from 'antd' // 此处仅仅只是为了方便生成代码，开发者可以去掉改为按需引入
 import { DeleteOutlined, PlusOutlined, CopyOutlined } from '@ant-design/icons'
@@ -70,7 +72,7 @@ const mockList: IItem[] = [
 export default (props: IList1Props) => {
   const { listName = 'demo', list = mockList } = props
   const number = list?.length || 0 // 每行元素个数
-  const operateCol = 3 // 操作按钮格数
+  const operateCol = 2 // 操作按钮格数
   const span = Math.floor((24 - operateCol) / number)
   const colProps = {
     lg: span,
@@ -158,4 +160,6 @@ export default (props: IList1Props) => {
       </Form.List>
     </Form>
   )
+}
+`
 }

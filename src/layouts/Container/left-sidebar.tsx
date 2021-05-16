@@ -42,6 +42,16 @@ const getNewOptions = (data: OptionGroup[]) => {
           if (isSelect(value)) {
             ret.componentProps.placeholder =
               placeholderEnum[value] || '请选择' + label
+          } else if (['List1'].includes(value)) {
+            ret.colProps = {
+              lg: 24,
+              md: 24,
+              sm: 24,
+              xl: 24,
+              xs: 24,
+              xxl: 24,
+            }
+            ret.formItemProps.labelCol = { span: 24 }
           } else {
             ret.componentProps.placeholder = '请输入' + label
           }
