@@ -182,7 +182,6 @@ function getAllIcon(componentList: IFormComProp[], keys = new Set<string>()) {
 
 /**
  * 生成引用代码
- * TODO: 生成ICON引用代码
  */
 function generateImport(componentList: IFormComProp[]) {
   const componentkeys = getAllAntdComponentKey(componentList)
