@@ -205,6 +205,10 @@ function generateImport(componentList: IFormComProp[]) {
   )
   const importReact = `import React from "react"\n`
   const importAntd = `import {${parentImport}} from 'antd'\n`
+  let importOther = `` // 其他组件
+  if (componentList.some((item) => item.componentKey === 'List1')) {
+    importOther += `import List1 from './List1'\n`
+  }
   let importAntdChild = ''
   Object.keys(childImport).forEach((key) => {
     const item = childImport[key]
@@ -216,6 +220,9 @@ function generateImport(componentList: IFormComProp[]) {
   let result = importReact + importAntd
   if (iconKeys.length) {
     result += importIcons
+  }
+  if (importOther) {
+    result += importOther
   }
   if (importAntdChild) {
     result += '\n' + importAntdChild

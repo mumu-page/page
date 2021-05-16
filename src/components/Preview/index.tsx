@@ -20,6 +20,7 @@ import { string2Component } from '../../utils/utils'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
 import './index.less'
 import { getList1 } from './utils'
+import { useStore } from '../../hooks'
 
 const { TabPane } = Tabs
 const SelectedIcon = () => (
@@ -44,6 +45,10 @@ export default forwardRef(function (
   const tsxEditor = useRef<CodeEditorInstanceProps>(null)
   const lessEditor = useRef<CodeEditorInstanceProps>(null)
   const [width, setWidth] = useState<number | string>('')
+  const { componentList } = useStore()
+  const showList1 = componentList?.some?.(
+    (item) => item.componentKey === 'List1'
+  )
 
   const onTsxChangCode = useCallback((newCode) => {
     setTsxCode(newCode)
@@ -181,24 +186,26 @@ export default forwardRef(function (
                 onCopy={onCopy}
               />
             </TabPane>
-            <TabPane
-              tab={
-                <div>
-                  {activeKey === 'List1' ? (
-                    <SelectedIcon />
-                  ) : (
-                    <UnSelectedIcon />
-                  )}
-                  <span>List1.tsx</span>
-                </div>
-              }
-              key="List1"
-            >
-              <CodeEditor
-                code={getList1()}
-                options={{ width, height: '100vmax', language: 'typescript' }}
-              />
-            </TabPane>
+            {showList1 && (
+              <TabPane
+                tab={
+                  <div>
+                    {activeKey === 'List1' ? (
+                      <SelectedIcon />
+                    ) : (
+                      <UnSelectedIcon />
+                    )}
+                    <span>List1.tsx</span>
+                  </div>
+                }
+                key="List1"
+              >
+                <CodeEditor
+                  code={getList1()}
+                  options={{ width, height: '100vmax', language: 'typescript' }}
+                />
+              </TabPane>
+            )}
             {/* <TabPane
               tab={
                 <div>
