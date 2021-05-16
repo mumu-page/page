@@ -91,7 +91,12 @@ const CustomComponent = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
 })
 
 export default function Container(props: EditorAreaProps) {
-  const { target, moveableOptions, componentList = [], setGlobal: commonDispatch } = props
+  const {
+    target,
+    moveableOptions,
+    componentList = [],
+    setGlobal: commonDispatch,
+  } = props
   const [form] = Form.useForm()
   const contenxtMenu = useRef(null)
   const {
@@ -237,7 +242,7 @@ export default function Container(props: EditorAreaProps) {
       <ReactSortable
         sort
         animation={150}
-        delay={4}
+        delay={200}
         // tag={Row}
         tag={CustomComponent}
         list={componentList}
@@ -255,6 +260,7 @@ export default function Container(props: EditorAreaProps) {
         }}
         onChoose={(e) => {
           const id = e.item.dataset.id
+          if (id === target.id) return
           commonDispatch({
             type: SET_TARGET_BY_COMPONENT_LIST,
             payload: { id },
@@ -324,6 +330,7 @@ export default function Container(props: EditorAreaProps) {
                 onClick={(e: any) => {
                   e.stopPropagation()
                   //  console.log('onClick', e)
+                  if (id === target.id) return
                   commonDispatch({
                     type: SET_TARGET_BY_COMPONENT_LIST,
                     payload: { id },

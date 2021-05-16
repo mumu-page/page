@@ -18,7 +18,8 @@ import {
   UploadProperties,
   // RowProperties,
   ButtonProperties,
-} from "../properties/antd";
+  List1Properties
+} from ".";
 import {
   Input,
   InputNumber,
@@ -34,7 +35,8 @@ import {
   Upload,
   Button,
 } from "antd";
-import { IComponentKeys } from "../stores/typings";
+import List1 from './widgets/list1'
+import { IComponentKeys } from "../../stores/typings";
 import { UploadOutlined } from "@ant-design/icons";
 
 export const key2Component = {
@@ -115,6 +117,10 @@ export const key2Component = {
   Button: {
     properties: <ButtonProperties />,
     component: <Button />,
+  },
+  List1: {
+    properties: <List1Properties />,
+    component: <List1 />,
   },
   "": {
     properties: <></>,

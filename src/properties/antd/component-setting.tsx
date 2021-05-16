@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { getProperties } from '../../components/key2Component'
+import { getProperties } from './key2Component'
 import { Context } from '../../stores/context'
 import { ColProperties, CommonProperties, FormItemProperties } from '.'
 import { Title } from '../../components'

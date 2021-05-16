@@ -27,6 +27,7 @@ export type IComponentKeys =
   | "Upload"
   | "Col"
   | "Button"
+  | "List1"
   | "";
 
 export interface IFormComProp extends ItemInterface {

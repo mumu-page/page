@@ -25,6 +25,7 @@ import PageProperties from "./page";
 import ComponentSetting from "./component-setting";
 import LayoutSetting from "./layout-setting";
 import PageSetting from "./page-setting";
+import List1Properties from "./list1";
 
 export {
   FormProperties,
@@ -54,4 +55,5 @@ export {
   ComponentSetting,
   LayoutSetting,
   PageSetting,
+  List1Properties
 };
