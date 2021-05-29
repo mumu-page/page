@@ -7,6 +7,7 @@ import {
 } from '../action-type'
 import { INITAL_STATE } from '../context'
 import { ICommonState, IFormComProp } from '../typings'
+import { formatValue } from './utils'
 
 export default (
   draft: ICommonState,
@@ -33,12 +34,7 @@ export default (
     findSelectedItem(draft.componentList)
   },
   [SET_TARGET]: () => {
-    if (
-      action.payload?.componentProps?.options &&
-      draft.target?.componentProps?.options
-    ) {
-      draft.target.componentProps.options = []
-    }
+    formatValue(draft.target.componentProps, ['options', 'fields'])
     if (
       action.payload?.componentProps?.style?.width === null &&
       draft.target?.componentProps?.style

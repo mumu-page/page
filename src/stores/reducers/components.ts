@@ -16,6 +16,7 @@ import {
   LEFT_REMOVE_COMPONENTS,
 } from '../action-type'
 import { ICommonState, IFormComProp } from '../typings'
+import { formatValue } from './utils'
 
 export default (
   draft: ICommonState,
@@ -111,9 +112,7 @@ export default (
     const findCurrent = (coms: IFormComProp[]) => {
       coms?.forEach((item, index) => {
         if (item.id === draft.target?.id) {
-          if (data.componentProps?.options && item?.componentProps?.options) {
-            item.componentProps.options = []
-          }
+          formatValue(item.componentProps, ['options', 'fields'])
           if (
             data.componentProps?.style?.width === null &&
             item?.componentProps?.style

@@ -34,27 +34,16 @@ const getNewOptions = (data: OptionGroup[]) => {
             frame: { translate: [0, 0] },
           },
         }
-        if (!hasNotPlaceholder(value)) {
-          const placeholderEnum: any = {
-            'TimePicker.RangePicker': ['开始时间', '结束时间'],
-            'DatePicker.RangePicker': ['开始日期', '结束日期'],
+        if (['List1'].includes(value)) {
+          ret.colProps = {
+            lg: 24,
+            md: 24,
+            sm: 24,
+            xl: 24,
+            xs: 24,
+            xxl: 24,
           }
-          if (isSelect(value)) {
-            ret.componentProps.placeholder =
-              placeholderEnum[value] || '请选择' + label
-          } else if (['List1'].includes(value)) {
-            ret.colProps = {
-              lg: 24,
-              md: 24,
-              sm: 24,
-              xl: 24,
-              xs: 24,
-              xxl: 24,
-            }
-            ret.formItemProps.labelCol = { span: 24 }
-          } else {
-            ret.componentProps.placeholder = '请输入' + label
-          }
+          ret.formItemProps.labelCol = { span: 24 }
         }
         return ret
       }),

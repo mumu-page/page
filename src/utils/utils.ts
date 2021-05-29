@@ -154,12 +154,12 @@ async function loadScript(scriptSrc: string) {
 export async function string2Component(input?: string) {
   if (!input) return ''
   try {
-    await loadScript(
-      'https://cdn.jsdelivr.net/npm/babel-standalone@6.7.7/babel.min.js'
-    )
-    if (!(window as any).Babel) {
-      throw new Error('cdn加载失败，请刷新重试')
-    }
+    // await loadScript(
+    //   'https://cdn.jsdelivr.net/npm/babel-standalone@6.7.7/babel.min.js'
+    // )
+    // if (!(window as any).Babel) {
+    //   throw new Error('cdn加载失败，请刷新重试')
+    // }
     let output = (window as any).Babel.transform(`${input}`, {
       presets: ['react', 'es2015'],
     }).code

@@ -1,8 +1,13 @@
-import React from "react";
-import { Tabs } from "antd";
-import { ComponentSetting, LayoutSetting, PageSetting } from "../../properties/antd";
+import React from 'react'
+import { Tabs } from 'antd'
+import {
+  ComponentSetting,
+  LayoutSetting,
+  PageSetting,
+} from '../../properties/antd'
+import './index.less'
 
-const { TabPane } = Tabs;
+const { TabPane } = Tabs
 export default function () {
   return (
     <Tabs defaultActiveKey="1" centered>
@@ -22,5 +27,5 @@ export default function () {
         </div>
       </TabPane>
     </Tabs>
-  );
+  )
 }
