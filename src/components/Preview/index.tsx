@@ -19,8 +19,8 @@ import { CodeEditorInstanceProps } from '../CodeEditor/typings'
 import { string2Component } from '../../utils/utils'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
 import './index.less'
-import { getList1 } from './utils'
 import { useStore } from '../../hooks'
+import { genrateList1 } from '../../utils/genrateList1'
 
 const { TabPane } = Tabs
 const SelectedIcon = () => (
@@ -201,7 +201,7 @@ export default forwardRef(function (
                 key="List1"
               >
                 <CodeEditor
-                  code={getList1()}
+                  code={genrateList1()}
                   options={{ width, height: '100vmax', language: 'typescript' }}
                 />
               </TabPane>

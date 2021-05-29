@@ -23,6 +23,12 @@ interface FormData {
   [key: string]: any
 }
 
+const formatValue = (allValues: any) => {
+  return (allValues.fields = allValues?.fields?.filter(
+    (item: any) => item.field
+  ))
+}
+
 /**
  * list1属性设置
  */
@@ -49,9 +55,11 @@ export default memo(function () {
     })
   }
 
-  const onValuesChange = (changeValues: any) => {
-    // console.log(changeValues) // allValues中数组删除的项没有被清除
-    update(changeValues)
+  const onValuesChange = (_changeValues: any, allValues: any) => {
+    // console.log(_changeValues, allValues)
+    // allValues中数组删除的项没有被清除，这里做一下处理 把空值删除掉
+    allValues.fields = formatValue(allValues)
+    update(allValues)
   }
 
   const renderFormItems = ({
@@ -176,7 +184,7 @@ export default memo(function () {
     )
   }
 
-  const canAdd = () => form.getFieldsValue()?.fields?.length === 4
+  const canAdd = () => formatValue(form.getFieldsValue())?.length === 4
 
   useEffect(() => {
     form.setFieldsValue({

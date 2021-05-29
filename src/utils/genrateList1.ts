@@ -1,3 +1,10 @@
+/**
+ * 生成list1组件的真实代码
+ * @param params
+ * @returns
+ */
+export function genrateList1(/* params: string */) {
+  return `
 import * as React from 'react'
 import * as Antd from 'antd' // 此处仅仅只是为了方便生成代码，开发者可以去掉改为按需引入
 import { DeleteOutlined, PlusOutlined, CopyOutlined } from '@ant-design/icons'
@@ -157,4 +164,6 @@ export default (props: IList1Props) => {
       </Form.List>
     </Form>
   )
+}
+`
 }
