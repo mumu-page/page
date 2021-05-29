@@ -110,9 +110,9 @@ export default (
   [UPDATE_COMPONENT_LIST_BY_TARGET]: () => {
     const { data = {} } = action.payload || {}
     const findCurrent = (coms: IFormComProp[]) => {
-      coms?.forEach((item, index) => {
+      coms?.forEach((item) => {
         if (item.id === draft.target?.id) {
-          formatValue(item.componentProps, ['options', 'fields'])
+          formatValue(['options', 'fields'], item.componentProps, data)
           if (
             data.componentProps?.style?.width === null &&
             item?.componentProps?.style

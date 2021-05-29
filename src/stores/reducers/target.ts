@@ -34,7 +34,11 @@ export default (
     findSelectedItem(draft.componentList)
   },
   [SET_TARGET]: () => {
-    formatValue(draft.target.componentProps, ['options', 'fields'])
+    formatValue(
+      ['options', 'fields'],
+      draft.target.componentProps,
+      action.payload?.componentProps
+    )
     if (
       action.payload?.componentProps?.style?.width === null &&
       draft.target?.componentProps?.style

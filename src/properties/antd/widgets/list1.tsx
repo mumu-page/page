@@ -32,48 +32,15 @@ export interface IItem {
 
 interface IList1Props {
   listName?: string // 表单数据字段名
-  list?: IItem[] // 每行元素
+  fields?: IItem[] // 每行元素
 }
-
-const mockList: IItem[] = [
-  {
-    label: '默认元素1',
-    name: 'demo1',
-    field: 'demo1',
-    componentKey: 'Input',
-    rules: [{ required: true, message: 'Missing last name' }],
-  },
-  {
-    label: '默认元素2',
-    name: 'demo2',
-    field: 'demo2',
-    componentKey: 'Input',
-    rules: [{ required: true, message: 'Missing last name' }],
-  },
-  {
-    label: '默认元素3',
-    name: 'demo3',
-    field: 'demo3',
-    componentKey: 'Input',
-    rules: [{ required: true, message: 'Missing last name' }],
-  },
-  {
-    label: '默认元素4',
-    name: 'demo4',
-    field: 'demo4',
-    componentKey: 'Input',
-    rules: [{ required: true, message: 'Missing last name' }],
-  },
-]
 
 /**
  * 对应form-render list1
  * widget: 'list1' 用于展示每行只有 1-3 个简单元素的情况
  */
 export default (props: IList1Props) => {
-  const { listName = 'demo' } = props
-  const { target } = useStore()
-  const fields: IItem[] = target?.componentProps?.fields || []
+  const { listName = 'demo', fields = [] } = props
   const number = fields?.length || 0 // 每行元素个数
   const operateCol = 3 // 操作按钮格数
   const span = Math.floor((24 - operateCol) / number)
