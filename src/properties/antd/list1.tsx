@@ -237,6 +237,7 @@ export default memo(function () {
                       add({
                         label: '标签名',
                         field: shortid(),
+                        componentKey: 'Input',
                       })
                     }}
                     block

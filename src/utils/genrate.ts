@@ -96,7 +96,13 @@ function createFormItem(
     wrapperCol,
   })
   const componentPropsStr = generateComProps(componentProps, componentKey)
-  const componentName = componentKey?.replace(/^.*\./, '')
+  let componentName = ''
+  // 可能会设计多个List1 用一个唯一标识区分他们
+  if (item.componentKey === 'List1') {
+    componentName = `${item.componentKey}${String(item.id).slice(0, 4)}`
+  } else {
+    componentName = componentKey?.replace(/^.*\./, '')
+  }
   // TODO render children
   const Component = isChildren(componentKey)
     ? `<${componentName}${componentPropsStr}>
@@ -205,9 +211,13 @@ function generateImport(componentList: IFormComProp[]) {
   const importReact = `import React from "react"\n`
   const importAntd = `import {${parentImport}} from 'antd'\n`
   let importOther = `` // 其他组件
-  if (componentList.some((item) => item.componentKey === 'List1')) {
-    importOther += `import List1 from './List1'\n`
-  }
+  componentList
+    .filter((item) => item.componentKey === 'List1')
+    .forEach((item) => {
+      const name = `List1`
+      const tag = item.id.toString().slice(0, 4)
+      importOther += `import ${name}${tag} from './${name}-${tag}'\n`
+    })
   let importAntdChild = ''
   Object.keys(childImport).forEach((key) => {
     const item = childImport[key]

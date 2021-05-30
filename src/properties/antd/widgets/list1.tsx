@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as Antd from 'antd' // 此处仅仅只是为了方便生成代码，开发者可以去掉改为按需引入
 import { DeleteOutlined, PlusOutlined, CopyOutlined } from '@ant-design/icons'
-import { useStore } from '../../../hooks'
 import { get } from 'lodash'
 
 const { Form, Button, Row, Col, ...other } = Antd

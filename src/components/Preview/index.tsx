@@ -38,7 +38,6 @@ export default forwardRef(function (
     | null
 ) {
   const [tsxCode, setTsxCode] = useState<string>('')
-  const [lessCode, setScssCode] = useState<string>('')
   const [visible, setVisible] = useState(false)
   const [activeKey, setActiveKey] = useState('tsx')
   const [component, setComponent] = useState(<></>)
@@ -46,18 +45,12 @@ export default forwardRef(function (
   const lessEditor = useRef<CodeEditorInstanceProps>(null)
   const [width, setWidth] = useState<number | string>('')
   const { componentList } = useStore()
-  const showList1 = componentList?.some?.(
-    (item) => item.componentKey === 'List1'
-  )
+  // 列表组件数据，根据它生成tab
+  const list = componentList?.filter?.((item) => item.componentKey === 'List1')
 
   const onTsxChangCode = useCallback((newCode) => {
     setTsxCode(newCode)
     // refresh(newCode)
-  }, [])
-
-  const onScssChangCode = useCallback((newCode) => {
-    setScssCode(newCode)
-    onRun(newCode)
   }, [])
 
   const onRun = (code = tsxCode) => {
@@ -65,7 +58,7 @@ export default forwardRef(function (
       code
         .substring(code.indexOf('export default'), code.indexOf('</Form>'))
         .replace('export default', '') + '</Form>}'
-    string2Component(_xmlCode)
+    string2Component(_xmlCode, list)
       .then((newComponent) => {
         if (typeof newComponent === 'function') {
           const Component = newComponent()
@@ -100,9 +93,6 @@ export default forwardRef(function (
       lessEditor: lessEditor.current,
       setTsxCode: (newCode: string) => {
         setTsxCode(newCode)
-      },
-      setScssCode: (newCode: string) => {
-        setScssCode(newCode)
       },
       open() {
         setVisible(true)
@@ -186,42 +176,35 @@ export default forwardRef(function (
                 onCopy={onCopy}
               />
             </TabPane>
-            {showList1 && (
-              <TabPane
-                tab={
-                  <div>
-                    {activeKey === 'List1' ? (
-                      <SelectedIcon />
-                    ) : (
-                      <UnSelectedIcon />
-                    )}
-                    <span>List1.tsx</span>
-                  </div>
-                }
-                key="List1"
-              >
-                <CodeEditor
-                  code={genrateList1()}
-                  options={{ width, height: '100vmax', language: 'typescript' }}
-                />
-              </TabPane>
-            )}
-            {/* <TabPane
-              tab={
-                <div>
-                  {activeKey === 'less' ? <SelectedIcon /> : <UnSelectedIcon />}
-                  <span>index.less</span>
-                </div>
-              }
-              key="less"
-            >
-              <CodeEditor
-                ref={lessEditor}
-                code={lessCode}
-                options={{ width, height: '100vmax', language: 'less' }}
-                onChange={onScssChangCode}
-              />
-            </TabPane> */}
+            {list.length &&
+              list.map((item) => {
+                const { componentProps, id } = item
+                const { fields = [] } = componentProps || {}
+                return (
+                  <TabPane
+                    tab={
+                      <div>
+                        {activeKey === id ? (
+                          <SelectedIcon />
+                        ) : (
+                          <UnSelectedIcon />
+                        )}
+                        <span>List1-{String(id).slice(0, 4)}.tsx</span>
+                      </div>
+                    }
+                    key={id}
+                  >
+                    <CodeEditor
+                      code={genrateList1(fields)}
+                      options={{
+                        width,
+                        height: '100vmax',
+                        language: 'typescript',
+                      }}
+                    />
+                  </TabPane>
+                )
+              })}
           </Tabs>
           <div className="form">
             <div className="body">{component}</div>

@@ -35,9 +35,9 @@ export function resetViewport() {
   el.style.height = (window.innerHeight - rHeight) * 0.95 + 'px'
 }
 
-export function getContext() {
+export function getContext(list: IFormComProp[]) {
   const { TimePicker: TP, ...OtherDatePickerCom } = DatePicker
-  return {
+  const result = {
     React,
     Form,
     Input,
@@ -61,7 +61,14 @@ export function getContext() {
     Button,
     ...ICONS,
     List1,
-  }
+  } as any
+  // list组件可能有多个，但他们最终编译时都是使用同一个
+  list.forEach((item) => {
+      const name = item.componentKey
+      const tag = String(item.id).slice(0, 4)
+      result[`${name}${tag}`] = result.List1
+    })
+  return result
 }
 
 export function isChildren(componentKey: string) {
@@ -151,7 +158,10 @@ async function loadScript(scriptSrc: string) {
  * @param input
  * @returns
  */
-export async function string2Component(input?: string) {
+export async function string2Component(
+  input?: string,
+  list: IFormComProp[] = []
+) {
   if (!input) return ''
   try {
     // await loadScript(
@@ -169,7 +179,7 @@ export async function string2Component(input?: string) {
     // eslint-disable-next-line no-new-func
     const func = new Function('context', `with(context){${output}}`)
     // console.log(func)
-    return () => func(getContext()) // 为了能够在组件中执行Hook，不直接执行函数
+    return () => func(getContext(list)) // 为了能够在组件中执行Hook，不直接执行函数
   } catch (e) {
     // console.log('e', e)
     if (e instanceof Error) throw e
