@@ -64,10 +64,10 @@ export function getContext(list: IFormComProp[]) {
   } as any
   // list组件可能有多个，但他们最终编译时都是使用同一个
   list.forEach((item) => {
-      const name = item.componentKey
-      const tag = String(item.id).slice(0, 4)
-      result[`${name}${tag}`] = result.List1
-    })
+    const name = item.componentKey
+    const tag = String(item.id).slice(0, 4)
+    result[`${name}${tag}`] = result.List1
+  })
   return result
 }
 
@@ -140,6 +140,7 @@ async function loadScript(scriptSrc: string) {
   const head = document.head || document.getElementsByTagName('head')[0]
   const script = document.createElement('script') as HTMLScriptElement
   script.type = 'text/javascript'
+  script.async = true // 异步脚本，立即下载，立即执行。如果不设置就延迟到整个页面都解析完毕后再运行
   script.onerror = dfd.reject
   script.onload = function (this: any, ev) {
     console.log('加载成功: ' + scriptSrc)
@@ -164,12 +165,12 @@ export async function string2Component(
 ) {
   if (!input) return ''
   try {
-    // await loadScript(
-    //   'https://cdn.jsdelivr.net/npm/babel-standalone@6.7.7/babel.min.js'
-    // )
-    // if (!(window as any).Babel) {
-    //   throw new Error('cdn加载失败，请刷新重试')
-    // }
+    await loadScript(
+      'https://cdn.jsdelivr.net/npm/babel-standalone@6.7.7/babel.min.js'
+    )
+    if (!(window as any).Babel) {
+      throw new Error('cdn加载失败，请刷新重试')
+    }
     let output = (window as any).Babel.transform(`${input}`, {
       presets: ['react', 'es2015'],
     }).code
