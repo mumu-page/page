@@ -30,8 +30,10 @@ export interface IItem {
 }
 
 interface IList1Props {
-  listName?: string // 表单数据字段名
+  name?: string // 表单数据字段名
   fields?: IItem[] // 每行元素
+  form?: any
+  design?: boolean // 是否是设计区渲染
 }
 
 /**
@@ -39,7 +41,10 @@ interface IList1Props {
  * widget: 'list1' 用于展示每行只有 1-3 个简单元素的情况
  */
 export default (props: IList1Props) => {
-  const { listName = 'demo', fields = [] } = props
+  const { name = 'demo', fields = [], design } = props
+  let { form } = props
+  const [_form] = Form.useForm()
+  form = design ? _form : form
   const number = fields?.length || 0 // 每行元素个数
   const operateCol = 3 // 操作按钮格数
   const span = Math.floor((24 - operateCol) / number)
@@ -51,11 +56,8 @@ export default (props: IList1Props) => {
     xs: span,
     xxl: span,
   }
-  const [form] = Form.useForm()
-  const onFinish = (values: any) => {
-    console.log('Received values of form:', values)
-  }
 
+  // 并不希望程序中使用这样的代码，而是生成真实代码，更加灵活，从而应对需求复杂且多变的业务
   const renderFormItems = (index: number, name: number, fieldKey: number) => {
     return fields.map((item) => {
       return (
@@ -74,53 +76,57 @@ export default (props: IList1Props) => {
     })
   }
 
-  return (
-    <Form form={form} onFinish={onFinish}>
-      <Form.List name={listName}>
-        {(fields, { add, remove }) => (
-          <>
-            {fields.map(({ key, name, fieldKey, ...restField }, index) => {
-              return (
-                <Row key={key} gutter={15}>
-                  {renderFormItems(index, name, fieldKey)}
-                  <Col span={operateCol}>
-                    <Form.Item
-                      labelCol={index === 0 ? { span: 24 } : undefined}
-                      colon={false}
-                      label={index === 0 ? <div></div> : undefined}
-                    >
-                      <DeleteOutlined onClick={() => remove(name)} />
-                      <CopyOutlined
-                        style={{ marginLeft: 8 }}
-                        onClick={() => {
-                          // 获取当前行的默认值
-                          const defaultValue =
-                            form.getFieldsValue()?.[listName]?.[index] || {}
-                          add(defaultValue)
-                        }}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              )
-            })}
-            <Row>
-              <Col span={Math.floor(span * number)}>
-                <Form.Item>
-                  <Button
-                    type="dashed"
-                    onClick={() => add()}
-                    block
-                    icon={<PlusOutlined />}
+  const result = (
+    <Form.List name={name}>
+      {(fields, { add, remove }) => (
+        <>
+          {fields.map(({ key, name: _name, fieldKey }, index) => {
+            return (
+              <Row key={key} gutter={15}>
+                {renderFormItems(index, _name, fieldKey)}
+                <Col span={operateCol}>
+                  <Form.Item
+                    labelCol={index === 0 ? { span: 24 } : undefined}
+                    colon={false}
+                    label={index === 0 ? <div></div> : undefined}
                   >
-                    新增一条
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </>
-        )}
-      </Form.List>
-    </Form>
+                    <DeleteOutlined onClick={() => remove(_name)} />
+                    <CopyOutlined
+                      style={{ marginLeft: 8 }}
+                      onClick={() => {
+                        // 获取当前行的默认值
+                        const defaultValue =
+                          form.getFieldsValue()?.[name]?.[index] || {}
+                        add(defaultValue)
+                      }}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+            )
+          })}
+          <Row>
+            <Col span={Math.floor(span * number)}>
+              <Form.Item>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  block
+                  icon={<PlusOutlined />}
+                >
+                  新增一条
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </>
+      )}
+    </Form.List>
   )
+
+  // 如果是设计区渲染，它需要一个独立form
+  if (design) {
+    return <Form form={form}>{result}</Form>
+  }
+  return result
 }

@@ -1,5 +1,5 @@
-import React, { forwardRef, useCallback, useContext, useRef } from 'react'
-import { Col, Form, Input, Row, RowProps } from 'antd'
+import React, { forwardRef, useCallback, useRef } from 'react'
+import { Col, Form, Row, RowProps } from 'antd'
 import { useEffect } from 'react'
 import ComponentItem from './FormItem'
 import { ContextMenu } from '../../components'
@@ -16,7 +16,7 @@ import {
   IFormComProp,
   IMoveableOptions,
 } from '../../stores/typings'
-import { findTarget, isDatePicker, refreshTarget } from '../../utils/utils'
+import { isDatePicker, refreshTarget } from '../../utils/utils'
 import { Target_ClassName } from '../../constants'
 import {
   COPY_COMPONENT_LIST,
@@ -36,7 +36,7 @@ import {
 import eventBus from '../../utils/eventBus'
 import './index.less'
 import { ReactSortable } from 'react-sortablejs'
-import { Context } from '../../stores/context'
+import { useStore } from '../../hooks'
 
 interface EditorAreaProps extends ISetGlobal<object> {
   componentList: IFormComProp[]
@@ -84,7 +84,7 @@ const options = [
 ]
 
 const CustomComponent = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
-  const { target } = useContext(Context)
+  const { target } = useStore()
   const { rowProps = {} } = target || {}
   const { colNum, ...otherRow } = rowProps
   return <Row {...props} {...otherRow} ref={ref} />
@@ -324,9 +324,9 @@ export default function Container(props: EditorAreaProps) {
                 className={`${Target_ClassName} ${
                   chosen ? Target_ClassName + '-chosen' : ''
                 }`}
-                style={{
-                  paddingBottom: 24,
-                }}
+                // style={{
+                //   paddingBottom: 24,
+                // }}
                 onClick={(e: any) => {
                   e.stopPropagation()
                   //  console.log('onClick', e)
@@ -349,9 +349,9 @@ export default function Container(props: EditorAreaProps) {
                   formItemProps={formItemProps}
                   componentProps={componentProps}
                   componentKey={componentKey}
-                  style={{
-                    marginBottom: 0,
-                  }}
+                  //   style={{
+                  //     marginBottom: 0,
+                  //   }}
                 />
               </div>
             </Col>

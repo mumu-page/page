@@ -63,6 +63,7 @@ export function getContext(list: IFormComProp[]) {
     List1,
   } as any
   // list组件可能有多个，但他们最终编译时都是使用同一个
+  // TODO: 但是这种方式并不太友好，可以改成加载编辑器中的代码 实现直接编辑
   list.forEach((item) => {
     const name = item.componentKey
     const tag = String(item.id).slice(0, 4)
@@ -109,7 +110,7 @@ export function isDatePicker(componentKey: string) {
 }
 
 export function isRenderFormItem(componentKey: string) {
-  return !['Col', 'Button'].includes(componentKey)
+  return !['Col', 'Button', 'List1'].includes(componentKey)
 }
 
 export function isColComponent(componentKey: string) {

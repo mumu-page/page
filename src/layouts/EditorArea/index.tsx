@@ -1,12 +1,15 @@
-import React, { useContext } from 'react'
-import { Context } from '../../stores/context'
+import React from 'react'
+import { useStore } from '../../hooks'
 import FormList from './FormList'
 import './index.less'
 
 export default () => {
-  const { target, moveableOptions, componentList, setGlobal: commonDispatch } = useContext(
-    Context
-  )
+  const {
+    target,
+    moveableOptions,
+    componentList,
+    setGlobal: commonDispatch,
+  } = useStore()
   return (
     <div>
       {componentList?.length === 0 ? (

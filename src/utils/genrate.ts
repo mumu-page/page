@@ -100,6 +100,9 @@ function createFormItem(
   // 可能会设计多个List1 用一个唯一标识区分他们
   if (item.componentKey === 'List1') {
     componentName = `${item.componentKey}${String(item.id).slice(0, 4)}`
+    return `<Col {...${colGlobalVariable}}${colPropsStr}>
+            <${componentName} {...${formItemGlobalVariable}} form={form}${formItemPropsStr}${componentPropsStr} />
+          </Col>${componentList.length - 1 === index ? '' : '\n'}`
   } else {
     componentName = componentKey?.replace(/^.*\./, '')
   }
@@ -126,6 +129,9 @@ function generate(componentList: IFormComProp[], target: IFormComProp) {
   let children = ''
   const initialValues = {} as any
   componentList.forEach((item, index) => {
+    if (item.componentProps?.defaultValue && item.formItemProps?.name) {
+      initialValues[item.formItemProps.name] = item.componentProps?.defaultValue
+    }
     children += createFormItem(
       item,
       target,
@@ -134,9 +140,6 @@ function generate(componentList: IFormComProp[], target: IFormComProp) {
       colGlobalVariable,
       formItemGlobalVariable
     )
-    if (item.componentProps?.defaultValue && item.formItemProps?.name) {
-      initialValues[item.formItemProps.name] = item.componentProps?.defaultValue
-    }
   })
   const initialValuesStr = Object.keys(initialValues).length
     ? ` initialValues={${JSON.stringify(initialValues)}}`
@@ -145,10 +148,21 @@ function generate(componentList: IFormComProp[], target: IFormComProp) {
   export default () => {
     const ${colGlobalVariable} = ${JSON.stringify(otherG1)}
     const ${formItemGlobalVariable} = ${JSON.stringify(otherG2)}
+    const [form] = Form.useForm()
+    const onFinish = (values: any) => {
+      console.log('Received values of form:', values)
+    }
 
-    return <Form${initialValuesStr}>
+    return <Form${initialValuesStr} form={form} onFinish={onFinish}>
         <Row${rowPropsStr}>
           ${children}
+          <Col span={24}>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                提交
+              </Button>
+            </Form.Item>
+          </Col>
         </Row>
     </Form>
   }
@@ -170,6 +184,7 @@ function getAllAntdComponentKey(
   keys.add('Form')
   keys.add('Row')
   keys.add('Col')
+  keys.add('Button')
   return Array.from(keys)
 }
 

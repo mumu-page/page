@@ -34,15 +34,16 @@ export interface IItem {
 }
 
 interface IList1Props {
-  listName?: string // 表单数据字段名
+  name?: string // 表单数据字段名
   fields?: IItem[] // 每行元素
+  form?: any // 每行元素
 }
 
 /**
  * list组件
  */
 export default (props: IList1Props) => {
-  const { listName = 'demo', fields = [] } = props
+  const { name = 'demo', fields = [], form } = props
   const number = fields?.length || 0 // 每行元素个数
   const operateCol = 3 // 操作按钮格数
   const span = Math.floor((24 - operateCol) / number)
@@ -54,10 +55,6 @@ export default (props: IList1Props) => {
     xs: span,
     xxl: span,
   }
-  const [form] = Form.useForm()
-  const onFinish = (values: any) => {
-    console.log('Received values of form:', values)
-  }
 
   const renderFormItems = (index: number, name: number, fieldKey: number) => {
     const showLable = index === 0
@@ -65,27 +62,26 @@ export default (props: IList1Props) => {
   }
 
   return (
-    <Form form={form} onFinish={onFinish}>
-      <Form.List name={listName}>
+      <Form.List name={name}>
         {(fields, { add, remove }) => (
           <>
-            {fields.map(({ key, name, fieldKey, ...restField }, index) => {
+            {fields.map(({ key, name: _name, fieldKey, ...restField }, index) => {
               return (
                 <Row key={key} gutter={15}>
-                  {renderFormItems(index, name, fieldKey)}
+                  {renderFormItems(index, _name, fieldKey)}
                   <Col span={operateCol}>
                     <Form.Item
                       labelCol={index === 0 ? { span: 24 } : undefined}
                       colon={false}
                       label={index === 0 ? <div></div> : undefined}
                     >
-                      <DeleteOutlined onClick={() => remove(name)} />
+                      <DeleteOutlined onClick={() => remove(_name)} />
                       <CopyOutlined
                         style={{ marginLeft: 8 }}
                         onClick={() => {
                           // 获取当前行的默认值
                           const defaultValue =
-                            form.getFieldsValue()?.[listName]?.[index] || {}
+                            form.getFieldsValue()?.[name]?.[index] || {}
                           add(defaultValue)
                         }}
                       />
@@ -111,7 +107,6 @@ export default (props: IList1Props) => {
           </>
         )}
       </Form.List>
-    </Form>
   )
 }
 `

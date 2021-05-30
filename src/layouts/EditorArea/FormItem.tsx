@@ -9,7 +9,7 @@ import { getIcon } from '../../utils/genrate'
 // 控件设计时默认不能交互
 const disableCom = {
   readOnly: true,
-  //   popupVisible: false,
+  // popupVisible: false,
   open: false,
 }
 
@@ -39,12 +39,8 @@ export default (prop: IFormComProp) => {
     })
   }
 
-  const {
-    defaultValue,
-    prefix,
-    suffix,
-    ...componentOtherProps
-  } = componentProps
+  const { defaultValue, prefix, suffix, ...componentOtherProps } =
+    componentProps
   // 输入框前后图标处理
   if (['Input'].includes(componentKey)) {
     const Prefix = getIcon(prefix, true)
@@ -85,6 +81,9 @@ export default (prop: IFormComProp) => {
       id,
       children,
       rowProps,
+      style,
+      design: true,
+      name: formItemProps?.name,
       ...componentOtherProps,
     })
   )
