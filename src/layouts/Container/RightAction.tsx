@@ -19,7 +19,7 @@ import {
 import { Context } from '../../stores/context'
 import { parseJSON } from '../../utils/parseJSON'
 import eventBus from '../../utils/eventBus'
-import { generate, generateImport } from '../../utils/genrate'
+import GenrateCode from '../../utils/genrate'
 
 interface RightActionType {
   handleType: (val: BtnTypes) => void
@@ -61,12 +61,7 @@ export default (props: RightActionType) => {
   }
 
   const run = () => {
-    const tsxCode = `${generateImport(componentList)}${generate(
-      componentList,
-      currentDragComponent
-    )}`
-    preview.current?.setTsxCode(tsxCode)
-    preview.current?.run(tsxCode)
+    preview.current?.run()
     preview.current?.open()
   }
 

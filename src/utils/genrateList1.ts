@@ -7,22 +7,38 @@ export function genrateList1(fields: any) {
   const renderFormItems = () => {
     let result = ''
     fields.forEach((item: any) => {
-      result += `<Col key={fieldKey} {...colProps}>
+      result += `<Col {...colProps}>
             <Form.Item
               label={showLable && '${item.label}'}
               labelCol={{ span: 24 }}
-              name={[name, ${item.field}]}
-              fieldKey={[fieldKey, ${item.field}]}
+              name={[name, '${item.field}']}
+              fieldKey={[fieldKey, '${item.field}']}
               rules={${item.rules || '[]'}}
             >
               <${item.componentKey} />
             </Form.Item>
           </Col>\n`
     })
-    return `<>\n${result}</>`
+    return `<React.Fragment key={fieldKey}>\n${result}</React.Fragment>`
   }
+  const gImport = () => {
+    let result = 'Button, Form, Row, Col'
+    fields.forEach((item: any) => {
+      result += `, ${item.componentKey}`
+    })
+    return `import { ${result} } from 'antd'`
+  }
+  const gInitFieldValue = () => {
+    const o = {} as any
+    fields.forEach((item: any) => {
+      o[item.field] = undefined
+    })
+    return o
+  }
+
   return `
 import * as React from 'react'
+${gImport()}
 import { DeleteOutlined, PlusOutlined, CopyOutlined } from '@ant-design/icons'
 
 export interface IItem {
@@ -60,6 +76,12 @@ export default (props: IList1Props) => {
     const showLable = index === 0
     return ${renderFormItems()}
   }
+
+  useEffect(() => {
+    form.setFieldsValue({
+        [name]: [${JSON.stringify(gInitFieldValue())}]
+    })
+  }, [])
 
   return (
       <Form.List name={name}>

@@ -1,26 +1,9 @@
-import * as React from 'react'
-import {
-  Input,
-  InputNumber,
-  Select,
-  Cascader,
-  Radio,
-  Checkbox,
-  Switch,
-  Slider,
-  TimePicker,
-  DatePicker,
-  Rate,
-  Upload,
-  Row,
-  Col,
-  Button,
-  Form,
-} from 'antd'
+
+
 import { IFormComProp } from '../stores/typings'
 import { Target_ClassName, ICONS } from '../constants/constants'
 import { SET_MOVEABLE_OPTIONS } from '../stores/action-type'
-import List1 from '../properties/antd/widgets/list1'
+
 
 // 重新设置画布大小
 export function resetViewport() {
@@ -33,43 +16,6 @@ export function resetViewport() {
   const el = document.querySelector('.viewport') as HTMLElement
   el.style.width = (window.innerWidth - rWidth) * 0.95 + 'px'
   el.style.height = (window.innerHeight - rHeight) * 0.95 + 'px'
-}
-
-export function getContext(list: IFormComProp[]) {
-  const { TimePicker: TP, ...OtherDatePickerCom } = DatePicker
-  const result = {
-    React,
-    Form,
-    Input,
-    ...Input,
-    InputNumber,
-    Select,
-    ...Select,
-    Cascader,
-    Radio,
-    Checkbox,
-    Switch,
-    Slider,
-    TimePicker,
-    ...TimePicker,
-    DatePicker,
-    ...OtherDatePickerCom,
-    Rate,
-    Upload,
-    Row,
-    Col,
-    Button,
-    ...ICONS,
-    List1,
-  } as any
-  // list组件可能有多个，但他们最终编译时都是使用同一个
-  // TODO: 但是这种方式并不太友好，可以改成加载编辑器中的代码 实现直接编辑
-  list.forEach((item) => {
-    const name = item.componentKey
-    const tag = String(item.id).slice(0, 4)
-    result[`${name}${tag}`] = result.List1
-  })
-  return result
 }
 
 export function isChildren(componentKey: string) {
@@ -153,40 +99,6 @@ async function loadScript(scriptSrc: string) {
   script.src = scriptSrc
   head.appendChild(script)
   return dfd.promise
-}
-
-/**
- * 请传入一个function componet 字符串，将返回一个编译后函数组件
- * @param input
- * @returns
- */
-export async function string2Component(
-  input?: string,
-  list: IFormComProp[] = []
-) {
-  if (!input) return ''
-  try {
-    // await loadScript(
-    //   'https://cdn.jsdelivr.net/npm/babel-standalone@6.7.7/babel.min.js'
-    // )
-    // if (!(window as any).Babel) {
-    //   throw new Error('cdn加载失败，请刷新重试')
-    // }
-    let output = (window as any).Babel.transform(`${input}`, {
-      presets: ['react', 'es2015'],
-    }).code
-    output = output?.replace('"use strict";', '').trim()
-    output = output?.replace('(function', 'return (function')
-    // console.log(output)
-    // eslint-disable-next-line no-new-func
-    const func = new Function('context', `with(context){${output}}`)
-    // console.log(func)
-    return () => func(getContext(list)) // 为了能够在组件中执行Hook，不直接执行函数
-  } catch (e) {
-    // console.log('e', e)
-    if (e instanceof Error) throw e
-    throw new Error(e)
-  }
 }
 
 export function isCheck(componentKey: string) {

@@ -16,11 +16,12 @@ import {
 } from '@ant-design/icons'
 import CodeEditor from '../CodeEditor'
 import { CodeEditorInstanceProps } from '../CodeEditor/typings'
-import { string2Component } from '../../utils/utils'
+import Compile from '../../utils/compile'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
 import './index.less'
 import { useStore } from '../../hooks'
 import { genrateList1 } from '../../utils/genrateList1'
+import GenrateCode from '../../utils/genrate'
 
 const { TabPane } = Tabs
 const SelectedIcon = () => (
@@ -44,7 +45,7 @@ export default forwardRef(function (
   const tsxEditor = useRef<CodeEditorInstanceProps>(null)
   const lessEditor = useRef<CodeEditorInstanceProps>(null)
   const [width, setWidth] = useState<number | string>('')
-  const { componentList } = useStore()
+  const { componentList, target } = useStore()
   // 列表组件数据，根据它生成tab
   const list = componentList?.filter?.((item) => item.componentKey === 'List1')
 
@@ -53,12 +54,12 @@ export default forwardRef(function (
     // refresh(newCode)
   }, [])
 
-  const onRun = (code = tsxCode) => {
-    const _xmlCode =
-      code
-        .substring(code.indexOf('export default'), code.indexOf('</Form>'))
-        .replace('export default', '') + '</Form>}'
-    string2Component(_xmlCode, list)
+  const onRun = (code?: string) => {
+    const genrate = new GenrateCode(componentList, target)
+    const tsxCode = genrate.generate()
+    setTsxCode(tsxCode)
+    new Compile(genrate)
+      .string2Component(list, code)
       .then((newComponent) => {
         if (typeof newComponent === 'function') {
           const Component = newComponent()

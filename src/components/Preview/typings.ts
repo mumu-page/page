@@ -1,3 +1,4 @@
+import GenrateCode from "../../utils/genrate";
 import { CodeEditorInstanceProps } from "../CodeEditor/typings";
 
 export interface PreviewInstanceProps {
@@ -7,7 +8,7 @@ export interface PreviewInstanceProps {
   scssEditor: CodeEditorInstanceProps;
   setTsxCode: React.Dispatch<React.SetStateAction<string>>;
   setScssCode: React.Dispatch<React.SetStateAction<string>>;
-  run: React.Dispatch<React.SetStateAction<string>>;
+  run: () => void;
 }
 
 export interface PreviewProps {
