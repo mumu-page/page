@@ -25,6 +25,7 @@ import GenrateCode from './genrate'
 class Compile {
   genrate: GenrateCode
   constructor(genrate: GenrateCode) {
+    console.log(genrate)
     this.genrate = genrate
   }
   // 去除不要的代码

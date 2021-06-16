@@ -7,7 +7,7 @@ import {
 } from '../action-type'
 import { INITAL_STATE } from '../context'
 import { ICommonState, IFormComProp } from '../typings'
-import { formatValue } from './utils'
+import { coverValue } from './utils'
 
 export default (
   draft: ICommonState,
@@ -34,11 +34,13 @@ export default (
     findSelectedItem(draft.componentList)
   },
   [SET_TARGET]: () => {
-    formatValue(
-      ['options', 'fields'],
-      draft.target.componentProps,
-      action.payload?.componentProps
-    )
+    coverValue({
+      targetObj: draft.target,
+      childKeys: ['options', 'fields'],
+      newValue: action.payload,
+      value: [],
+      parentKey: 'componentProps',
+    })
     if (
       action.payload?.componentProps?.style?.width === null &&
       draft.target?.componentProps?.style

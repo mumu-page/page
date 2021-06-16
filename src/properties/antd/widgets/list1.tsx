@@ -3,7 +3,7 @@ import * as Antd from 'antd' // 此处仅仅只是为了方便生成代码，开
 import { DeleteOutlined, PlusOutlined, CopyOutlined } from '@ant-design/icons'
 import { get } from 'lodash'
 
-const { Form, Button, Row, Col, ...other } = Antd
+const { Form, Button, Row, Col, Empty, ...other } = Antd
 
 /**
  * 此方法仅仅只是为了方便生成代码，开发者可以去掉自己实现
@@ -41,11 +41,11 @@ interface IList1Props {
  * widget: 'list1' 用于展示每行只有 1-3 个简单元素的情况
  */
 export default (props: IList1Props) => {
-  const { name = 'demo', fields = [], design } = props
+  const { name = 'demo', fields: selfFields = [], design } = props
   let { form } = props
   const [_form] = Form.useForm()
   form = design ? _form : form
-  const number = fields?.length || 0 // 每行元素个数
+  const number = selfFields?.length || 0 // 每行元素个数
   const operateCol = 3 // 操作按钮格数
   const span = Math.floor((24 - operateCol) / number)
   const colProps = {
@@ -59,7 +59,7 @@ export default (props: IList1Props) => {
 
   // 并不希望程序中使用这样的代码，而是生成真实代码，更加灵活，从而应对需求复杂且多变的业务
   const renderFormItems = (index: number, name: number, fieldKey: number) => {
-    return fields.map((item) => {
+    return selfFields.map((item) => {
       return (
         <Col key={fieldKey} {...colProps}>
           <Form.Item
@@ -87,6 +87,14 @@ export default (props: IList1Props) => {
       {(fields, { add, remove }) => (
         <>
           {fields.map(({ key, name: _name, fieldKey }, index) => {
+            if (!selfFields.length)
+              return (
+                <Empty
+                  key={key}
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="请在属性面板中设置字段"
+                />
+              )
             return (
               <Row key={key} gutter={15}>
                 {renderFormItems(index, _name, fieldKey)}
@@ -111,20 +119,22 @@ export default (props: IList1Props) => {
               </Row>
             )
           })}
-          <Row>
-            <Col span={Math.floor(span * number)}>
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
-                  新增一条
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
+          {selfFields.length ? (
+            <Row>
+              <Col span={Math.floor(span * number)}>
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    block
+                    icon={<PlusOutlined />}
+                  >
+                    新增一条
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
+          ) : null}
         </>
       )}
     </Form.List>

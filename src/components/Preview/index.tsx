@@ -31,12 +31,9 @@ const UnSelectedIcon = () => (
   <FileTextOutlined style={{ color: '#a95812', marginRight: '5px' }} />
 )
 
-export default forwardRef(function (
-  props: PreviewProps,
-  ref:
-    | ((instance: PreviewInstanceProps) => void)
-    | React.MutableRefObject<unknown>
-    | null
+export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
+  props,
+  ref
 ) {
   const [tsxCode, setTsxCode] = useState<string>('')
   const [visible, setVisible] = useState(false)
@@ -55,6 +52,7 @@ export default forwardRef(function (
   }, [])
 
   const onRun = (code?: string) => {
+    console.log(componentList, target)
     const genrate = new GenrateCode(componentList, target)
     const tsxCode = genrate.generate()
     setTsxCode(tsxCode)
@@ -85,27 +83,24 @@ export default forwardRef(function (
 
   const onClose = () => {
     setVisible(false)
+    setActiveKey('tsx')
   }
 
   useImperativeHandle(
     ref,
     () => ({
-      tsEditor: tsxEditor.current,
+      tsxEditor: tsxEditor.current,
       lessEditor: lessEditor.current,
-      setTsxCode: (newCode: string) => {
-        setTsxCode(newCode)
-      },
+      setTsxCode,
       open() {
         setVisible(true)
       },
-      close() {
-        setVisible(false)
-      },
-      run(newCode: string) {
-        onRun(newCode)
+      close: onClose,
+      run() {
+        onRun()
       },
     }),
-    []
+    [componentList, target]
   )
 
   useEffect(() => {

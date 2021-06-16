@@ -152,7 +152,7 @@ export default memo(function () {
           </Row>
         }
       >
-        {current.label}
+        {current.label || '无标题'}
       </Popover>
     )
     return (
@@ -169,13 +169,15 @@ export default memo(function () {
             return (
               <OptGroup label={item.label} key={item.key}>
                 {Array.isArray(item.children) &&
-                  item.children.map((childItem) => {
-                    return (
-                      <Option key={childItem.key} value={childItem.value}>
-                        {childItem.label}
-                      </Option>
-                    )
-                  })}
+                  item.children
+                    .filter((item2) => item2.value !== 'List1') // 排除自己
+                    .map((childItem) => {
+                      return (
+                        <Option key={childItem.key} value={childItem.value}>
+                          {childItem.label}
+                        </Option>
+                      )
+                    })}
               </OptGroup>
             )
           })}

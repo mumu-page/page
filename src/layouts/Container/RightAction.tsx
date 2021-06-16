@@ -1,3 +1,4 @@
+import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import {
   DeleteOutlined,
   ExclamationCircleOutlined,
@@ -7,8 +8,7 @@ import {
   SettingOutlined,
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
-import { Button, message, Modal } from 'antd'
-import React, { useCallback, useContext, useEffect, useRef } from 'react'
+import { Button, Modal } from 'antd'
 import { BtnTypes } from '.'
 import { Preview, PreviewInstanceProps } from '../../components'
 import { SCROLL_CENTER, SHOW_SETTING_PANL } from '../../constants/events'
@@ -19,7 +19,6 @@ import {
 import { Context } from '../../stores/context'
 import { parseJSON } from '../../utils/parseJSON'
 import eventBus from '../../utils/eventBus'
-import GenrateCode from '../../utils/genrate'
 
 interface RightActionType {
   handleType: (val: BtnTypes) => void

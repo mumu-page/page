@@ -90,7 +90,10 @@ class GenrateCode {
       labelCol,
       wrapperCol,
     })
-    const componentPropsStr = this.generateComProps(componentProps, componentKey)
+    const componentPropsStr = this.generateComProps(
+      componentProps,
+      componentKey
+    )
     let componentName = ''
     // 可能会设计多个List1 用一个唯一标识区分他们
     if (item.componentKey === 'List1') {

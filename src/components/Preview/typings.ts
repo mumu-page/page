@@ -4,10 +4,10 @@ import { CodeEditorInstanceProps } from "../CodeEditor/typings";
 export interface PreviewInstanceProps {
   open: () => void;
   close: () => void;
-  tsEditor: CodeEditorInstanceProps;
-  scssEditor: CodeEditorInstanceProps;
+  tsxEditor: CodeEditorInstanceProps | null;
+  lessEditor: CodeEditorInstanceProps | null;
   setTsxCode: React.Dispatch<React.SetStateAction<string>>;
-  setScssCode: React.Dispatch<React.SetStateAction<string>>;
+  setLessCode?: React.Dispatch<React.SetStateAction<string>>;
   run: () => void;
 }
 

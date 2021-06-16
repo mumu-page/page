@@ -24,7 +24,6 @@ export default function () {
 
   useEffect(() => {
     form.setFieldsValue({ options: componentProps.options })
-    
   }, [componentProps.id])
 
   
