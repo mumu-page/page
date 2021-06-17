@@ -114,7 +114,7 @@ export default function () {
             <Form.Item
               label="全局布局"
               tooltip="在此设置的内容将应用于全部控件"
-              className="mb-0"
+              className="mb-0 w-100"
             ></Form.Item>
           }
           key={'全局布局'}
