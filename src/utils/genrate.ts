@@ -42,7 +42,7 @@ class GenrateCode {
       const ${colGlobalVariable} = ${JSON.stringify(otherG1)}
       const ${formItemGlobalVariable} = ${JSON.stringify(otherG2)}
       const [form] = Form.useForm()
-      const onFinish = (values: any) => {
+      const onFinish = (values) => {
         console.log('Received values of form:', values)
       }
   

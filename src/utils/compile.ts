@@ -17,43 +17,65 @@ import {
   Col,
   Button,
   Form,
+  notification,
 } from 'antd'
 import List1 from '../properties/antd/widgets/list1'
 import { ICONS } from '../constants/constants'
 import GenrateCode from './genrate'
+import { transform } from '@babel/standalone'
 
 class Compile {
   genrate: GenrateCode
   constructor(genrate: GenrateCode) {
-    console.log(genrate)
     this.genrate = genrate
   }
   // 去除不要的代码
-  replace() {
-    const code = this.genrate.generate()
+  replace(code?: string) {
+    const selfCode = code || this.genrate.generate()
     return (
-      code
-        .substring(code.indexOf('export default'), code.indexOf('</Form>'))
+      selfCode
+        .substring(
+          selfCode.indexOf('export default'),
+          selfCode.indexOf('</Form>')
+        )
         .replace('export default', '') + '</Form>}'
     )
   }
   async string2Component(list: IFormComProp[] = [], code?: string) {
     try {
-      let input = code || this.replace()
-      let output = (window as any).Babel.transform(`${input}`, {
+      let input = this.replace(code)
+      let output = transform(input, {
+        // sourceType: 'script',
         presets: ['react', 'es2015'],
       }).code
       output = output?.replace('"use strict";', '').trim()
-      output = output?.replace('(function', 'return (function')
-      // console.log(output)
-      // eslint-disable-next-line no-new-func
-      const func = new Function('context', `with(context){${output}}`)
-      // console.log(func)
-      return () => func(this.getContext(list)) // 为了能够在组件中执行Hook，不直接执行函数
+      output = output?.replace('(function', 'return (function') // 里面可能会报错
+      //   console.log(output)
+      //   eslint-disable-next-line no-new-func
+      const func = new Function(
+        'context',
+        `with(context){
+            ${output}
+        }`
+      )
+      //   console.log(func)
+      return () => {
+        try {
+          return func(this.getContext(list))
+        } catch (error) {
+          console.log('error', error)
+          notification.open({
+            message: '运行错误',
+            description: error instanceof Error ? error.message : `${error}`,
+          })
+        }
+      } // 为了能够在组件中执行Hook，不直接执行函数
     } catch (e) {
-      // console.log('e', e)
-      if (e instanceof Error) throw e
-      throw new Error(e)
+      console.log('e', e)
+      notification.open({
+        message: '运行错误',
+        description: e instanceof Error ? e.message : `${e}`,
+      })
     }
   }
   getContext(list: IFormComProp[]) {

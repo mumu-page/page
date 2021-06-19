@@ -48,25 +48,22 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
 
   const onTsxChangCode = useCallback((newCode) => {
     setTsxCode(newCode)
-    // refresh(newCode)
+    // onRun(newCode)
   }, [])
 
   const onRun = (code?: string) => {
-    console.log(componentList, target)
     const genrate = new GenrateCode(componentList, target)
-    const tsxCode = genrate.generate()
-    setTsxCode(tsxCode)
-    new Compile(genrate)
-      .string2Component(list, code)
-      .then((newComponent) => {
-        if (typeof newComponent === 'function') {
-          const Component = newComponent()
-          setComponent(<Component />)
-        }
-      })
-      .catch((info) => {
-        message.error(info?.message)
-      })
+    if (code) {
+      setTsxCode(code)
+    } else {
+      setTsxCode(genrate.generate())
+    }
+    new Compile(genrate).string2Component(list, code).then((newComponent) => {
+      if (typeof newComponent === 'function') {
+        const Component = newComponent()
+        setComponent(<Component />)
+      }
+    })
   }
 
   const onCopy = () => {
