@@ -35,6 +35,12 @@ module.exports = {
               'https://cdn.jsdelivr.net/npm/react-draggable@4.4.3/build/web/react-draggable.min.js',
             global: 'ReactDraggable',
           },
+          {
+            module: '@babel/standalone',
+            entry:
+              'https://cdn.jsdelivr.net/npm/@babel/standalone@7.14.6/babel.min.js',
+            global: 'Babel',
+          },
         ],
       }),
       new webpack.BannerPlugin('可视化编辑器'),
