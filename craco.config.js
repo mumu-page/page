@@ -41,9 +41,19 @@ module.exports = {
               'https://cdn.jsdelivr.net/npm/@babel/standalone@7.14.6/babel.min.js',
             global: 'Babel',
           },
+          {
+            module: '@ant-design/icons',
+            entry: 'https://cdn.jsdelivr.net/npm/@ant-design/icons@4/dist/index.umd.js',
+            global: 'icons'   
+          },
+          {
+            module: 'sortablejs',
+            entry: 'https://cdn.jsdelivr.net/npm/sortablejs@1/Sortable.min.js',
+            global: 'Sortable'   
+          },
         ],
       }),
-      new webpack.BannerPlugin('可视化编辑器'),
+      new webpack.BannerPlugin('by all resonance'),
     ],
   },
   plugins: [
