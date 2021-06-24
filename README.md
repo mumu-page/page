@@ -10,6 +10,8 @@
 
 最近很忙，一有时间就会更新哒～^～
 
+[Github](https://github.com/all-resonance/react-visual-editor) | [Gitee](https://gitee.com/resonances/react-visual-editor)
+
 ## 支持在项目中嵌入
 ### 1.安装
 ```sh
