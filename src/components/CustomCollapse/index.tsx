@@ -1,5 +1,5 @@
 import { CaretRightOutlined } from '@ant-design/icons'
-import Collapse from 'antd/lib/collapse'
+import { Collapse } from 'antd'
 import * as React from 'react'
 import './index.less'
 

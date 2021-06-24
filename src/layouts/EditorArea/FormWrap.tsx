@@ -45,30 +45,14 @@ interface EditorAreaProps extends ISetGlobal<object> {
 }
 
 enum HANDLE_TYPE {
-  copy = '复制这个',
+  copy = '复制',
   setting = '设置属性',
-  del = '删除这个',
+  del = '删除',
   toLeft = '左移',
   toRight = '右移',
 }
 
-const options = [
-  {
-    key: 'copy',
-    icon: <CopyOutlined />,
-    label: HANDLE_TYPE.copy,
-  },
-  {
-    key: 'setting',
-    icon: <SettingOutlined />,
-    label: HANDLE_TYPE.setting,
-  },
-  {
-    key: 'del',
-    icon: <DeleteOutlined />,
-    label: HANDLE_TYPE.del,
-    type: 'del',
-  },
+const actions = [
   {
     key: 'toTop',
     icon: <VerticalAlignTopOutlined />,
@@ -81,9 +65,25 @@ const options = [
     label: HANDLE_TYPE.toRight,
     type: 'topBottom',
   },
+  {
+    key: 'copy',
+    icon: <CopyOutlined />,
+    label: HANDLE_TYPE.copy,
+  },
+  {
+    key: 'del',
+    icon: <DeleteOutlined />,
+    label: HANDLE_TYPE.del,
+    type: 'del',
+  },
+  {
+    key: 'setting',
+    icon: <SettingOutlined />,
+    label: HANDLE_TYPE.setting,
+  },
 ]
 
-const CustomComponent = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
+const Wrap = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
   const { target } = useStore()
   const { rowProps = {} } = target || {}
   const { colNum, ...otherRow } = rowProps
@@ -109,27 +109,6 @@ export default function Container(props: EditorAreaProps) {
 
   const { colNum, ...otherRow } = rowProps
 
-  //   const setMoveableOption = (
-  //     id: string | number | undefined,
-  //     componentList: IFormComProp[]
-  //   ) => {
-  //     const { elementGuidelines, target, frame } = findTarget(id, componentList)
-  //     commonDispatch({
-  //       type: SET_MOVEABLE_OPTIONS,
-  //       payload: {
-  //         frame,
-  //         elementGuidelines,
-  //         target,
-  //         /**
-  //          * 禁用调整大小和拖动
-  //          * 原因：Row Col 和 ReactiveMoveable 有冲突
-  //          */
-  //         draggable: false,
-  //         resizable: false,
-  //       },
-  //     })
-  //   }
-
   const setComponentlist = (
     id: string | number | undefined,
     componentList: IFormComProp[]
@@ -143,6 +122,11 @@ export default function Container(props: EditorAreaProps) {
     })
   }
 
+  /**
+   * 处理右键菜单点击事件
+   * @param key 
+   * @param label 
+   */
   const handleContextMenuClick = (key: string, label: string) => {
     if (label === HANDLE_TYPE.del) {
       commonDispatch({
@@ -173,9 +157,6 @@ export default function Container(props: EditorAreaProps) {
           newId,
         },
       })
-      //   requestAnimationFrame(() => {
-      //     setMoveableOption(newId)
-      //   })
     }
     if (label === HANDLE_TYPE.toLeft) {
       commonDispatch({
@@ -243,13 +224,12 @@ export default function Container(props: EditorAreaProps) {
         sort
         animation={150}
         delay={200}
-        // tag={Row}
-        tag={CustomComponent}
+        tag={Wrap}
         list={componentList}
         ghostClass="sortable-ghost"
         chosenClass="sortable-chosen"
         group={{
-          name: 'form-list',
+          name: 'form-wrap',
           put: true,
         }}
         setList={(newState) => {
@@ -297,7 +277,6 @@ export default function Container(props: EditorAreaProps) {
           }
 
           const { align, gutter, justify, wrap, ...otherRowG } = otherRow
-
           const { colNum: colNum2, ...otherCol } = selfColProps
 
           return (
@@ -359,7 +338,7 @@ export default function Container(props: EditorAreaProps) {
         })}
       </ReactSortable>
       <ContextMenu ref={contenxtMenu}>
-        <Menu options={options} onClick={handleContextMenuClick} />
+        <Menu options={actions} onClick={handleContextMenuClick} />
       </ContextMenu>
     </Form>
   )

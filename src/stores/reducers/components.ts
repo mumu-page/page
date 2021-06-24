@@ -84,24 +84,18 @@ export default (
   [COPY_COMPONENT_LIST]: () => {
     let newItem = {} as IFormComProp
     const { id, newId = shortid() } = action?.payload || {}
-    const findCopyItem = (data: IFormComProp[]) => {
-      data?.forEach((item, index) => {
-        if (item?.children) {
-          findCopyItem(item?.children)
-        }
-        if (item.id === id) {
-          item.chosen = false
-          newItem = cloneDeep(item)
-          newItem.chosen = true
-          newItem.id = newId
-          newItem.key = newId
-          newItem.formItemProps.name = newId
-          data.push(newItem)
-          draft.target = newItem
-        }
-      })
-    }
-    findCopyItem(draft?.componentList)
+    draft.componentList?.forEach((item) => {
+      if (item.id === id) {
+        item.chosen = false
+        newItem = cloneDeep(item)
+        newItem.chosen = true
+        newItem.id = newId
+        newItem.key = newId
+        newItem.formItemProps.name = newId
+        draft.componentList.push(newItem)
+        draft.target = merge(draft.target, newItem)
+      }
+    })
   },
   [INSERT_COMPONENT_LIST]: () => {
     const { index, data } = action.payload

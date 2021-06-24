@@ -6,9 +6,6 @@ import eventBus from '../../utils/eventBus'
 import { INFINITEVIEWER_SCROLL, SCROLL_CENTER } from '../../constants/events'
 import { resetViewport } from '../../utils/utils'
 
-/**
- * 让他能够滚动
- */
 export default (props: any) => {
   const horizontalGuides = useRef()
   const verticalGuides = useRef()

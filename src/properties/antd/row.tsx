@@ -43,6 +43,7 @@ export default function () {
   const onValuesChange = useCallback(
     debounce((changedValues: any, allValues: any) => {
       let newAllValues = allValues
+      if (!newAllValues.gutter) newAllValues.gutter = 0
       if (mode === '精简模式') {
         newAllValues = merge(allValues, genLayout(allValues.colNum))
         // 重置layout属性

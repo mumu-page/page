@@ -1,6 +1,6 @@
 import React from 'react'
 import { useStore } from '../../hooks'
-import FormList from './FormList'
+import FormList from './FormWrap'
 import './index.less'
 
 export default () => {
