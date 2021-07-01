@@ -4,7 +4,7 @@ import {
   SET_MOVEABLE_OPTIONS,
   SET_TARGET,
   SET_TARGET_BY_COMPONENT_LIST,
-} from '../action-type'
+} from '../actionTypes'
 import { INITAL_STATE } from '../context'
 import { ICommonState, IFormComProp } from '../typings'
 import { coverValue } from './utils'

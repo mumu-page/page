@@ -1,5 +1,5 @@
 import React from 'react'
-import { useStore } from '../../hooks'
+import { Utils } from '../../stores'
 import FormList from './FormWrap'
 import './index.less'
 
@@ -9,7 +9,7 @@ export default () => {
     moveableOptions,
     componentList,
     setGlobal: commonDispatch,
-  } = useStore()
+  } = Utils.useStore()
   return (
     <div>
       {componentList?.length === 0 ? (

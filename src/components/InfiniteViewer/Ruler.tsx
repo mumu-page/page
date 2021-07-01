@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import Guides from "@scena/react-guides";
 import { Context } from "../../stores/context";
-import { SET_MOVEABLE_OPTIONS } from "../../stores/action-type";
+import { SET_MOVEABLE_OPTIONS } from "../../stores/actionTypes";
 
 let observer: MutationObserver | null = null;
 export default forwardRef((props: GuidesOptions, ref) => {

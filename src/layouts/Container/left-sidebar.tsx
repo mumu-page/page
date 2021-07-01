@@ -2,12 +2,12 @@ import React, { useContext, useState } from 'react'
 import { Button, Col, Row } from 'antd'
 import { IconFont, options } from '../../constants'
 import { OptionGroup, OptionItem } from '../../typings/option'
-import { hasNotPlaceholder, isSelect } from '../../utils/utils'
 import { IFormComProp } from '../../stores/typings'
-import { PUT_COMPONENT_LIST } from '../../stores/action-type'
+import { actionTypes, Utils } from '../../stores'
 import { shortid } from '../../utils/utils'
 import { cloneDeep } from 'lodash'
-import { useStore } from '../../hooks'
+const { useStore } = Utils
+const { PUT_COMPONENT_LIST } = actionTypes
 
 const getNewOptions = (data: OptionGroup[]) => {
   return data.map((item) => {

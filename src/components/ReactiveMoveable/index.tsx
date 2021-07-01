@@ -4,7 +4,7 @@ import {
   SET_TARGET,
   SET_MOVEABLE_OPTIONS,
   UPDATE_COMPONENT_LIST_BY_TARGET,
-} from '../../stores/action-type'
+} from '../../stores/actionTypes'
 import { Context } from '../../stores/context'
 
 const layout = {

@@ -1,31 +1,31 @@
-import FormProperties from './form'
-import FormItemProperties from './form-item'
-import CommonProperties from './common'
-import InputProperties from './input'
-import TextAreaProperties from './textarea'
-import PasswordProperties from "./password";
-import NumberProperties from "./number";
-import EditorProperties from "./editor";
-import SelectProperties from "./select";
-import CascaderProperties from "./cascader";
-import RadioProperties from "./radio";
-import CheckboxProperties from "./checkbox";
-import SwitchProperties from "./switch";
-import SliderProperties from "./slider";
-import TimePickerProperties from "./time-picker";
-import TimeRangePickerProperties from "./time-range-picker";
-import DatePickerProperties from "./date-picker";
-import DateRangePickerProperties from "./date-range-picker";
-import RateProperties from "./rate";
-import UploadProperties from "./upload";
-import RowProperties from "./row";
-import ColProperties from "./col";
-import ButtonProperties from "./button";
-import PageProperties from "./page";
-import ComponentSetting from "./component-setting";
-import LayoutSetting from "./layout-setting";
-import PageSetting from "./page-setting";
-import List1Properties from "./list1";
+import FormProperties from './form/form'
+import FormItemProperties from './form/form-item'
+import CommonProperties from './form/common'
+import InputProperties from './form/input'
+import TextAreaProperties from './form/textarea'
+import PasswordProperties from './form/password'
+import NumberProperties from './form/number'
+import EditorProperties from './form/editor'
+import SelectProperties from './form/select'
+import CascaderProperties from './form/cascader'
+import RadioProperties from './form/radio'
+import CheckboxProperties from './form/checkbox'
+import SwitchProperties from './form/switch'
+import SliderProperties from './form/slider'
+import TimePickerProperties from './form/time-picker'
+import TimeRangePickerProperties from './form/time-range-picker'
+import DatePickerProperties from './form/date-picker'
+import DateRangePickerProperties from './form/date-range-picker'
+import RateProperties from './form/rate'
+import UploadProperties from './form/upload'
+import RowProperties from './form/row'
+import ColProperties from './form/col'
+import ButtonProperties from './form/button'
+import PageProperties from './setting/page'
+import ComponentSetting from './setting/component'
+import LayoutSetting from './setting/layout'
+import PageSetting from './setting/page'
+import List1Properties from './form/list1'
 
 export {
   FormProperties,
@@ -55,5 +55,5 @@ export {
   ComponentSetting,
   LayoutSetting,
   PageSetting,
-  List1Properties
-};
+  List1Properties,
+}

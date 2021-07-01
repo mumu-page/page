@@ -11,12 +11,13 @@ import {
   VerticalAlignTopOutlined,
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
+import { Utils } from '../../stores'
 import {
   ISetGlobal,
   IFormComProp,
   IMoveableOptions,
 } from '../../stores/typings'
-import { isDatePicker, refreshTarget } from '../../utils/utils'
+import { isDatePicker } from '../../utils/utils'
 import { Target_ClassName } from '../../constants'
 import {
   COPY_COMPONENT_LIST,
@@ -27,7 +28,7 @@ import {
   SET_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
   SET_TARGET_BY_COMPONENT_LIST,
-} from '../../stores/action-type'
+} from '../../stores/actionTypes'
 import Menu from '../../components/ContextMenu/Menu'
 import {
   INFINITEVIEWER_SCROLL,
@@ -36,7 +37,7 @@ import {
 import eventBus from '../../utils/eventBus'
 import './index.less'
 import { ReactSortable } from 'react-sortablejs'
-import { useStore } from '../../hooks'
+import { useStore } from '../../stores/utils'
 
 interface EditorAreaProps extends ISetGlobal<object> {
   componentList: IFormComProp[]
@@ -51,6 +52,8 @@ enum HANDLE_TYPE {
   toLeft = '左移',
   toRight = '右移',
 }
+
+const { refreshTarget } = Utils
 
 const actions = [
   {
@@ -90,6 +93,9 @@ const Wrap = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
   return <Row {...props} {...otherRow} ref={ref} />
 })
 
+const ghostClass = 'sortable-ghost'
+const chosenClass = 'sortable-chosen'
+
 export default function Container(props: EditorAreaProps) {
   const {
     target,
@@ -124,8 +130,8 @@ export default function Container(props: EditorAreaProps) {
 
   /**
    * 处理右键菜单点击事件
-   * @param key 
-   * @param label 
+   * @param key
+   * @param label
    */
   const handleContextMenuClick = (key: string, label: string) => {
     if (label === HANDLE_TYPE.del) {
@@ -223,11 +229,11 @@ export default function Container(props: EditorAreaProps) {
       <ReactSortable
         sort
         animation={150}
-        delay={200}
+        // delay={200}
         tag={Wrap}
         list={componentList}
-        ghostClass="sortable-ghost"
-        chosenClass="sortable-chosen"
+        ghostClass={ghostClass}
+        chosenClass={chosenClass}
         group={{
           name: 'form-wrap',
           put: true,
@@ -240,12 +246,16 @@ export default function Container(props: EditorAreaProps) {
         }}
         onChoose={(e) => {
           const id = e.item.dataset.id
+          //   e.item.target.classList
           if (id === target.id) return
           commonDispatch({
             type: SET_TARGET_BY_COMPONENT_LIST,
             payload: { id },
           })
           setComponentlist(id, componentList)
+        }}
+        onUnchoose={(e) => {
+          e.item.classList.add('sortable-chosen')
         }}
       >
         {componentList.map((item: IFormComProp) => {

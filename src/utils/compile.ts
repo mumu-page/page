@@ -19,7 +19,7 @@ import {
   Form,
   notification,
 } from 'antd'
-import List1 from '../properties/antd/widgets/list1'
+import { List1 } from '../properties/antd/widgets'
 import { ICONS } from '../constants/constants'
 import GenrateCode from './genrate'
 import { transform } from '@babel/standalone'

@@ -14,7 +14,7 @@ import {
   SET_COMPONENT_LAYOUT,
   RIGHT_REMOVE_COMPONENTS,
   LEFT_REMOVE_COMPONENTS,
-} from '../action-type'
+} from '../actionTypes'
 import { ICommonState, IFormComProp } from '../typings'
 import { coverValue } from './utils'
 

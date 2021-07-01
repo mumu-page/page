@@ -19,9 +19,9 @@ import { CodeEditorInstanceProps } from '../CodeEditor/typings'
 import Compile from '../../utils/compile'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
 import './index.less'
-import { useStore } from '../../hooks'
 import { genrateList1 } from '../../utils/genrateList1'
 import GenrateCode from '../../utils/genrate'
+import { useStore } from '../../stores/utils'
 
 const { TabPane } = Tabs
 const SelectedIcon = () => (

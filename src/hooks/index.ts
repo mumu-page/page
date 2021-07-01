@@ -1,2 +1,1 @@
-export { useLocallyPersistedReducer } from "./useLocallyPersistedReducer";
-export { useStore } from "./useStore";
+export { useLocallyPersistedReducer } from './useLocallyPersistedReducer'

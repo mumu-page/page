@@ -15,7 +15,7 @@ import { SCROLL_CENTER, SHOW_SETTING_PANL } from '../../constants/events'
 import {
   DELETE_ALL_COMPONENT_LIST_AND_TARGET,
   SET_MOVEABLE_OPTIONS,
-} from '../../stores/action-type'
+} from '../../stores/actionTypes'
 import { Context } from '../../stores/context'
 import { parseJSON } from '../../utils/parseJSON'
 import eventBus from '../../utils/eventBus'
