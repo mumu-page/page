@@ -18,12 +18,12 @@ export default [
       {
         file: pkg.module,
         format: 'es',
-        sourcemap: true,
+        sourcemap: false,
       },
       {
         file: pkg.main,
         format: 'cjs',
-        sourcemap: true,
+        sourcemap: false,
         exports: 'auto',
       },
     ],
@@ -38,9 +38,6 @@ export default [
         preferBuiltins: false,
       }),
       commonjs(),
-      //   babel({
-      //     exclude: '**/node_modules/**',
-      //   }),
       json(),
       postcss({
         extract: 'index.css',
@@ -74,7 +71,7 @@ export default [
   // 打包声明文件
   {
     input: 'src/index.d.tsx',
-    output: [{ file: pkg.source, format: 'umd' }],
+    output: [{ file: pkg.types, format: 'umd' }],
     plugins: [dts()],
   },
 ]
