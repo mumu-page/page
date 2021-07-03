@@ -1,9 +1,9 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import VisualEditor from './visual-editor'
+import RGenerate from './r-generate'
 
 ReactDOM.render(
   /* <React.StrictMode> */
-  <VisualEditor />,
+  <RGenerate />,
   /* </React.StrictMode>, */ document.getElementById('root')
 )
