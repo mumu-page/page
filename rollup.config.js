@@ -1,36 +1,39 @@
 import json from '@rollup/plugin-json'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-// import { babel } from '@rollup/plugin-babel'
 // import postcss from 'rollup-plugin-postcss-modules'
 import postcss from 'rollup-plugin-postcss'
 import typescript from 'rollup-plugin-typescript2'
 import dts from 'rollup-plugin-dts'
 import { terser } from 'rollup-plugin-terser'
-// import peerDepsExternal from 'rollup-plugin-peer-deps-external'
+import pkg from './package.json'
+import clear from 'rollup-plugin-clear'
 
 const production = !process.env.ROLLUP_WATCH
 
 export default [
   {
-    input: 'src/visual-editor.tsx',
+    input: pkg.source,
     output: [
       {
-        file: 'dist/visual-editor.esm.js',
+        file: pkg.module,
         format: 'es',
         sourcemap: true,
       },
       {
-        file: 'dist/visual-editor.cjs.js',
+        file: pkg.main,
         format: 'cjs',
         sourcemap: true,
         exports: 'auto',
       },
     ],
     plugins: [
-      //   peerDepsExternal({
-      //     packageJsonPath: 'package.json',
-      //   }),
+      clear({
+        // required, point out which directories should be clear.
+        targets: ['dist'],
+        // optional, whether clear the directores when rollup recompile on --watch mode.
+        watch: false, // default: false
+      }),
       resolve({
         preferBuiltins: false,
       }),
@@ -62,6 +65,8 @@ export default [
         'immer',
         '@monaco-editor/react',
         '@scena/react-guides',
+        '@r-generate/core',
+        '@r-generate/mapping',
       ]
       return external.includes(id) || /^(react|rc|antd)/.test(id)
     },
@@ -69,7 +74,7 @@ export default [
   // 打包声明文件
   {
     input: 'src/index.d.tsx',
-    output: [{ file: 'dist/index.d.ts', format: 'umd' }],
+    output: [{ file: pkg.source, format: 'umd' }],
     plugins: [dts()],
   },
 ]

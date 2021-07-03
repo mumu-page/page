@@ -1,6 +1,8 @@
 import React from 'react'
-import RightSidebar from '../../properties/antd/setting'
+import { AntdMapping } from '@r-generate/mapping'
+
+const { Setting } = AntdMapping
 
 export default function () {
-  return <RightSidebar />
+  return <Setting />
 }

@@ -11,24 +11,14 @@ import {
   VerticalAlignTopOutlined,
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
-import { Utils } from '../../stores'
 import {
+  Store,
   ISetGlobal,
   IFormComProp,
   IMoveableOptions,
-} from '../../stores/typings'
+} from '@r-generate/core'
 import { isDatePicker } from '../../utils/utils'
 import { Target_ClassName } from '../../constants'
-import {
-  COPY_COMPONENT_LIST,
-  DELETE_TARGET,
-  DEL_COMPONENT_LIST,
-  LEFT_REMOVE_COMPONENTS,
-  RIGHT_REMOVE_COMPONENTS,
-  SET_COMPONENT_LIST,
-  SET_MOVEABLE_OPTIONS,
-  SET_TARGET_BY_COMPONENT_LIST,
-} from '../../stores/actionTypes'
 import Menu from '../../components/ContextMenu/Menu'
 import {
   INFINITEVIEWER_SCROLL,
@@ -37,7 +27,19 @@ import {
 import eventBus from '../../utils/eventBus'
 import './index.less'
 import { ReactSortable } from 'react-sortablejs'
-import { useStore } from '../../stores/utils'
+
+const { Utils, actionTypes, Hooks } = Store
+const {
+  COPY_COMPONENT_LIST,
+  DELETE_TARGET,
+  DEL_COMPONENT_LIST,
+  LEFT_REMOVE_COMPONENTS,
+  RIGHT_REMOVE_COMPONENTS,
+  SET_COMPONENT_LIST,
+  SET_MOVEABLE_OPTIONS,
+  SET_TARGET_BY_COMPONENT_LIST,
+} = actionTypes
+const { useStore } = Hooks
 
 interface EditorAreaProps extends ISetGlobal<object> {
   componentList: IFormComProp[]

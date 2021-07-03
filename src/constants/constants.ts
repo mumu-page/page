@@ -1,7 +1,7 @@
 import * as Icons from '@ant-design/icons'
 
 function getICONS() {
-  const result: { [key: string]: any } = {}
+  const result: Record<string, any> = {}
   Object.entries(Icons)
     .filter((option) => {
       const [iconKey] = (option || []) as any

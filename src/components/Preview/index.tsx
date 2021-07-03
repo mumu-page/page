@@ -18,11 +18,11 @@ import CodeEditor from '../CodeEditor'
 import { CodeEditorInstanceProps } from '../CodeEditor/typings'
 import Compile from '../../utils/compile'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
-import './index.less'
 import { genrateList1 } from '../../utils/genrateList1'
-import GenrateCode from '../../utils/genrate'
-import { useStore } from '../../stores/utils'
+import { Generate, Store } from '@r-generate/core'
+import './index.less'
 
+const { useStore } = Store.Hooks
 const { TabPane } = Tabs
 const SelectedIcon = () => (
   <EditOutlined style={{ color: '#f1fa8c', marginRight: '5px' }} />
@@ -52,7 +52,7 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
   }, [])
 
   const onRun = (code?: string) => {
-    const genrate = new GenrateCode(componentList, target)
+    const genrate = new Generate.Generate(componentList, target)
     if (code) {
       setTsxCode(code)
     } else {

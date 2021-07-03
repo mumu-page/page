@@ -1,12 +1,10 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import Moveable from 'react-moveable'
-import {
-  SET_TARGET,
-  SET_MOVEABLE_OPTIONS,
-  UPDATE_COMPONENT_LIST_BY_TARGET,
-} from '../../stores/actionTypes'
-import { Context } from '../../stores/context'
+import { Store } from '@r-generate/core'
 
+const { Context } = Store
+const { SET_TARGET, SET_MOVEABLE_OPTIONS, UPDATE_COMPONENT_LIST_BY_TARGET } =
+  Store.actionTypes
 const layout = {
   frame: { translate: [0, 0] },
 } as any

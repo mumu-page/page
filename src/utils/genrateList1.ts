@@ -46,7 +46,7 @@ export interface IItem {
   name?: string
   field: string
   componentKey: string
-  rules?: { [key: string]: any }[]
+  rules?: Record<string, any>[]
 }
 
 interface IList1Props {

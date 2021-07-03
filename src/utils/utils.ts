@@ -1,9 +1,5 @@
-
-
-import { IFormComProp } from '../stores/typings'
-import { Target_ClassName, ICONS } from '../constants/constants'
-import { SET_MOVEABLE_OPTIONS } from '../stores/actionTypes'
-
+import { IFormComProp } from '@r-generate/core'
+import { Target_ClassName } from '../constants/constants'
 
 // 重新设置画布大小
 export function resetViewport() {
@@ -112,7 +108,7 @@ export function isCheck(componentKey: string) {
  * @param result
  */
 export function decodeKey(
-  target: { [key: string]: any },
+  target: Record<string, any>,
   keys: string[],
   result = {} as any
 ) {
@@ -139,11 +135,11 @@ export function decodeKey(
 export function encodeKey(
   target1: {
     key: string
-    data: { [key: string]: any }
+    data: Record<string, any>
   },
   target2: {
     key: string
-    data: { [key: string]: any }
+    data: Record<string, any>
   },
   result = {} as any
 ) {

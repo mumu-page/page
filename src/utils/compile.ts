@@ -1,4 +1,4 @@
-import { IFormComProp } from '../stores/typings'
+import { IFormComProp } from '@r-generate/core'
 import * as React from 'react'
 import {
   Input,
@@ -19,14 +19,15 @@ import {
   Form,
   notification,
 } from 'antd'
-import { List1 } from '../properties/antd/widgets'
+import { AntdMapping } from '@r-generate/mapping'
 import { ICONS } from '../constants/constants'
-import GenrateCode from './genrate'
+import { Generate } from '@r-generate/core'
 import { transform } from '@babel/standalone'
 
+const { List1 } = AntdMapping
 class Compile {
-  genrate: GenrateCode
-  constructor(genrate: GenrateCode) {
+  genrate: Generate.Generate
+  constructor(genrate: Generate.Generate) {
     this.genrate = genrate
   }
   // 去除不要的代码

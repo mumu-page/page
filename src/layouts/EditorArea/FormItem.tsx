@@ -1,11 +1,25 @@
 import * as React from 'react'
 import { Form } from 'antd'
-import { IFormComProp } from '../../stores/typings'
+import { IFormComProp } from '@r-generate/core'
 import { isCheck, isDatePicker, isRenderFormItem } from '../../utils/utils'
-import { getComponent } from '../../constants'
+import { AntdMapping } from '@r-generate/mapping'
 import * as moment from 'moment'
-import { getIcon } from '../../utils/genrate'
+import { ICONS } from '../../constants'
 
+function getIcon(iconKey: string, node = false) {
+  if (iconKey) {
+    const IconComponent = ICONS[iconKey]
+    if (IconComponent && node) {
+      return IconComponent || React.Fragment
+    }
+    if (IconComponent && !node) {
+      return `<${iconKey} />`
+    }
+  }
+  return node ? React.Fragment : null
+}
+
+const { getComponent } = AntdMapping.Mapping
 // 控件设计时默认不能交互
 const disableCom = {
   readOnly: true,

@@ -1,7 +1,8 @@
 import React from 'react'
-import { Utils } from '../../stores'
 import FormList from './FormWrap'
+import { Store } from '@r-generate/core'
 import './index.less'
+const { useStore } = Store.Hooks
 
 export default () => {
   const {
@@ -9,7 +10,7 @@ export default () => {
     moveableOptions,
     componentList,
     setGlobal: commonDispatch,
-  } = Utils.useStore()
+  } = useStore()
   return (
     <div>
       {componentList?.length === 0 ? (

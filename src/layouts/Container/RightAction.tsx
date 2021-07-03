@@ -12,13 +12,12 @@ import { Button, Modal } from 'antd'
 import { BtnTypes } from '.'
 import { Preview, PreviewInstanceProps } from '../../components'
 import { SCROLL_CENTER, SHOW_SETTING_PANL } from '../../constants/events'
-import {
-  DELETE_ALL_COMPONENT_LIST_AND_TARGET,
-  SET_MOVEABLE_OPTIONS,
-} from '../../stores/actionTypes'
-import { Context } from '../../stores/context'
+import { Store } from '@r-generate/core'
 import { parseJSON } from '../../utils/parseJSON'
 import eventBus from '../../utils/eventBus'
+const { actionTypes, Context } = Store
+const { DELETE_ALL_COMPONENT_LIST_AND_TARGET, SET_MOVEABLE_OPTIONS } =
+  actionTypes
 
 interface RightActionType {
   handleType: (val: BtnTypes) => void

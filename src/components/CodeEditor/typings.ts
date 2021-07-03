@@ -8,8 +8,8 @@ export interface CodeEditorInstanceProps {
 export interface CodeEditorProps {
   code: string
   className?: string
-  style?: { [key: string]: any }
-  options?: { [key: string]: any }
+  style?: Record<string, any>
+  options?: Record<string, any>
   onChange?: (code?: string) => void
   onRun?: (code?: string) => void
   onCopy?: (code?: string) => void

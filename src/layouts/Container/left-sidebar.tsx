@@ -2,11 +2,12 @@ import React, { useContext, useState } from 'react'
 import { Button, Col, Row } from 'antd'
 import { IconFont, options } from '../../constants'
 import { OptionGroup, OptionItem } from '../../typings/option'
-import { IFormComProp } from '../../stores/typings'
-import { actionTypes, Utils } from '../../stores'
-import { shortid } from '../../utils/utils'
+import { Store, IFormComProp, Utils } from '@r-generate/core'
 import { cloneDeep } from 'lodash'
-const { useStore } = Utils
+
+const { shortid } = Utils
+const { actionTypes, Hooks } = Store
+const { useStore } = Hooks
 const { PUT_COMPONENT_LIST } = actionTypes
 
 const getNewOptions = (data: OptionGroup[]) => {
