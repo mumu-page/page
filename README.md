@@ -1,6 +1,6 @@
 <div align='center'>
-    <h1>React Visual Editor</h1>
-    <p>基于Ant Design的表单可视化编辑器</p>
+    <h1>R Generate</h1>
+    <p>一款可视化组件代码生成器</p>
 </div>
 
 [开始设计](https://resonances.gitee.io/react-visual-editor)
@@ -12,20 +12,21 @@
 
 最近很忙，一有时间就会更新哒～^～
 
-[Github](https://github.com/all-resonance/react-visual-editor) | [Gitee](https://gitee.com/resonances/react-visual-editor)
+- [Github](https://github.com/r-generate/page.git)
+- [Gitee]()
 
 ## 支持在项目中嵌入
 ### 1.安装
 ```sh
-yarn add react-visual-editor
+yarn add @r-generate/page
 ```
 ### 2.使用组件
 ```tsx
-import ReactVisualEditor from 'react-visual-editor'
-import 'react-visual-editor/dist/index.css'
+import RGenerate from '@r-generate/page'
+import 'r-generate/dist/index.css'
 
 export default function Home() {
-  return <ReactVisualEditor />
+  return <RGenerate />
 }
 
 ```

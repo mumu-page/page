@@ -64,6 +64,7 @@ export default [
         '@scena/react-guides',
         '@r-generate/core',
         '@r-generate/mapping',
+        'react-syntax-highlighter',
       ]
       return external.includes(id) || /^(react|rc|antd)/.test(id)
     },

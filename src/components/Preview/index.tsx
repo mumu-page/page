@@ -12,18 +12,24 @@ import {
   FileTextOutlined,
   EditOutlined,
   CloseOutlined,
-  PlayCircleOutlined,
 } from '@ant-design/icons'
-import CodeEditor from '../CodeEditor'
 import { CodeEditorInstanceProps } from '../CodeEditor/typings'
 import Compile from '../../utils/compile'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
 import { genrateList1 } from '../../utils/genrateList1'
 import { Generate, Store } from '@r-generate/core'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import 'highlight.js/styles/github.css'
 import './index.less'
 
 const { useStore } = Store.Hooks
 const { TabPane } = Tabs
+const customStyle = {
+  marginTop: 0,
+  height: 'calc(100vh - 35px)',
+  overflowY: 'auto',
+}
 const SelectedIcon = () => (
   <EditOutlined style={{ color: '#f1fa8c', marginRight: '5px' }} />
 )
@@ -130,15 +136,6 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
             tabBarExtraContent={
               <Space className="extra-action-container" split={<Divider />}>
                 <Button
-                  icon={<PlayCircleOutlined />}
-                  type="link"
-                  size="small"
-                  className="extra-action"
-                  onClick={() => onRun(tsxCode)}
-                >
-                  运行
-                </Button>
-                <Button
                   icon={<CloseOutlined />}
                   className="extra-action"
                   type="link"
@@ -160,14 +157,16 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
               }
               key="tsx"
             >
-              <CodeEditor
-                ref={tsxEditor}
-                code={tsxCode}
-                options={{ width, height: '100vmax', language: 'typescript' }}
-                onChange={onTsxChangCode}
-                onRun={onRun}
-                onCopy={onCopy}
-              />
+              <SyntaxHighlighter
+                language="tsx"
+                style={tomorrow}
+                showLineNumbers
+                wrapLines
+                // wrapLongLines
+                customStyle={customStyle}
+              >
+                {tsxCode}
+              </SyntaxHighlighter>
             </TabPane>
             {list.length &&
               list.map((item) => {
@@ -187,14 +186,16 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
                     }
                     key={id}
                   >
-                    <CodeEditor
-                      code={genrateList1(fields)}
-                      options={{
-                        width,
-                        height: '100vmax',
-                        language: 'typescript',
-                      }}
-                    />
+                    <SyntaxHighlighter
+                      language="tsx"
+                      style={tomorrow}
+                      showLineNumbers
+                      wrapLines
+                      // wrapLongLines
+                      customStyle={customStyle}
+                    >
+                      {genrateList1(fields)}
+                    </SyntaxHighlighter>
                   </TabPane>
                 )
               })}

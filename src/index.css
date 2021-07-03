@@ -1,5 +1,5 @@
 @import '~antd/dist/antd.css';
-/* @import '~@r-generate/mapping/dist/index.css'; */
+@import '~@r-generate/mapping/dist/index.css';
 body {
   margin: 0;
   height: 100%;
