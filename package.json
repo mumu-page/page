@@ -1,9 +1,9 @@
 {
   "name": "@r-generate/page",
   "version": "1.2.0",
-  "description": "> TODO: description",
+  "description": "",
   "author": "feline <295755973@qq.com>",
-  "homepage": "https://github.com/r-generate/page.git",
+  "homepage": "https://r-generate.github.io/page/",
   "license": "ISC",
   "main": "dist/r-generate.cjs.js",
   "module": "dist/r-generate.esm.js",
