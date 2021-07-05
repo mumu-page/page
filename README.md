@@ -3,7 +3,8 @@
     <p>一款可视化组件代码生成器</p>
 </div>
 
-[开始设计](https://resonances.gitee.io/react-visual-editor)
+[![NPM version][npm-image]][npm-url] 
+[![NPM downloads][download-image]][download-url]
 
 ## 是什么
 > 核心思想：减少封装，回归本源，自动化生成原始表单/组件代码，赋能业务，拒绝新规则，开发全掌控。
@@ -12,8 +13,9 @@
 
 最近很忙，一有时间就会更新哒～^～
 
+- [开始设计](https://resonances.gitee.io/r-generate)  
 - [Github](https://github.com/r-generate/page.git)
-- [Gitee]()
+- [Gitee](https://gitee.com/resonances/r-generate.git)
 
 ## 支持在项目中嵌入
 ### 1.安装
