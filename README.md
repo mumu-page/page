@@ -3,8 +3,16 @@
     <p>一款可视化组件代码生成器</p>
 </div>
 
-[![NPM version][npm-image]][npm-url] 
-[![NPM downloads][download-image]][download-url]
+[![Gitpod ready-to-code][gitpod-image]][gitpod-url]
+<!-- [![NPM version][npm-image]][npm-url] 
+[![NPM downloads][download-image]][download-url] -->
+
+[gitpod-image]: https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod
+[gitpod-url]: https://gitpod.io/#https://github.com/all-resonance/rpack
+[npm-image]: http://img.shields.io/npm/v/@r-generate/page.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/@r-generate/page
+[download-image]: https://img.shields.io/npm/dm/@r-generate/page.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@r-generate/page
 
 ## 是什么
 > 核心思想：减少封装，回归本源，自动化生成原始表单/组件代码，赋能业务，拒绝新规则，开发全掌控。
