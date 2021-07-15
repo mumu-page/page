@@ -1,6 +1,6 @@
 import React from 'react'
 import FormList from './FormWrap'
-import { Store } from '@r-generate/core'
+import { Store } from '@r-generator/core'
 import './index.less'
 const { useStore } = Store.Hooks
 

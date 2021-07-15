@@ -1,4 +1,4 @@
-import { IFormComProp } from '@r-generate/core'
+import { IFormComProp } from '@r-generator/core'
 import * as React from 'react'
 import {
   Input,
@@ -19,9 +19,9 @@ import {
   Form,
   notification,
 } from 'antd'
-import { AntdMapping } from '@r-generate/mapping'
+import { AntdMapping } from '@r-generator/mapping'
 import { ICONS } from '../constants/constants'
-import { Generate } from '@r-generate/core'
+import { Generate } from '@r-generator/core'
 import { transform } from '@babel/standalone'
 
 const { List1 } = AntdMapping

@@ -1,4 +1,4 @@
-import { IFormComProp } from '@r-generate/core'
+import { IFormComProp } from '@r-generator/core'
 import { Target_ClassName } from '../constants/constants'
 
 // 重新设置画布大小

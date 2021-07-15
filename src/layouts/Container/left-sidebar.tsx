@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Button, Col, Row } from 'antd'
 import { IconFont, options } from '../../constants'
 import { OptionGroup, OptionItem } from '../../typings/option'
-import { Store, IFormComProp, Utils } from '@r-generate/core'
+import { Store, IFormComProp, Utils } from '@r-generator/core'
 import { cloneDeep } from 'lodash'
 
 const { shortid } = Utils

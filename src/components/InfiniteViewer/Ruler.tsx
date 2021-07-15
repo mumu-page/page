@@ -6,7 +6,7 @@ import React, {
   useContext,
 } from 'react'
 import Guides from '@scena/react-guides'
-import { Store } from '@r-generate/core'
+import { Store } from '@r-generator/core'
 
 const { Context, actionTypes } = Store
 const { SET_MOVEABLE_OPTIONS } = actionTypes

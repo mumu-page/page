@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Form } from 'antd'
-import { IFormComProp } from '@r-generate/core'
+import { IFormComProp } from '@r-generator/core'
 import { isCheck, isDatePicker, isRenderFormItem } from '../../utils/utils'
-import { AntdMapping } from '@r-generate/mapping'
+import { AntdMapping } from '@r-generator/mapping'
 import * as moment from 'moment'
 import { ICONS } from '../../constants'
 

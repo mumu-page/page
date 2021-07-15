@@ -9,10 +9,10 @@
 
 [gitpod-image]: https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod
 [gitpod-url]: https://gitpod.io/#https://github.com/r-generator/page
-[npm-image]: http://img.shields.io/npm/v/@r-generate/page.svg?style=flat-square
-[npm-url]: https://npmjs.com/package/@r-generate/page
-[download-image]: https://img.shields.io/npm/dm/@r-generate/page.svg?style=flat-square
-[download-url]: https://npmjs.com/package/@r-generate/page
+[npm-image]: http://img.shields.io/npm/v/@r-generator/page.svg?style=flat-square
+[npm-url]: https://npmjs.com/package/@r-generator/page
+[download-image]: https://img.shields.io/npm/dm/@r-generator/page.svg?style=flat-square
+[download-url]: https://npmjs.com/package/@r-generator/page
 
 ## 是什么
 > 核心思想：减少封装，回归本源，自动化生成原始表单/组件代码，赋能业务，拒绝新规则，开发全掌控。
@@ -21,19 +21,19 @@
 
 最近很忙，一有时间就会更新哒～^～
 
-- [开始设计](https://resonances.gitee.io/r-generate)  
-- [Github](https://github.com/r-generate/page.git)
-- [Gitee](https://gitee.com/resonances/r-generate.git)
+- [开始设计](https://resonances.gitee.io/r-generator)  
+- [Github](https://github.com/r-generator/page.git)
+- [Gitee](https://gitee.com/resonances/r-generator.git)
 
 ## 支持在项目中嵌入
 ### 1.安装
 ```sh
-yarn add @r-generate/page
+yarn add @r-generator/page
 ```
 ### 2.使用组件
 ```tsx
-import RGenerate from '@r-generate/page'
-import 'r-generate/dist/index.css'
+import RGenerate from '@r-generator/page'
+import 'r-generator/dist/index.css'
 
 export default function Home() {
   return <RGenerate />

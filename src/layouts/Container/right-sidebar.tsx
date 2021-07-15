@@ -1,5 +1,5 @@
 import React from 'react'
-import { AntdMapping } from '@r-generate/mapping'
+import { AntdMapping } from '@r-generator/mapping'
 
 const { Setting } = AntdMapping
 

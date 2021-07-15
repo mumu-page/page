@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import Moveable from 'react-moveable'
-import { Store } from '@r-generate/core'
+import { Store } from '@r-generator/core'
 
 const { Context } = Store
 const { SET_TARGET, SET_MOVEABLE_OPTIONS, UPDATE_COMPONENT_LIST_BY_TARGET } =

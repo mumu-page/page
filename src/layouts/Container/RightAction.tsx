@@ -12,7 +12,7 @@ import { Button, Modal } from 'antd'
 import { BtnTypes } from '.'
 import { Preview, PreviewInstanceProps } from '../../components'
 import { SCROLL_CENTER, SHOW_SETTING_PANL } from '../../constants/events'
-import { Store } from '@r-generate/core'
+import { Store } from '@r-generator/core'
 import { parseJSON } from '../../utils/parseJSON'
 import eventBus from '../../utils/eventBus'
 const { actionTypes, Context } = Store

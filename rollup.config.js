@@ -62,8 +62,8 @@ export default [
         'immer',
         '@monaco-editor/react',
         '@scena/react-guides',
-        '@r-generate/core',
-        '@r-generate/mapping',
+        '@r-generator/core',
+        '@r-generator/mapping',
         'react-syntax-highlighter',
       ]
       return external.includes(id) || /^(react|rc|antd)/.test(id)

@@ -16,7 +16,7 @@ import {
   ISetGlobal,
   IFormComProp,
   IMoveableOptions,
-} from '@r-generate/core'
+} from '@r-generator/core'
 import { isDatePicker } from '../../utils/utils'
 import { Target_ClassName } from '../../constants'
 import Menu from '../../components/ContextMenu/Menu'
