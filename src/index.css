@@ -25,3 +25,24 @@ body {
   --editor-text-color: #888a8e;
   --editor-tab-bg-color: #363636;
 }
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  box-shadow: rgba(0, 0, 0, 0.9);
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: rgba(240, 237, 237, 0.966);
+  box-shadow: rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(255, 0, 0, 0.4);
+}
