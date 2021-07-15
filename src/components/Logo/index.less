@@ -3,22 +3,27 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  
+
   .title {
-    box-shadow: inset 1px 1px 2px var(--main-color), inset -1px -1px 2px var(--main-color);
-    transform: rotate(90deg) translateX(-64px);
+    box-shadow: inset 1px 1px 2px var(--main-color),
+      inset -1px -1px 2px var(--main-color);
+    transform: rotate(90deg) translateX(-50%);
     transform-origin: center;
-    width: 219px;
     display: inline-flex;
     align-items: center;
     font-size: 20px;
     font-weight: bold;
-    padding-left: 7px;
+    padding: 0 7px 0 0;
     font-style: italic;
     color: var(--main-color);
-  }
-  a {
-    z-index: 99;
-    margin-bottom: 10px;
+    > span {
+      display: inline-block;
+      margin-left: 5px;
+      white-space: nowrap;
+    }
+    > a {
+      margin-left: 10px;
+      display: flex;
+    }
   }
 }

@@ -7,15 +7,14 @@ export default () => {
     <div className="logo">
       <div className="title">
         <LayoutTwoTone />
-        <span style={{ marginLeft: '5px' }}>Form Generator</span>
+        <span>R Generator</span>
+        <a href="https://github.com/r-generator/page">
+          <img
+            alt="GitHub Repo stars"
+            src="https://img.shields.io/github/stars/r-generator/page?style=flat-square"
+          />
+        </a>
       </div>
-      <a href="https://gitee.com/resonances/react-visual-editor">
-        <img
-          width={16}
-          src="https://gitee.com/resonances/react-visual-editor/widgets/widget_5.svg?color=00aeff"
-          alt="Fork me on Gitee"
-        ></img>
-      </a>
     </div>
   )
 }
