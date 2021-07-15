@@ -1,5 +1,5 @@
-import LeftSidebar from "./Container/left-sidebar";
-import RightSidebar from "./Container/right-sidebar";
+import LeftSidebar from "./Container/LeftSidebar";
+import RightSidebar from "./Container/RightSidebar";
 import EditorArea from "./EditorArea";
 import Container from "./Container";
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import LeftSidebar from './left-sidebar'
-import RightSidebar from './right-sidebar'
+import LeftSidebar from './LeftSidebar'
+import RightSidebar from './RightSidebar'
 import LeftAction from './LeftAction'
 import RightAction from './RightAction'
 import './index.less'
