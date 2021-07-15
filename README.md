@@ -8,7 +8,7 @@
 [![NPM downloads][download-image]][download-url]
 
 [gitpod-image]: https://img.shields.io/badge/Gitpod-ready--to--code-908a85?logo=gitpod
-[gitpod-url]: https://gitpod.io/#https://github.com/all-resonance/rpack
+[gitpod-url]: https://gitpod.io/#https://github.com/r-generator/page
 [npm-image]: http://img.shields.io/npm/v/@r-generate/page.svg?style=flat-square
 [npm-url]: https://npmjs.com/package/@r-generate/page
 [download-image]: https://img.shields.io/npm/dm/@r-generate/page.svg?style=flat-square
