@@ -3,8 +3,8 @@
   width: 100%;
   display: flex;
 
-  .left,
-  .right {
+  .left-action,
+  .right-action {
     width: 50px;
     background-color: #2a2a2a;
     display: flex;
@@ -16,23 +16,32 @@
       margin-bottom: 10px;
     }
   }
-  .left {
+  .left-action {
     justify-content: space-between;
   }
   .content {
     width: 100%;
   }
 
-  .coms {
+  .left-sidebar {
     width: 250px;
     flex-shrink: 0;
+    box-shadow: 2px 0 2px #f8f8f8;
+    .header {
+      margin: 12px 12px 0 12px;
+      .mode-switch {
+        margin: 10px 0 5px 0;
+      }
+    }
+    .body {
+      padding: 0 12px 12px 12px;
+    }
   }
 
-  .setting {
+  .right-sidebar {
     width: 300px;
     flex-shrink: 0;
     border-left: 1px solid #f8f8f8;
     box-shadow: -2px 0 2px #f8f8f8;
   }
-
 }

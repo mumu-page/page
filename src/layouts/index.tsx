@@ -1,6 +1,6 @@
-import LeftSidebar from "./Container/LeftSidebar";
-import RightSidebar from "./Container/RightSidebar";
-import EditorArea from "./EditorArea";
-import Container from "./Container";
+import LeftSidebar from './Container/LeftSidebar'
+import RightSidebar from './Container/RightSidebar'
+import FormDesignArea from './FormDesignArea'
+import Container from './Container'
 
-export { LeftSidebar, RightSidebar, EditorArea, Container };
+export { LeftSidebar, RightSidebar, FormDesignArea, Container }

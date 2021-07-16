@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { EditorArea, Container } from './layouts'
+import { Container } from './layouts'
 import { Store, ICommonState } from '@r-generator/core'
 import { LOCAL_STORE_KEY } from './constants'
-import { ReactiveMoveable, InfiniteViewer } from './components'
 import './index.css'
 import './r-generator.less'
+import '@r-generator/mapping/dist/index.css'
 
 const { Context, INITAL_STATE, commonReducer, Hooks } = Store
 const { useLPReducer } = Hooks
@@ -23,12 +23,7 @@ export default () => {
         setGlobal,
       }}
     >
-      <Container>
-        <InfiniteViewer>
-          <EditorArea />
-          <ReactiveMoveable />
-        </InfiniteViewer>
-      </Container>
+      <Container />
     </Context.Provider>
   )
 }

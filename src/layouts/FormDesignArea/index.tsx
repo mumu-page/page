@@ -12,7 +12,7 @@ export default () => {
     setGlobal: commonDispatch,
   } = useStore()
   return (
-    <div>
+    <div className='form-design-area'>
       {componentList?.length === 0 ? (
         <div className="not-found-info">从左侧点选组件进行表单设计</div>
       ) : (

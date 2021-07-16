@@ -86,7 +86,7 @@ export default (props: RightActionType) => {
   }, [])
 
   return (
-    <>
+    <div className='right-action'>
       <Button
         icon={<PlayCircleOutlined style={handleColor('run')} />}
         type={type === 'run' ? 'primary' : 'text'}
@@ -134,6 +134,6 @@ export default (props: RightActionType) => {
         onClick={() => handleType('setting')}
       />
       <Preview ref={preview} />
-    </>
+    </div>
   )
 }

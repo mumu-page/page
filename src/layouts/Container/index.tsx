@@ -3,8 +3,12 @@ import LeftSidebar from './LeftSidebar'
 import RightSidebar from './RightSidebar'
 import LeftAction from './LeftAction'
 import RightAction from './RightAction'
+import { ReactiveMoveable, InfiniteViewer } from '../../components'
+import FormDesignArea from '../FormDesignArea'
+import DesignArea from '../DesignArea'
+import { Store } from '@r-generator/core'
 import './index.less'
-import { Logo } from '../../components'
+
 import { resetViewport } from '../../utils/utils'
 
 export type BtnTypes =
@@ -17,10 +21,11 @@ export type BtnTypes =
   | 'setting'
   | 'preview'
   | 'center'
-/**
- * 双飞翼
- */
+
+const { actionTypes, Hooks } = Store
+const { useStore } = Hooks
 export default (props: any) => {
+  const { mode } = useStore()
   const [type, setType] = useState<BtnTypes>('')
 
   const handleType = (val: BtnTypes) => {
@@ -39,24 +44,20 @@ export default (props: any) => {
 
   return (
     <div className="container">
-      <div className="left">
-        <LeftAction type={type} handleType={handleType} />
-        <Logo></Logo>
+      <LeftAction type={type} handleType={handleType} />
+      {type === 'coms' && <LeftSidebar />}
+      <div className="content">
+        {mode === 'form' ? (
+          <FormDesignArea />
+        ) : (
+          <InfiniteViewer>
+            <DesignArea />
+            <ReactiveMoveable />
+          </InfiniteViewer>
+        )}
       </div>
-      {type === 'coms' && (
-        <div className="coms">
-          <LeftSidebar />
-        </div>
-      )}
-      <div className="content">{props.children}</div>
-      {type === 'setting' && (
-        <div className="setting">
-          <RightSidebar />
-        </div>
-      )}
-      <div className="right">
-        <RightAction type={type} handleType={handleType} />
-      </div>
+      {type === 'setting' && <RightSidebar />}
+      <RightAction type={type} handleType={handleType} />
     </div>
   )
 }
