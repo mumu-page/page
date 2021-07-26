@@ -21,10 +21,10 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           BRANCH: gh-pages
-          FOLDER: dist
+          FOLDER: build
       - name: Rename Folder Name 🔧
         run: |
-          mv ./dist/ ./generator.resonance.fun/
+          mv ./build/ ./generator.resonance.fun/
       - name: SSH Server Deploy 🚀
         uses: kostya-ten/ssh-server-deploy@v4
         with:
