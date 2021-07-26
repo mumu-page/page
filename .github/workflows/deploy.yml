@@ -1,0 +1,40 @@
+name: Publish And Deploy
+
+on:
+  push:
+    branches:
+      - main
+  repository_dispatch:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: Install Dependencies And Build 🔧
+        run: |
+          yarn install
+          yarn build
+      - name: Deploy Github Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          BRANCH: gh-pages
+          FOLDER: dist
+      - name: Rename Folder Name 🔧
+        run: |
+          mv ./dist/ ./generator.resonance.fun/
+      - name: SSH Server Deploy 🚀
+        uses: kostya-ten/ssh-server-deploy@v4
+        with:
+          host: ${{ secrets.SSH_SERVER }}
+          port: 22
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          scp_source: ./generator.resonance.fun/
+          scp_target: /www/wwwroot/
+            

@@ -1,3 +1,5 @@
+@import 'codemirror/lib/codemirror.css';
+@import 'codemirror/theme/material.css';
 .ant-drawer-body {
   padding: 0 !important;
   overflow: hidden;
@@ -7,11 +9,16 @@
   height: 100%;
   .code-container {
     // width: 100%;
-    // height: 100%;
+    height: 100%;
     background-color: var(--editor-bg-color);
     // .ant-tabs-content {
     //   height: 100%;
     // }
+    .code-mirror-wrap {
+      .CodeMirror {
+        height: calc(100vh - 35px);
+      }
+    }
     .ant-tabs-nav {
       margin-bottom: 0 !important;
       // display: block;

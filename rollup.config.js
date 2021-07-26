@@ -47,25 +47,7 @@ export default [
       production && terser(),
     ],
     external: (id) => {
-      const external = [
-        'antd',
-        'lodash',
-        'moment',
-        'sortablejs',
-        '@ant-design/icons',
-        'react',
-        'react-dom',
-        'react-draggable',
-        'react-infinite-viewer',
-        'react-moveable',
-        'react-split-pane',
-        'immer',
-        '@monaco-editor/react',
-        '@scena/react-guides',
-        '@r-generator/core',
-        '@r-generator/mapping',
-        'react-syntax-highlighter',
-      ]
+      const external = Object.keys(pkg.peerDependencies)
       return external.includes(id) || /^(react|rc|antd)/.test(id)
     },
   },

@@ -1,4 +1,4 @@
-const webpack = require('webpack')
+const { BannerPlugin } = require('webpack')
 const CracoLessPlugin = require('craco-less')
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 
@@ -43,17 +43,18 @@ module.exports = {
           },
           {
             module: '@ant-design/icons',
-            entry: 'https://cdn.jsdelivr.net/npm/@ant-design/icons@4/dist/index.umd.js',
-            global: 'icons'   
+            entry:
+              'https://cdn.jsdelivr.net/npm/@ant-design/icons@4/dist/index.umd.js',
+            global: 'icons',
           },
           {
             module: 'sortablejs',
             entry: 'https://cdn.jsdelivr.net/npm/sortablejs@1/Sortable.min.js',
-            global: 'Sortable'   
+            global: 'Sortable',
           },
         ],
       }),
-      new webpack.BannerPlugin('by all resonance'),
+      new BannerPlugin('by all resonance'),
     ],
   },
   plugins: [

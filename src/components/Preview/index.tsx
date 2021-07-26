@@ -13,23 +13,36 @@ import {
   EditOutlined,
   CloseOutlined,
 } from '@ant-design/icons'
-import { CodeEditorInstanceProps } from '../CodeEditor/typings'
 import Compile from '../../utils/compile'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
 import { genrateList1 } from '../../utils/genrateList1'
 import { Generate, Store } from '@r-generator/core'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import 'highlight.js/styles/github.css'
+import { Controlled as CodeMirror } from 'react-codemirror2'
+import 'codemirror/mode/jsx/jsx'
+
+// 主题风格
+import 'codemirror/theme/solarized.css'
+// 代码模式，clike是包含java,c++等模式的
+import 'codemirror/mode/clike/clike'
+import 'codemirror/mode/css/css'
+//ctrl+空格代码提示补全
+import 'codemirror/addon/hint/show-hint.css'
+import 'codemirror/addon/hint/show-hint'
+import 'codemirror/addon/hint/anyword-hint.js'
+//代码高亮
+import 'codemirror/addon/selection/active-line'
+//折叠代码
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/fold/foldcode.js'
+import 'codemirror/addon/fold/foldgutter.js'
+import 'codemirror/addon/fold/brace-fold.js'
+import 'codemirror/addon/fold/comment-fold.js'
+import 'codemirror/addon/edit/closebrackets'
+import 'codemirror/addon/edit/matchbrackets'
 import './index.less'
 
 const { useStore } = Store.Hooks
 const { TabPane } = Tabs
-const customStyle = {
-  marginTop: 0,
-  height: 'calc(100vh - 35px)',
-  overflowY: 'auto',
-}
 const SelectedIcon = () => (
   <EditOutlined style={{ color: '#f1fa8c', marginRight: '5px' }} />
 )
@@ -45,8 +58,8 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
   const [visible, setVisible] = useState(false)
   const [activeKey, setActiveKey] = useState('tsx')
   const [component, setComponent] = useState(<></>)
-  const tsxEditor = useRef<CodeEditorInstanceProps>(null)
-  const lessEditor = useRef<CodeEditorInstanceProps>(null)
+  const tsxEditor = useRef(null)
+  const lessEditor = useRef(null)
   const [width, setWidth] = useState<number | string>('')
   const { componentList, target } = useStore()
   // 列表组件数据，根据它生成tab
@@ -157,16 +170,31 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
               }
               key="tsx"
             >
-              <SyntaxHighlighter
-                language="tsx"
-                style={tomorrow}
-                showLineNumbers
-                wrapLines
-                // wrapLongLines
-                customStyle={customStyle}
-              >
-                {tsxCode}
-              </SyntaxHighlighter>
+              <CodeMirror
+                value={tsxCode}
+                className="code-mirror-wrap"
+                onBeforeChange={(editor, data, value) => {
+                  setTsxCode(value)
+                }}
+                options={{
+                  mode: 'jsx',
+                  tabSize: 2,
+                  theme: 'material',
+                  lineNumbers: true,
+                  lineWiseCopyCut: true,
+                  smartIndent: true, //自动缩进
+                  autofocus: true, //自动获取焦点
+                  styleActiveLine: true, //光标代码高亮
+                  lineWrapping: true,
+                  foldGutter: true,
+                  gutters: [
+                    'CodeMirror-linenumbers',
+                    'CodeMirror-foldgutter',
+                    'CodeMirror-lint-markers',
+                  ],
+                }}
+                // onChange={(editor, data, value) => {}}
+              />
             </TabPane>
             {list.length &&
               list.map((item) => {
@@ -186,16 +214,19 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
                     }
                     key={id}
                   >
-                    <SyntaxHighlighter
-                      language="tsx"
-                      style={tomorrow}
-                      showLineNumbers
-                      wrapLines
-                      // wrapLongLines
-                      customStyle={customStyle}
-                    >
-                      {genrateList1(fields)}
-                    </SyntaxHighlighter>
+                    <CodeMirror
+                      value={genrateList1(fields)}
+                      className="code-mirror-wrap"
+                      onBeforeChange={(editor, data, value) => {
+                        // this.setState({value});
+                      }}
+                      options={{
+                        mode: 'jsx',
+                        theme: 'material',
+                        lineNumbers: true,
+                      }}
+                      // onChange={(editor, data, value) => {}}
+                    />
                   </TabPane>
                 )
               })}
