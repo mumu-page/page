@@ -21,7 +21,7 @@
 
 最近很忙，一有时间就会更新哒～^～
 
-- [开始设计](https://resonances.gitee.io/r-generator) | [国内镜像](http://generator.resonance.fun)
+- [预览地址](https://r-generator.github.io/page/) | [国内镜像](http://generator.resonance.fun)
 - [Github](https://github.com/r-generator/page.git)
 - [Gitee](https://gitee.com/r-generator/page.git)
 
