@@ -23,7 +23,7 @@
 
 - [开始设计](https://resonances.gitee.io/r-generator) | [国内镜像](http://generator.resonance.fun)
 - [Github](https://github.com/r-generator/page.git)
-- [Gitee](https://gitee.com/resonances/r-generator.git)
+- [Gitee](https://gitee.com/r-generator/page.git)
 
 ## 支持在项目中嵌入
 ### 1.安装
