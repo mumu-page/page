@@ -52,6 +52,12 @@ module.exports = {
             entry: 'https://cdn.jsdelivr.net/npm/sortablejs@1/Sortable.min.js',
             global: 'Sortable',
           },
+          // {
+          //   module: '@monaco-editor/react',
+          //   entry:
+          //     'https://cdn.jsdelivr.net/npm/@monaco-editor/react@4.2.1/lib/umd/monaco-react.min.js',
+          //   global: 'monaco_react',
+          // },
         ],
       }),
       new BannerPlugin('by all resonance'),

@@ -1,12 +1,12 @@
-import Preview from './Preview'
+import Preview from './Playground'
 
-import ReactiveMoveable from './ReactiveMoveable'
+import ReactiveMoveable from './Moveable'
 import InfiniteViewer from './InfiniteViewer'
 import ContextMenu from './ContextMenu'
 
 import Logo from './Logo'
 
-import { PreviewInstanceProps, PreviewProps } from './Preview/typings'
+import { PreviewInstanceProps, PreviewProps } from './Playground/typings'
 
 export { Preview, ReactiveMoveable, InfiniteViewer, Logo, ContextMenu }
 
