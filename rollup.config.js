@@ -29,10 +29,8 @@ export default [
     ],
     plugins: [
       clear({
-        // required, point out which directories should be clear.
         targets: ['dist'],
-        // optional, whether clear the directores when rollup recompile on --watch mode.
-        watch: false, // default: false
+        watch: false,
       }),
       resolve({
         preferBuiltins: false,
@@ -48,7 +46,7 @@ export default [
     ],
     external: (id) => {
       const external = Object.keys(pkg.peerDependencies)
-      return external.includes(id) || /^(react|rc|antd)/.test(id)
+      return external.includes(id) || /^(react|rc|moment|monaco)/.test(id)
     },
   },
   // 打包声明文件
