@@ -3,11 +3,12 @@ import { Form, Button, Select, Row, Col, Popover, Input, Space } from 'antd'
 import { options, FORM_PROPERTIES_OPTIONS } from '../constants'
 import { Collapse } from '../widgets'
 import { DeleteOutlined, CopyOutlined, PlusOutlined } from '@ant-design/icons'
-import { Store } from '@r-generator/core'
-const { actionTypes, Hooks } = Store
-const { useStore } = Hooks
+import {
+  SET_TARGET,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  useStore,
+} from '@r-generator/stores'
 
-const { SET_TARGET, UPDATE_COMPONENT_LIST_BY_TARGET } = actionTypes
 function shortid(length: number = 5) {
   return Number(
     Math.random().toString().substr(3, length) + Date.now()

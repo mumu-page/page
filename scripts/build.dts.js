@@ -1,8 +1,8 @@
 import dts from 'rollup-plugin-dts'
-import { getInputFile, packages, getDtsFile, getClearDir } from './utils'
+import { getInputFile, inputs, getDtsFile, getClearDir } from './utils'
 import clear from 'rollup-plugin-clear'
 
-export default packages.map((pkg) => {
+export default inputs.map((pkg) => {
   const name = pkg.name.replace('@r-generator/', '')
   const input = getInputFile(
     name,

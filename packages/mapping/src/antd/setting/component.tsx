@@ -3,12 +3,11 @@ import Mapping from '../Mapping'
 import { ColProperties, CommonProperties, FormItemProperties } from '../form'
 import { Title } from '../widgets'
 import { Empty } from 'antd'
-import { Store } from '@r-generator/core'
-const { Hooks } = Store
+import { useStore } from '@r-generator/stores'
 const { getProperties } = Mapping
 
 export default function () {
-  const { componentList, target } = Hooks.useStore()
+  const { componentList, target } = useStore()
 
   const has = () => {
     return componentList.length > 0 && target?.id

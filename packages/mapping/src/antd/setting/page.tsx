@@ -3,13 +3,11 @@ import { Form, InputNumber } from 'antd'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { Collapse, Title } from '../widgets'
 import { debounce } from 'lodash'
-import { Store } from '@r-generator/core'
-const { Hooks, Utils } = Store
+import { useStore, refreshTarget } from '@r-generator/stores'
 
-const { refreshTarget } = Utils
 export default function () {
   const [form] = Form.useForm()
-  const { moveableOptions, setGlobal: commonDispatch } = Hooks.useStore()
+  const { moveableOptions, setGlobal: commonDispatch } = useStore()
 
   const onValuesChange = useCallback(
     debounce((_: any, allValues: any) => {

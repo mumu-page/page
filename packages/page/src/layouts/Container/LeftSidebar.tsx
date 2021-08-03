@@ -2,13 +2,14 @@ import React from 'react'
 import { Button, Col, Row, Switch, Input, Form, Empty } from 'antd'
 import { IconFont, options } from '../../constants'
 import { OptionGroup, OptionItem } from '../../typings/option'
-import { Store, IFormComProp, Utils } from '@r-generator/core'
+import { shortid } from '@r-generator/shared'
+import {
+  useStore,
+  IFormComProp,
+  PUT_COMPONENT_LIST,
+  UPDATE_MODE,
+} from '@r-generator/stores'
 import { cloneDeep } from 'lodash'
-
-const { shortid } = Utils
-const { actionTypes, Hooks } = Store
-const { useStore } = Hooks
-const { PUT_COMPONENT_LIST, UPDATE_MODE } = actionTypes
 
 const getNewOptions = (data: OptionGroup[]) => {
   return data.map((item) => {

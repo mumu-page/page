@@ -6,10 +6,10 @@ import postcss from 'rollup-plugin-postcss'
 import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import babel from '@rollup/plugin-babel'
-import { getInputFile, getOutFile, getClearDir, isProduction, packages } from './utils'
+import { getInputFile, getOutFile, isProduction, inputs } from './utils'
 
-export default packages.map((pkg) => {
-  const peerDependencies = pkg.peerDependencies
+export default inputs.map((pkg) => {
+  const peerDependencies = pkg.peerDependencies || {}
   const name = pkg.name.replace('@r-generator/', '')
   return {
     input: getInputFile(name, pkg.get('source')),

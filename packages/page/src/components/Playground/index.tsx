@@ -14,7 +14,8 @@ import {
 import Compile from '../../utils/compile'
 import SplitPane /* , { Pane } */ from 'react-split-pane'
 import { genrateList1 } from '../../utils/genrateList1'
-import { Generate, Store } from '@r-generator/core'
+import { useStore } from '@r-generator/stores'
+import { Generate } from '@r-generator/core'
 import Editor, { OnMount } from '@monaco-editor/react'
 import './index.less'
 
@@ -50,7 +51,7 @@ function compatibleTsx(monaco: any) {
       url: 'https://cdn.jsdelivr.net/npm/@ant-design/icons@4.6.2/lib/index.d.ts',
     },
   ]
-
+  // TODO: 打包完整的TS声明文件
   Promise.all(
     importHelper.map(({ url }) => {
       return fetch(url).then((res) => res.text())
@@ -60,7 +61,6 @@ function compatibleTsx(monaco: any) {
       const fixedPackageName = name.startsWith('@')
         ? name.slice(1).replace('/', '__')
         : name
-      console.log(fixedPackageName)
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
         values[i],
         `file:///node_modules/@types/${fixedPackageName}/index.d.ts`
@@ -69,7 +69,6 @@ function compatibleTsx(monaco: any) {
   })
 }
 
-const { useStore } = Store.Hooks
 const { TabPane } = Tabs
 const SelectedIcon = () => (
   <EditOutlined style={{ color: '#f1fa8c', marginRight: '5px' }} />
@@ -108,11 +107,11 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
   const file = files[fileName] || {}
 
   const onRun = (code?: string) => {
-    const genrate = new Generate.Generate(componentList, target)
+    const genrate = new Generate(componentList, target)
     if (code) {
       setIndexCode(code)
     } else {
-      setIndexCode(genrate.generate())
+      setIndexCode(genrate.run())
     }
     new Compile(genrate).string2Component(list, code).then((newComponent) => {
       if (typeof newComponent === 'function') {

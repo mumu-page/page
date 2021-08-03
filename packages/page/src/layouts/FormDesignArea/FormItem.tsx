@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Form } from 'antd'
-import { IFormComProp } from '@r-generator/core'
+import { IFormComProp } from '@r-generator/stores'
 import { isCheck, isDatePicker, isRenderFormItem } from '../../utils/utils'
 import { AntdMapping } from '@r-generator/mapping'
 import * as moment from 'moment'

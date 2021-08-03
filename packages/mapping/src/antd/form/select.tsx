@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { Button, Form } from 'antd'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { Collapse, IRefType, OptionSet } from '../widgets'
-import { Store } from '@r-generator/core'
-const { actionTypes, Hooks } = Store
-const { SET_TARGET, UPDATE_COMPONENT_LIST_BY_TARGET } = actionTypes
+import {
+  SET_TARGET,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  useStore,
+} from '@r-generator/stores'
 
 export default function () {
-  const { target: currentDragComponent, setGlobal: commonDispatch } =
-    Hooks.useStore()
+  const { target: currentDragComponent, setGlobal: commonDispatch } = useStore()
   const modalRef = useRef<IRefType>(null)
   const [form] = Form.useForm()
   const { id, componentProps = {} } = currentDragComponent || {}

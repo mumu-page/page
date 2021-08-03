@@ -2,8 +2,6 @@ import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react'
 import { Button, Form, Input, Modal, Radio, Select } from 'antd'
 import Draggable from 'react-draggable'
 import DragableTable, { Option } from './DragableTable'
-// import CodeEditor from '../../../../components/CodeEditor'
-// import { CodeEditorInstanceProps } from '../../../../components/CodeEditor/typings'
 import { cloneDeep } from 'lodash'
 import './index.less'
 

@@ -53,4 +53,5 @@ export interface ICommonState extends ISetGlobal<object> {
   componentList: IFormComProp[] // 当前编辑区的组件列表
   moveableOptions: IMoveableOptions // Moveable props
   mode: IMode // 设计区模式
+  [key:string]: any
 }

@@ -1,13 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Form, Select, InputNumber, Typography, Switch } from 'antd'
-import { Store } from '@r-generator/core'
+import {
+  refreshTarget,
+  SET_TARGET,
+  useStore,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+} from '@r-generator/stores'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { debounce } from 'lodash'
 import { Collapse, Title } from '../widgets'
-const { Hooks, actionTypes, Utils } = Store
-const { refreshTarget } = Utils
-const { SET_TARGET, UPDATE_COMPONENT_LIST_BY_TARGET } = actionTypes
-
 /**
  * 布局增加精简模式和复杂模式
  * 精简模式：支持设置 几列布局等 比如：2列  3列  那么界面会自动适配
@@ -19,7 +20,7 @@ export default function () {
     target: currentDragComponent,
     moveableOptions,
     setGlobal: commonDispatch,
-  } = Hooks.useStore()
+  } = useStore()
   const { id, colProps = {} } = currentDragComponent || {}
   const { target } = moveableOptions || {}
   const [mode, setMode] = useState<'专业模式' | '精简模式'>('精简模式')

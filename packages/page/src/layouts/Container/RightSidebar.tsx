@@ -1,10 +1,8 @@
 import React from 'react'
 import { AntdMapping } from '@r-generator/mapping'
-import { Store } from '@r-generator/core'
+import { useStore } from '@r-generator/stores'
 import { Empty } from 'antd'
 
-const { Hooks } = Store
-const { useStore } = Hooks
 const { Setting } = AntdMapping
 
 export default function () {

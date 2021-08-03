@@ -23,6 +23,6 @@
   "include": [
     "packages/global.d.ts",
     "packages/*/src",
-    "packages/*/__tests__",
+    "packages/*/__tests__", "packages/share/index.ts", "packages/shared/index.ts",
   ]
 }

@@ -1,19 +1,17 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Form, Input, InputNumber, Radio } from 'antd'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
-import { Store } from '@r-generator/core'
+import {
+  SET_TARGET,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  useStore,
+  refreshTarget,
+} from '@r-generator/stores'
 import { Title, Collapse } from '../widgets'
 import { debounce, isNumber } from 'lodash'
-const { actionTypes, Hooks, Utils } = Store
 
-const { refreshTarget } = Utils
-const { SET_TARGET, UPDATE_COMPONENT_LIST_BY_TARGET } = actionTypes
 export default function () {
-  const {
-    moveableOptions,
-    target,
-    setGlobal: commonDispatch,
-  } = Hooks.useStore()
+  const { moveableOptions, target, setGlobal: commonDispatch } = useStore()
   const [form] = Form.useForm()
   const { id, formItemProps = {} } = target || {}
 

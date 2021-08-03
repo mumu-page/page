@@ -1,12 +1,14 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Form, Select, InputNumber, Typography, Switch } from 'antd'
-import { Store } from '@r-generator/core'
+import {
+  RESET_COMPONENT_LAYOUT,
+  SET_TARGET,
+  useStore,
+  refreshTarget,
+} from '@r-generator/stores'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { CheckboxField, Collapse, Title } from '../widgets'
 import { debounce, merge } from 'lodash'
-const { Hooks, actionTypes, Utils } = Store
-const { refreshTarget } = Utils
-const { RESET_COMPONENT_LAYOUT, SET_TARGET } = actionTypes
 
 // 默认全局布局
 function genLayout(colNum: 1 | 2 | 3 | 4, row = 24) {
@@ -35,7 +37,7 @@ export default function () {
     target: currentDragComponent,
     moveableOptions,
     setGlobal: commonDispatch,
-  } = Hooks.useStore()
+  } = useStore()
   const { id, rowProps = {} } = currentDragComponent || {}
   const { target } = moveableOptions || {}
   const [mode, setMode] = useState<'专业模式' | '精简模式'>('精简模式')
@@ -61,20 +63,9 @@ export default function () {
       })
       // 重新获取当前选中元素
       refreshTarget(target, commonDispatch)
-
-      updateLayout()
     }, 200),
     [currentDragComponent.id, mode]
   )
-
-  const updateLayout = () => {
-    const viewport = (document.querySelector('.viewport') as HTMLElement) || {}
-    const formRow = (document.querySelector('.form-row') as HTMLElement) || {}
-    const { width, height } = formRow?.getBoundingClientRect?.() || {}
-
-    viewport.style.width = width + 'px'
-    viewport.style.height = height + 'px'
-  }
 
   useEffect(() => {
     form.resetFields()

@@ -3,10 +3,8 @@ import { Button, Divider, Space, Tree, Typography } from 'antd'
 import { cloneDeep } from 'lodash'
 import { MinusSquareOutlined, PlusSquareOutlined } from '@ant-design/icons'
 import EditableCell from './EditableCell'
-import { Utils } from '@r-generator/core'
+import { shortid } from '../../../../../shared'
 import './index.less'
-
-const { shortid } = Utils
 
 export interface Option {
   value: string | number

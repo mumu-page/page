@@ -1,20 +1,17 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { Form, Input, InputNumber, Radio } from 'antd'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
-import { Store } from '@r-generator/core'
+import { SET_TARGET, refreshTarget, useStore } from '@r-generator/stores'
 import { CheckboxField } from '../widgets'
 import { debounce, isNumber } from 'lodash'
 import { Collapse, Title } from '../widgets'
-const { actionTypes, Utils, Hooks } = Store
 
-const { SET_TARGET } = actionTypes
-const { refreshTarget } = Utils
 export default function () {
   const {
     target: currentDragComponent,
     moveableOptions,
     setGlobal: commonDispatch,
-  } = Hooks.useStore()
+  } = useStore()
   const [form] = Form.useForm()
   const { id, formProps = {} } = currentDragComponent || {}
 

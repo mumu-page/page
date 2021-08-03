@@ -1,13 +1,13 @@
-import { IComponentKeys, IFormComProp } from '../stores/types'
+import { IComponentKeys, IFormComProp } from '@r-generator/stores'
 
-class Generate {
+export default class Generate {
   componentList: IFormComProp[]
   target: IFormComProp
   constructor(componentList: IFormComProp[], target: IFormComProp) {
     this.componentList = componentList
     this.target = target
   }
-  generate() {
+  run() {
     return `${this.generateImport()}${this.generateXml()}`
   }
   generateXml() {
@@ -102,11 +102,12 @@ class Generate {
       componentName = componentKey?.replace(/^.*\./, '')
     }
     // TODO render children
-    const Component = componentKey === 'Upload'
-      ? `<${componentName}${componentPropsStr}>
+    const Component =
+      componentKey === 'Upload'
+        ? `<${componentName}${componentPropsStr}>
       <Button icon={<UploadOutlined />}>Click to Upload</Button>
     </${componentName}>`
-      : `<${componentName}${componentPropsStr} />`
+        : `<${componentName}${componentPropsStr} />`
     return `<Col {...${colGlobalVariable}}${colPropsStr}>
               <Form.Item {...${formItemGlobalVariable}}${formItemPropsStr}>
                 ${Component}
@@ -233,5 +234,3 @@ class Generate {
     return result
   }
 }
-
-export default Generate

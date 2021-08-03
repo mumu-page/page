@@ -1,18 +1,19 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, InputNumber } from 'antd'
-import { Store } from '@r-generator/core'
+import {
+  SET_TARGET,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  useStore,
+} from '@r-generator/stores'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { Collapse, CheckboxField } from '../widgets'
-const { actionTypes, Hooks } = Store
-const { SET_TARGET, UPDATE_COMPONENT_LIST_BY_TARGET } = actionTypes
 interface FormData {
   [key: string]: any
 }
 
 export default function () {
   const [form] = Form.useForm<FormData>()
-  const { target: currentDragComponent, setGlobal: commonDispatch } =
-    Hooks.useStore()
+  const { target: currentDragComponent, setGlobal: commonDispatch } = useStore()
   const { id, componentProps = {} } = currentDragComponent || {}
 
   const onValuesChange = (changedValues: any, allValues: any) => {

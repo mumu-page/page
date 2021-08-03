@@ -1,5 +1,5 @@
 import { useContext, useReducer, useEffect } from 'react'
-import { Context } from '../stores/context'
+import { Context } from './context'
 import { cloneDeep } from 'lodash'
 import { ICommonState } from './types'
 

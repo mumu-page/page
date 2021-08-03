@@ -1,4 +1,4 @@
-import { IFormComProp } from '@r-generator/core'
+import { IFormComProp } from '@r-generator/stores'
 import * as React from 'react'
 import {
   Input,
@@ -26,13 +26,13 @@ import { transform } from '@babel/standalone'
 
 const { List1 } = AntdMapping
 class Compile {
-  genrate: Generate.Generate
-  constructor(genrate: Generate.Generate) {
+  genrate: Generate
+  constructor(genrate: Generate) {
     this.genrate = genrate
   }
   // 去除不要的代码
   replace(code?: string) {
-    const selfCode = code || this.genrate.generate()
+    const selfCode = code || this.genrate.run()
     return (
       selfCode
         .substring(

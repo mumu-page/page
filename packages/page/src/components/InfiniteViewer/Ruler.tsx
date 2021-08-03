@@ -6,15 +6,13 @@ import React, {
   useContext,
 } from 'react'
 import Guides from '@scena/react-guides'
-import { Store } from '@r-generator/core'
+import { SET_MOVEABLE_OPTIONS, useStore } from '@r-generator/stores'
 
-const { Context, actionTypes } = Store
-const { SET_MOVEABLE_OPTIONS } = actionTypes
 let observer: MutationObserver | null = null
 export default forwardRef((props: GuidesOptions, ref) => {
   const { type } = props
   const guides: any = React.useRef()
-  const { setGlobal: commonDispatch } = useContext(Context)
+  const { setGlobal: commonDispatch } = useStore()
 
   useImperativeHandle(
     ref,

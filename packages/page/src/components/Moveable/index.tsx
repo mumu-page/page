@@ -1,10 +1,12 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Moveable from 'react-moveable'
-import { Store } from '@r-generator/core'
+import {
+  SET_TARGET,
+  SET_MOVEABLE_OPTIONS,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  useStore,
+} from '@r-generator/stores'
 
-const { Context } = Store
-const { SET_TARGET, SET_MOVEABLE_OPTIONS, UPDATE_COMPONENT_LIST_BY_TARGET } =
-  Store.actionTypes
 const layout = {
   frame: { translate: [0, 0] },
 } as any
@@ -13,7 +15,7 @@ export default () => {
     target: currentDragComponent,
     moveableOptions = {},
     setGlobal: commonDispatch,
-  } = useContext(Context)
+  } = useStore()
 
   const {
     target,

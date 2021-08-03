@@ -12,11 +12,20 @@ import {
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
 import {
-  Store,
+  COPY_COMPONENT_LIST,
+  DELETE_TARGET,
+  DEL_COMPONENT_LIST,
+  LEFT_REMOVE_COMPONENTS,
+  RIGHT_REMOVE_COMPONENTS,
+  SET_COMPONENT_LIST,
+  SET_MOVEABLE_OPTIONS,
+  SET_TARGET_BY_COMPONENT_LIST,
   ISetGlobal,
   IFormComProp,
   IMoveableOptions,
-} from '@r-generator/core'
+  refreshTarget,
+  useStore,
+} from '@r-generator/stores'
 import { isDatePicker } from '../../utils/utils'
 import { Target_ClassName } from '../../constants'
 import Menu from '../../components/ContextMenu/Menu'
@@ -27,19 +36,6 @@ import {
 import eventBus from '../../utils/eventBus'
 import './index.less'
 import { ReactSortable } from 'react-sortablejs'
-
-const { Utils, actionTypes, Hooks } = Store
-const {
-  COPY_COMPONENT_LIST,
-  DELETE_TARGET,
-  DEL_COMPONENT_LIST,
-  LEFT_REMOVE_COMPONENTS,
-  RIGHT_REMOVE_COMPONENTS,
-  SET_COMPONENT_LIST,
-  SET_MOVEABLE_OPTIONS,
-  SET_TARGET_BY_COMPONENT_LIST,
-} = actionTypes
-const { useStore } = Hooks
 
 interface EditorAreaProps extends ISetGlobal<object> {
   componentList: IFormComProp[]
@@ -54,8 +50,6 @@ enum HANDLE_TYPE {
   toLeft = '左移',
   toRight = '右移',
 }
-
-const { refreshTarget } = Utils
 
 const actions = [
   {

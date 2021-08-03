@@ -1,0 +1,32 @@
+{
+  "name": "@r-generator/shared",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "仕林林 <295755973@qq.com>",
+  "homepage": "https://github.com/r-generator/page#readme",
+  "license": "ISC",
+  "main": "./dist/index.js",
+  "source": "./index.ts",
+  "types": "./dist/index.d.ts",
+  "module": "./es/index.js",
+  "directories": {
+    "dist": "dist",
+    "test": "__tests__"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r-generator/page.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/r-generator/page/issues"
+  }
+}

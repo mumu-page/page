@@ -1,11 +1,14 @@
-import React, { useEffect, useContext, memo } from 'react'
+import React, { useEffect, memo } from 'react'
 import { Form, Input, InputNumber, Radio, Select } from 'antd'
-import { Store, IComponentKeys } from '@r-generator/core'
+import {
+  refreshTarget,
+  IComponentKeys,
+  SET_TARGET,
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  useStore,
+} from '@r-generator/stores'
 import { options, FORM_PROPERTIES_OPTIONS } from '../constants'
 import { Collapse, Title, CheckboxField } from '../widgets'
-const { Hooks, actionTypes, Utils } = Store
-const { refreshTarget } = Utils
-const { SET_TARGET, UPDATE_COMPONENT_LIST_BY_TARGET } = actionTypes
 
 const { Option, OptGroup } = Select
 
@@ -32,7 +35,7 @@ export default memo(function () {
     target: currentDragComponent,
     moveableOptions,
     setGlobal: commonDispatch,
-  } = Hooks.useStore()
+  } = useStore()
   const { id, componentProps = {} } = currentDragComponent || {}
 
   const onValuesChange = (

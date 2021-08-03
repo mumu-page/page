@@ -35,7 +35,7 @@ import {
   Button,
 } from 'antd'
 import { List1 } from './widgets'
-import type { IComponentKeys } from '@r-generator/core'
+import type { IComponentKeys } from '@r-generator/stores'
 import { UploadOutlined } from '@ant-design/icons'
 
 const Mapping = {

@@ -1,13 +1,16 @@
 import * as React from 'react'
 import { Container } from './layouts'
-import { Store, ICommonState } from '@r-generator/core'
+import {
+  INITAL_STATE,
+  commonReducer,
+  useLPReducer,
+  Context,
+  ICommonState,
+} from '@r-generator/stores'
 import { LOCAL_STORE_KEY } from './constants'
 import './index.css'
 import './r-generator.less'
 import '@r-generator/mapping/dist/index.css'
-
-const { Context, INITAL_STATE, commonReducer, Hooks } = Store
-const { useLPReducer } = Hooks
 
 export default () => {
   const [state, setGlobal] = useLPReducer(

@@ -1,5 +1,5 @@
 import { SizeType } from 'antd/lib/config-provider/SizeContext'
-import { IComponentKeys } from '@r-generator/core'
+import { IComponentKeys } from '@r-generator/stores'
 import * as Icons from '@ant-design/icons'
 
 export interface OptionGroup {

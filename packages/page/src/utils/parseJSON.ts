@@ -1,4 +1,4 @@
-import { IFormComProp } from '@r-generator/core'
+import { IFormComProp } from '@r-generator/stores'
 
 interface IIPropertiesItem {
   type: string

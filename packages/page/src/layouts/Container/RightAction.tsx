@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import {
   DeleteOutlined,
   ExclamationCircleOutlined,
@@ -12,12 +12,13 @@ import { Button, Modal } from 'antd'
 import { BtnTypes } from '.'
 import { Preview, PreviewInstanceProps } from '../../components'
 import { SCROLL_CENTER, SHOW_SETTING_PANL } from '../../constants/events'
-import { Store } from '@r-generator/core'
+import {
+  DELETE_ALL_COMPONENT_LIST_AND_TARGET,
+  SET_MOVEABLE_OPTIONS,
+  useStore,
+} from '@r-generator/stores'
 import { parseJSON } from '../../utils/parseJSON'
 import eventBus from '../../utils/eventBus'
-const { actionTypes, Context } = Store
-const { DELETE_ALL_COMPONENT_LIST_AND_TARGET, SET_MOVEABLE_OPTIONS } =
-  actionTypes
 
 interface RightActionType {
   handleType: (val: BtnTypes) => void
@@ -30,7 +31,7 @@ export default (props: RightActionType) => {
     target: currentDragComponent,
     componentList,
     setGlobal: commonDispatch,
-  } = useContext(Context)
+  } = useStore()
 
   const handleColor = (val: BtnTypes) => {
     return {
@@ -86,7 +87,7 @@ export default (props: RightActionType) => {
   }, [])
 
   return (
-    <div className='right-action'>
+    <div className="right-action">
       <Button
         icon={<PlayCircleOutlined style={handleColor('run')} />}
         type={type === 'run' ? 'primary' : 'text'}

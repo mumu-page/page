@@ -6,21 +6,22 @@ import React, {
   useState,
 } from 'react'
 import { Form, Input, InputNumber, Checkbox, Tooltip, Typography } from 'antd'
-import { Store } from '@r-generator/core'
+import {
+  UPDATE_COMPONENT_LIST_BY_TARGET,
+  SET_TARGET,
+  useStore,
+} from '@r-generator/stores'
 import { SelectOutlined, DeleteOutlined } from '@ant-design/icons'
 import { IconModal, IconModalInstanceProp, Collapse } from '../widgets'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { debounce } from 'lodash'
-const { Hooks, actionTypes } = Store
-const { UPDATE_COMPONENT_LIST_BY_TARGET, SET_TARGET } = actionTypes
 
 type IIconType = 'prefix' | 'suffix'
 
 export default () => {
   const [form] = Form.useForm()
   const iconModal = useRef<IconModalInstanceProp>(null)
-  const { target: currentDragComponent, setGlobal: commonDispatch } =
-    Hooks.useStore()
+  const { target: currentDragComponent, setGlobal: commonDispatch } = useStore()
   const { id, componentProps = {} } = currentDragComponent || {}
   const [iconType, setIconType] = useState<IIconType>('prefix')
 

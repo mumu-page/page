@@ -20,10 +20,20 @@ export const getClearDir = (name, dir = 'lib') => {
 }
 
 export const getInputFile = (name, source) => {
-  return path.resolve(
-    __dirname,
-    path.join('../packages/', name, source)
-  )
+  return path.resolve(__dirname, path.join('../packages/', name, source))
 }
 
-export const packages = getPackagesSync()
+const getOrder = (pkg) => {
+  const order = pkg.get('order')
+  return isNaN(order) ? 100 : order
+}
+
+export const packages = getPackagesSync().sort((a, b) => {
+  return getOrder(a) - getOrder(b)
+})
+
+export const devPackages = packages.filter(
+  (pkg) => !['@r-generator/page'].includes(pkg.name)
+)
+
+export const inputs = isProduction ? packages : devPackages

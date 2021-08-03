@@ -6,7 +6,7 @@ import RightAction from './RightAction'
 import { ReactiveMoveable, InfiniteViewer } from '../../components'
 import FormDesignArea from '../FormDesignArea'
 import DesignArea from '../DesignArea'
-import { Store } from '@r-generator/core'
+import { useStore } from '@r-generator/stores'
 import './index.less'
 
 import { resetViewport } from '../../utils/utils'
@@ -22,8 +22,6 @@ export type BtnTypes =
   | 'preview'
   | 'center'
 
-const { actionTypes, Hooks } = Store
-const { useStore } = Hooks
 export default (props: any) => {
   const { mode } = useStore()
   const [type, setType] = useState<BtnTypes>('')
