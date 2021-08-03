@@ -19,7 +19,7 @@ jobs:
       - name: Install Dependencies And Build 🔧
         run: |
           npm install
-          npm build:page
+          npm run build:page
       - name: Deploy Github Pages 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
