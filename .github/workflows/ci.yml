@@ -19,6 +19,7 @@ jobs:
       - name: Install Dependencies And Build 🔧
         run: |
           npm install
+          npm run bootstrap
           npm run build:page
       - name: Deploy Github Pages 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
@@ -27,7 +28,7 @@ jobs:
           FOLDER: ./packages/page/build
       - name: Rename Folder Name 🔧
         run: |
-          mv ./build/ ./generator.resonance.fun/
+          mv ./packages/page/build ./generator.resonance.fun/
       - name: SSH Server Deploy 🚀
         uses: kostya-ten/ssh-server-deploy@v4
         with:

@@ -12,6 +12,7 @@
 /**/es
 /**/lib
 /**/dist
+/**/build
 
 # misc
 .DS_Store

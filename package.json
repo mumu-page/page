@@ -1,9 +1,10 @@
 {
   "scripts": {
+    "bootstrap": "lerna bootstrap",
     "prebuild": "npm run build:dts",
     "build": "rollup --config ./scripts/build.js",
     "build:dts": "rollup --config ./scripts/build.dts.js",
-    "build:page": "cd packages/page && craco build"
+    "build:page": "cd packages/page && npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
