@@ -21,8 +21,6 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "packages/global.d.ts",
-    "packages/*/src",
-    "packages/*/__tests__",
+    "src"
   ]
 }

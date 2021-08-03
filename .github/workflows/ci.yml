@@ -1,7 +1,10 @@
-name: Publish And Deploy
+name: Deploy
 
 on:
   push:
+    branches:
+      - '**'
+  pull_request:
     branches:
       - master
 
@@ -15,13 +18,13 @@ jobs:
           persist-credentials: false
       - name: Install Dependencies And Build 🔧
         run: |
-          yarn install
-          yarn build
+          npm install
+          npm build:page
       - name: Deploy Github Pages 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           BRANCH: gh-pages
-          FOLDER: build
+          FOLDER: ./packages/page/build
       - name: Rename Folder Name 🔧
         run: |
           mv ./build/ ./generator.resonance.fun/

@@ -36,19 +36,34 @@ function compatibleTsx(monaco: any) {
     noSyntaxValidation: false,
   })
 
-  const types = {
-    react: 'https://cdn.jsdelivr.net/npm/@types/react@17.0.2/index.d.ts',
-    antd: 'https://cdn.jsdelivr.net/npm/antd@4.14.0/lib/index.d.ts',
-  }
+  const importHelper = [
+    {
+      name: 'react',
+      url: 'https://cdn.jsdelivr.net/npm/@types/react@17.0.2/index.d.ts',
+    },
+    {
+      name: 'antd',
+      url: 'https://cdn.jsdelivr.net/npm/antd@4.14.0/lib/index.d.ts',
+    },
+    {
+      name: '@ant-design/icons',
+      url: 'https://cdn.jsdelivr.net/npm/@ant-design/icons@4.6.2/lib/index.d.ts',
+    },
+  ]
+
   Promise.all(
-    Object.values(types).map((url) => {
+    importHelper.map(({ url }) => {
       return fetch(url).then((res) => res.text())
     })
   ).then((values) => {
-    Object.keys(types).forEach((key, i) => {
+    importHelper.forEach(({ name }, i) => {
+      const fixedPackageName = name.startsWith('@')
+        ? name.slice(1).replace('/', '__')
+        : name
+      console.log(fixedPackageName)
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
         values[i],
-        `file:///node_modules/@types/${key}/index.d.ts`
+        `file:///node_modules/@types/${fixedPackageName}/index.d.ts`
       )
     })
   })

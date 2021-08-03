@@ -1,0 +1,89 @@
+.draggable-tree {
+  border-top: 1px solid var(--main-border-color);
+  .draggable-tree-node {
+    height: 30px;
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--main-border-color);
+    .ant-tree-switcher {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    // 覆盖选中样式
+    .ant-tree-node-selected {
+      background-color: var(--main-secord-bg);
+      // .ant-tree-title,
+      // .ant-btn {
+      //   color: white;
+      // }
+    }
+  }
+}
+
+.tree-header,
+.ant-tree-title {
+  height: 30px;
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--main-border-color);
+  .tree-header-item,
+  .draggable-tree-node-item {
+    flex: 0.4;
+    // text-align: center;
+    flex-shrink: 0;
+  }
+  .tree-header-item:first-child {
+    align-items: flex-start;
+    padding-left: 33px;
+  }
+  .draggable-tree-node-item:last-child,
+  .tree-header-item:last-child {
+    align-items: center;
+    flex: 0.2;
+  }
+  .tree-header-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    span:first-child {
+      line-height: 18px;
+    }
+    span:last-child {
+      font-size: 12px;
+      line-height: 12px;
+      color: #999;
+    }
+  }
+  .draggable-tree-node-item-action {
+    display: flex;
+    align-items: center;
+    text-align: right;
+    position: relative;
+    .btn {
+      position: absolute;
+      right: 18px;
+    }
+  }
+}
+.ant-tree-title {
+  border: none;
+}
+
+.tree-header {
+  height: 40px;
+}
+
+.ant-modal-close-x {
+  line-height: 42px;
+}
+.ant-modal-body {
+  padding: 16px 12px 12px;
+}
+.ant-modal-header {
+  padding: 8px 16px;
+  padding-top: 8px;
+}
