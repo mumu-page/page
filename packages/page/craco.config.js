@@ -4,7 +4,6 @@ const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 const BundleAnalyzerPlugin =
   require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-// const isProruction = process.env.NODE_ENV === 'production'
 module.exports = {
   webpack: {
     module: {
@@ -109,8 +108,13 @@ module.exports = {
         ],
       }),
       new BannerPlugin('by all resonance'),
-      new BundleAnalyzerPlugin(),
     ],
+    configure(webpackConfig, { env }) {
+      if (env !== 'production') {
+        webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+      }
+      return webpackConfig
+    },
   },
   plugins: [
     {
