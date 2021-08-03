@@ -20,6 +20,7 @@ jobs:
         run: |
           npm install
           npm run bootstrap
+          npm run build
           npm run build:page
       - name: Deploy Github Pages 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
