@@ -4,8 +4,8 @@ import RightSidebar from './RightSidebar'
 import LeftAction from './LeftAction'
 import RightAction from './RightAction'
 import { ReactiveMoveable, InfiniteViewer } from '../../components'
-import FormDesignArea from '../FormDesignArea'
-import DesignArea from '../DesignArea'
+import FormDesignArea from '../AssembleArea'
+import DesignArea from '../DrawArea'
 import { useStore } from '@r-generator/stores'
 import './index.less'
 
@@ -24,7 +24,7 @@ export type BtnTypes =
 
 export default (props: any) => {
   const { mode } = useStore()
-  const [type, setType] = useState<BtnTypes>('')
+  const [type, setType] = useState<BtnTypes>('coms')
 
   const handleType = (val: BtnTypes) => {
     if (type === val) {
@@ -45,7 +45,7 @@ export default (props: any) => {
       <LeftAction type={type} handleType={handleType} />
       {type === 'coms' && <LeftSidebar />}
       <div className="content">
-        {mode === 'form' ? (
+        {mode === 'assemble' ? (
           <FormDesignArea />
         ) : (
           <InfiniteViewer>

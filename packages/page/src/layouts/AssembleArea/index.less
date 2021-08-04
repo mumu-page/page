@@ -1,0 +1,60 @@
+.assemble-area {
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  .drag-target-chosen {
+    border: 1px solid var(--main-color);
+  }
+  .drag-target {
+    border: 1px dashed var(--secord-color);
+  }
+
+  // 所选项目的样式
+  .sortable-chosen {
+    background-color: #ffffff;
+    .drag-target {
+      border: 1px solid var(--main-color);
+    }
+  }
+  // 正在拖拽的样式
+  .sortable-ghost {
+    .drag-target {
+      position: relative;
+      height: 100%;
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: var(--main-color);
+        z-index: 10;
+      }
+    }
+  }
+  // 从左侧组件池拖拽过来的样式
+  .component-item {
+    .drag-target {
+      width: 300px;
+    }
+  }
+}
+.not-found-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: lighter;
+  color: #40a9ff;
+  user-select: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  letter-spacing: 4px;
+}

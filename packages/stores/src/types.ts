@@ -46,7 +46,11 @@ export interface IMoveableOptions {
   [key: string]: any
 }
 
-export type IMode = 'form' | 'page' 
+/**
+ * draw 自由绘制
+ * assemble 页面组装
+ */
+export type IMode = 'draw' | 'assemble'
 
 export interface ICommonState extends ISetGlobal<object> {
   target: IFormComProp // 当前拖拽的表单控件

@@ -9,7 +9,9 @@ export const INITAL_STATE: ICommonState = {
     formItemProps: {},
     componentProps: {},
     colProps: {},
-    rowProps: {},
+    rowProps: {
+      gutter: 20,
+    },
     layout: {
       frame: { translate: [0, 0] },
     },
@@ -19,7 +21,7 @@ export const INITAL_STATE: ICommonState = {
     elClassName: null,
     frame: { translate: [0, 0] },
   },
-  mode: 'form',
+  mode: 'assemble',
   setGlobal: ({ type, payload }: { type: string; payload?: unknown }) => {},
 }
 

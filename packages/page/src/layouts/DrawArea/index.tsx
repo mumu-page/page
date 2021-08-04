@@ -5,7 +5,7 @@ export default function () {
   return (
     <div>
       <div className="p-10">
-        <Empty description="非表单设计，敬请期待..." />
+        <Empty description="自由绘制模式，敬请期待..." />
       </div>
     </div>
   )

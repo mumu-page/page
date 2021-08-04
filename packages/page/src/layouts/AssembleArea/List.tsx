@@ -1,7 +1,7 @@
 import React, { forwardRef, useCallback, useRef } from 'react'
 import { Col, Form, Row, RowProps } from 'antd'
 import { useEffect } from 'react'
-import ComponentItem from './FormItem'
+import ComponentItem from './Item'
 import { ContextMenu } from '../../components'
 import { shortid } from '../../utils/utils'
 import {
@@ -231,7 +231,7 @@ export default function Container(props: EditorAreaProps) {
         ghostClass={ghostClass}
         chosenClass={chosenClass}
         group={{
-          name: 'form-wrap',
+          name: 'AssembleArea',
           put: true,
         }}
         setList={(newState) => {
