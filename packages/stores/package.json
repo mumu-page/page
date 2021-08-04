@@ -31,6 +31,10 @@
     "url": "https://github.com/r-generator/page/issues"
   },
   "peerDependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "@r-generator/shared": "^0.0.0"
+  },
+  "dependencies": {
+    "@r-generator/shared": "^0.0.0"
   }
 }

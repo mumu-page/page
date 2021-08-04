@@ -3,7 +3,7 @@ import { Button, Divider, Space, Tree, Typography } from 'antd'
 import { cloneDeep } from 'lodash'
 import { MinusSquareOutlined, PlusSquareOutlined } from '@ant-design/icons'
 import EditableCell from './EditableCell'
-import { shortid } from '../../../../../shared'
+import { shortid } from '@r-generator/shared'
 import './index.less'
 
 export interface Option {

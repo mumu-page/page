@@ -1,5 +1,5 @@
 import { cloneDeep, isInteger, merge } from 'lodash'
-import { shortid } from '../../../shared'
+import { shortid } from '@r-generator/shared'
 import {
   SET_COMPONENT_LIST,
   DEL_COMPONENT_LIST,
