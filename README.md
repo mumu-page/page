@@ -25,21 +25,8 @@
 - [Github](https://github.com/r-generator/page.git)
 - [Gitee](https://gitee.com/r-generator/page.git)
 
-## 支持在项目中嵌入
-### 1.安装
-```sh
-yarn add @r-generator/page
-```
-### 2.使用组件
-```tsx
-import RGenerate from '@r-generator/page'
-import 'r-generator/dist/index.css'
-
-export default function Home() {
-  return <RGenerate />
-}
-
-```
+## 在项目中使用此插件
+敬请期待...
   
 ## Preview
 敬请期待...
