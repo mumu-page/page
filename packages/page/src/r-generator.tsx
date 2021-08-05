@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Container } from './layouts'
+import Layout from './layouts'
 import {
   INITAL_STATE,
   commonReducer,
@@ -26,7 +26,7 @@ export default () => {
         setGlobal,
       }}
     >
-      <Container />
+      <Layout />
     </Context.Provider>
   )
 }

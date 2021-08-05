@@ -1,13 +1,8 @@
-import Preview from './Playground'
+export { default as Playground } from './Playground'
+export { default as Logo } from './Logo'
+export { default as Moveable } from './Moveable'
+export { default as InfiniteViewer } from './InfiniteViewer'
+export { default as ContextMenu } from './ContextMenu'
+export { default as RenderPool } from './RenderPool'
 
-import ReactiveMoveable from './Moveable'
-import InfiniteViewer from './InfiniteViewer'
-import ContextMenu from './ContextMenu'
-
-import Logo from './Logo'
-
-import { PreviewInstanceProps, PreviewProps } from './Playground/typings'
-
-export { Preview, ReactiveMoveable, InfiniteViewer, Logo, ContextMenu }
-
-export type { PreviewInstanceProps, PreviewProps }
+export type { PreviewInstanceProps, PreviewProps } from './Playground/typings'

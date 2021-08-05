@@ -3,6 +3,7 @@ import { Tabs } from 'antd'
 import Component from './component'
 import Layout from './layout'
 import Page from './page'
+import './index.less'
 
 const { TabPane } = Tabs
 export default function () {
@@ -11,9 +12,10 @@ export default function () {
     overflowX: 'hidden',
     overflowY: 'auto',
     height: 'calc(100vh - 46px)',
+    paddingTop: 16,
   }
   return (
-    <Tabs defaultActiveKey="1" centered>
+    <Tabs className="setting" defaultActiveKey="1" centered>
       <TabPane tab="属性设置" key="1">
         <div style={style}>
           <Component />

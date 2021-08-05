@@ -10,6 +10,7 @@ export interface FormOption {
 export interface OptionItem {
   label: string
   key: string
+  id?: string
   value: IComponentKeys
 }
 

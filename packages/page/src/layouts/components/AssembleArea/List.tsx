@@ -2,8 +2,8 @@ import React, { forwardRef, useCallback, useRef } from 'react'
 import { Col, Form, Row, RowProps } from 'antd'
 import { useEffect } from 'react'
 import ComponentItem from './Item'
-import { ContextMenu } from '../../components'
-import { shortid } from '../../utils/utils'
+import { ContextMenu } from '../../../components'
+import { shortid } from '../../../utils/utils'
 import {
   CopyOutlined,
   SettingOutlined,
@@ -26,14 +26,14 @@ import {
   refreshTarget,
   useStore,
 } from '@r-generator/stores'
-import { isDatePicker } from '../../utils/utils'
-import { Target_ClassName } from '../../constants'
-import Menu from '../../components/ContextMenu/Menu'
+import { isDatePicker } from '../../../utils/utils'
+import { Target_ClassName } from '../../../constants'
+import Menu from '../../../components/ContextMenu/Menu'
 import {
   INFINITEVIEWER_SCROLL,
   SHOW_SETTING_PANL,
-} from '../../constants/events'
-import eventBus from '../../utils/eventBus'
+} from '../../../constants/events'
+import eventBus from '../../../utils/eventBus'
 import './index.less'
 import { ReactSortable } from 'react-sortablejs'
 

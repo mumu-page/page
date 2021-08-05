@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { Form } from 'antd'
 import { IFormComProp } from '@r-generator/stores'
-import { isCheck, isDatePicker, isRenderFormItem } from '../../utils/utils'
+import { isCheck, isDatePicker, isRenderFormItem } from '../../../utils/utils'
 import { AntdMapping } from '@r-generator/mapping'
 import * as moment from 'moment'
-import { ICONS } from '../../constants'
+import { ICONS } from '../../../constants'
 
 function getIcon(iconKey: string, node = false) {
   if (iconKey) {

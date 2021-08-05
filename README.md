@@ -17,13 +17,13 @@
 ## 是什么
 > 核心思想：自动化生成原始表单/组件代码，赋能业务，拒绝新规则，开发全掌控。
 
+> 最近很忙，一有时间就会更新哒～^～
+
 一款可视化组件代码生成器，旨在提升开发项目的效率。
 
-最近很忙，一有时间就会更新哒～^～
 
-- [预览地址](https://r-generator.github.io/page/) | [国内镜像](http://generator.resonance.fun)
-- [Github](https://github.com/r-generator/page.git)
-- [Gitee](https://gitee.com/r-generator/page.git)
+- 预览地址：[Github Page](https://r-generator.github.io/page/) | [国内服务器](http://generator.resonance.fun)
+- 仓库地址：[Github](https://github.com/r-generator/page.git) | [Gitee](https://gitee.com/r-generator/page.git)
 
 ## 在项目中使用此插件
 敬请期待...
@@ -39,12 +39,28 @@
 
 ![alt 属性文本](./docs/imgs/截屏2021-03-11%20下午7.25.31.png "设计区") -->
 
+## 开发项目
+### 安装依赖 🇮🇶
+```
+npm i && lerna bootstrap
+```
+### 使用本地依赖 🔗
+```
+lerna link
+```
+### 开发编译 🧬
+```
+npm run dev
+```
+### 启动 🌠
+```
+cd packages/page/ && npm start
+```
+
 ## TODO
-- [ ] 控件属性完善
-- [ ] 表单常见CRUD模板生成
-- [ ] 支持其他自定义组件的代码生成
-- [ ] 表单分割区标题、表单列表输入支持
-- [ ] 页面生成独立预览链接(考虑使用服务端渲染)
+- [ ] 组件池列表配置优化
+- [ ] 根据配置编译HTML
+
 
 ## 关于
 [如何提升开发与设计表单类页面时的效率](https://www.yuque.com/docs/share/74964a3f-2290-4958-b9a4-26fb137fd6f3?#%20)

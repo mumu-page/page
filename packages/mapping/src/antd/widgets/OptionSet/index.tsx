@@ -125,6 +125,7 @@ export default forwardRef(
 
     return (
       <Modal
+        className="option-set-model"
         title={
           <div
             style={{

@@ -2,11 +2,21 @@ import React from 'react'
 import { AntdMapping } from '@r-generator/mapping'
 import { useStore } from '@r-generator/stores'
 import { Empty } from 'antd'
+import { BtnTypes } from '.'
 
 const { Setting } = AntdMapping
 
-export default function () {
+interface IProps {
+  type: BtnTypes
+}
+
+export default function (props: IProps) {
+  const { type } = props
   const { mode } = useStore()
+
+  if (type !== 'setting') {
+    return null
+  }
 
   return (
     <div className="right-sidebar">

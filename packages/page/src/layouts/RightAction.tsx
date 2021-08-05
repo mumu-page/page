@@ -10,15 +10,15 @@ import {
 } from '@ant-design/icons'
 import { Button, Modal } from 'antd'
 import { BtnTypes } from '.'
-import { Preview, PreviewInstanceProps } from '../../components'
-import { SCROLL_CENTER, SHOW_SETTING_PANL } from '../../constants/events'
+import { Playground, PreviewInstanceProps } from '../components'
+import { SCROLL_CENTER, SHOW_SETTING_PANL } from '../constants/events'
 import {
   DELETE_ALL_COMPONENT_LIST_AND_TARGET,
   SET_MOVEABLE_OPTIONS,
   useStore,
 } from '@r-generator/stores'
-import { parseJSON } from '../../utils/parseJSON'
-import eventBus from '../../utils/eventBus'
+import { parseJSON } from '../utils/parseJSON'
+import eventBus from '../utils/eventBus'
 
 interface RightActionType {
   handleType: (val: BtnTypes) => void
@@ -134,7 +134,7 @@ export default (props: RightActionType) => {
         type={type === 'setting' ? 'primary' : 'text'}
         onClick={() => handleType('setting')}
       />
-      <Preview ref={preview} />
+      <Playground ref={preview} />
     </div>
   )
 }
