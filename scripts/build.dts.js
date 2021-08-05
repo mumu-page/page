@@ -4,10 +4,7 @@ import clear from 'rollup-plugin-clear'
 
 export default inputs.map((pkg) => {
   const name = pkg.name.replace('@r-generator/', '')
-  const input = getInputFile(
-    name,
-    name === 'page' ? 'src/index.d.tsx' : pkg.get('source')
-  )
+  const input = getInputFile(name, pkg.get('source'))
   return {
     input,
     output: [
@@ -37,5 +34,8 @@ export default inputs.map((pkg) => {
       }),
       dts(),
     ],
+    external: (id) => {
+      return /\.(less|css)$/.test(id)
+    },
   }
 })

@@ -6,6 +6,7 @@
   "types": "./dist/index.d.ts",
   "source": "./src/index.ts",
   "module": "./es/index.js",
+  "order": 3,
   "directories": {
     "dist": "dist",
     "test": "__tests__"

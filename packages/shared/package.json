@@ -5,6 +5,7 @@
   "author": "仕林林 <295755973@qq.com>",
   "homepage": "https://github.com/r-generator/page#readme",
   "license": "ISC",
+  "order": 0,
   "main": "./dist/index.js",
   "source": "./index.ts",
   "types": "./dist/index.d.ts",
