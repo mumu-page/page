@@ -8,7 +8,7 @@ import {
 } from '@r-generator/stores'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { debounce } from 'lodash'
-import { Collapse, Title } from '../widgets'
+import { Collapse, Title } from '../../../components'
 /**
  * 布局增加精简模式和复杂模式
  * 精简模式：支持设置 几列布局等 比如：2列  3列  那么界面会自动适配

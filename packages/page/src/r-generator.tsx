@@ -9,7 +9,6 @@ import {
 } from '@r-generator/stores'
 import { LOCAL_STORE_KEY } from './constants'
 import './index.css'
-import './r-generator.less'
 import '@r-generator/mapping/dist/index.css'
 
 export default () => {

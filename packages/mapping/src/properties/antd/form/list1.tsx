@@ -1,7 +1,7 @@
 import React, { useEffect, memo } from 'react'
 import { Form, Button, Select, Row, Col, Popover, Input, Space } from 'antd'
 import { options, FORM_PROPERTIES_OPTIONS } from '../constants'
-import { Collapse } from '../widgets'
+import { Collapse } from '../../../components'
 import { DeleteOutlined, CopyOutlined, PlusOutlined } from '@ant-design/icons'
 import {
   SET_TARGET,

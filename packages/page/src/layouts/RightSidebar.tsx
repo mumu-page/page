@@ -1,10 +1,8 @@
 import React from 'react'
-import { AntdMapping } from '@r-generator/mapping'
+import { Setting } from '@r-generator/mapping'
 import { useStore } from '@r-generator/stores'
 import { Empty } from 'antd'
 import { BtnTypes } from '.'
-
-const { Setting } = AntdMapping
 
 interface IProps {
   type: BtnTypes

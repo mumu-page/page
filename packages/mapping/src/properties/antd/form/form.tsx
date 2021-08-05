@@ -2,9 +2,9 @@ import React, { useCallback, useContext, useEffect } from 'react'
 import { Form, Input, InputNumber, Radio } from 'antd'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { SET_TARGET, refreshTarget, useStore } from '@r-generator/stores'
-import { CheckboxField } from '../widgets'
+import { CheckboxField } from '../../../components'
 import { debounce, isNumber } from 'lodash'
-import { Collapse, Title } from '../widgets'
+import { Collapse, Title } from '../../../components'
 
 export default function () {
   const {

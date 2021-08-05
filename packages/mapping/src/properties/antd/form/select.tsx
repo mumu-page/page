@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { Button, Form } from 'antd'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
-import { Collapse, IRefType, OptionSet } from '../widgets'
+import { Collapse, IRefType, OptionSet } from '../../../components'
 import {
   SET_TARGET,
   UPDATE_COMPONENT_LIST_BY_TARGET,

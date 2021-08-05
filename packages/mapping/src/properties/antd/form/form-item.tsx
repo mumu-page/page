@@ -7,7 +7,7 @@ import {
   useStore,
   refreshTarget,
 } from '@r-generator/stores'
-import { Title, Collapse } from '../widgets'
+import { Title, Collapse } from '../../../components'
 import { debounce, isNumber } from 'lodash'
 
 export default function () {

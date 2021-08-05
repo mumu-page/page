@@ -1,3 +1,3 @@
-import * as AntdMapping from './antd'
-
-export { AntdMapping }
+export * from './properties/antd'
+export { default as Setting } from './setting/'
+export { default as List1 } from './components/List1'

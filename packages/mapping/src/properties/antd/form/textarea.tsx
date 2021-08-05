@@ -6,7 +6,7 @@ import {
   useStore,
 } from '@r-generator/stores'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
-import { Collapse, CheckboxField } from '../widgets'
+import { Collapse, CheckboxField } from '../../../components'
 interface FormData {
   [key: string]: any
 }

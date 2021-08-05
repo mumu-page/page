@@ -1,8 +1,8 @@
 import React, { CSSProperties } from 'react'
 import { Tabs } from 'antd'
-import Component from './component'
-import Layout from './layout'
-import Page from './page'
+import Component from './components/Component'
+import Layout from './components/Layout'
+import Page from './components/Page'
 import './index.less'
 
 const { TabPane } = Tabs

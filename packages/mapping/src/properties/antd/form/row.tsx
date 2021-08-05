@@ -7,7 +7,7 @@ import {
   refreshTarget,
 } from '@r-generator/stores'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
-import { CheckboxField, Collapse, Title } from '../widgets'
+import { CheckboxField, Collapse, Title } from '../../../components'
 import { debounce, merge } from 'lodash'
 
 // 默认全局布局

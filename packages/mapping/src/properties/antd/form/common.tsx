@@ -8,7 +8,7 @@ import {
   useStore,
 } from '@r-generator/stores'
 import { options, FORM_PROPERTIES_OPTIONS } from '../constants'
-import { Collapse, Title, CheckboxField } from '../widgets'
+import { Collapse, Title, CheckboxField } from '../../../components'
 
 const { Option, OptGroup } = Select
 

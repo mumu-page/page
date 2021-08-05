@@ -12,7 +12,7 @@ import {
   useStore,
 } from '@r-generator/stores'
 import { SelectOutlined, DeleteOutlined } from '@ant-design/icons'
-import { IconModal, IconModalInstanceProp, Collapse } from '../widgets'
+import { IconModal, IconModalInstanceProp, Collapse } from '../../../components'
 import { FORM_PROPERTIES_OPTIONS } from '../constants'
 import { debounce } from 'lodash'
 

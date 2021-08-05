@@ -1,5 +1,5 @@
 import React from 'react'
-import { RowProperties, FormProperties } from '../form'
+import { RowProperties, FormProperties } from '../../../properties/antd/form'
 
 export default function () {
   return (

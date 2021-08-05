@@ -1,7 +1,7 @@
 import React from 'react'
-import Mapping from '../Mapping'
-import { ColProperties, CommonProperties, FormItemProperties } from '../form'
-import { Title } from '../widgets'
+import Mapping from '../../../properties/antd/mapping'
+import { ColProperties, CommonProperties, FormItemProperties } from '../../../properties/antd/form'
+import { Title } from '../../../components'
 import { Empty } from 'antd'
 import { useStore } from '@r-generator/stores'
 const { getProperties } = Mapping
