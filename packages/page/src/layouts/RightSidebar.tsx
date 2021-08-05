@@ -23,7 +23,7 @@ export default function (props: IProps) {
       {mode === 'assemble' ? (
         <Setting />
       ) : (
-        <div className="p-10">
+        <div className="pt-60">
           <Empty description="自由绘制模式，敬请期待..." />
         </div>
       )}

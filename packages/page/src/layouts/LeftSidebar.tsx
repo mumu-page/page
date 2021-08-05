@@ -12,16 +12,10 @@ interface IProps {
 
 export default (props: IProps) => {
   const { type } = props
-  const { mode } = useStore()
+  
 
   const renderBody = () => {
-    if (mode === 'draw') {
-      return (
-        <div className="p-10">
-          <Empty description="当前为自由绘制模式，请切换为页面组装模式..." />
-        </div>
-      )
-    }
+    
     if (type === 'form-pool') {
       return <FormPool />
     }

@@ -19,6 +19,7 @@ import {
 } from '@r-generator/stores'
 import { parseJSON } from '../utils/parseJSON'
 import eventBus from '../utils/eventBus'
+import { handleBtnType, handleColor } from './utils'
 
 interface RightActionType {
   handleType: (val: BtnTypes) => void
@@ -32,13 +33,6 @@ export default (props: RightActionType) => {
     componentList,
     setGlobal: commonDispatch,
   } = useStore()
-
-  const handleColor = (val: BtnTypes) => {
-    return {
-      color: type !== val ? '#fff' : '',
-      fontSize: 18,
-    }
-  }
 
   const clean = () => {
     Modal.confirm({
@@ -89,49 +83,53 @@ export default (props: RightActionType) => {
   return (
     <div className="right-action">
       <Button
-        icon={<PlayCircleOutlined style={handleColor('run')} />}
-        type={type === 'run' ? 'primary' : 'text'}
+        icon={<PlayCircleOutlined style={handleColor('run', type)} />}
+        type={handleBtnType('run', type)}
         onClick={() => {
-          // handleType("run");
+          handleType('run')
           run()
         }}
       />
       <Button
-        icon={<PicCenterOutlined style={handleColor('center')} />}
-        type={type === 'center' ? 'primary' : 'text'}
+        icon={<PicCenterOutlined style={handleColor('center', type)} />}
+        type={handleBtnType('center', type)}
         onClick={() => {
+          handleType('center')
           center()
         }}
       />
       <Button
-        icon={<EyeOutlined style={handleColor('preview')} />}
-        type={type === 'preview' ? 'primary' : 'text'}
+        icon={<EyeOutlined style={handleColor('preview', type)} />}
+        type={handleBtnType('preview', type)}
         size="middle"
         onClick={() => {
+          handleType('preview')
           handlePreview()
         }}
       />
       <Button
-        icon={<VerticalAlignBottomOutlined style={handleColor('download')} />}
-        type={type === 'download' ? 'primary' : 'text'}
+        icon={
+          <VerticalAlignBottomOutlined style={handleColor('download', type)} />
+        }
+        type={handleBtnType('download', type)}
         size="middle"
         onClick={() => {
-          // handleType("download");
+          handleType('download')
           download()
         }}
       />
       <Button
-        icon={<DeleteOutlined style={handleColor('clean')} />}
-        type={type === 'clean' ? 'primary' : 'text'}
+        icon={<DeleteOutlined style={handleColor('clean', type)} />}
+        type={handleBtnType('clean', type)}
         danger
         onClick={() => {
-          // handleType("clean");
+          handleType('clean')
           clean()
         }}
       />
       <Button
-        icon={<SettingOutlined style={handleColor('setting')} />}
-        type={type === 'setting' ? 'primary' : 'text'}
+        icon={<SettingOutlined style={handleColor('setting', type)} />}
+        type={handleBtnType('setting', type)}
         onClick={() => handleType('setting')}
       />
       <Playground ref={preview} />

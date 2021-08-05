@@ -5,7 +5,7 @@ import LeftAction from './LeftAction'
 import RightAction from './RightAction'
 import { Moveable, InfiniteViewer } from '../components'
 import FormDesignArea from './components/AssembleArea'
-import DesignArea from './components/DrawArea'
+import DrawArea from './components/DrawArea'
 import { useStore } from '@r-generator/stores'
 import './index.less'
 
@@ -30,7 +30,7 @@ export default () => {
   const [type, setType] = useState<BtnTypes>('form-pool')
 
   const handleType = (val: BtnTypes) => {
-    if (type === val) {
+    if (type === val && type !== 'swtich') {
       setType('')
     } else {
       setType(val)
@@ -52,7 +52,7 @@ export default () => {
           <FormDesignArea />
         ) : (
           <InfiniteViewer>
-            <DesignArea />
+            <DrawArea />
             <Moveable />
           </InfiniteViewer>
         )}

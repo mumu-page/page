@@ -36,10 +36,18 @@ const resetId = (list: FormOption[]) => {
 
 export default function RenderPool(props: IRenderPool) {
   const { list, setList, title } = props
-  const { setGlobal } = useStore()
+  const { setGlobal, mode } = useStore()
 
   const onSearch = (_value: string) => {
     // console.log(value)
+  }
+
+  if (mode === 'draw') {
+    return (
+      <div className="render-pool isdraw">
+        <Empty description="当前为自由绘制模式，请切换为页面组装模式..." />
+      </div>
+    )
   }
 
   if (!list.length) {

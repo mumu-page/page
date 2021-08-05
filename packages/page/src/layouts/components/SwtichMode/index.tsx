@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Popover, Switch } from 'antd'
 import { BtnTypes } from '../..'
-import { IconFont } from '../../../constants'
 import { UPDATE_MODE, useStore } from '@r-generator/stores'
 import { SwapOutlined } from '@ant-design/icons'
 
 interface ISwtichMode {
-  handleBtnType: (val: BtnTypes) => 'primary' | 'text'
-  isghost: (arg: BtnTypes) => boolean
-  handleColor: (arg: BtnTypes) => {
+  handleBtnType: (val: BtnTypes, type: BtnTypes) => 'primary' | 'text'
+  handleColor: (
+    arg: BtnTypes,
+    type: BtnTypes
+  ) => {
     color: string
     fontSize: number
   }
@@ -17,12 +18,12 @@ interface ISwtichMode {
 }
 
 export default function SwtichMode(props: ISwtichMode) {
-  const { handleBtnType, isghost, handleColor, handleType, type } = props
+  const { handleBtnType, handleColor, handleType, type } = props
   const { setGlobal, mode } = useStore()
   const [visible, setVisible] = useState(false)
 
-  const handleVisibleChange = (visible: boolean) => {
-    setVisible(visible)
+  const handleVisibleChange = (_visible: boolean) => {
+    setVisible(true)
   }
 
   const renderContent = () => {
@@ -45,6 +46,12 @@ export default function SwtichMode(props: ISwtichMode) {
     )
   }
 
+  useEffect(() => {
+    if (type !== 'swtich') {
+      setVisible(false)
+    }
+  }, [type])
+
   return (
     <Popover
       placement="rightTop"
@@ -55,9 +62,11 @@ export default function SwtichMode(props: ISwtichMode) {
       onVisibleChange={handleVisibleChange}
     >
       <Button
-        type={handleBtnType('swtich')}
-        ghost={isghost('swtich')}
-        icon={<SwapOutlined style={handleColor('swtich')} />}
+        type={handleBtnType('swtich', type)}
+        icon={<SwapOutlined style={handleColor('swtich', type)} />}
+        onClick={() => {
+          handleType('swtich')
+        }}
       />
     </Popover>
   )
