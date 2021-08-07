@@ -5,24 +5,18 @@ import {
   commonReducer,
   useLPReducer,
   Context,
-  ICommonState,
 } from '@r-generator/stores'
-import { LOCAL_STORE_KEY } from './constants'
 import './index.css'
 import '@r-generator/mapping/dist/index.css'
 
 export default () => {
-  const [state, setGlobal] = useLPReducer(
-    commonReducer,
-    INITAL_STATE,
-    LOCAL_STORE_KEY
-  )
+  const { commonState, dispatch } = useLPReducer(commonReducer, INITAL_STATE)
 
   return (
     <Context.Provider
       value={{
-        ...((state as ICommonState) || INITAL_STATE),
-        setGlobal,
+        ...commonState,
+        setGlobal: dispatch,
       }}
     >
       <Layout />

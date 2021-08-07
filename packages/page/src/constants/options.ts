@@ -1,145 +1,296 @@
-import { IComponentKeys } from '@r-generator/stores'
+import { ItemInterface } from 'react-sortablejs'
+import { shortid } from '@r-generator/shared'
+import moment from 'moment'
 
-export interface FormOption {
-  label: string
-  key: string
-  value: string
-  children?: OptionItem[]
+export interface PoolGroup<T> {
+  title: string
+  children?: T[]
 }
 
-export interface OptionItem {
-  label: string
-  key: string
-  id?: string
-  value: IComponentKeys
+export interface PoolItem extends ItemInterface {
+  /* 组件标识 */
+  name: string
+  /* 组件名称 */
+  title: string
+  /* 组件参数 */
+  props?: { [name: string]: any }
+  /* 组件预览图 */
+  image?: string
+  /* 组件的下级 */
+  children?: PoolItem[]
 }
 
-export const formOptions: FormOption[] = [
+export const FORM_POOLS: PoolGroup<PoolItem>[] = [
   {
-    label: '输入型组件',
-    key: 'input-group',
-    value: 'input-group',
+    title: '输入型组件',
     children: [
       {
-        label: '单行文本',
-        key: 'Input',
-        value: 'Input',
+        title: '单行文本',
+        name: 'form/item',
+        props: { label: '单行文本' },
+        id: shortid(),
+        children: [
+          {
+            title: '单行文本',
+            name: 'input',
+            id: shortid(),
+          },
+        ],
       },
       {
-        label: '多行文本',
-        key: 'Input.TextArea',
-        value: 'Input.TextArea',
+        title: '多行文本',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '多行文本' },
+        children: [
+          {
+            title: '多行文本',
+            name: 'input/text-area',
+            id: 'input/text-area',
+          },
+        ],
+      },
+
+      {
+        title: '密码',
+        name: 'form/item',
+        props: { label: '密码' },
+        id: shortid(),
+        children: [
+          {
+            title: '密码',
+            name: 'input/password',
+            id: 'input/password',
+          },
+        ],
       },
       {
-        label: '密码',
-        key: 'Input.Password',
-        value: 'Input.Password',
+        title: '计数器',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '计数器' },
+        children: [
+          {
+            title: '计数器',
+            name: 'input-number',
+            id: 'input-number',
+          },
+        ],
       },
-      {
-        label: '计数器',
-        key: 'InputNumber',
-        value: 'InputNumber',
-      },
+
       /* {
-        label: "编辑器",
-        key: "Editor",
-        value: "Editor",
-        icon: "icon-icon-editor",
+        title: "编辑器",
+        name: "Editor",
       }, */
     ],
   },
   {
-    label: '选择型组件',
-    key: 'select-group',
-    value: 'select-group',
+    title: '选择型组件',
     children: [
       {
-        label: '下拉选择',
-        key: 'Select',
-        value: 'Select',
+        title: '下拉选择',
+        name: 'form/item',
+        props: { label: '下拉选择' },
+        id: shortid(),
+        children: [
+          {
+            title: '下拉选择',
+            name: 'select',
+            id: 'select',
+          },
+        ],
       },
       {
-        label: '级联选择',
-        key: 'Cascader',
-        value: 'Cascader',
+        title: '级联选择',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '级联选择' },
+        children: [
+          {
+            title: '级联选择',
+            name: 'cascader',
+            id: 'cascader',
+          },
+        ],
       },
       {
-        label: '单选框组',
-        key: 'Radio',
-        value: 'Radio',
-      },
-      {
-        label: '多选框组',
-        key: 'Checkbox',
-        value: 'Checkbox',
-      },
-      {
-        label: '开关',
-        key: 'Switch',
-        value: 'Switch',
-      },
-      {
-        label: '滑块',
-        key: 'Slider',
-        value: 'Slider',
-      },
-      {
-        label: '时间选择',
-        key: 'TimePicker',
-        value: 'TimePicker',
+        title: '单选框组',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '单选框组' },
+        children: [
+          {
+            title: '单选框组',
+            name: 'radio',
+            id: 'radio',
+          },
+        ],
       },
 
       {
-        label: '时间范围',
-        key: 'TimePicker.RangePicker',
-        value: 'TimePicker.RangePicker',
+        title: '多选框组',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '多选框组' },
+        children: [
+          {
+            title: '多选框组',
+            name: 'checkbox',
+            id: 'checkbox',
+          },
+        ],
       },
       {
-        label: '日期选择',
-        key: 'DatePicker',
-        value: 'DatePicker',
+        title: '开关',
+        name: 'form/item',
+        props: { label: '开关' },
+        id: shortid(),
+        children: [
+          {
+            title: '开关',
+            name: 'switch',
+            id: 'switch',
+          },
+        ],
       },
       {
-        label: '日期范围',
-        key: 'DatePicker.RangePicker',
-        value: 'DatePicker.RangePicker',
+        title: '滑块',
+        name: 'form/item',
+        props: { label: '滑块' },
+        id: shortid(),
+        children: [
+          {
+            title: '滑块',
+            name: 'slider',
+            id: 'slider',
+          },
+        ],
       },
       {
-        label: '评分',
-        key: 'Rate',
-        value: 'Rate',
+        title: '时间选择',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '时间选择' },
+        children: [
+          {
+            title: '时间选择',
+            name: 'time-picker',
+            id: 'time-picker',
+            props: {
+              value: moment(),
+            },
+          },
+        ],
       },
+      {
+        title: '时间范围',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '时间范围' },
+        children: [
+          {
+            title: '时间范围',
+            name: 'time-picker/range-picker',
+            id: 'time-picker/range-picker',
+            props: {
+              value: [moment(), moment()],
+            },
+          },
+        ],
+      },
+
+      {
+        title: '日期选择',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '日期选择' },
+        children: [
+          {
+            title: '日期选择',
+            name: 'date-picker',
+            id: 'date-picker',
+            props: {
+              value: moment(),
+            },
+          },
+        ],
+      },
+
+      {
+        title: '日期范围',
+        name: 'form/item',
+        props: { label: '日期范围' },
+        id: shortid(),
+        children: [
+          {
+            title: '日期范围',
+            name: 'date-picker/range-picker',
+            id: 'date-picker/range-picker',
+            props: {
+              value: [moment(), moment()],
+            },
+          },
+        ],
+      },
+      {
+        title: '评分',
+        name: 'form/item',
+        props: { label: '评分' },
+        id: shortid(),
+        children: [
+          {
+            title: '评分',
+            name: 'rate',
+            id: 'rate',
+          },
+        ],
+      },
+      {
+        title: '上传',
+        name: 'form/item',
+        props: { label: '上传' },
+        id: shortid(),
+        children: [
+          {
+            title: '上传',
+            name: 'upload',
+            id: 'upload',
+          },
+        ],
+      },
+
       // {
       //     title: '颜色选择',
-      //     key: 'color',
-      //     icon: 'icon-yanse',
+      //     name: 'color',
       // },
-      {
-        label: '上传',
-        key: 'Upload',
-        value: 'Upload',
-      },
     ],
   },
   {
-    label: '布局型组件',
-    key: 'layout-group',
-    value: 'layout-group',
+    title: '布局型组件',
     children: [
       {
-        label: '列表1',
-        key: 'List1',
-        value: 'List1',
+        title: '列表1',
+        name: 'form/item',
+        id: shortid(),
+        props: { label: '列表1' },
+        children: [
+          {
+            title: '列表1',
+            name: 'list1',
+            id: 'list1',
+          },
+        ],
       },
+
       /* {
-        label: "行容器",
-        key: "Col",
+        title: "行容器",
+        name: "Col",
         value: "Col",
         icon: "icon-hangrongqi",
       },
       {
-        label: "按钮",
-        key: "Button",
+        title: "按钮",
+        name: "Button",
         value: "Button",
         icon: "icon-Onebuttonalarm",
       }, */

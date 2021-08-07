@@ -1,53 +1,62 @@
 import { useContext, useReducer, useEffect } from 'react'
-import { Context } from './context'
 import { cloneDeep } from 'lodash'
-import { ICommonState } from './types'
+import { Context } from './context'
+import { IndexedDB } from '@r-generator/shared'
+import { commonReducer } from './reducers'
+import { SET_GLOBAL } from './actionTypes'
+import { shortid } from '../../shared'
 
 export function useStore() {
-  const store = useContext(Context)
-  return store
+  return useContext(Context)
 }
 
-/**
- * 包装reducer，让它具有本地持久化能力
- * 
- * 利用了useReducer的第三个参数：初始化器
- * @param reducer 原始reducer
- * @param defaultState 默认值
- * @param storageKey 存储到本地的Key
- * @param init 初始化函数
- * @param excludeKeys 不需要持久化的属性
- */
-export function useLPReducer(
-  reducer: (...arg: any) => ICommonState,
-  defaultState: any,
-  storageKey: string,
-  init?: any,
-  excludeKeys = ['moveableOptions']
-) {
-  const hookVars = useReducer(reducer, defaultState, (defaultState) => {
-    let persisted
-    try {
-      const local = localStorage.getItem(storageKey)
-      if (typeof local === 'string') {
-        persisted = JSON.parse(local)
-      }
-    } catch (e) {}
-    return typeof persisted !== 'undefined'
-      ? persisted
-      : typeof init !== 'undefined'
-      ? init(defaultState)
-      : defaultState
-  })
+const indexedDB = new IndexedDB()
+const CURRENT_ID = 'CURRENT_ID'
+let isInit = true
 
-  const state: any = cloneDeep(hookVars[0])
-  excludeKeys.forEach((key) => {
-    delete state[key]
-  })
+/**
+ * 包装reducer，新增本地持久化能力
+ * @param reducer 原始reducer
+ * @param initialState 默认值
+ */
+export function useLPReducer(reducer: typeof commonReducer, initialState: any) {
+  const [commonState, dispatch] = useReducer(reducer, initialState)
+  const { setGlobal, ...state } = commonState
+  const stateBackup: any = cloneDeep(state)
+  // console.log('useLPReducer called')
+  // console.log(stateBackup)
+
+  const init = () => {
+    // console.log('init')
+    indexedDB
+      .readAll()
+      .then((res) => {
+        const id = window.localStorage.getItem(CURRENT_ID)
+        res.forEach((item) => {
+          if (id === item.id) {
+            // console.log(item)
+            dispatch({ type: SET_GLOBAL, payload: item })
+            return
+          }
+        })
+      })
+      .finally(() => {
+        isInit = false
+      })
+  }
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(state))
-  }, [storageKey, hookVars, state])
+    if (isInit) return
+    const id = shortid()
+    // console.log('useEffect stateBackup')
+    stateBackup.id = id
+    indexedDB.add(stateBackup, id)
+    window.localStorage.setItem(CURRENT_ID, id)
+  }, [JSON.stringify(stateBackup)])
 
-  return hookVars
+  useEffect(() => {
+    init()
+  }, [])
+
+  return { commonState, dispatch }
 }

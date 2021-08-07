@@ -3,19 +3,19 @@ import {
   WindowsOutlined,
   FormOutlined,
   LineChartOutlined,
+  HistoryOutlined,
 } from '@ant-design/icons'
 import { Button } from 'antd'
-import { BtnTypes } from '.'
 import { Logo } from '../components'
 import SwtichMode from './components/SwtichMode'
-import { useStore } from '@r-generator/stores'
+import { IActionType, useStore } from '@r-generator/stores'
 import { handleBtnType, handleColor, isDisabled } from './utils'
 
-interface RightActionType {
-  handleType: (val: BtnTypes) => void
-  type: BtnTypes
+interface ILeftActionProp {
+  handleType: (val: IActionType) => void
+  type: IActionType
 }
-export default (props: RightActionType) => {
+export default (props: ILeftActionProp) => {
   const { type, handleType } = props
   const { mode } = useStore()
 
@@ -45,6 +45,12 @@ export default (props: RightActionType) => {
           handleBtnType={handleBtnType}
           handleColor={handleColor}
           handleType={handleType}
+        />
+        <Button
+          disabled={isDisabled(mode)}
+          type={handleBtnType('history', type)}
+          icon={<HistoryOutlined style={handleColor('history', type)} />}
+          onClick={() => handleType('history')}
         />
       </div>
       <Logo />

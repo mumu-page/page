@@ -20,13 +20,11 @@ import {
   SET_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
   SET_TARGET_BY_COMPONENT_LIST,
-  ISetGlobal,
   IFormComProp,
   IMoveableOptions,
   refreshTarget,
   useStore,
 } from '@r-generator/stores'
-import { isDatePicker } from '../../../utils/utils'
 import { Target_ClassName } from '../../../constants'
 import Menu from '../../../components/ContextMenu/Menu'
 import {
@@ -37,10 +35,11 @@ import eventBus from '../../../utils/eventBus'
 import './index.less'
 import { ReactSortable } from 'react-sortablejs'
 
-interface EditorAreaProps extends ISetGlobal<object> {
+interface EditorAreaProps {
   componentList: IFormComProp[]
   target: IFormComProp
   moveableOptions: IMoveableOptions
+  setGlobal: any
 }
 
 enum HANDLE_TYPE {
@@ -92,13 +91,8 @@ const Wrap = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
 const ghostClass = 'sortable-ghost'
 const chosenClass = 'sortable-chosen'
 
-export default function Container(props: EditorAreaProps) {
-  const {
-    target,
-    moveableOptions,
-    componentList = [],
-    setGlobal: commonDispatch,
-  } = props
+export default function List(props: EditorAreaProps) {
+  const { target, moveableOptions, componentList = [], setGlobal } = props
   const [form] = Form.useForm()
   const contenxtMenu = useRef(null)
   const {
@@ -115,7 +109,7 @@ export default function Container(props: EditorAreaProps) {
     id: string | number | undefined,
     componentList: IFormComProp[]
   ) => {
-    commonDispatch({
+    setGlobal({
       type: SET_COMPONENT_LIST,
       payload: {
         newState: componentList,
@@ -131,16 +125,16 @@ export default function Container(props: EditorAreaProps) {
    */
   const handleContextMenuClick = (key: string, label: string) => {
     if (label === HANDLE_TYPE.del) {
-      commonDispatch({
+      setGlobal({
         type: DEL_COMPONENT_LIST,
         payload: {
           id: target.id,
         },
       })
-      commonDispatch({
+      setGlobal({
         type: DELETE_TARGET,
       })
-      commonDispatch({
+      setGlobal({
         type: SET_MOVEABLE_OPTIONS,
         payload: {
           target: null,
@@ -152,7 +146,7 @@ export default function Container(props: EditorAreaProps) {
     }
     if (label === HANDLE_TYPE.copy) {
       const newId = shortid()
-      commonDispatch({
+      setGlobal({
         type: COPY_COMPONENT_LIST,
         payload: {
           id: target.id,
@@ -161,22 +155,22 @@ export default function Container(props: EditorAreaProps) {
       })
     }
     if (label === HANDLE_TYPE.toLeft) {
-      commonDispatch({
+      setGlobal({
         type: LEFT_REMOVE_COMPONENTS,
         payload: {
           id: target.id,
         },
       })
-      refreshTarget(moveableOptions?.target, commonDispatch)
+      refreshTarget(moveableOptions?.target, setGlobal)
     }
     if (label === HANDLE_TYPE.toRight) {
-      commonDispatch({
+      setGlobal({
         type: RIGHT_REMOVE_COMPONENTS,
         payload: {
           id: target.id,
         },
       })
-      refreshTarget(moveableOptions?.target, commonDispatch)
+      refreshTarget(moveableOptions?.target, setGlobal)
     }
   }
 
@@ -200,18 +194,18 @@ export default function Container(props: EditorAreaProps) {
     }
   }, [target.id])
 
-  useEffect(() => {
-    const _initialValues = {} as any
-    componentList.forEach((item) => {
-      const { componentKey, formItemProps, componentProps } = item
-      const { name } = formItemProps || {}
-      const { defaultValue } = componentProps || {}
-      if (!isDatePicker(componentKey)) {
-        _initialValues[name] = defaultValue
-      }
-    })
-    form.setFieldsValue(_initialValues)
-  }, [componentList, form])
+  // useEffect(() => {
+  // const _initialValues = {} as any
+  // componentList.forEach((item) => {
+  //   const { componentKey, formItemProps, componentProps } = item
+  //   const { name } = formItemProps || {}
+  //   const { defaultValue } = componentProps || {}
+  //   if (!isDatePicker(componentKey)) {
+  //     _initialValues[name] = defaultValue
+  //   }
+  // })
+  // form.setFieldsValue(_initialValues)
+  // }, [componentList, form])
 
   return (
     <Form
@@ -235,7 +229,7 @@ export default function Container(props: EditorAreaProps) {
           put: true,
         }}
         setList={(newState) => {
-          commonDispatch({
+          setGlobal({
             type: SET_COMPONENT_LIST,
             payload: { newState, id: target?.id },
           })
@@ -244,7 +238,7 @@ export default function Container(props: EditorAreaProps) {
           const id = e.item.dataset.id
           //   e.item.target.classList
           if (id === target.id) return
-          commonDispatch({
+          setGlobal({
             type: SET_TARGET_BY_COMPONENT_LIST,
             payload: { id },
           })
@@ -259,7 +253,7 @@ export default function Container(props: EditorAreaProps) {
             id,
             chosen,
             children,
-            componentKey,
+            name,
             formItemProps,
             componentProps,
             colProps: selfColProps = {},
@@ -295,7 +289,7 @@ export default function Container(props: EditorAreaProps) {
               }}
               onContextMenu={(e) => {
                 e.preventDefault()
-                commonDispatch({
+                setGlobal({
                   type: SET_TARGET_BY_COMPONENT_LIST,
                   payload: { id },
                 })
@@ -316,7 +310,7 @@ export default function Container(props: EditorAreaProps) {
                   e.stopPropagation()
                   //  console.log('onClick', e)
                   if (id === target.id) return
-                  commonDispatch({
+                  setGlobal({
                     type: SET_TARGET_BY_COMPONENT_LIST,
                     payload: { id },
                   })
@@ -324,19 +318,9 @@ export default function Container(props: EditorAreaProps) {
                 }}
               >
                 <ComponentItem
-                  id={id}
-                  key={id}
-                  form={form}
-                  children={children}
-                  colProps={colProps}
-                  rowProps={rowProps}
-                  formProps={formProps}
-                  formItemProps={formItemProps}
-                  componentProps={componentProps}
-                  componentKey={componentKey}
-                  //   style={{
-                  //     marginBottom: 0,
-                  //   }}
+                  children={item.children}
+                  componentProps={item.props}
+                  name={item.name}
                 />
               </div>
             </Col>

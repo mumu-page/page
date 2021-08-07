@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, Popover, Switch } from 'antd'
-import { BtnTypes } from '../..'
-import { UPDATE_MODE, useStore } from '@r-generator/stores'
-import { SwapOutlined } from '@ant-design/icons'
+import { Button, Col, Form, Popover, Row, Switch } from 'antd'
+import { IActionType, UPDATE_MODE, useStore } from '@r-generator/stores'
+import { CloseOutlined, SwapOutlined } from '@ant-design/icons'
 
 interface ISwtichMode {
-  handleBtnType: (val: BtnTypes, type: BtnTypes) => 'primary' | 'text'
+  handleBtnType: (val: IActionType, type: IActionType) => 'primary' | 'text'
   handleColor: (
-    arg: BtnTypes,
-    type: BtnTypes
+    arg: IActionType,
+    type: IActionType
   ) => {
     color: string
     fontSize: number
   }
-  type: BtnTypes
-  handleType: (arg: BtnTypes) => void
+  type: IActionType
+  handleType: (arg: IActionType) => void
 }
 
 export default function SwtichMode(props: ISwtichMode) {
@@ -56,7 +55,21 @@ export default function SwtichMode(props: ISwtichMode) {
     <Popover
       placement="rightTop"
       content={renderContent()}
-      title="模式切换"
+      title={
+        <Row justify="space-between">
+          <Col>模式切换</Col>
+          <Col>
+            <CloseOutlined
+              style={{
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                setVisible(false)
+              }}
+            />
+          </Col>
+        </Row>
+      }
       trigger="click"
       visible={visible}
       onVisibleChange={handleVisibleChange}

@@ -9,11 +9,11 @@ import {
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
 import { Button, Modal } from 'antd'
-import { BtnTypes } from '.'
 import { Playground, PreviewInstanceProps } from '../components'
 import { SCROLL_CENTER, SHOW_SETTING_PANL } from '../constants/events'
 import {
   DELETE_ALL_COMPONENT_LIST_AND_TARGET,
+  IActionType,
   SET_MOVEABLE_OPTIONS,
   useStore,
 } from '@r-generator/stores'
@@ -22,8 +22,8 @@ import eventBus from '../utils/eventBus'
 import { handleBtnType, handleColor } from './utils'
 
 interface RightActionType {
-  handleType: (val: BtnTypes) => void
-  type: BtnTypes
+  handleType: (val: IActionType) => void
+  type: IActionType
 }
 export default (props: RightActionType) => {
   const { type, handleType } = props
@@ -86,7 +86,6 @@ export default (props: RightActionType) => {
         icon={<PlayCircleOutlined style={handleColor('run', type)} />}
         type={handleBtnType('run', type)}
         onClick={() => {
-          handleType('run')
           run()
         }}
       />
@@ -94,7 +93,6 @@ export default (props: RightActionType) => {
         icon={<PicCenterOutlined style={handleColor('center', type)} />}
         type={handleBtnType('center', type)}
         onClick={() => {
-          handleType('center')
           center()
         }}
       />
@@ -103,7 +101,6 @@ export default (props: RightActionType) => {
         type={handleBtnType('preview', type)}
         size="middle"
         onClick={() => {
-          handleType('preview')
           handlePreview()
         }}
       />
@@ -114,7 +111,6 @@ export default (props: RightActionType) => {
         type={handleBtnType('download', type)}
         size="middle"
         onClick={() => {
-          handleType('download')
           download()
         }}
       />
@@ -123,7 +119,6 @@ export default (props: RightActionType) => {
         type={handleBtnType('clean', type)}
         danger
         onClick={() => {
-          handleType('clean')
           clean()
         }}
       />

@@ -1,2 +1,1 @@
-export {default as Mapping} from './mapping'
-
+export * from './mapping'

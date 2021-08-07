@@ -52,10 +52,31 @@ export interface IMoveableOptions {
  */
 export type IMode = 'draw' | 'assemble'
 
+export type IActionType =
+  | ''
+  | 'history'
+  | 'form-pool'
+  | 'base-pool'
+  | 'chart-pool'
+  | 'swtich'
+  | 'run'
+  | 'clean'
+  | 'copy'
+  | 'download'
+  | 'setting'
+  | 'preview'
+  | 'center'
+  | string
+
 export interface ICommonState extends ISetGlobal<object> {
-  target: IFormComProp // 当前拖拽的表单控件
-  componentList: IFormComProp[] // 当前编辑区的组件列表
-  moveableOptions: IMoveableOptions // Moveable props
-  mode: IMode // 设计区模式
-  [key:string]: any
+  /* 当前拖拽的表单控件 */
+  target: any
+  /* 当前编辑区的组件列表 */
+  componentList: any[]
+  /* props */
+  moveableOptions: IMoveableOptions
+  /* 设计区模式 */
+  mode: IMode
+  actionType: IActionType
+  [key: string]: any
 }

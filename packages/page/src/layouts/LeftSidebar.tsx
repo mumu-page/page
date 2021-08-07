@@ -1,33 +1,32 @@
-import React from 'react'
-import { Empty } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { useStore } from '@r-generator/stores'
 import FormPool from './components/FormPool'
-import { BtnTypes } from '.'
 import BasePool from './components/BasePool'
 import ChartPool from './components/ChartPool'
+import History from './components/History'
 
-interface IProps {
-  type: BtnTypes
-}
-
-export default (props: IProps) => {
-  const { type } = props
-  
+export default () => {
+  const { actionType } = useStore()
 
   const renderBody = () => {
-    
-    if (type === 'form-pool') {
+    if (actionType === 'form-pool') {
       return <FormPool />
     }
-    if (type === 'base-pool') {
+    if (actionType === 'base-pool') {
       return <BasePool />
     }
-    if (type === 'chart-pool') {
+    if (actionType === 'chart-pool') {
       return <ChartPool />
     }
+    if (actionType === 'history') {
+      return <History />
+    }
+    return <></>
   }
 
-  if (!['form-pool', 'base-pool', 'chart-pool'].includes(type)) {
+  if (
+    !['form-pool', 'base-pool', 'chart-pool', 'history'].includes(actionType)
+  ) {
     return null
   }
 

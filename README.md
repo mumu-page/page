@@ -58,7 +58,8 @@ cd packages/page/ && npm start
 ```
 
 ## TODO
-- [ ] 组件池列表配置优化
+- [x] 组件池列表配置优化
+- [x] 本地持久化更换为IndexedDB。
 - [ ] 根据配置编译HTML
 
 

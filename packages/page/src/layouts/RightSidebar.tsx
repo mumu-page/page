@@ -1,11 +1,10 @@
 import React from 'react'
 import { Setting } from '@r-generator/mapping'
-import { useStore } from '@r-generator/stores'
+import { IActionType, useStore } from '@r-generator/stores'
 import { Empty } from 'antd'
-import { BtnTypes } from '.'
 
 interface IProps {
-  type: BtnTypes
+  type: IActionType
 }
 
 export default function (props: IProps) {
@@ -16,15 +15,20 @@ export default function (props: IProps) {
     return null
   }
 
+  const renderContent = () => {
+    if (mode === 'assemble') {
+      return <Setting />
+    }
+    return (
+      <div className="pt-60">
+        <Empty description="自由绘制模式，敬请期待..." />
+      </div>
+    )
+  }
+
   return (
     <div className="right-sidebar">
-      {mode === 'assemble' ? (
-        <Setting />
-      ) : (
-        <div className="pt-60">
-          <Empty description="自由绘制模式，敬请期待..." />
-        </div>
-      )}
+      {renderContent()}
     </div>
   )
 }

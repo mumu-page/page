@@ -1,5 +1,6 @@
+import { Context } from './context'
 import { commonReducer } from './reducers'
-import { INITAL_STATE, Context } from './context'
+import { INITAL_STATE } from './state'
 
 export * from './utils'
 export * from './hooks'

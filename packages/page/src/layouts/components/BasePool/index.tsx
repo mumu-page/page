@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { RenderPool } from '../../../components'
 
-export default function FormPool() {
-  const [list, setList] = useState([])
-
-  return <RenderPool title='基础组件' list={list} setList={setList} />
+export default function BasePool() {
+  return <RenderPool title="基础组件" pools={[]} />
 }

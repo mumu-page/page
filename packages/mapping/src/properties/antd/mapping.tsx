@@ -33,112 +33,74 @@ import {
   Rate,
   Upload,
   Button,
+  Form,
 } from 'antd'
 import { List1 } from '../../components'
-import type { IComponentKeys } from '@r-generator/stores'
 import { UploadOutlined } from '@ant-design/icons'
+import React from 'react'
 
-const Mapping = {
-  '': {
-    properties: <></>,
-    component: <></>,
-  },
-  Input: {
-    properties: <InputProperties />,
-    component: <Input />,
-  },
-  'Input.TextArea': {
-    properties: <TextAreaProperties />,
-    component: <Input.TextArea />,
-  },
-  'Input.Password': {
-    properties: <PasswordProperties />,
-    component: <Input.Password />,
-  },
-  InputNumber: {
-    properties: <NumberProperties />,
-    component: <InputNumber />,
-  },
-  Editor: {
-    properties: <EditorProperties />,
-    component: <>editor</>,
-  },
-  Select: {
-    properties: <SelectProperties />,
-    component: <Select />,
-  },
-  Cascader: {
-    properties: <CascaderProperties />,
-    component: <Cascader />,
-  },
-  Radio: {
-    properties: <RadioProperties />,
-    component: <Radio />,
-  },
-  Checkbox: {
-    properties: <CheckboxProperties />,
-    component: <Checkbox />,
-  },
-  Switch: {
-    properties: <SwitchProperties />,
-    component: <Switch />,
-  },
-  Slider: {
-    properties: <SliderProperties />,
-    component: <Slider />,
-  },
-  TimePicker: {
-    properties: <TimePickerProperties />,
-    component: <TimePicker />,
-  },
-  'TimePicker.RangePicker': {
-    properties: <TimeRangePickerProperties />,
-    component: <TimePicker.RangePicker />,
-  },
-  DatePicker: {
-    properties: <DatePickerProperties />,
-    component: <DatePicker />,
-  },
-  'DatePicker.RangePicker': {
-    properties: <DateRangePickerProperties />,
-    component: <DatePicker.RangePicker />,
-  },
-  Rate: {
-    properties: <RateProperties />,
-    component: <Rate />,
-  },
-  Upload: {
-    properties: <UploadProperties />,
-    component: (
+class Mapping {
+  Component: React.CElement<{}, React.Component<{}, any, any>>
+  Properties: React.CElement<{}, React.Component<{}, any, any>>
+  constructor(Component: any, Properties: any) {
+    if (Component == null || typeof Component === 'undefined') Component = <></>
+    if (Properties == null || typeof Properties === 'undefined')
+      Properties = <></>
+    this.Component = React.createElement(Component)
+    this.Properties = React.createElement(Properties)
+  }
+}
+
+const mapping = new Map<string, Mapping>()
+mapping.set('input', new Mapping(Input, InputProperties))
+mapping.set('input/text-area', new Mapping(Input.TextArea, TextAreaProperties))
+mapping.set('input/password', new Mapping(Input.Password, PasswordProperties))
+mapping.set('input-number', new Mapping(InputNumber, NumberProperties))
+mapping.set('editor', new Mapping(null, EditorProperties))
+mapping.set('select', new Mapping(Select, SelectProperties))
+mapping.set('cascader', new Mapping(Cascader, CascaderProperties))
+mapping.set('radio', new Mapping(Radio, RadioProperties))
+mapping.set('checkbox', new Mapping(Checkbox, CheckboxProperties))
+mapping.set('switch', new Mapping(Switch, SwitchProperties))
+mapping.set('slider', new Mapping(Slider, SliderProperties))
+mapping.set('time-picker', new Mapping(TimePicker, TimePickerProperties))
+mapping.set(
+  'time-picker/range-picker',
+  new Mapping(TimePicker.RangePicker, TimeRangePickerProperties)
+)
+mapping.set('date-picker', new Mapping(DatePicker, DatePickerProperties))
+mapping.set(
+  'date-picker/range-picker',
+  new Mapping(DatePicker.RangePicker, DateRangePickerProperties)
+)
+mapping.set('rate', new Mapping(Rate, RateProperties))
+mapping.set('button', new Mapping(Button, ButtonProperties))
+mapping.set('list1', new Mapping(List1, List1Properties))
+mapping.set(
+  'upload',
+  new Mapping(
+    (
       <Upload>
         <Button icon={<UploadOutlined />}>Click to Upload</Button>
       </Upload>
     ),
-  },
-  Col: {
-    properties: <></>, //<RowProperties />,
-    component: <></>, //<RowSortable />,
-  },
-  Button: {
-    properties: <ButtonProperties />,
-    component: <Button />,
-  },
-  List1: {
-    properties: <List1Properties />,
-    component: <List1 />,
-  },
-  getComponent(componentKey: IComponentKeys) {
-    if (Mapping[componentKey]) {
-      return Mapping[componentKey].component
-    }
-    return <></>
-  },
-  getProperties(componentKey: IComponentKeys) {
-    if (Mapping[componentKey]) {
-      return Mapping[componentKey].properties
-    }
-    return <></>
-  },
+    UploadProperties
+  )
+)
+mapping.set('form/item', new Mapping(Form.Item, null))
+
+export function getComponent(key: string) {
+  if (mapping.has(key)) {
+    return mapping.get(key)?.Component || <></>
+  }
+  return <></>
 }
 
-export default Mapping
+export function getProperties(key: string) {
+  if (mapping.has(key)) {
+    return mapping.get(key)?.Properties || <></>
+  }
+  return <></>
+}
+
+export default mapping

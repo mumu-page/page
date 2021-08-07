@@ -5,7 +5,7 @@ import {
   SET_TARGET,
   SET_TARGET_BY_COMPONENT_LIST,
 } from '../actionTypes'
-import { INITAL_STATE } from '../context'
+import { INITAL_STATE } from '../state'
 import { ICommonState, IFormComProp } from '../types'
 import { coverValue } from './utils'
 

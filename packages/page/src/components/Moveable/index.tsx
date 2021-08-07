@@ -11,14 +11,10 @@ const layout = {
   frame: { translate: [0, 0] },
 } as any
 export default () => {
-  const {
-    target: currentDragComponent,
-    moveableOptions = {},
-    setGlobal: commonDispatch,
-  } = useStore()
+  const { target, moveableOptions = {}, setGlobal } = useStore()
 
   const {
-    target,
+    target: target2,
     elementGuidelines,
     frame = { translate: [0, 0] },
     bounds,
@@ -34,7 +30,7 @@ export default () => {
       parentEl?.getBoundingClientRect?.() || {}
     // Moveable的bounds是基于整个窗口的
     // 而getBoundingClientRect是基于当前元素，因此存在误差
-    commonDispatch({
+    setGlobal({
       type: SET_MOVEABLE_OPTIONS,
       payload: {
         bounds: {
@@ -52,16 +48,16 @@ export default () => {
   }, [])
 
   useEffect(() => {
-    const { layout = {} } = currentDragComponent
-    commonDispatch({
+    const { layout = {} } = target
+    setGlobal({
       type: SET_MOVEABLE_OPTIONS,
       payload: layout,
     })
-  }, [currentDragComponent])
+  }, [target])
 
   return (
     <Moveable
-      target={target}
+      target={target2}
       // ------------------ 辅助线开始 ------------------
       elementGuidelines={elementGuidelines}
       verticalGuidelines={verticalGuidelines}
@@ -105,7 +101,7 @@ export default () => {
       onDragEnd={({ target, isDrag, clientX, clientY }) => {
         // console.log('onDragEnd', target, isDrag, clientX, clientY)
         const { frame } = layout
-        commonDispatch({
+        setGlobal({
           type: SET_TARGET,
           payload: {
             layout: {
@@ -115,7 +111,7 @@ export default () => {
             },
           },
         })
-        commonDispatch({
+        setGlobal({
           type: UPDATE_COMPONENT_LIST_BY_TARGET,
           payload: {
             data: {
@@ -145,7 +141,7 @@ export default () => {
         // console.log("lastEvent", lastEvent);
         if (lastEvent) {
           const { frame, width, height } = layout
-          commonDispatch({
+          setGlobal({
             type: SET_TARGET,
             payload: {
               layout: {
@@ -155,7 +151,7 @@ export default () => {
               },
             },
           })
-          commonDispatch({
+          setGlobal({
             type: UPDATE_COMPONENT_LIST_BY_TARGET,
             payload: {
               data: {

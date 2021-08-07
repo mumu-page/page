@@ -4,61 +4,60 @@ import RightSidebar from './RightSidebar'
 import LeftAction from './LeftAction'
 import RightAction from './RightAction'
 import { Moveable, InfiniteViewer } from '../components'
-import FormDesignArea from './components/AssembleArea'
+import AssembleArea from './components/AssembleArea'
 import DrawArea from './components/DrawArea'
-import { useStore } from '@r-generator/stores'
+import { useStore, IActionType, UPDATE_ACTION_TYPE } from '@r-generator/stores'
+import { resetViewport } from '../utils/utils'
 import './index.less'
 
-import { resetViewport } from '../utils/utils'
-
-export type BtnTypes =
-  | ''
-  | 'form-pool'
-  | 'base-pool'
-  | 'chart-pool'
-  | 'swtich'
-  | 'run'
-  | 'clean'
-  | 'copy'
-  | 'download'
-  | 'setting'
-  | 'preview'
-  | 'center'
-
 export default () => {
-  const { mode } = useStore()
-  const [type, setType] = useState<BtnTypes>('form-pool')
+  const { mode, setGlobal, actionType } = useStore()
 
-  const handleType = (val: BtnTypes) => {
-    if (type === val && type !== 'swtich') {
-      setType('')
+  const handleType = (val: IActionType) => {
+    if (actionType === val && actionType !== 'swtich') {
+      setGlobal({
+        type: UPDATE_ACTION_TYPE,
+        payload: {
+          actionType: '',
+        },
+      })
     } else {
-      setType(val)
+      setGlobal({
+        type: UPDATE_ACTION_TYPE,
+        payload: {
+          actionType: val,
+        },
+      })
     }
   }
 
+  const renderDesignArea = () => {
+    if (mode === 'assemble') {
+      return <AssembleArea />
+    }
+    return (
+      <InfiniteViewer>
+        <DrawArea />
+        <Moveable />
+      </InfiniteViewer>
+    )
+  }
+
   useEffect(() => {
-    if (['form-pool', 'setting', ''].includes(type)) {
+    if (
+      ['form-pool', 'setting', '', 'switch', 'history'].includes(actionType)
+    ) {
       resetViewport()
     }
-  }, [type])
+  }, [actionType])
 
   return (
     <div className="container">
-      <LeftAction type={type} handleType={handleType} />
-      <LeftSidebar type={type} />
-      <div className="content">
-        {mode === 'assemble' ? (
-          <FormDesignArea />
-        ) : (
-          <InfiniteViewer>
-            <DrawArea />
-            <Moveable />
-          </InfiniteViewer>
-        )}
-      </div>
-      <RightSidebar type={type} />
-      <RightAction type={type} handleType={handleType} />
+      <LeftAction type={actionType} handleType={handleType} />
+      <LeftSidebar />
+      <div className="content">{renderDesignArea()}</div>
+      <RightSidebar type={actionType} />
+      <RightAction type={actionType} handleType={handleType} />
     </div>
   )
 }

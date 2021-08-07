@@ -1,10 +1,9 @@
 import React from 'react'
-import Mapping from '../../../properties/antd/mapping'
+import { getProperties } from '../../../properties/antd/mapping'
 import { ColProperties, CommonProperties, FormItemProperties } from '../../../properties/antd/form'
 import { Title } from '../../../components'
 import { Empty } from 'antd'
 import { useStore } from '@r-generator/stores'
-const { getProperties } = Mapping
 
 export default function () {
   const { componentList, target } = useStore()
@@ -23,7 +22,7 @@ export default function () {
   return has() ? (
     <>
       <FormItemProperties />
-      {TargetProperties}
+      {/* {TargetProperties} */}
       <ColProperties />
       <CommonProperties />
     </>

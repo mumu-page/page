@@ -3,7 +3,6 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useCallback,
-  useContext,
 } from 'react'
 import Guides from '@scena/react-guides'
 import { SET_MOVEABLE_OPTIONS, useStore } from '@r-generator/stores'
