@@ -4,7 +4,7 @@ import {
   ExclamationCircleOutlined,
   EyeOutlined,
   PicCenterOutlined,
-  PlayCircleOutlined,
+  CodeOutlined,
   SettingOutlined,
   VerticalAlignBottomOutlined,
 } from '@ant-design/icons'
@@ -83,7 +83,7 @@ export default (props: RightActionType) => {
   return (
     <div className="right-action">
       <Button
-        icon={<PlayCircleOutlined style={handleColor('run', type)} />}
+        icon={<CodeOutlined style={handleColor('run', type)} />}
         type={handleBtnType('run', type)}
         onClick={() => {
           run()

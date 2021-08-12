@@ -20,8 +20,6 @@ import {
   SET_COMPONENT_LIST,
   SET_MOVEABLE_OPTIONS,
   SET_TARGET_BY_COMPONENT_LIST,
-  IFormComProp,
-  IMoveableOptions,
   refreshTarget,
   useStore,
 } from '@r-generator/stores'
@@ -32,15 +30,10 @@ import {
   SHOW_SETTING_PANL,
 } from '../../../constants/events'
 import eventBus from '../../../utils/eventBus'
-import './index.less'
 import { ReactSortable } from 'react-sortablejs'
-
-interface EditorAreaProps {
-  componentList: IFormComProp[]
-  target: IFormComProp
-  moveableOptions: IMoveableOptions
-  setGlobal: any
-}
+import { PoolItem } from '@r-generator/stores'
+import { IContextMenuRef } from '../../../components/ContextMenu'
+import './index.less'
 
 enum HANDLE_TYPE {
   copy = '复制',
@@ -83,31 +76,29 @@ const actions = [
 
 const Wrap = forwardRef<HTMLDivElement, RowProps>((props, ref) => {
   const { target } = useStore()
-  const { rowProps = {} } = target || {}
-  const { colNum, ...otherRow } = rowProps
-  return <Row {...props} {...otherRow} ref={ref} />
+  const { layout = {} } = target || {}
+  return <Row {...props} {...layout.row} ref={ref} />
 })
 
 const ghostClass = 'sortable-ghost'
 const chosenClass = 'sortable-chosen'
 
-export default function List(props: EditorAreaProps) {
-  const { target, moveableOptions, componentList = [], setGlobal } = props
-  const [form] = Form.useForm()
-  const contenxtMenu = useRef(null)
+export default function List() {
   const {
-    componentProps,
-    formItemProps,
-    formProps = {},
-    colProps = {},
-    rowProps = {},
-  } = target || {}
-
-  const { colNum, ...otherRow } = rowProps
+    target,
+    moveableOptions,
+    componentList,
+    setGlobal,
+    layoutType,
+    commonProps,
+  } = useStore()
+  const [form] = Form.useForm()
+  const contenxtMenu = useRef<IContextMenuRef>(null)
+  const { layout = {} } = commonProps || {}
 
   const setComponentlist = (
     id: string | number | undefined,
-    componentList: IFormComProp[]
+    componentList: PoolItem[]
   ) => {
     setGlobal({
       type: SET_COMPONENT_LIST,
@@ -175,7 +166,7 @@ export default function List(props: EditorAreaProps) {
   }
 
   const onScroll = useCallback(() => {
-    ;(contenxtMenu.current as any)?.hide?.()
+    contenxtMenu.current?.hide?.()
   }, [])
 
   useEffect(() => {
@@ -187,12 +178,13 @@ export default function List(props: EditorAreaProps) {
   }, [])
 
   useEffect(() => {
-    if (formItemProps?.name) {
+    if (commonProps?.form?.formItem?.name) {
       form.setFieldsValue({
-        [formItemProps.name]: componentProps?.defaultValue,
+        [commonProps?.form?.formItem?.name]:
+          commonProps?.form?.formItem?.defaultValue,
       })
     }
-  }, [target.id])
+  }, [commonProps])
 
   // useEffect(() => {
   // const _initialValues = {} as any
@@ -207,9 +199,65 @@ export default function List(props: EditorAreaProps) {
   // form.setFieldsValue(_initialValues)
   // }, [componentList, form])
 
+  const renderItem = (item: PoolItem) => {
+    const { id, chosen, props } = item
+
+    const onContextMenu = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      e.preventDefault()
+      setGlobal({
+        type: SET_TARGET_BY_COMPONENT_LIST,
+        payload: { id },
+      })
+      // 无论dom元素如何变，componentList没有变
+      setComponentlist(id, componentList)
+      contenxtMenu.current?.show?.(e)
+    }
+
+    const content = (
+      <div
+        key={id}
+        data-id={id}
+        className={`${Target_ClassName} ${
+          chosen ? Target_ClassName + '-chosen' : ''
+        }`}
+        onContextMenu={layoutType === 'mobility' ? onContextMenu : () => {}}
+        onClick={(e: any) => {
+          e.stopPropagation()
+          contenxtMenu.current?.hide?.()
+          //  console.log('onClick', e)
+          if (id === target.id) return
+          setGlobal({
+            type: SET_TARGET_BY_COMPONENT_LIST,
+            payload: { id },
+          })
+          setComponentlist(id, componentList)
+        }}
+      >
+        <ComponentItem
+          children={item.children}
+          componentProps={item.props}
+          type={item.type}
+        />
+      </div>
+    )
+    if (layoutType === 'flexible') {
+      return (
+        <Col key={id} onContextMenu={onContextMenu} {...(layout.col || {})}>
+          {content}
+        </Col>
+      )
+    }
+    return content
+  }
+
+  const renderItems = (componentList: PoolItem[]) => {
+    return componentList.map((item: PoolItem) => {
+      return renderItem(item)
+    })
+  }
+
   return (
     <Form
-      {...formProps}
       style={{
         height: '100%',
         position: 'relative',
@@ -248,84 +296,7 @@ export default function List(props: EditorAreaProps) {
           e.item.classList.add('sortable-chosen')
         }}
       >
-        {componentList.map((item: IFormComProp) => {
-          const {
-            id,
-            chosen,
-            children,
-            name,
-            formItemProps,
-            componentProps,
-            colProps: selfColProps = {},
-            layout = {},
-          } = item
-
-          const { frame = { translate: [0, 0, 0] }, height, width } = layout
-          const { translate } = frame
-          const style = {
-            display: 'inline-block',
-            transform: `translate(${translate[0]}px, ${translate[1]}px)`,
-          } as any
-
-          if (typeof width === 'number') {
-            style.width = `${width}px`
-          } else if (typeof width === 'string') {
-            style.width = width
-          }
-          if (height) {
-            style.height = `${height}px`
-          }
-
-          const { align, gutter, justify, wrap, ...otherRowG } = otherRow
-          const { colNum: colNum2, ...otherCol } = selfColProps
-
-          return (
-            <Col
-              key={id}
-              //   style={style}
-              {...{
-                ...otherRowG,
-                ...otherCol,
-              }}
-              onContextMenu={(e) => {
-                e.preventDefault()
-                setGlobal({
-                  type: SET_TARGET_BY_COMPONENT_LIST,
-                  payload: { id },
-                })
-                // 无论dom元素如何变，componentList没有变
-                setComponentlist(id, componentList)
-                ;(contenxtMenu.current as any)?.show?.(e)
-              }}
-            >
-              <div
-                data-id={id}
-                className={`${Target_ClassName} ${
-                  chosen ? Target_ClassName + '-chosen' : ''
-                }`}
-                // style={{
-                //   paddingBottom: 24,
-                // }}
-                onClick={(e: any) => {
-                  e.stopPropagation()
-                  //  console.log('onClick', e)
-                  if (id === target.id) return
-                  setGlobal({
-                    type: SET_TARGET_BY_COMPONENT_LIST,
-                    payload: { id },
-                  })
-                  setComponentlist(id, componentList)
-                }}
-              >
-                <ComponentItem
-                  children={item.children}
-                  componentProps={item.props}
-                  name={item.name}
-                />
-              </div>
-            </Col>
-          )
-        })}
+        {renderItems(componentList)}
       </ReactSortable>
       <ContextMenu ref={contenxtMenu}>
         <Menu options={actions} onClick={handleContextMenuClick} />

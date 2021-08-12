@@ -47,7 +47,6 @@ export default (props: ILeftActionProp) => {
           handleType={handleType}
         />
         <Button
-          disabled={isDisabled(mode)}
           type={handleBtnType('history', type)}
           icon={<HistoryOutlined style={handleColor('history', type)} />}
           onClick={() => handleType('history')}

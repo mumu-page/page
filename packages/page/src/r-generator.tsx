@@ -6,8 +6,8 @@ import {
   useLPReducer,
   Context,
 } from '@r-generator/stores'
-import './index.css'
 import '@r-generator/mapping/dist/index.css'
+import './index.css'
 
 export default () => {
   const { commonState, dispatch } = useLPReducer(commonReducer, INITAL_STATE)

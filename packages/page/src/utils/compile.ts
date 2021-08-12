@@ -1,4 +1,3 @@
-import { IFormComProp } from '@r-generator/stores'
 import * as React from 'react'
 import {
   Input,
@@ -20,6 +19,7 @@ import {
   notification,
 } from 'antd'
 import { List1 } from '@r-generator/mapping'
+import { PoolItem } from '@r-generator/stores'
 import { ICONS } from '../constants/constants'
 import { Generate } from '@r-generator/core'
 import { transform } from '@babel/standalone'
@@ -31,7 +31,7 @@ class Compile {
   }
   // 去除不要的代码
   replace(code?: string) {
-    const selfCode = code || this.genrate.run()
+    const selfCode = code || '' /*  || this.genrate.run() */
     return (
       selfCode
         .substring(
@@ -41,7 +41,7 @@ class Compile {
         .replace('export default', '') + '</Form>}'
     )
   }
-  async string2Component(list: IFormComProp[] = [], code?: string) {
+  async string2Component(list: PoolItem[] = [], code?: string) {
     try {
       let input = this.replace(code)
       let output = transform(input, {
@@ -78,7 +78,7 @@ class Compile {
       })
     }
   }
-  getContext(list: IFormComProp[]) {
+  getContext(list: PoolItem[]) {
     const { TimePicker: TP, ...OtherDatePickerCom } = DatePicker
     const result = {
       React,

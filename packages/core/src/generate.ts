@@ -1,138 +1,75 @@
-import { IComponentKeys, IFormComProp } from '@r-generator/stores'
+import { ICommonState, PoolItem, ICommonProps } from '@r-generator/stores'
+// import { ALL_FORM_TYPES } from '@r-generator/mapping'
+import { getAllType } from '@r-generator/mapping/src/utils'
+import { cloneDeep } from 'lodash'
 
-export default class Generate {
-  componentList: IFormComProp[]
-  target: IFormComProp
-  constructor(componentList: IFormComProp[], target: IFormComProp) {
-    this.componentList = componentList
-    this.target = target
+/**
+ * 只兼容ANTD的组件
+ * 后续考虑抽离通用的
+ */
+export default class Generator {
+  state: ICommonState
+  componentList: PoolItem[]
+  target: PoolItem
+  commonProps: ICommonProps
+  constructor(state: ICommonState) {
+    this.state = state
+    this.componentList = state.componentList
+    this.commonProps = state.commonProps
+    this.target = state.target
   }
-  run() {
-    return `${this.generateImport()}${this.generateXml()}`
+
+  getAllType(componentList: PoolItem[], types = new Set()) {
+    return getAllType(componentList, types)
   }
-  generateXml() {
-    const { rowProps = {}, formProps = {} } = this.target
-    const { colNum, gutter, align, justify, wrap, ...otherG1 } = rowProps
-    const { labelAlign, size, ...otherG2 } = formProps
-    const colGlobalVariable = 'colProps'
-    const formItemGlobalVariable = 'formItemProps'
-    const rowPropsStr = this.generateProps({ gutter, align, justify, wrap })
-    let children = ''
-    const initialValues = {} as any
-    this.componentList.forEach((item, index) => {
-      if (item.componentProps?.defaultValue && item.formItemProps?.name) {
-        initialValues[item.formItemProps.name] =
-          item.componentProps?.defaultValue
+
+  replaceFirstUpperCase($1: string) {
+    return $1.toLocaleUpperCase().replace('-', '')
+  }
+
+  getComponentName(type: string) {
+    if (type.indexOf('/') !== -1) {
+      return type.split('/').map((name) => {
+        return name
+          .replace(/-([a-z]{1})/, this.replaceFirstUpperCase)
+          .replace(/^([a-z]{1})/, this.replaceFirstUpperCase)
+      })
+    }
+    return type
+      .replace(/-([a-z]{1})/, this.replaceFirstUpperCase)
+      .replace(/^([a-z]{1})/, this.replaceFirstUpperCase)
+  }
+
+  getDependency() {
+    const { layoutType } = this.state
+    const types = this.getAllType(this.componentList)
+    const antNames = Array.from(types).map((name) => {
+      if (typeof name === 'string') {
+        let cname = this.getComponentName(name)
+        if (Array.isArray(cname)) {
+          // return `${cname[0]}/${cname[1]}`
+          return cname[0]
+        }
+        return cname
       }
-      children += this.createFormItem(
-        item,
-        index,
-        colGlobalVariable,
-        formItemGlobalVariable
-      )
+      return ''
     })
-    const initialValuesStr = Object.keys(initialValues).length
-      ? ` initialValues={${JSON.stringify(initialValues)}}`
-      : ''
-    return `
-    export default () => {
-      const ${colGlobalVariable} = ${JSON.stringify(otherG1)}
-      const ${formItemGlobalVariable} = ${JSON.stringify(otherG2)}
-      const [form] = Form.useForm()
-      const onFinish = (values) => {
-        console.log('Received values of form:', values)
-      }
-  
-      return <Form${initialValuesStr} form={form} onFinish={onFinish}>
-          <Row${rowPropsStr}>
-            ${children}
-            <Col span={24}>
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  提交
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-      </Form>
+    if (layoutType === 'flexible') {
+      antNames.push('Row')
+      antNames.push('Col')
     }
-    `
-  }
-  generateProps(props: Record<string, any>, result = '') {
-    Object.keys(props).forEach((key) => {
-      const value = JSON.stringify(props[key])
-      result += `${this.parseProp(key, value)}`
-    })
-    return result
-  }
-  createFormItem(
-    item: IFormComProp,
-    index: number,
-    colGlobalVariable: string,
-    formItemGlobalVariable: string
-  ): string {
-    const {
-      formItemProps,
-      componentProps,
-      componentKey,
-      colProps = {},
-      // layout = {},
-    } = item
-    const { labelCol, wrapperCol } = formItemProps
-    const { colNum: _colNum, ...otherColProps } = colProps
-    const colPropsStr = this.generateProps({ ...otherColProps })
-    const formItemPropsStr = this.generateProps({
-      // style,
-      ...formItemProps,
-      labelCol,
-      wrapperCol,
-    })
-    const componentPropsStr = this.generateComProps(
-      componentProps,
-      componentKey
-    )
-    let componentName = ''
-    // 可能会设计多个List1 用一个唯一标识区分他们
-    if (item.componentKey === 'List1') {
-      componentName = `${item.componentKey}${String(item.id).slice(0, 4)}`
-      return `<Col {...${colGlobalVariable}}${colPropsStr}>
-              <${componentName} {...${formItemGlobalVariable}} form={form}${formItemPropsStr}${componentPropsStr} />
-            </Col>${this.componentList.length - 1 === index ? '' : '\n'}`
-    } else {
-      componentName = componentKey?.replace(/^.*\./, '')
+    antNames.push('Form')
+
+    const deps = {
+      react: { default: 'React', names: [] },
+      antd: {
+        default: null,
+        names: Array.from(new Set(antNames)),
+      },
     }
-    // TODO render children
-    const Component =
-      componentKey === 'Upload'
-        ? `<${componentName}${componentPropsStr}>
-      <Button icon={<UploadOutlined />}>Click to Upload</Button>
-    </${componentName}>`
-        : `<${componentName}${componentPropsStr} />`
-    return `<Col {...${colGlobalVariable}}${colPropsStr}>
-              <Form.Item {...${formItemGlobalVariable}}${formItemPropsStr}>
-                ${Component}
-              </Form.Item>
-            </Col>${this.componentList.length - 1 === index ? '' : '\n'}`
+    return deps
   }
-  generateComProps(
-    componentProps: Record<string, any>,
-    componentKey: IComponentKeys,
-    result = ''
-  ) {
-    const { defaultValue, prefix, suffix, ...componentOtherProps } =
-      componentProps
-    // 处理输入框前后置图标
-    if (['Input'].includes(componentKey)) {
-      componentOtherProps['prefix'] = `<${prefix} />`
-      componentOtherProps['suffix'] = `<${suffix} />`
-    }
-    // 控件参数
-    Object.keys(componentOtherProps).forEach((key) => {
-      let value = JSON.stringify(componentOtherProps[key])
-      result += `${this.parseProp(key, value)}`
-    })
-    return result
-  }
+
   parseProp(key: string, value: any, result = '') {
     if (!value) return ''
     if (typeof value === 'undefined') return ''
@@ -159,78 +96,82 @@ export default class Generate {
     }
     return result
   }
-  getAllAntdComponentKey(
-    componentList: IFormComProp[],
-    keys = new Set<string>()
-  ) {
-    componentList.forEach((item) => {
-      if (!['List1'].includes(item.componentKey)) {
-        keys.add(item.componentKey)
-      }
+
+  generateProps(props: Record<string, any>, result = '') {
+    Object.keys(props).forEach((key) => {
+      const value = JSON.stringify(props[key])
+      result += `${this.parseProp(key, value)}`
     })
-    keys.add('Form')
-    keys.add('Row')
-    keys.add('Col')
-    keys.add('Button')
-    return Array.from(keys)
-  }
-  // 寻找所有使用到的ICON
-  getAllIcon(componentList: IFormComProp[], keys = new Set<string>()) {
-    componentList.forEach((item) => {
-      const { componentProps = {} } = item
-      const { prefix, suffix } = componentProps
-      prefix && keys.add(prefix)
-      suffix && keys.add(suffix)
-    })
-    return Array.from(keys)
-  }
-  generateImport() {
-    const componentkeys = this.getAllAntdComponentKey(this.componentList)
-    const iconKeys = this.getAllIcon(this.componentList)
-    const childImport = {} as any
-    const parentImport = Array.from(
-      new Set(
-        componentkeys.map((item) => {
-          const [parent, child] = item.split('.')
-          if (child) {
-            if (childImport[parent]) {
-              childImport[parent].push(child)
-            } else {
-              childImport[parent] = [child]
-            }
-          }
-          return parent
-        })
-      )
-    )
-    const importReact = `import React from "react"\n`
-    const importAntd = `import {${parentImport}} from 'antd'\n`
-    let importOther = `` // 其他组件
-    this.componentList
-      .filter((item) => item.componentKey === 'List1')
-      .forEach((item) => {
-        const name = `List1`
-        const tag = item.id.toString().slice(0, 4)
-        importOther += `import ${name}${tag} from './${name}-${tag}'\n`
-      })
-    let importAntdChild = ''
-    Object.keys(childImport).forEach((key) => {
-      const item = childImport[key]
-      if (item.length) {
-        importAntdChild += `const {${item}} = ${key}\n`
-      }
-    })
-    const importIcons = `import {${iconKeys}} from "@ant-design/icons";\n`
-    let result = importReact + importAntd
-    if (iconKeys.length) {
-      result += importIcons
-    }
-    if (importOther) {
-      result += importOther
-    }
-    if (importAntdChild) {
-      result += '\n' + importAntdChild
-    }
     return result
+  }
+
+  generateImport() {
+    const deps = this.getDependency()
+    return Object.entries(deps)
+      .map((item) => {
+        const [key, value] = item
+        let flag = ''
+        if (value.default) {
+          flag = `${value.default}`
+          if (value.names?.length) {
+            flag += `,{${value.names}}`
+          }
+        } else if (value.names?.length) {
+          flag += `{${value.names}}`
+        }
+        return `import ${flag} from '${key}'`
+      })
+      .join('\n')
+  }
+
+  generateComponent(
+    componentList = this.componentList,
+    isChild: boolean = false
+  ): any {
+    const { layoutType } = this.state
+    const { layout: _layout } = this.commonProps
+    let layout = _layout
+    // 删除无关属性colNum
+    if (!isChild) {
+      layout = cloneDeep(_layout)
+      Reflect.deleteProperty(layout?.row || {}, 'colNum')
+    }
+    const code = componentList.map((item, index) => {
+      let cname = this.getComponentName(item.type)
+      if (Array.isArray(cname)) {
+        cname = `${cname[0]}.${cname[1]}`
+      }
+      const props = this.generateProps(item.props || {})
+      let code = [`<${cname}${props}>`, `</${cname}>`]
+      // 递归生成子组件
+      if (Array.isArray(item.children)) {
+        code.splice(1, 0, this.generateComponent(item.children, true))
+      } else {
+        code = [`<${cname}${props} />`]
+      }
+      // 如果是弹性布局，给每项组件套一层Col组件
+      if (layoutType === 'flexible' && !isChild) {
+        code.splice(0, 0, `<Col {...layoutConfig.col}>`)
+        code.push(`</Col>`)
+      }
+      return code.join('\n')
+    })
+    // 弹性布局模式下 外部套一层Row
+    if (layoutType === 'flexible' && !isChild) {
+      code.splice(0, 0, `<Row {...layoutConfig.row}>`)
+      code.push(`</Row>`)
+    }
+    if (!isChild) {
+      code.splice(0, 0, `return <Form>`)
+      code.push(`</Form>`)
+      code.splice(0, 0, `export default function Index() {`)
+      code.splice(0, 0, `const layoutConfig = ${JSON.stringify(layout)}`)
+      code.push(`}`)
+    }
+    return code.join('\n')
+  }
+
+  run() {
+    return [this.generateImport(), '', this.generateComponent()].join('\n')
   }
 }

@@ -26,9 +26,5 @@ export default function (props: IProps) {
     )
   }
 
-  return (
-    <div className="right-sidebar">
-      {renderContent()}
-    </div>
-  )
+  return <div className="right-sidebar">{renderContent()}</div>
 }

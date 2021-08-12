@@ -86,7 +86,8 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
   const [fileName, setFileName] = useState(defaultFileName)
   const [component, setComponent] = useState(<></>)
   const [width, setWidth] = useState<number | string>('')
-  const { componentList, target } = useStore()
+  const state = useStore()
+  const { componentList, target } = state
   // 依赖组件列表数据，根据它生成tab
   const list = componentList?.filter?.((item) => item.componentKey === 'List1')
   const files = {
@@ -107,18 +108,19 @@ export default forwardRef<PreviewInstanceProps, PreviewProps>(function (
   const file = files[fileName] || {}
 
   const onRun = (code?: string) => {
-    const genrate = new Generate(componentList, target)
+    const genrate = new Generate(state)
+    // console.log(genrate.run())
     if (code) {
       setIndexCode(code)
     } else {
       setIndexCode(genrate.run())
     }
-    new Compile(genrate).string2Component(list, code).then((newComponent) => {
-      if (typeof newComponent === 'function') {
-        const Component = newComponent()
-        setComponent(<Component />)
-      }
-    })
+    // new Compile(genrate).string2Component(list, code).then((newComponent) => {
+    //   if (typeof newComponent === 'function') {
+    //     const Component = newComponent()
+    //     setComponent(<Component />)
+    //   }
+    // })
   }
 
   const onDragFinished = (newSize: number) => {

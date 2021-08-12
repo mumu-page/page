@@ -20,7 +20,9 @@ export const commonReducer = produce(
       ...type(draft, action),
       [SET_GLOBAL]: () => {
         Object.keys(draft).forEach((key) => {
-          draft[key] = action.payload?.[key]
+          if (draft[key] && typeof action.payload?.[key] !== 'undefined') {
+            draft[key] = action.payload?.[key]
+          }
         })
       },
     }

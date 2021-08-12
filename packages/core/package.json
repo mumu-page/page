@@ -30,6 +30,7 @@
     "react": "^17.0.2"
   },
   "dependencies": {
+    "@r-generator/mapping": "^0.1.3",
     "@r-generator/stores": "^0.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

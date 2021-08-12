@@ -9,7 +9,12 @@ import React, {
 import { createPortal } from 'react-dom'
 import './index.less'
 
-export default forwardRef((props: any, ref) => {
+export interface IContextMenuRef {
+  show: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  hide: () => void
+}
+
+export default forwardRef<IContextMenuRef, any>((props, ref) => {
   const { children } = props
   const [el, setEl] = useState<HTMLElement>()
   const [visiable, setVisiable] = useState(false)

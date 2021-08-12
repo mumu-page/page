@@ -1,7 +1,7 @@
 import { shortid } from '@r-generator/shared'
 import { PUT_COMPONENT_LIST } from '@r-generator/stores'
 import { cloneDeep } from 'lodash'
-import { PoolItem } from '../../constants'
+import { PoolItem } from '@r-generator/stores'
 
 export const addComponent = (
   childItem: PoolItem,

@@ -7,6 +7,7 @@ import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import babel from '@rollup/plugin-babel'
 import { getInputFile, getOutFile, isProduction, inputs } from './utils'
+import RollupPluginPeerDepsExternal from 'rollup-plugin-peer-deps-external'
 
 export default inputs.map((pkg) => {
   const peerDependencies = pkg.peerDependencies || {}
@@ -38,11 +39,12 @@ export default inputs.map((pkg) => {
       },
     ],
     plugins: [
+      RollupPluginPeerDepsExternal({ includeDependencies: !isProduction }),
       typescript(),
       resolve({
         preferBuiltins: false,
       }),
-      commonjs(),
+      commonjs({sourceMap: !isProduction}),
       babel({
         babelHelpers: 'bundled',
         presets: ['@babel/preset-env'],

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { Form, InputNumber } from 'antd'
-import { FORM_PROPERTIES_OPTIONS } from '../../../properties/antd/constants'
+import { FORM_PROPERTIES_OPTIONS } from '../../../constants'
 import { Collapse, Title } from '../../../components'
 import { debounce } from 'lodash'
 import { useStore, refreshTarget } from '@r-generator/stores'

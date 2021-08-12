@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from 'react'
-import { PoolGroup, PoolItem } from '../../constants'
+import { PoolGroup, PoolItem } from '@r-generator/stores'
 import { shortid } from '@r-generator/shared'
 import { useStore } from '@r-generator/stores'
 import { Empty, Input, RowProps, Typography } from 'antd'
@@ -27,7 +27,7 @@ export default function RenderPool(props: IRenderPool) {
     const filterResult = sourceData.map((item) => {
       if (Array.isArray(item.children)) {
         item.children = item.children.filter(
-          (item) => item.title.indexOf(value) !== -1
+          (item) => item.label.indexOf(value) !== -1
         )
       }
       return item
@@ -84,7 +84,7 @@ export default function RenderPool(props: IRenderPool) {
             >
               <div className="drag-target">
                 <div className="component-image"></div>
-                <div className="component-name">{childItem.title}</div>
+                <div className="component-name">{childItem.label}</div>
               </div>
             </div>
           )
@@ -108,7 +108,7 @@ export default function RenderPool(props: IRenderPool) {
         return (
           <div key={shortid()}>
             <Typography.Title level={5} style={{ marginTop: '0.5em' }}>
-              <Typography.Text type="secondary">{item.title}</Typography.Text>
+              <Typography.Text type="secondary">{item.label}</Typography.Text>
             </Typography.Title>
             {renderChildren(item)}
           </div>

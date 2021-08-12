@@ -15,8 +15,8 @@ import {
   RIGHT_REMOVE_COMPONENTS,
   LEFT_REMOVE_COMPONENTS,
 } from '../actionTypes'
-import { ICommonState, IFormComProp } from '../types'
-import { coverValue } from './utils'
+import { ICommonState, PoolItem } from '../types'
+// import { coverValue } from './utils'
 
 export default (
   draft: ICommonState,
@@ -25,14 +25,14 @@ export default (
   // 清空控件列表和当前拖拽控件数据
   [DELETE_ALL_COMPONENT_LIST_AND_TARGET]: () => {
     draft.componentList = []
-    draft.target = {
-      id: '',
-      componentKey: '',
-      formItemProps: {},
-      componentProps: {},
-      colProps: {},
-      rowProps: {},
-    }
+    // draft.target = {
+    //   id: '',
+    //   componentKey: '',
+    //   formItemProps: {},
+    //   componentProps: {},
+    //   colProps: {},
+    //   rowProps: {},
+    // }
   },
   [PUT_COMPONENT_LIST]: () => {
     for (let i = 0; i < draft.componentList?.length; i++) {
@@ -68,10 +68,10 @@ export default (
     })
   },
   [DEL_COMPONENT_LIST]: () => {
-    const findDelItem = (data: IFormComProp[]) => {
+    const findDelItem = (data: PoolItem[]) => {
       for (let i = 0; i < data?.length; i++) {
         if (data[i]?.children) {
-          findDelItem(draft.componentList[i].children as IFormComProp[])
+          findDelItem(draft.componentList[i].children as PoolItem[])
         }
         if (data[i].id === action.payload?.id) {
           data.splice(i, 1)
@@ -82,7 +82,7 @@ export default (
     findDelItem(draft?.componentList)
   },
   [COPY_COMPONENT_LIST]: () => {
-    let newItem = {} as IFormComProp
+    let newItem = {} as PoolItem
     const { id, newId = shortid() } = action?.payload || {}
     draft.componentList?.forEach((item) => {
       if (item.id === id) {
@@ -103,25 +103,25 @@ export default (
   },
   [UPDATE_COMPONENT_LIST_BY_TARGET]: () => {
     const { data = {} } = action.payload || {}
-    const findCurrent = (coms: IFormComProp[]) => {
+    const findCurrent = (coms: PoolItem[]) => {
       coms?.forEach((item) => {
-        if (item.id === draft.target?.id) {
-          coverValue({
-            childKeys: ['options', 'fields'],
-            targetObj: item,
-            newValue: data,
-            value: [],
-            parentKey: 'componentProps',
-          })
-          if (
-            data.componentProps?.style?.width === null &&
-            item?.componentProps?.style
-          ) {
-            data.componentProps.style = null
-            item.componentProps.style = null
-          }
-          item = merge(item, data)
-        }
+        // if (item.id === draft.target?.id) {
+        //   coverValue({
+        //     childKeys: ['options', 'fields'],
+        //     targetObj: item,
+        //     newValue: data,
+        //     value: [],
+        //     parentKey: 'componentProps',
+        //   })
+        //   if (
+        //     data.componentProps?.style?.width === null &&
+        //     item?.componentProps?.style
+        //   ) {
+        //     data.componentProps.style = null
+        //     item.componentProps.style = null
+        //   }
+        //   item = merge(item, data)
+        // }
         if (item?.children) {
           findCurrent(item.children)
         }
@@ -133,17 +133,17 @@ export default (
   [UPDATE_COMPONENT_LIST_AND_TARGET]: () => {
     const { componentKey, newComponentProps } = action.payload || {}
     const componentList = draft?.componentList?.map((item) => {
-      if (item.id === draft.target?.id) {
-        item.componentKey = componentKey
-        item.componentProps = {
-          ...item.componentProps,
-          ...newComponentProps,
-        }
-      }
+      // if (item.id === draft.target?.id) {
+      //   item.componentKey = componentKey
+      //   item.componentProps = {
+      //     ...item.componentProps,
+      //     ...newComponentProps,
+      //   }
+      // }
       return item
     })
-    draft.target.componentKey = componentKey
-    draft.target.componentProps = newComponentProps
+    // draft.target.componentKey = componentKey
+    // draft.target.componentProps = newComponentProps
     draft.componentList = componentList
   },
   // 重置layout属性

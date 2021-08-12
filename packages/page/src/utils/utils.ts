@@ -1,4 +1,4 @@
-import { IFormComProp } from '@r-generator/stores'
+import { PoolItem } from '@r-generator/stores'
 import { Target_ClassName } from '../constants/constants'
 
 // 重新设置画布大小
@@ -43,13 +43,14 @@ export function hasNotPlaceholder(componentKey: string) {
   ].includes(componentKey)
 }
 
-export function isDatePicker(componentKey: string) {
+export function isDateComponent(type: string) {
   return [
-    'TimePicker',
-    'TimePicker.RangePicker',
-    'DatePicker',
-    'DatePicker.RangePicker',
-  ].includes(componentKey)
+    'time-picker',
+    'time-picker/range-picker',
+    'date-picker',
+    'date-picker/range-picker',
+    'cascader',
+  ].includes(type)
 }
 
 export function isRenderFormItem(componentKey: string) {
@@ -164,7 +165,7 @@ export function encodeKey(
  */
 export function findTarget(
   id: string | number | undefined,
-  list: IFormComProp[],
+  list: PoolItem[],
   selectors = `.${Target_ClassName}`
 ) {
   let elementGuidelines = [].slice.call(

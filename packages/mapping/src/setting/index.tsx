@@ -1,7 +1,6 @@
 import React, { CSSProperties } from 'react'
 import { Tabs } from 'antd'
-import Component from './components/Component'
-import Layout from './components/Layout'
+import Property from './components/Property'
 import Page from './components/Page'
 import './index.less'
 
@@ -18,12 +17,7 @@ export default function () {
     <Tabs className="setting" defaultActiveKey="1" centered>
       <TabPane tab="属性设置" key="1">
         <div style={style}>
-          <Component />
-        </div>
-      </TabPane>
-      <TabPane tab="布局设置" key="2">
-        <div style={style}>
-          <Layout />
+          <Property />
         </div>
       </TabPane>
       <TabPane tab="画布设置" key="3">
