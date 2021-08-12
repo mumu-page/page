@@ -12,6 +12,7 @@ export default class Generator {
   componentList: PoolItem[]
   target: PoolItem
   commonProps: ICommonProps
+  code: string = ''
   constructor(state: ICommonState) {
     this.state = state
     this.componentList = state.componentList
@@ -172,6 +173,7 @@ export default class Generator {
   }
 
   run() {
-    return [this.generateImport(), '', this.generateComponent()].join('\n')
+    this.code = [this.generateImport(), '', this.generateComponent()].join('\n')
+    return this.code
   }
 }
